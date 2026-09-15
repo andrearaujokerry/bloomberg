@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+                <title>Economic Release Calendar | FRED | St. Louis Fed</title>
+              <script>
+      dataLayer = []
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []
+      w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      })
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''
+      j.async = true
+      j.src =
+        '//www.googletagmanager.com/gtm.js?id=' + i + dl
+      f.parentNode.insertBefore(j, f)
+    })(window, document, 'script', 'dataLayer', 'GTM-5L322W')</script>
+    <!-- End Google Tag Manager -->
+
+        <meta name="description" content="34 economic release dates. FRED: Download, graph, and track economic data.">
+            <meta name="keywords" content="Economic Data, FRED, St. Louis Fed, Federal Reserve">
+    
+
+        
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "DataCatalog",
+        "license": "",
+        "name": "FRED",
+        "alternateName": "Federal Reserve Economic Data",
+        "url": "https://fred.stlouisfed.org/releases/calendar",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Federal Reserve Bank of St. Louis",
+            "url": "https://www.stlouisfed.org/",
+            "address": {
+              "@type": "PostalAddress",
+                "addressLocality": "St. Louis",
+                "addressRegion": "MO",
+                "postalCode": "63102",
+                "streetAddress": "Federal Reserve Bank Plaza, 1 Broadway",
+                "addressCountry": "USA"
+            },
+             "department": "Research Division",
+             "email": "fred@stlouisfed.org",
+             "telephone": "(314) 444-8444"                  
+        }             
+    }
+
+
+    </script>
+        
+    <link rel="preconnect" href="https://research.stlouisfed.org">
+    <link rel="preconnect" href="https://uapi.stlouisfed.org">
+    <link rel="preconnect" href="https://alfred.stlouisfed.org">
+    <link rel="preconnect" href="https://fred.stlouisfed.org">
+    <link rel="preconnect" href="https://fred.stlouisfed.org">
+    <link rel="preconnect" href="https://apis.google.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <meta name="apple-itunes-app" content="app-id=451715489">
+    <meta name="google-play-app" content="app-id=org.stlouisfed.research.fred">
+
+    
+    
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+
+    <!--<meta name="viewport" content="width=device-width">-->
+
+        <link rel="canonical" href="https://fred.stlouisfed.org/releases/calendar">
+    
+    
+<script type="text/javascript" src="/assets/moment/moment.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/fullcalendar/dist/fullcalendar.min.css">
+<link href="/assets/fontawesome-free/css/all.min.css" rel="stylesheet">
+<style>.fred-hide {display: none;}</style>
+
+</head>
+<body class="release-calendar">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5L322W"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- pingdom_uptime_check=uXCPjTUzTxL7ULra -->
+<link rel="stylesheet" type="text/css" href=/assets/bootstrap/dist/css/1789406819.bootstrap.min.css>
+<link rel="stylesheet" type="text/css" href=/assets/fontawesome-free/css/all.min.css>
+<script></script>
+<link rel="stylesheet" type="text/css" href=/css/1789406833.pager.min.css>
+<script></script>
+<link rel="stylesheet" type="text/css" href=/assets/select2/dist/css/1789406817.select2.min.css>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<!--googleoff: snippet-->
+<a href="#content-container" class="skip-to">Skip to main content</a>
+<!--googleon: snippet-->
+<a id="top"></a>
+<!--Move content shift styles internal to boost performance scores-->
+<style>
+    #zoom-and-share {
+        position:relative;
+        background-color: rgb(225, 233, 240);
+        min-height: 437px;
+    }
+</style>
+<div id="container">
+    <header>
+        <nav class="navbar navbar-expand-lg header-not-home py-0 EL-nonhomepage-header EL-header-and-subheader">
+            <div id="hidden-user" class='hide'></div>
+            <div id="action-modal"></div>
+            <div class="col-12 d-none d-lg-block">
+                <div class="col-12 d-none d-lg-flex">
+                    <a class="bank-logo-gtm" target="_blank" href="https://www.stlouisfed.org">
+                        <img class="research-logo-gtm" src="//fred.stlouisfed.org/images/Small_Stl_Fed_Logo.svg" alt="Federal Reserve Bank of St. Louis">
+                    </a>
+                    <hr class=" hr-post-frb-stls-logo">
+                </div>
+                <div class="col-12 d-none d-lg-flex">
+                    <div class="col-3 align-content-center">
+                        <a class="fred-logo-gtm" target="_blank" href="//fred.stlouisfed.org">
+                            <img class="header-logo-eagle" src="//fred.stlouisfed.org/images/FRED_Logo_Header.svg" alt="FRED homepage">
+                        </a>
+                    </div>    
+                    <div class="col-9 d-none d-lg-flex align-content-center justify-content-end">
+                        <div class='input-group EL-header-search-container' id="search-container-header">
+    <select id="head-search" class='EL-header-search'>
+        <option></option>
+    </select>
+
+    <button class="search-submit-select2" id="select2-nav-search-button" type="submit" aria-label="Submit Search">
+        <i class="fa fa-search" title="Submit Search"></i>
+    </button>
+</div>
+                        <nav id="blueheader-navbar-nav">
+                            <ul id="blueheader-navbar" class="nav float-end">
+                                <li class="blueheader-navbar-item center-content-vertically switch-products-gtm">
+                                    <span id="switchprod-popover-container" class="switchprod-popover-container">
+
+  <button type="button" id="switchProd" data-toggle="popover" aria-controls="switch-prod-list" 
+    aria-haspopup="true" class="header-popover" aria-label="Toggle Explore Our Apps Menu">
+    <img class="Switch-Products-gtm" src="//fred.stlouisfed.org/images/Waffle_Menu_off.svg" alt="Toggle Explore Our Apps Menu" />
+  </button>
+</span>
+
+<div id="switchprod-popover" class="hide">
+  <!-- empty alt values handle older screen readers that don't handle WAI-ARIA roles. Both methods allow the screenreader to skip the image and not read the filename to the user. -->
+<h2 class="explore-products-desk">Explore Our Apps</h2>
+<hr>
+<ul id="switch-prod-list" class="list-group switch-products-list" role="menu" aria-labelledby="switchProduct">
+    <li role="presentaion" id="ham-fred-dev" class="list-group-item product-fred">
+      <a class="d-flex burger-fred-gtm" role="menuitem" href="//fred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-fred-gtm" src="//fred.stlouisfed.org/images/FRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fred-gtm">FRED</h3>
+          <p>Tools and resources to find and use economic data worldwide</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-fraser" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-fraser-gtm" role="menuitem" href="https://fraser.stlouisfed.org/">
+        <div>
+          <img class="switch-icon-padding burger-fraser-gtm" src="//fred.stlouisfed.org/images/FRASER_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fraser-gtm">FRASER</h3>
+          <p>U.S. financial, economic, and banking history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-alfred" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-alfred-gtm" role="menuitem" href="//alfred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-alfred-gtm" src="//fred.stlouisfed.org/images/ALFRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-alfred-gtm">ALFRED</h3>
+          <p>Vintages of economic data from specific dates in history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-ecolowdown" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-econlowdown-gtm" role="menuitem" href="https://cassidi.stlouisfed.org/index">
+        <div>
+          <img class="burger-econlowdown-gtm" src="//fred.stlouisfed.org/images/CASSIDI_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-econlowdown-gtm">CASSIDI</h3>
+          <p>View banking market concentrations and perform HHI analysis</p>
+        </div>
+      </a>
+  </li>
+</ul>
+</div>                                </li>
+                                <li class="blueheader-navbar-item center-content-vertically">
+                                    <div class="hidden-xs" id="signin-wrap">
+                                        <div id="user-nav" class="EL-my-account-link"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-lg-none">
+                <div class="fred-logo-div col-6 align-content-center">
+                    <a class="fred-logo-gtm" href="//fred.stlouisfed.org/">
+                        <img class="header-logo" src="//fred.stlouisfed.org/images/FRED_Logo_Header_white_text.svg" alt="FRED homepage">
+                    </a>
+                </div>
+                <div class="blueheader-navbar center-content-vertically">
+                    <button type="button" id="search-btn-open" aria-controls="mobile-search-container" 
+    onclick="mobileSearchToggle('open')" aria-label="Open Search">
+    <i class="fas fa-solid fa-search" title="Open Search"></i>
+</button>
+<button type="button" id="search-btn-close" class="hide" aria-controls="mobile-search-container" 
+    onclick="mobileSearchToggle('close')" aria-label="Close Search" disabled="true">
+    <i class="fa-solid fa-x" title="Close Search"></i>
+</button>  
+                    <button type="button" id="hamburger-btn-open" class="hamburger-gtm" aria-controls="hamburger-drawer" 
+    onclick="hamburgerMenuToggle('open')" aria-label="Open Mobile Menu">
+    <i id="hamburger" class="fas fa-bars hamburger-header" title="Open Mobile Menu"></i>
+</button> 
+<button type="button" id="hamburger-btn-close" class="close-btn burger-close-gtm hide" aria-controls="hamburger-drawer" 
+    onclick="hamburgerMenuToggle('close')" aria-label="Close Mobile Menu">
+    <i class="fa-solid fa-x" title="Close Mobile Menu"></i>
+</button> 
+                </div>
+            </div>
+            <div id="notifications-container"></div>
+        </nav>
+        <div class="blueheader-navbar d-lg-none">
+            <div id="mobile-search-container" class="hide col-12">
+                <input type="hidden" id="mobile-search-input" class="search-text-input" placeholder="Search FRED Data..." disabled="disabled">
+                <button type="submit" class="search-submit-select2" id="mobile-search-submit" disabled="disabled">
+                    <i class="fas fa-solid fa-search" title="Search"></i>
+                </button>
+            </div>
+            <nav id="hamburger-drawer" class="hide">
+    <div class="slide-content">
+        <div id="hamburger-navigation">
+            <div id="hamburger-home">
+                <ul class="list-group flush-list hamburger-list col-12">
+                    <li class="list-group-item">
+                        <a class="burger-calendar-gtm" href="https://fred.stlouisfed.org/releases/calendar">Release Calendar</a>
+                    </li>
+                    <li class="list-group-item hamburger-menu-item">
+                        <button type="button" class="burger-tools-gtm" onclick="toggleMenuNavigation('hamburger-tools', true)" aria-controls="hamburger-tools">Tools
+                            <i class="fas fa-solid fa-angle-down" title="Toggle FRED Tools Submenu"></i>
+                        </button>
+                        <ul id="hamburger-tools" role="menu" class="hide list-group hamburger-submenu-list col-12">
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-excel-add-in-gtm" href="https://fred.stlouisfed.org/fred-addin"> FRED Add-in for Excel</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-api-gtm" href="https://fred.stlouisfed.org/docs/api/fred"> FRED API</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-mobile-apps-gtm" href="https://fred.stlouisfed.org/fred-mobile"> FRED Mobile Apps</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-news-gtm" href="https://news.research.stlouisfed.org/category/fred-announcements/">News</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-blog-gtm" href="https://fredblog.stlouisfed.org">Blog</a>
+                    </li>
+                    <li class="list-group-item hamburger-menu-item">
+                        <button type="button" class="burger-about-gtm" onclick="toggleMenuNavigation('hamburger-about-fred', true)" aria-controls="hamburger-about-fred">About
+                            <i class="fas fa-solid fa-angle-down" title="Toggle About FRED Submenu"></i>
+                        </button>
+                        <ul id="hamburger-about-fred" role="menu" class="hide list-group hamburger-submenu-list col-12">
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-about-gtm" href="https://fredhelp.stlouisfed.org/fred/about/about-fred/what-is-fred/"> What is FRED</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-tutorials-gtm" href="https://fredhelp.stlouisfed.org"> Tutorials</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-data-literacy-gtm" href="https://fred.stlouisfed.org/digital-badges/">
+                                Digital Badges
+                                </a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-contact-us-gtm" href="https://fred.stlouisfed.org/contactus/"> Contact Us</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-myaccount-gtm" href="https://fredaccount.stlouisfed.org">My Account</a>
+                    </li>
+                    <li class="list-group-item hamburger-menu-item">
+                        <button type="button" class="burger-switch-gtm" onclick="toggleMenuNavigation('hamburger-products', true)" aria-controls="hamburger-products">
+                            Explore Our Apps
+                            <i class="fas fa-solid fa-angle-down" title="Toggle Apps Submenu"></i>
+                        </button>
+                        <div id="hamburger-products" class="hide">
+                            <!-- empty alt values handle older screen readers that don't handle WAI-ARIA roles. Both methods allow the screenreader to skip the image and not read the filename to the user. -->
+<h2 class="explore-products-desk">Explore Our Apps</h2>
+<hr>
+<ul id="switch-prod-list" class="list-group switch-products-list" role="menu" aria-labelledby="switchProduct">
+    <li role="presentaion" id="ham-fred-dev" class="list-group-item product-fred">
+      <a class="d-flex burger-fred-gtm" role="menuitem" href="//fred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-fred-gtm" src="//fred.stlouisfed.org/images/FRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fred-gtm">FRED</h3>
+          <p>Tools and resources to find and use economic data worldwide</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-fraser" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-fraser-gtm" role="menuitem" href="https://fraser.stlouisfed.org/">
+        <div>
+          <img class="switch-icon-padding burger-fraser-gtm" src="//fred.stlouisfed.org/images/FRASER_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fraser-gtm">FRASER</h3>
+          <p>U.S. financial, economic, and banking history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-alfred" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-alfred-gtm" role="menuitem" href="//alfred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-alfred-gtm" src="//fred.stlouisfed.org/images/ALFRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-alfred-gtm">ALFRED</h3>
+          <p>Vintages of economic data from specific dates in history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-ecolowdown" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-econlowdown-gtm" role="menuitem" href="https://cassidi.stlouisfed.org/index">
+        <div>
+          <img class="burger-econlowdown-gtm" src="//fred.stlouisfed.org/images/CASSIDI_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-econlowdown-gtm">CASSIDI</h3>
+          <p>View banking market concentrations and perform HHI analysis</p>
+        </div>
+      </a>
+  </li>
+</ul>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-stls-home-gtm" href="https://www.stlouisfed.org/">STL Fed Home Page</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+        </div>
+        <div class='navbar navbar-expand-lg sub-header EL-header-and-subheader'>
+            <div class="container-fluid gx-0">
+                <div class="col d-flex justify-content-end">
+                    <div class="container-fluid gx-0">
+                        
+<hr class="col-12 hr-pre-subheader-nav d-none d-lg-block">
+<nav class="col-12 navbar EL-main-nav navbar-expand-sm d-none d-lg-flex" id="subheader-nav">
+    <div class="navbar-collapse collapse d-flex justify-content-end">
+        <ul id="subheader-navbar" class="nav float-end navbar-nav">
+            <li class="nav-li-subheader">
+                <a href="https://fred.stlouisfed.org/releases/calendar" class="nav-releasecal-subheader-gtm">Release Calendar</a>
+            </li>
+            <li class="nav-li-subheader">
+              <span class="sub-header-nav-tools-gtm  header-popover fred-tools-container">
+  <button type="button" id="fred-tools-link" class="align-icon header-popover tools-gtm" 
+    aria-haspopup="true" aria-controls="fred-tools-menu" data-toggle="popover" 
+    onclick="toggleMenuNavigation('fred-tools-popover')">Tools
+    <i class="fas fa-angle-down" title="Toggle Tools Menu"></i>
+  </button>
+</span>
+
+<div id="fred-tools-popover" class="hide">
+  <ul id="fred-tools-menu" role="menu" class="header-list-popover list-group flush-list">
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="homepage-nav-tools-fred-excel-addin-gtm" href="https://fred.stlouisfed.org/fred-addin">FRED Add-in for Excel</a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="homepage-nav-tools-fred-api-gtm" href="https://fred.stlouisfed.org/docs/api/fred">FRED API</a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="homepage-nav-tools-fred-mobile-gtm" href="https://fred.stlouisfed.org/fred-mobile">FRED Mobile Apps</a>
+    </li>
+  </ul>
+</div>            </li>
+            <li class="nav-li-subheader">
+                <a href="https://news.research.stlouisfed.org/category/fred-announcements/" class="nav-news-subheader-gtm">News</a>
+            </li>
+            <li class="nav-li-subheader">
+                <a href="https://fredblog.stlouisfed.org" class="nav-fredblog-subheader-gtm">Blog</a>
+            </li>
+            <li class="nav-li-subheader">
+              
+<span class="subheader-nav-about-gtm about-fred-container">
+  <button type="button" id="about-fred-link" class="align-icon header-popover about-gtm" 
+    data-toggle="popover" aria-controls="about-fred-menu" aria-haspopup="true"
+    onclick="toggleMenuNavigation('about-fred-popover')">About
+    <i class="fas fa-angle-down" alt="Toggle About Menu"></i>
+  </button>
+</span>
+
+<div id="about-fred-popover" class="hide">
+  <ul id="about-fred-menu" role="menu" aria-labelledby="about-fred-link" class="header-list-popover list-group flush-list">
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-fred-what-is-gtm" href="https://fredhelp.stlouisfed.org/fred/about/about-fred/what-is-fred/">
+        What is FRED
+      </a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-fred-tutorials-gtm" href="https://fredhelp.stlouisfed.org">
+        Tutorials
+      </a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-research-data-literacy-gtm" href="https://fred.stlouisfed.org/digital-badges/">
+        Digital Badges
+      </a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-fred-contact-gtm" href="https://fred.stlouisfed.org/contactus/ ">
+        Contact Us
+      </a>
+    </li>
+  </ul>
+</div>
+            </li>
+        </ul>
+    </div>
+</nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+<nav id="site-breadcrumbs" class="site-breadcrumbs d-none d-lg-block align-content-center" aria-label="site breadcrumbs">
+    <div class="container gx-0">
+        <a class="breadcrumb_link" href="/">Home</a> <span class="px-2">&gt;</span> <a class="breadcrumb_link" href="/releases">Releases</a>
+    </div>
+</nav>
+<div class="clear row gx-0 container" id="content-container">
+
+
+
+<div class="col-12 container-fluid" id="main-content-column">
+
+<div id="page-title" class="page-title">
+    <h1>Release Calendar</h1>
+
+
+
+
+<hr class="header-divider d-block d-lg-none">
+
+
+
+<hr class="header-divider d-none d-lg-block">
+
+</div>
+
+    
+                        
+                <br style="clear:both;">
+
+<form id="release-calendar-form" name="release-calendar-form" method="GET" action="/releases/calendar" class="form-horizontal " style="display:inline">
+
+<input id="rc-vs" type="hidden" name="vs" value="2026-09-15">
+<input id="rc-ve" type="hidden" name="ve" value="2026-09-15">
+<input id="rc-min-rd" type="hidden" name="min-rd" value="2025-01-01">
+<input id="rc-max-rd" type="hidden" name="max-rd" value="2027-05-06">
+<input id="rc-ptic" type="hidden" name="ptic" value="34">
+<div class="rc-content-area">
+<div>
+<div class="form-group">
+    <div class="row">
+    <div class="col-md-7 col-sm-12 col-12 pb-1">
+        <select class="form-select" style="font-size: 16px; color: #555; border: 1px solid black" id="rc-rid" name="rid">
+            <option value="">All Releases</option>
+                                        <option value="194">ADP National Employment Report</option>
+                                                    <option value="435">Advance Economic Indicators</option>
+                                                    <option value="9">Advance Monthly Sales for Retail and Food Services</option>
+                                                    <option value="353">Alternative Measures of Labor Underutilization for States</option>
+                                                    <option value="454">Average Price Data</option>
+                                                    <option value="266">Bank of Japan Accounts</option>
+                                                    <option value="742">Bankrate Monitor (BRM) National Index</option>
+                                                    <option value="488">Brave-Butters-Kelley Indexes</option>
+                                                    <option value="443">Business Formation Statistics</option>
+                                                    <option value="322">Business Leaders Survey</option>
+                                                    <option value="200">CBOE Market Statistics</option>
+                                                    <option value="494">Chicago Fed Advance Retail Trade Summary</option>
+                                                    <option value="219">Chicago Fed National Activity Index</option>
+                                                    <option value="221">Chicago Fed National Financial Conditions Index</option>
+                                                    <option value="372">Chicago Fed Survey of Economic Conditions</option>
+                                                    <option value="441">Coinbase Cryptocurrencies</option>
+                                                    <option value="86">Commercial Paper</option>
+                                                    <option value="229">Construction Spending</option>
+                                                    <option value="10">Consumer Price Index</option>
+                                                    <option value="315">Current Median CPI</option>
+                                                    <option value="72">Daily Treasury Inflation-Indexed Securities</option>
+                                                    <option value="1132">Dallas Fed Energy Survey</option>
+                                                    <option value="263">Debt to Gross Domestic Product Ratios</option>
+                                                    <option value="197">Dow Jones Averages</option>
+                                                    <option value="279">Economic Policy Uncertainty</option>
+                                                    <option value="321">Empire State Manufacturing Survey</option>
+                                                    <option value="11">Employment Cost Index</option>
+                                                    <option value="50">Employment Situation</option>
+                                                    <option value="502">Euro Short Term Rate</option>
+                                                    <option value="291">Existing Home Sales</option>
+                                                    <option value="378">Federal Funds Data</option>
+                                                    <option value="238">Financial Soundness Indicators</option>
+                                                    <option value="101">FOMC Press Release</option>
+                                                    <option value="769">Fujita, Moscarini, and Postel-Vinay Employer-to-Employer Transition Probability</option>
+                                                    <option value="13">G.17 Industrial Production and Capacity Utilization</option>
+                                                    <option value="14">G.19 Consumer Credit</option>
+                                                    <option value="183">Gasoline and Diesel Fuel Update</option>
+                                                    <option value="373">GDP-Based Recession Indicator Index</option>
+                                                    <option value="386">GDPNow</option>
+                                                    <option value="53">Gross Domestic Product</option>
+                                                    <option value="397">Gross Domestic Product by County</option>
+                                                    <option value="331">Gross Domestic Product by Industry</option>
+                                                    <option value="140">Gross Domestic Product by State</option>
+                                                    <option value="17">H.10 Foreign Exchange Rates</option>
+                                                    <option value="18">H.15 Selected Interest Rates</option>
+                                                    <option value="20">H.4.1 Factors Affecting Reserve Balances</option>
+                                                    <option value="21">H.6 Money Stock Measures</option>
+                                                    <option value="22">H.8 Assets and Liabilities of Commercial Banks in the United States</option>
+                                                    <option value="251">Harmonized Indices of Consumer Prices (HICP)</option>
+                                                    <option value="504">Historical Overnight AMERIBOR Unsecured Interest Rate</option>
+                                                    <option value="171">House Price Index</option>
+                                                    <option value="462">Housing Inventory Core Metrics</option>
+                                                    <option value="148">Housing Units Authorized By Building Permits</option>
+                                                    <option value="296">Housing Vacancies and Homeownership</option>
+                                                    <option value="209">ICE BofA Indices</option>
+                                                    <option value="185">Interest Rate on Reserve Balances</option>
+                                                    <option value="304">Interest Rate Spreads</option>
+                                                    <option value="239">International Financial Statistics</option>
+                                                    <option value="192">Job Openings and Labor Turnover Survey</option>
+                                                    <option value="341">Kansas City Fed Labor Market Conditions Indicators</option>
+                                                    <option value="4">Kansas City Fed Policy Rate Skew</option>
+                                                    <option value="739">Kansas City Fed Policy Rate Uncertainty</option>
+                                                    <option value="198">Kansas City Financial Stress Index</option>
+                                                    <option value="484">Key ECB Interest Rates</option>
+                                                    <option value="446">Labor Force Participation by State</option>
+                                                    <option value="334">Labor Force Status Flows from the Current Population Survey</option>
+                                                    <option value="63">M2 Related Series</option>
+                                                    <option value="471">Manufactured Housing Survey</option>
+                                                    <option value="95">Manufacturer&#039;s Shipments, Inventories, and Orders (M3) Survey</option>
+                                                    <option value="25">Manufacturing and Trade Inventories and Sales</option>
+                                                    <option value="351">Manufacturing Business Outlook Survey</option>
+                                                    <option value="463">Market Hotness Index</option>
+                                                    <option value="383">Market Value of U.S. Government Debt</option>
+                                                    <option value="113">Metropolitan Area Employment and Unemployment</option>
+                                                    <option value="355">Minimum Wage Rates</option>
+                                                    <option value="193">Money Velocity</option>
+                                                    <option value="436">Monthly Retail Trade and Food Services</option>
+                                                    <option value="363">Monthly Treasury Statement</option>
+                                                    <option value="290">Monthly Wholesale Trade: Sales and Inventories</option>
+                                                    <option value="427">Moody&#039;s Daily Corporate Bond Yield Averages</option>
+                                                    <option value="328">Nasdaq Daily Index Data</option>
+                                                    <option value="267">National Accounts - GDP (Eurostat)</option>
+                                                    <option value="269">National Accounts of Japan</option>
+                                                    <option value="317">National Rates and Rate Caps - Monthly Update</option>
+                                                    <option value="342">Natural Gas Spot and Futures Prices (NYMEX)</option>
+                                                    <option value="27">New Residential Construction</option>
+                                                    <option value="97">New Residential Sales</option>
+                                                    <option value="287">Nikkei Indexes</option>
+                                                    <option value="352">Nonmanufacturing Business Outlook Survey</option>
+                                                    <option value="473">Optimal Blue Mortgage Market Indices</option>
+                                                    <option value="375">Overnight Bank Funding Rate Data</option>
+                                                    <option value="391">Personal Consumption Expenditures by State</option>
+                                                    <option value="54">Personal Income and Outlays</option>
+                                                    <option value="175">Personal Income by County</option>
+                                                    <option value="110">Personal Income by State</option>
+                                                    <option value="190">Primary Mortgage Market Survey</option>
+                                                    <option value="46">Producer Price Index</option>
+                                                    <option value="47">Productivity and Costs</option>
+                                                    <option value="362">Quarterly Census of Employment and Wages</option>
+                                                    <option value="434">Quarterly Financial Report</option>
+                                                    <option value="206">Quarterly National Accounts</option>
+                                                    <option value="179">Quarterly Retail E-Commerce Sales</option>
+                                                    <option value="288">Quarterly Services Survey</option>
+                                                    <option value="228">Quarterly Starts and Completions by Purpose and Design</option>
+                                                    <option value="301">Real Money Stock Measures</option>
+                                                    <option value="403">Real Personal Income for States</option>
+                                                    <option value="242">Recession Indicators Series</option>
+                                                    <option value="7">RecessionRisk.com</option>
+                                                    <option value="345">Research Consumer Price Index</option>
+                                                    <option value="2">Risk-On Risk-Off Index</option>
+                                                    <option value="456">Sahm Rule Recession Indicator</option>
+                                                    <option value="100">Seasonal Credit Rate</option>
+                                                    <option value="445">Secured Overnight Financing Rate Data</option>
+                                                    <option value="92">Selected Real Retail Sales Series</option>
+                                                    <option value="1033">Select time series based on the U.S. Survey of Working Arrangements and Attitudes (SWAA)</option>
+                                                    <option value="483">SOFR Averages and Index Data</option>
+                                                    <option value="492">SONIA Interest Rate Benchmark</option>
+                                                    <option value="199">S&amp;P Cotality Case-Shiller Home Price Indices</option>
+                                                    <option value="212">Spot Prices</option>
+                                                    <option value="189">Standard &amp; Poors</option>
+                                                    <option value="308">State and Metro Area Employment, Hours, and Earnings</option>
+                                                    <option value="109">State Coincident Indexes</option>
+                                                    <option value="112">State Employment and Unemployment</option>
+                                                    <option value="469">State Unemployment Insurance Weekly Claims Report</option>
+                                                    <option value="313">Sticky Price CPI</option>
+                                                    <option value="400">St. Louis Fed Economic News Index</option>
+                                                    <option value="187">St. Louis Fed Financial Stress Index</option>
+                                                    <option value="364">St. Louis Fed Price Pressures Measures</option>
+                                                    <option value="245">Summary Measures of the Foreign Exchange Value of the Dollar</option>
+                                                    <option value="326">Summary of Economic Projections</option>
+                                                    <option value="93">Supplemental Estimates, Motor Vehicles</option>
+                                                    <option value="281">Supplemental Estimates, Underlying Detail Tables</option>
+                                                    <option value="282">Supplemental Estimates, Underlying Detail Tables, Spliced Series</option>
+                                                    <option value="459">Survey of Business Uncertainty</option>
+                                                    <option value="740">Survey of Regional Conditions and Expectations (SORCE)</option>
+                                                    <option value="91">Surveys of Consumers</option>
+                                                    <option value="305">Swiss National Bank Monthly Statistical Bulletin</option>
+                                                    <option value="379">Temporary Open Market Operations</option>
+                                                    <option value="298">Texas Employment Data</option>
+                                                    <option value="374">Texas Manufacturing Outlook Survey</option>
+                                                    <option value="376">Texas Service Sector Outlook Survey</option>
+                                                    <option value="349">Transportation Services Index and Seasonally-Adjusted Transportation Data</option>
+                                                    <option value="3">Treasury International Capital: Continuous Securities Long Term (CSLT)</option>
+                                                    <option value="323">Trimmed Mean PCE Inflation Rate</option>
+                                                    <option value="1105">Tri-Party General Collateral Rate Data</option>
+                                                    <option value="169">Turkish Foreign Exchange Intervention</option>
+                                                    <option value="116">Unemployment in States and Local Areas (all other areas)</option>
+                                                    <option value="180">Unemployment Insurance Weekly Claims Report</option>
+                                                    <option value="268">United Kingdom Main Aggregates of National Accounts</option>
+                                                    <option value="274">University of Louisville and Oklahoma State University: LoDI National Index</option>
+                                                    <option value="188">U.S. Import and Export Price Indexes</option>
+                                                    <option value="359">U.S. International Investment Position</option>
+                                                    <option value="51">U.S. International Trade in Goods and Services</option>
+                                                    <option value="49">U.S. International Transactions</option>
+                                                    <option value="261">U.S. Recession Probabilities</option>
+                                                    <option value="449">U.S. Trade in Goods by State, by NAICS-Based Product</option>
+                                                    <option value="736">Visa Spending Momentum Index</option>
+                                                    <option value="332">Weekly and Hourly Earnings from the Current Population Survey</option>
+                                                    <option value="468">Weekly Business Formation Statistics</option>
+                                                    <option value="465">Weekly Economic Index (Lewis-Mertens-Stock)</option>
+                                                    <option value="271">Weekly Financial Statements of the Eurosystem</option>
+                                                    <option value="52">Z.1 Financial Accounts of the United States</option>
+                                                    <option value="503">Zillow Home Value Index (ZHVI)</option>
+                                </select>
+        
+    </div>
+    <div id="rc-views" class="col-md-2 col-sm-6 col-6 rc-button" style="font-weight:normal; height:36px">
+        <select class="form-select" style="font-size: 16px; color: #555;  text-transform: capitalize; border: 1px solid black" id="rc-date" name="rid">
+                        <option id="rc-view-week" name="view" value="week" selected="selected"><label class="rc-button" for="rc-view-week" style="font-weight:normal">week</label></option>
+                                <option id="rc-view-month" name="view" value="month"><label class="rc-button" for="rc-view-month" style="font-weight:normal">month</label></option>
+                                <option id="rc-view-year" name="view" value="year"><label class="rc-button" for="rc-view-year" style="font-weight:normal">year</label></option>
+                    </select>
+     </div>
+
+    <div id="div-rc-y" class='col-md-2 col-sm-6 col-6' style="display:none">
+    <select class="form-select" style="font-size: 16px; color: #555;  border: 1px solid black" id="rc-y" name="y">
+                        <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                    </select>
+    </div>
+</div>
+</div>
+
+</div>
+</form>
+
+<br>
+<div id="calendar"></div>
+<div id="release-dates-pager">
+    <div>
+    <table class="table table-condensed table-standard-theme">
+        <thead>
+            <tr>
+     
+     <th nowrap valign="bottom" align="center">
+     </th>
+     <th valign="bottom" style="text-align : right">
+         Sort By:
+                    <a href="/releases/calendar?ob=rd&amp;od=&amp;y=&amp;m=&amp;rid=&vs=2026-09-15&ve=2026-09-15" class="fred-pager"><strong>Date</strong></a>
+                  |
+                    <a href="/releases/calendar?ob=n&amp;od=&amp;y=&amp;m=&amp;rid=&vs=2026-09-15&ve=2026-09-15" class="fred-pager"><strong>Name</strong></a>
+            </th>
+ </tr>
+
+        </thead>
+        <tbody>
+                    
+            <tr class="odd">
+    <td text-align="left" colspan="2">
+        <span style="font-weight: bold;">Tuesday September 15, 2026</span> <span style="float: right; font-weight: bold;">Updated</span>    </td>
+</tr>
+    <tr>
+    <td nowrap style="width:5%; text-align:right">
+
+          1:00 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=502">Euro Short Term Rate</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          7:00 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=483">SOFR Averages and Index Data</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=445">Secured Overnight Financing Rate Data</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          7:30 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=321">Empire State Manufacturing Survey</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          8:00 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=375">Overnight Bank Funding Rate Data</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=378">Federal Funds Data</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          9:00 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=2">Risk-On Risk-Off Index</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          10:00 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=183">Gasoline and Diesel Fuel Update</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          10:15 am      </td>
+    <td text-align="left">
+        <a href="/release?rid=427">Moody&#039;s Daily Corporate Bond Yield Averages</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          12:00 pm      </td>
+    <td text-align="left">
+        <a href="/release?rid=86">Commercial Paper</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=4">Kansas City Fed Policy Rate Skew</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          3:15 pm      </td>
+    <td text-align="left">
+        <a href="/release?rid=18">H.15 Selected Interest Rates</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          3:30 pm      </td>
+    <td text-align="left">
+        <a href="/release?rid=185">Interest Rate on Reserve Balances</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          7:00 pm      </td>
+    <td text-align="left">
+        <a href="/release?rid=441">Coinbase Cryptocurrencies</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+          N/A      </td>
+    <td text-align="left">
+        <a href="/release?rid=476">Job Postings on Indeed</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=279">Economic Policy Uncertainty</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=379">Temporary Open Market Operations</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=504">Historical Overnight AMERIBOR Unsecured Interest Rate</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=101">FOMC Press Release</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=492">SONIA Interest Rate Benchmark</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=484">Key ECB Interest Rates</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=1105">Tri-Party General Collateral Rate Data</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=271">Weekly Financial Statements of the Eurosystem</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=739">Kansas City Fed Policy Rate Uncertainty</a>
+                    <i class="fa fa-check fa-lg" style="float: right; color:#1d9d74"></i>
+                </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=209">ICE BofA Indices</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=328">Nasdaq Daily Index Data</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=249">Income and Poverty in the United States</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=304">Interest Rate Spreads</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=200">CBOE Market Statistics</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=242">Recession Indicators Series</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=473">Optimal Blue Mortgage Market Indices</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=72">Daily Treasury Inflation-Indexed Securities</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=197">Dow Jones Averages</a>
+            </td>
+    </tr>
+
+                    
+                <tr>
+        <td nowrap style="width:5%; text-align:right">
+            </td>
+    <td text-align="left">
+        <a href="/release?rid=189">Standard &amp; Poors</a>
+            </td>
+    </tr>
+
+                </tbody>
+    </table>
+    </div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+        <tr>
+        <td align="right">
+            Releases 1 - 34 of 34&nbsp;&nbsp;&nbsp;
+        </td>
+        </tr>
+    </table>
+
+</div>
+
+<br>
+  All times are US Central Time. Note that release dates are published by data sources and do not necessarily represent when data will be available on this website. 
+</div>
+        <!--        -->
+<!--        <button disabled id="filter-button" class="hidden drawer-dropdown-trigger filter-tags-btn btn sticky-bottom btn-block btn-default dropdown-is-active">-->
+<!--            <div class="filter-button-inner">-->
+<!--                <i class="fa fa-filter" style="padding-right:5px;"></i>Filter-->
+<!--                <span class="badge badge-primary subpage-badge-primary">0</span>-->
+<!--            </div>-->
+<!--        </button>-->
+<!--        -->
+            </div>
+    </div>
+
+<link href=/css/1789406834.footer.min.css rel="stylesheet" media="all">
+<script></script>
+<br class="clear">
+</div>
+
+<div class="hidden-print d-lg-none icon-container sticky-bottom btt-ct col-12">
+    <a id="back-to-top" class="back-to-top" href="#top">
+        <i aria-hidden="true" class="fas fa-solid fa-chevron-up" title="Back to Top"></i>
+    <span class="fa-sr-only">Back to Top</span></a>
+</div>
+<button disabled id="filter-button" class="hidden drawer-dropdown-trigger filter-tags-btn btn sticky-bottom btn-block btn-default dropdown-is-active">
+    <div class="filter-button-inner">
+        <i class="fa fa-filter" style="padding-right:5px;"></i>Filter
+        <span class="badge badge-primary subpage-badge-primary">0</span>
+    </div>
+</button>
+
+<div class="footer2 hidden-print row EL-footer2">
+    <div class="container d-md-flex">
+        <div class="col-md-6 col-lg-5 col-12">
+            <div class="col-12">
+                <h3 class="col-12">Subscribe to the FRED newsletter</h3>
+                <form id="subscribe-div" class="form-horizontal form-control newsletter-form">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <input id="subscribe-email-input" type="text" name="email" placeholder="Email"
+                            class="form-control email" aria-label="email">
+                            <button id="subscribe-email-btn" type="button"
+                            class="btn subscribe-newsletter-btn-gtm">
+                            Subscribe</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12">
+                <h3 class="col-12">Follow us</h3>
+                <div id="follow-icons" class="col-12">
+                    <span id="li-container" class="icon-container">
+                        <a href="http://bit.ly/d056zL">
+                            <i aria-hidden="true" class="fab fa-brands fa-linkedin-in" title="Linked In"></i>
+                            <span class="fa-sr-only">Saint Louis Fed linkedin page</span></a></span>
+                    <span id="fb-container" class="icon-container">
+                        <a href="https://www.facebook.com/stlfed">
+                            <i aria-hidden="true" class="fab fa-brands fa-facebook-f" title="Facebook"></i>
+                            <span class="fa-sr-only">Saint Louis Fed facebook page</span></a></span>
+                    <span id="x-container" class="icon-container">
+                        <a href="http://bit.ly/9ngC3L">
+                            <i aria-hidden="true" class="fab fa-brands fa-x-twitter" title="X (formerly Twitter)"></i>
+                            <span class="fa-sr-only">Saint Louis Fed X page</span></a></span>
+                    <span id="yt-container" class="icon-container">
+                        <a href="http://bit.ly/aY9TVF">
+                            <i aria-hidden="true" class="fab fa-brands fa-youtube" title="YouTube"></i>
+                            <span class="fa-sr-only">Saint Louis Fed YouTube page</span></a></span> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2 d-none d-md-block">&nbsp;</div>
+        <div class="col-md-4 col-lg-3 col-7 need-help">
+            <h3 class="col-12">Need Help?</h3>
+            <div class="col-12">
+                <div class="footer-link">
+                    <a class="footer-questions-gtm q-and-a-link-gtm" href="//fred.stlouisfed.org/contactus/">
+                        Questions or Comments</a></div>
+                <div class="footer-link">
+                    <a class="footer-fredhelp-gtm" href="//fredhelp.stlouisfed.org/">FRED Help</a></div>
+            </div>
+            <hr class="col-12">
+            <div class="col-12">
+                <div class="footer-link">
+                    <a href="//fred.stlouisfed.org/legal/">Legal</a></div>
+                <div class="footer-link">
+                    <a href="https://www.stlouisfed.org/about-us/privacy-policy/online-notice">Privacy Notice & Policy</a></div>
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2 d-none d-md-block">&nbsp;</div>
+    </div>
+</div>
+
+<script>
+    // function to parse cookies, and return the value
+    function getCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i in cookies) {
+            var cookie = cookies[i].trim().split('=');
+            if (cookie[0] == name) {
+                return cookie[1];
+            }
+        }
+        return null;
+    }
+    // certain pages in FRED set a custom tag variable
+    // this gets sent to Google Analytics so we can see what tags people are using
+    if (window.tags) {
+        dataLayer.push({ 'tags': tags });
+
+    }
+
+    // if the user is logged in, send the value of the liruid cookie to Google Analytics
+    var researchLiruid = getCookie('research-liruid');
+    dataLayer.push({ 'userId': researchLiruid });
+
+</script>
+<script src="//fred.stlouisfed.org/assets/jquery/dist/1789406818.jquery.min.js" type="text/javascript"></script>
+<script src="//fred.stlouisfed.org/assets/popperjs/dist/umd/1789406820.popper.min.js"></script>
+<script src="//fred.stlouisfed.org/assets/bootstrap/dist/js/1789406819.bootstrap.min.js"></script>
+<script src="//fred.stlouisfed.org/assets/select2/dist/js/1789406817.select2.full.min.js"></script>
+<script>
+    // force expire the .fred.stlouisfed.org _ga cookie
+    document.cookie = document.cookie + '_ga=;domain=.fred.stlouisfed.org;expires=Sat, 01-Jan-2000 00:00:00 GMT';
+</script>
+
+<script defer src="//fred.stlouisfed.org/assets/jquery-menu-aim/1789406833.jquery.menu-aim.min.js"></script>
+
+<script src="//fred.stlouisfed.org/js/1789406833.common.min.js"></script>
+
+<script src="//fred.stlouisfed.org/js/1789406833.508.min.js"></script>
+
+<script>
+    var appConfig = {
+        uapi_host: 'https://fred.stlouisfed.org/uapi',
+        research_host: 'https://www.stlouisfed.org/research',
+        fred_host: 'https://fred.stlouisfed.org',
+        alfred_host: 'https://alfred.stlouisfed.org',
+        gsi_client_id: '115290014367-vpb89b600koe9kn0njeeq38c1unfr3gk.apps.googleusercontent.com',
+        fred_account_host: 'https://fredaccount.stlouisfed.org',
+    };
+
+    var domain_suffix = (window.location.hostname.split(".")[0].split("-")[1] || '');
+    appConfig.logged_in = getCookie('research-lirua' + (domain_suffix ? '-' + domain_suffix : '')) !== null && getCookie('research-lirua' + (domain_suffix ? '-' + domain_suffix : '')) !== undefined;
+    var getAuth = function (callback) {
+        if (typeof callback === 'function') {
+            callback();
+        }
+        return;
+    };
+    window.getAuth = getAuth;
+
+</script>
+
+<script>
+    <!--suppress back to top before scroll-->
+    window.onscroll = function(){
+        backTop = $("#back-to-top");
+        window.pageYOffset >= 205 ? backTop.css('display', 'block') : backTop.css('display', 'none');
+    }
+
+</script>
+<script src="//fred.stlouisfed.org/assets/dompurify/dist/1789406819.purify.min.js"></script>
+<script defer src="//fred.stlouisfed.org/js/1789406718.banner.js"></script>
+<script src="//accounts.google.com/gsi/client" async defer></script>
+<script src="//fred.stlouisfed.org/assets/stlrch-fred/fred-account-react/dist/1789406816.main.dist.js"></script>
+<script src="//fred.stlouisfed.org/assets/stlrch-fred/fred-account-react/dist/1789406816.vendor.dist.js"></script>
+
+<script type="text/javascript">
+    // update mobile footer filter bar active filter count to content.tagsDrawers tags-number
+    $('.filter-button-inner .badge').text($('.tags-number').text());
+</script>
+
+<link href=/css/1789406834.contact.min.css rel="stylesheet" media="(min-width: 767px)">
+<script></script>
+<script type="text/javascript" src="/assets/fullcalendar/dist/fullcalendar.min.js"></script><script type="text/javascript">
+
+    $(document).ready(function() {
+    
+        
+        watchFredPagerLinkClick();
+        var calendarHasBeenInstantiated = false;
+        
+        var selectedView = $('#rc-date').find(":selected").val();
+        console.log(selectedView);
+        if (selectedView == 'year') {
+            $('#calendar').css('display', 'none');
+            $('#div-rc-y').css('display', 'inline');
+        }
+        else {
+            var fullCalendarView = mapFormViewToFullCalendarView();
+            calendarHasBeenInstantiated = instantiateCalendar(fullCalendarView);
+        }
+
+        $('#rc-rid').on('change', function() {
+            var selectedView = $('#rc-date').find(":selected").val();
+            if (selectedView != 'year') {
+                if (calendarHasBeenInstantiated) {
+                    $('#calendar').fullCalendar('unselect');
+                    $('#calendar').fullCalendar('refetchEvents');
+                }
+                else {
+                    var fullCalendarView = mapFormViewToFullCalendarView();
+                    calendarHasBeenInstantiated = instantiateCalendar(fullCalendarView);
+                }
+            }
+            
+            updateReleaseDatePager();
+        });
+        
+        $('#rc-date').on('change', function() {
+            var selectedView = $('#rc-date').find(":selected").val();
+            console.log(selectedView);
+            console.log('date');
+            if (selectedView == 'year') {
+                $('#calendar').css('display', 'none');
+                $('#div-rc-y').css('display', 'inline');
+    
+                var year = $('#rc-vs').val().substring(0,4);
+                $('#rc-y').val(year);
+                
+                var vs = year + '-01-01';
+                vs = constrainDateWithinReleaseDateRange(vs);
+                $('#rc-vs').val(vs);
+                
+                var ve = year + '-12-31';
+                ve = constrainDateWithinReleaseDateRange(ve);
+                $('#rc-ve').val(ve);             
+                
+                updateReleaseDatePager(); 
+                
+                return true;
+            }
+            else {
+                $('#calendar').css('display', 'block');
+                $('#div-rc-y').css('display', 'none');
+            }
+    
+            var fullCalendarView = mapFormViewToFullCalendarView();
+            console.log(fullCalendarView);
+            console.log(calendarHasBeenInstantiated);
+            if (calendarHasBeenInstantiated) {
+                var startDate = parseYYYYMMDD($('#rc-vs').val());
+                startDate.setTime(startDate.getTime() + 86400000);
+                $('#calendar').fullCalendar('gotoDate', startDate);
+                $('#calendar').fullCalendar('changeView', fullCalendarView);
+            }
+            else {
+                calendarHasBeenInstantiated = instantiateCalendar(fullCalendarView);
+            }
+            
+            updateReleaseDatePager();
+        });
+        
+        $('#rc-y').on('change', function() {
+            var year = $('#rc-y').val();
+            
+            var vs = year + '-01-01';
+            vs = constrainDateWithinReleaseDateRange(vs);
+            $('#rc-vs').val(vs);
+            
+            var ve = year + '-12-31';
+            ve = constrainDateWithinReleaseDateRange(ve);
+            $('#rc-ve').val(ve);
+    
+            updateReleaseDatePager();
+        });
+    
+        enableTodayBtn();
+    
+    });
+    
+    function mapFormViewToFullCalendarView()
+    {
+        var selectedView = $('#rc-date').find(":selected").val();
+        var fullCalendarView = 'basicWeek';
+        if (selectedView == 'month') {
+            fullCalendarView = 'month';
+        }
+        
+        return fullCalendarView;
+    }
+    
+    function instantiateCalendar(fullCalendarView)
+    {
+        var startDate = parseYYYYMMDD($('#rc-vs').val());
+        startDate.setTime(startDate.getTime() + 86400000);
+        var calendar = $('#calendar').fullCalendar({
+            year: startDate.getFullYear(),
+            month: startDate.getMonth(),
+            date: startDate.getDate(),
+            aspectRatio: 2,
+            defaultView: fullCalendarView,
+            weekMode: 'variable',
+            contentHeight: 'auto',
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            lazyFetching: false,
+            ignoreTimezone: true,
+            eventColor:  '#ffffff',
+            events: function(start, end, timezone, callback) {
+    
+                var view = $('#calendar').fullCalendar('getView');
+                var dateFormat = 'yyyy-MM-DD';
+                
+                var vs = view.start.format(dateFormat);
+                vs = constrainDateWithinReleaseDateRange(vs);
+                var vsDate = parseYYYYMMDD(vs);
+                var old_vs = $('#rc-vs').val();
+                $('#rc-vs').val(vs);
+                
+                view.end = view.end.subtract(1, "days");
+                var ve = view.end.format(dateFormat);
+                ve = constrainDateWithinReleaseDateRange(ve);
+                var veDate = parseYYYYMMDD(ve);
+                var old_ve = $('#rc-ve').val();
+                $('#rc-ve').val(ve);
+                
+                var url = document.location.toString().replace(/\?.*/, "");
+                var query_string = '&vs='+$('#rc-vs').val()+'&ve='+$('#rc-ve').val()+'&rid='+$('#rc-rid').val();
+                $.ajax({
+                    url: url,
+                    dataType: 'json',
+                    data: 'rdc=1'+query_string,
+                    success: function(data) {
+                        callback(data.events);
+    
+                        var minDate = parseYYYYMMDD($('#rc-min-rd').val());
+                        if (vsDate.getTime() <= minDate.getTime()){
+                            $('.fc-button-prev').addClass('fred-hide');
+                        }
+                        else {
+                            $('.fc-button-prev').removeClass('fred-hide');
+                        }
+    
+                        var maxDate = parseYYYYMMDD($('#rc-max-rd').val());
+                        if (veDate.getTime() >= maxDate.getTime()){
+                            $('.fc-button-next').addClass('fred-hide');
+                        }
+                        else {
+                            $('.fc-button-next').removeClass('fred-hide');
+                        }
+                    }
+                });
+            },
+            selectable: true,
+            unselectAuto: false,
+            select: function(start, end, allDay) {
+                
+                var dateFormat = 'yyyy-MM-DD';
+                var vs = start.format(dateFormat);
+                vs = constrainDateWithinReleaseDateRange(vs);
+                $('#rc-vs').val(vs);
+                
+                var ve = end.format(dateFormat);
+                ve = constrainDateWithinReleaseDateRange(ve);
+                $('#rc-ve').val(ve);
+                
+                updateReleaseDatePager();
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+    
+                calendar.fullCalendar('unselect');
+                calendar.fullCalendar( 'select', calEvent.start, calEvent.start, true);
+                
+                var dateFormat = 'yyyy-MM-DD';
+                var vs = calEvent.start.format(dateFormat);
+                vs = constrainDateWithinReleaseDateRange(vs);
+                $('#rc-vs').val(vs);
+                
+                var ve = calEvent.start.format(dateFormat);
+                ve = constrainDateWithinReleaseDateRange(ve);
+                $('#rc-ve').val(ve);
+                
+                updateReleaseDatePager();
+            },
+            eventAfterAllRender: function(view) {
+                $('.fc-button').removeClass('fc-state-disabled');
+            }
+        });
+    
+        $('.fc-button').on('click', function(e) {
+            $(this).addClass('fc-state-disabled');
+        });
+    
+        $('.fc-today-button').on('click', function(e) {
+            var today = new Date();
+            $('#calendar').fullCalendar('select', today, today, true);
+        });
+    
+        $('.fc-button-prev, .fc-button-next').on('click', function(e) {
+            updateReleaseDatePager();
+        });
+    
+        return true;
+    }
+    
+    
+    
+    function watchFredPagerLinkClick()
+    {
+        $('a.fred-pager').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: document.location.toString().replace(/\?.*/, ""),
+                dataType: 'json',
+                data: 'po=1&ptic='+$('#rc-ptic').val()+'&'+$(this).attr("href").replace(/.*\?/, ""),
+                success: function(data) {
+                    $('#release-dates-pager').html(data.pager);
+                    watchFredPagerLinkClick();
+                }
+            });
+        }); 
+    }
+    
+    function constrainDateWithinReleaseDateRange(date)
+    {
+        var dateObj = parseYYYYMMDD(date);
+    
+        var minDateStr = $('#rc-min-rd').val();
+        var minDateObj = parseYYYYMMDD(minDateStr);
+    
+        var maxDateStr = $('#rc-max-rd').val();
+        var maxDateObj = parseYYYYMMDD(maxDateStr);
+        
+        var constrainedDate = date;
+        if (dateObj.getTime() < minDateObj.getTime()) {
+            constrainedDate = minDateStr;
+        }
+        else if (dateObj.getTime() > maxDateObj.getTime()) {
+            constrainedDate = maxDateStr;
+        }
+        
+        return constrainedDate;
+    }
+    
+    function updateReleaseDatePager(vs, ve)
+    {
+        if (typeof(vs) === 'undefined') {
+            vs = $('#rc-vs').val();
+        }
+    
+        if (typeof(ve) === 'undefined') {
+            ve = $('#rc-ve').val();
+        }
+    
+        $('#rc-ptic').val(0);
+        
+        $.ajax({
+            url: document.location.toString().replace(/\?.*/, ""),
+            dataType: 'json',
+            data: 'po=1&ptic='+$('#rc-ptic').val()+'&vs='+vs+'&ve='+ve+'&rid='+$('#rc-rid').val(),
+            success: function(data) {
+                $('#release-dates-pager').html(data.pager);
+                $('#rc-ptic').val(data.ptic);            
+                watchFredPagerLinkClick();
+            }
+        });
+    
+        enableTodayBtn();
+    }
+    
+    function parseYYYYMMDD(dateStringInRange) {
+        var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
+            date = new Date(NaN), month,
+            parts = isoExp.exec(dateStringInRange);
+    
+        if(parts) {
+          month = +parts[2];
+          date.setFullYear(parts[1], month - 1, parts[3]);
+          if(month != date.getMonth() + 1) {
+            date.setTime(NaN);
+          }
+        }
+        return date;
+    }
+    
+    function enableTodayBtn(){
+        $('.fc-today-button').prop("disabled", false);
+        $('.fc-today-button').removeAttr("disabled").removeClass('fc-state-disabled');
+    }
+    
+    
+    </script>
+    
+
+<script type="text/javascript"  src="/xI2G5Jd8o/e/3/q3US-mDcrrx-U5KY/hOairDzpmDbkkJw7/GnF6RRwC/FFoR/FTRFc0M"></script></body>
+</html>
+
+

@@ -1,0 +1,2 @@
+accountingYearMonthNumber,symbolCode,issueName,issuerServicesGroupExchangeCode,marketClassCode,currentShortPositionQuantity,previousShortPositionQuantity,stockSplitFlag,averageDailyVolumeQuantity,daysToCoverQuantity,revisionFlag,changePercent,changePreviousNumber,settlementDate
+20200415,A,Agilent Technologies Inc.,A,NYSE,4851353,4767556,,2012318,2.41,,1.76,83797,2020-04-15
