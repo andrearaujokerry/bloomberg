@@ -1,0 +1,267 @@
+[
+  {
+    "id": "curve.par.selfconsistency",
+    "engine": "curve.bootstrap",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "curveId": "UST_PAR",
+      "curveDate": "2026-09-15",
+      "parQuotes": [
+        { "tenor": "1Y", "parRate": 4.0 },
+        { "tenor": "2Y", "parRate": 4.2 },
+        { "tenor": "3Y", "parRate": 4.35 },
+        { "tenor": "5Y", "parRate": 4.55 },
+        { "tenor": "7Y", "parRate": 4.7 },
+        { "tenor": "10Y", "parRate": 4.85 }
+      ],
+      "frequency": 2,
+      "dayCount": "ACT/ACT",
+      "compounding": "semiannual",
+      "interpolation": "log_linear_df"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "nodeCount": 6,
+      "dfAtZero": 1,
+      "price@1Y": 100,
+      "price@2Y": 100,
+      "price@3Y": 100,
+      "price@5Y": 100,
+      "price@7Y": 100,
+      "price@10Y": 100,
+      "parRate@1Y": 4.0,
+      "parRate@2Y": 4.2,
+      "parRate@3Y": 4.35,
+      "parRate@5Y": 4.55,
+      "parRate@7Y": 4.7,
+      "parRate@10Y": 4.85
+    },
+    "tol": {
+      "nodeCount": 0,
+      "dfAtZero": 0,
+      "price@1Y": 1e-10,
+      "price@2Y": 1e-10,
+      "price@3Y": 1e-10,
+      "price@5Y": 1e-10,
+      "price@7Y": 1e-10,
+      "price@10Y": 1e-10,
+      "parRate@1Y": 1e-10,
+      "parRate@2Y": 1e-10,
+      "parRate@3Y": 1e-10,
+      "parRate@5Y": 1e-10,
+      "parRate@7Y": 1e-10,
+      "parRate@10Y": 1e-10
+    },
+    "source": "TESTING.md §7.7 case `curve.par.selfconsistency`, verbatim: the UST_PAR quotes { 1Y 4.00, 2Y 4.20, 3Y 4.35, 5Y 4.55, 7Y 4.70, 10Y 4.85 } (percent) at curveDate 2026-09-15, ACT/ACT, semiannual, log_linear_df. The expected values are the defining property of a bootstrap rather than an observation: every par bond that defined a node must reprice to a clean 100.000000000000 on the curve built from it, and the par rate re-implied from the curve must equal the quote to 1e-10 percent. `dfAtZero` and `nodeCount` are §7.7's additional invariants (df(0) = 1 exactly; as many nodes as inputs)."
+  },
+  {
+    "id": "curve.flat.analytic",
+    "engine": "curve.bootstrap",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "curveId": "UST_PAR",
+      "curveDate": "2026-09-15",
+      "parQuotes": [
+        { "tenor": "1Y", "parRate": 5.0 },
+        { "tenor": "2Y", "parRate": 5.0 },
+        { "tenor": "3Y", "parRate": 5.0 },
+        { "tenor": "4Y", "parRate": 5.0 },
+        { "tenor": "5Y", "parRate": 5.0 },
+        { "tenor": "6Y", "parRate": 5.0 },
+        { "tenor": "7Y", "parRate": 5.0 },
+        { "tenor": "8Y", "parRate": 5.0 },
+        { "tenor": "9Y", "parRate": 5.0 },
+        { "tenor": "10Y", "parRate": 5.0 }
+      ],
+      "frequency": 2,
+      "dayCount": "ACT/ACT",
+      "compounding": "semiannual",
+      "interpolation": "log_linear_df"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "nodeCount": 10,
+      "df@0.5": 0.97560975609756106,
+      "df@1": 0.95181439619274255,
+      "df@2": 0.90595064479975518,
+      "df@10": 0.61027094285883088,
+      "df@10.printed": 0.61027094,
+      "zeroPercent": 5.0,
+      "fwdPercent": 5.0
+    },
+    "tol": {
+      "nodeCount": 0,
+      "df@0.5": 1e-12,
+      "df@1": 1e-12,
+      "df@2": 1e-12,
+      "df@10": 1e-12,
+      "df@10.printed": 5e-9,
+      "zeroPercent": 1e-10,
+      "fwdPercent": 1e-10
+    },
+    "source": "TESTING.md §7.7 case `curve.flat.analytic` — a flat 5.000 % par curve at every tenor 1Y…10Y must produce a flat 5.000 % zero curve (semiannual bond basis). The four discount factors are §7.7's closed forms 1.025^-1, 1.025^-2, 1.025^-4 and 1.025^-20, transcribed at 17 significant digits from Math.pow(1.025, -k) — NOT from this engine. NOTE: §7.7's own rendering of the fourth, `1.025⁻²⁰ = 0.610270940`, is a typo in its last two digits: 1.025^-20 is 0.6102709428588309, which rounds to 0.610270943. The closed-form expression is the pin and is asserted at §7.7's 1e-12; `df@10.printed` re-asserts the engine against §7.7's printed decimal at the 5e-9 the typo forces, so the discrepancy is recorded in the suite rather than silently dropped. `zeroPercent` and `fwdPercent` are §7.7's `zero(t) = 5.000000 %` for all t, at its 1e-10, and the same statement for every node forward."
+  },
+  {
+    "id": "curve.interpolation.monotone",
+    "engine": "curve.bootstrap",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "curveId": "UST_PAR",
+      "curveDate": "2026-09-15",
+      "parQuotes": [
+        { "tenor": "1Y", "parRate": 4.0 },
+        { "tenor": "2Y", "parRate": 4.2 },
+        { "tenor": "3Y", "parRate": 4.35 },
+        { "tenor": "5Y", "parRate": 4.55 },
+        { "tenor": "7Y", "parRate": 4.7 },
+        { "tenor": "10Y", "parRate": 4.85 }
+      ],
+      "frequency": 2,
+      "dayCount": "ACT/ACT",
+      "compounding": "semiannual",
+      "interpolation": "monotone_convex"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "price@1Y": 100,
+      "price@2Y": 100,
+      "price@3Y": 100,
+      "price@5Y": 100,
+      "price@7Y": 100,
+      "price@10Y": 100,
+      "minimumSeparationAtT4": 1e-6,
+      "repricesUnderEveryInterpolation": true,
+      "nodeDiscountFactorsAgreeWithin": 0.001
+    },
+    "tol": {
+      "price@1Y": 1e-10,
+      "price@2Y": 1e-10,
+      "price@3Y": 1e-10,
+      "price@5Y": 1e-10,
+      "price@7Y": 1e-10,
+      "price@10Y": 1e-10,
+      "minimumSeparationAtT4": 0,
+      "nodeDiscountFactorsAgreeWithin": 0
+    },
+    "source": "TESTING.md §7.7 case `curve.interpolation.monotone`: the `curve.par.selfconsistency` quotes under monotone_convex and linear_zero must still reprice every input to 1e-10 — interpolation may change values between nodes, never at them — and the three interpolators must differ at t = 4 (a non-node point, the 3Y and 5Y nodes straddle it) by more than 1e-6, so a silently mis-wired interpolation cannot pass. `minimumSeparationAtT4` is §7.7's 1e-6 threshold, asserted as a floor on the pairwise |Δdf(4)|, not as an expected value. `nodeDiscountFactorsAgreeWithin` is the flip side: the three builds solve *different* node values (each shape reprices the same bond through different interior discount factors, so the 1Y node moves by ~7e-6 in df between log_linear_df and monotone_convex), but they stay inside 1e-3 of each other — a ceiling, not an observation."
+  },
+  {
+    "id": "curve.bills.par",
+    "engine": "curve.bootstrap",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "curveId": "UST_PAR",
+      "curveDate": "2026-09-15",
+      "bills": [
+        { "tenor": "4W", "days": 28, "discountRate": 4.28 },
+        { "tenor": "13W", "days": 91, "discountRate": 4.2 },
+        { "tenor": "26W", "days": 182, "discountRate": 4.05 }
+      ],
+      "parQuotes": [
+        { "tenor": "1Y", "parRate": 4.0 },
+        { "tenor": "2Y", "parRate": 4.2 },
+        { "tenor": "3Y", "parRate": 4.35 },
+        { "tenor": "5Y", "parRate": 4.55 },
+        { "tenor": "7Y", "parRate": 4.7 },
+        { "tenor": "10Y", "parRate": 4.85 }
+      ],
+      "frequency": 2,
+      "dayCount": "ACT/ACT",
+      "compounding": "semiannual",
+      "interpolation": "log_linear_df"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "nodeCount": 9,
+      "df@4W": 0.99667111111111106,
+      "df@13W": 0.98938333333333328,
+      "df@26W": 0.97952499999999998,
+      "price@1Y": 100,
+      "price@2Y": 100,
+      "price@3Y": 100,
+      "price@5Y": 100,
+      "price@7Y": 100,
+      "price@10Y": 100,
+      "parRate@10Y": 4.85
+    },
+    "tol": {
+      "nodeCount": 0,
+      "df@4W": 1e-15,
+      "df@13W": 1e-15,
+      "df@26W": 1e-15,
+      "price@1Y": 1e-10,
+      "price@2Y": 1e-10,
+      "price@3Y": 1e-10,
+      "price@5Y": 1e-10,
+      "price@7Y": 1e-10,
+      "price@10Y": 1e-10,
+      "parRate@10Y": 1e-10
+    },
+    "source": "WORKPLAN L503 — 'bills + par coupons → discount factors'. The three bill discount factors are the closed form of the bank-discount quote, 1 − d·days/360 (4.28 % × 28/360, 4.20 % × 91/360, 4.05 % × 182/360), transcribed at 17 significant digits; a bill's price *is* its discount factor at spot settlement, so these nodes are known rather than solved. The par quotes are the §7.7 set, and the assertion is unchanged: every par bond reprices to 100 on the curve its own quote helped build, with the bills now pinning the sub-year discount factors the 1Y and 2Y coupons interpolate through. Synthetic quotes: the bill rates are plausible 2026 levels, and the property under test holds for any arbitrage-free set."
+  },
+  {
+    "id": "curve.ois.bootstrap",
+    "engine": "curve.ois.bootstrap",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "curveId": "SOFR_OIS",
+      "curveDate": "2026-09-15",
+      "fixings": [
+        { "date": "2026-09-11", "rate": 4.31 },
+        { "date": "2026-09-14", "rate": 4.32 },
+        { "date": "2026-09-15", "rate": 4.33 }
+      ],
+      "quotes": [
+        { "tenor": "1Y", "parRate": 4.05 },
+        { "tenor": "2Y", "parRate": 3.85 },
+        { "tenor": "3Y", "parRate": 3.75 },
+        { "tenor": "5Y", "parRate": 3.78 },
+        { "tenor": "7Y", "parRate": 3.88 },
+        { "tenor": "10Y", "parRate": 3.98 }
+      ],
+      "interpolation": "log_linear_df",
+      "fixedFrequency": 1,
+      "settlementDays": 2,
+      "businessDayConvention": "modified_following",
+      "calendar": "SIFMA"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "nodeCount": 7,
+      "dfAtZero": 1,
+      "overnightTau": 0.0027777777777777779,
+      "overnightDf": 0.99987973668722618,
+      "pv@1Y": 0,
+      "pv@2Y": 0,
+      "pv@3Y": 0,
+      "pv@5Y": 0,
+      "pv@7Y": 0,
+      "pv@10Y": 0,
+      "parRate@1Y": 4.05,
+      "parRate@2Y": 3.85,
+      "parRate@3Y": 3.75,
+      "parRate@5Y": 3.78,
+      "parRate@7Y": 3.88,
+      "parRate@10Y": 3.98
+    },
+    "tol": {
+      "nodeCount": 0,
+      "dfAtZero": 0,
+      "overnightTau": 1e-17,
+      "overnightDf": 1e-15,
+      "pv@1Y": 1e-14,
+      "pv@2Y": 1e-14,
+      "pv@3Y": 1e-14,
+      "pv@5Y": 1e-14,
+      "pv@7Y": 1e-14,
+      "pv@10Y": 1e-14,
+      "parRate@1Y": 1e-10,
+      "parRate@2Y": 1e-10,
+      "parRate@3Y": 1e-10,
+      "parRate@5Y": 1e-10,
+      "parRate@7Y": 1e-10,
+      "parRate@10Y": 1e-10
+    },
+    "source": "TESTING.md §7.7 case `curve.ois.bootstrap`: SOFR OIS from seeded fixings plus par OIS rates, the same round-trip property at 1e-10, ACT/360 with daily compounding. The fixings and quotes are synthetic (§7.7 names no levels; the round trip is a property of the bootstrap, not of the quotes) and 2026-09-15 is a Tuesday, so the overnight node covers one calendar day: τ = 1/360 = 0.0027777777777777779 and df = 1/(1 + 0.0433·τ) = 0.99987973668722618, both closed forms of the published simple-interest SOFR convention. The par rates are asserted back out of the curve, and each swap's PV — annual fixed ACT/360 on T+2 modified-following SIFMA dates against a float leg that telescopes to df(start) − df(end) — is asserted at zero."
+  }
+]

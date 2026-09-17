@@ -1,0 +1,77 @@
+[
+  {
+    "id": "portfolio.exposure.longShortCash",
+    "engine": "portfolio/exposure",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "positions": [
+        {
+          "instrumentId": "AAPL",
+          "assetClass": "equity",
+          "sector": "Information Technology",
+          "currency": "USD",
+          "quantity": 12000,
+          "price": 250
+        },
+        {
+          "instrumentId": "SAP",
+          "assetClass": "equity",
+          "sector": "Information Technology",
+          "currency": "EUR",
+          "quantity": 10000,
+          "price": 160,
+          "fxRate": 1.25
+        },
+        {
+          "instrumentId": "TSLA",
+          "assetClass": "equity",
+          "sector": "Consumer Discretionary",
+          "currency": "USD",
+          "quantity": -5000,
+          "price": 200
+        },
+        {
+          "instrumentId": "UST_10Y",
+          "assetClass": "govt",
+          "currency": "USD",
+          "marketValue": 4000000
+        },
+        {
+          "instrumentId": "CASH_USD",
+          "assetClass": "cash",
+          "currency": "USD",
+          "marketValue": 2000000
+        }
+      ],
+      "conventions": { "baseCurrency": "USD", "cashExcludedFromGross": true }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "netAssetValue": 10000000,
+      "longExposure": 9000000,
+      "shortExposure": -1000000,
+      "netExposure": 8000000,
+      "grossExposure": 10000000,
+      "cash": 2000000,
+      "cashWeight": 0.2,
+      "netLeverage": 0.8,
+      "grossLeverage": 1,
+      "longCount": 3,
+      "shortCount": 1
+    },
+    "tol": {
+      "netAssetValue": 0,
+      "longExposure": 0,
+      "shortExposure": 0,
+      "netExposure": 0,
+      "grossExposure": 0,
+      "cash": 0,
+      "cashWeight": 0,
+      "netLeverage": 0,
+      "grossLeverage": 0,
+      "longCount": 0,
+      "shortCount": 0
+    },
+    "source": "closed form, hand-computed. Market values: AAPL 12,000 x 250 = 3,000,000 USD; SAP 10,000 x 160 EUR x 1.25 USD/EUR = 2,000,000 USD; TSLA -5,000 x 200 = -1,000,000 USD (a short); UST 10Y 4,000,000 USD, no sector so it falls into the Unclassified bucket; 2,000,000 USD cash, which takes the Cash sector bucket. NAV = 3 + 2 - 1 + 4 + 2 = 10,000,000, so the net weights are 0.30, 0.20, -0.10, 0.40, 0.20 and sum to exactly 1. Gross exposure excludes cash: 3 + 2 + 1 + 4 = 10,000,000, so the gross weights are 0.30, 0.20, 0.10, 0.40 and 0 for cash and also sum to exactly 1. Net exposure 8,000,000 gives netLeverage 0.80; grossLeverage is 1.00. Every value is a round decimal representable in binary double precision, so the tolerance is 0."
+  }
+]

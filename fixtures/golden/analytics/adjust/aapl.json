@@ -1,0 +1,60 @@
+[
+  {
+    "id": "adjust.aapl.fixture",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "qa01": false,
+    "inputs": {
+      "policy": "price",
+      "symbol": "AAPL",
+      "actions": [
+        { "caType": "split", "status": "confirmed", "exDate": "1987-06-16", "ratioNew": 2, "ratioOld": 1 },
+        { "caType": "split", "status": "confirmed", "exDate": "2000-06-21", "ratioNew": 2, "ratioOld": 1 },
+        { "caType": "split", "status": "confirmed", "exDate": "2005-02-28", "ratioNew": 2, "ratioOld": 1 },
+        { "caType": "split", "status": "confirmed", "exDate": "2014-06-09", "ratioNew": 7, "ratioOld": 1 },
+        { "caType": "split", "status": "confirmed", "exDate": "2020-08-31", "ratioNew": 4, "ratioOld": 1 }
+      ],
+      "bars": [
+        {
+          "date": "2014-06-06",
+          "open": 645.57,
+          "high": 645.57,
+          "low": 645.57,
+          "close": 645.57,
+          "volume": null
+        },
+        {
+          "date": "2020-08-28",
+          "open": 499.23,
+          "high": 499.23,
+          "low": 499.23,
+          "close": 499.23,
+          "volume": null
+        }
+      ]
+    },
+    "valuationTs": "2020-08-31T20:00:00.000Z",
+    "expected": {
+      "steps.length": 5,
+      "steps.3.beforeDate": "2014-06-09",
+      "steps.3.priceFactor": 0.14285714285714285,
+      "steps.4.beforeDate": "2020-08-31",
+      "steps.4.priceFactor": 0.25,
+      "factor.2014-06-06": 0.03571428571428571,
+      "factor.2020-08-28": 0.25,
+      "close.2014-06-06": 23.0561,
+      "close.2020-08-28": 124.8075
+    },
+    "tol": {
+      "steps.length": 0,
+      "steps.3.priceFactor": 1e-12,
+      "steps.4.priceFactor": 1e-12,
+      "factor.2014-06-06": 1e-12,
+      "factor.2020-08-28": 1e-12,
+      "close.2014-06-06": 1e-4,
+      "close.2020-08-28": 1e-4
+    },
+    "source": "published closes, external",
+    "note": "NOT a QA-01 case (WORKPLAN L552, TESTING §7.9). The split ex-dates and ratios are citable from the recorded quarterly capture yahoo-chart-AAPL-max-1d.json (dataGranularity 3mo, 169 bars from 1984-12-01, carrying 2:1 x3, 7:1 2014-06-09, 4:1 2020-08-31), but that capture has no daily closes, and yahoo-chart-events is range=5y with zero splits — so neither 2014-06-06 = 645.57 nor 2020-08-28 = 499.23 exists anywhere on disk. Both closes are external published values, and the expected adjusted closes are the ones fixed by DATA_MODEL §6.1 L1033-1034 / TESTING §7.9: 499.23 x 1/4 = 124.8075 and 645.57 x 1/28 (7:1 x 4:1) = 23.0561, quoted to four decimals, hence tol 1e-4. Only the 2014 and 2020 splits bear on those two closes; the three earlier 2:1 splits are carried for completeness and are before both bar dates, so they contribute no factor. OHLC is flat at the published close because only closes are published; volume is null. Re-capturing chart/AAPL?range=max&interval=1d&events=div%7Csplit (§18.14) would let this case be re-pointed at replay and promoted back to QA-01."
+  }
+]

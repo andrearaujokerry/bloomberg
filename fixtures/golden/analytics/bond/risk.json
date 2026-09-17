@@ -1,0 +1,40 @@
+[
+  {
+    "id": "bond.discount.2y.risk",
+    "engine": "bond.risk",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.06,
+      "keyRateTenors": [2]
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 98.141451,
+      "dirtyPrice": 98.141451,
+      "accrued": 0.0,
+      "macaulayDuration": 1.927236,
+      "modifiedDuration": 1.871103,
+      "dv01": 0.018363,
+      "convexity": 4.484914,
+      "keyRateDurationSum": 1.871103
+    },
+    "tol": {
+      "cleanPrice": 1e-6,
+      "dirtyPrice": 1e-6,
+      "accrued": 0,
+      "macaulayDuration": 1e-6,
+      "modifiedDuration": 1e-6,
+      "dv01": 1e-6,
+      "convexity": 1e-6,
+      "keyRateDurationSum": 1e-6
+    },
+    "source": "TESTING.md §7.3 risk table for case bond.discount.2y (coupon 5.000 % semiannual, 4 remaining periods, settlement on a coupon date, yield 6.000 %), transcribed verbatim at the tolerances that table states: cleanPrice 98.141451 (1e-6), macaulayDuration 1.927236 years (1e-6), modifiedDuration 1.871103 = Macaulay/1.03 (1e-6), dv01 0.018363 per 100 face per bp (1e-6), convexity 4.484914 - the second derivative w.r.t. the semiannual-bond-basis annual yield, divided by price (1e-6). keyRateDurationSum is the §7.3 cross-check 'the sum of key-rate durations (2y node only, here) equals the modified duration', which holds to 5e-16 because the key-rate durations are computed analytically. Unrounded references: macaulay 1.92723570430286, modified 1.87110262553676, dv01 0.01836327262632, convexity 4.48491434919191."
+  }
+]

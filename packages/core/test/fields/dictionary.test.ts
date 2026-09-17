@@ -59,28 +59,57 @@ TOT_RETURN_INDEX VOLUME_AVG_30D VOL_30D YLD_YTM_MID
   .trim()
   .split(/\s+/);
 
+/**
+ * WP-02's analytics fields (WORKPLAN L465-466: `fields/defs/analytic.ts` and `fields/defs/derived.ts`
+ * are owned by WP-02). CONTRACTS §4.3 harvested only the ids the design prose happened to name before
+ * the analytics engines existed; these 68 are the ids WP-02's engines publish — bill/bond/curve/swap
+ * analytics (ANAL-01/02), the SVI slice shape of `vol_surfaces.svi` (ANAL-04), the WIRP policy path,
+ * the ANAL-07 statistics and the REF-09 adjustment factors. Listed here, sorted, so that the
+ * "defines no field the design does not name" check below stays exhaustive: nothing reaches the
+ * dictionary without appearing in one of these two lists.
+ */
+const WP02_ANALYTIC_FIELD_IDS: readonly string[] = `
+ACCRUED_DAYS ADJ_FACTOR_PX ADJ_FACTOR_VOL ADJ_POLICY BETA_1Y BEY CONVEXITY_MID CORR_1Y CRV_10Y
+CRV_1M CRV_1Y CRV_20Y CRV_2M CRV_2Y CRV_30Y CRV_3M CRV_3Y CRV_5Y CRV_6M CRV_7Y CURVE_DF
+CURVE_FWD_3M CURVE_PAR CURVE_ZERO DAYS_TO_MTY DAY_CNT_FRAC DISC_RATE DV01 DV01_PER_100
+INFO_RATIO_1Y IVOL_30D KRD_10Y KRD_2Y KRD_30Y KRD_5Y MAX_DD_1Y MM_YIELD OPT_FWD_PX OPT_LOG_MNY
+RET_1D RET_1M RET_1W RET_1Y RET_YTD SHARPE_1Y SORTINO_1Y SPRD_TO_BENCH SPRD_TO_CRV SVI_A SVI_B
+SVI_M SVI_N SVI_RHO SVI_RMSE SVI_SIGMA SWAP_ACCRUED SWAP_FIXED_RATE SWAP_NPV SWAP_PAR_RATE
+SWAP_PV01 VOL_90D WIRP_IMPL_RATE WIRP_MOVE_BP WIRP_PROB_CUT WIRP_PROB_HIKE WIRP_PROB_HOLD
+YLD_VAL_32ND Z_SPRD_MID
+`
+  .trim()
+  .split(/\s+/);
+
+/** Every id the design names, from either source. */
+const DESIGNED_FIELD_IDS: readonly string[] = [...CONTRACTS_FIELD_IDS, ...WP02_ANALYTIC_FIELD_IDS];
+
+/** The dictionary's total size: CONTRACTS §4.3's 94 plus WP-02's 68. */
+const FIELD_COUNT = 162;
+
 // ---------------------------------------------------------------------------------------------
 // 1. Every field id in CONTRACTS §4.3 resolves
 // ---------------------------------------------------------------------------------------------
 
 describe('field dictionary — CONTRACTS §4.3 coverage', () => {
-  it('declares exactly 94 ids in CONTRACTS §4.3', () => {
+  it('declares exactly 94 ids in CONTRACTS §4.3 and 68 more in WP-02 analytics', () => {
     expect(CONTRACTS_FIELD_IDS).toHaveLength(94);
-    expect(new Set(CONTRACTS_FIELD_IDS).size).toBe(CONTRACTS_FIELD_IDS.length);
+    expect(WP02_ANALYTIC_FIELD_IDS).toHaveLength(68);
+    expect(new Set(DESIGNED_FIELD_IDS).size).toBe(FIELD_COUNT);
   });
 
   it('resolves every id through getField / hasField / requireField', () => {
-    const unresolved = CONTRACTS_FIELD_IDS.filter((id) => getField(id) === undefined);
+    const unresolved = DESIGNED_FIELD_IDS.filter((id) => getField(id) === undefined);
     expect(unresolved).toEqual([]);
 
-    for (const id of CONTRACTS_FIELD_IDS) {
+    for (const id of DESIGNED_FIELD_IDS) {
       expect(hasField(id)).toBe(true);
       expect(requireField(id).id).toBe(id);
     }
   });
 
   it('defines no field the design does not name, and names none it does not define', () => {
-    const declared = new Set(CONTRACTS_FIELD_IDS);
+    const declared = new Set(DESIGNED_FIELD_IDS);
     const defined = new Set(fieldIds());
     expect([...declared].filter((id) => !defined.has(id))).toEqual([]);
     expect([...defined].filter((id) => !declared.has(id))).toEqual([]);
@@ -199,7 +228,7 @@ describe('field dictionary — invariants', () => {
   it('returns a copy from listFields, so a caller cannot corrupt the dictionary', () => {
     const list = listFields();
     list.length = 0;
-    expect(fieldDefs.length).toBe(94);
+    expect(fieldDefs.length).toBe(FIELD_COUNT);
   });
 });
 
@@ -232,7 +261,7 @@ describe('gen:fields — the committed artefact is in sync', () => {
     expect(parsed.version).toBe(FIELD_DICTIONARY_VERSION);
     expect(parsed.generatedAt).toBe(FIELD_DICTIONARY_GENERATED_AT);
     expect(parsed.fields.map((f) => f.id)).toEqual(fieldIds());
-    expect(parsed.fields.map((f) => f.id)).toEqual([...CONTRACTS_FIELD_IDS].sort());
+    expect(parsed.fields.map((f) => f.id)).toEqual([...DESIGNED_FIELD_IDS].sort());
   });
 
   it('passes `gen:fields --check` (which also validates defs/*.ts and the generated barrel)', () => {
@@ -247,7 +276,7 @@ describe('gen:fields — the committed artefact is in sync', () => {
       ],
       { cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
     );
-    expect(output).toContain('94 fields in 8 classes');
+    expect(output).toContain(`${FIELD_COUNT} fields in 8 classes`);
     expect(output).toContain(`dictionary v${FIELD_DICTIONARY_VERSION}`);
     expect(output).not.toContain('STALE');
   }, 120_000);

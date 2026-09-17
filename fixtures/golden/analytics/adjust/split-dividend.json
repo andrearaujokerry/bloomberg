@@ -1,0 +1,414 @@
+[
+  {
+    "id": "adjust.split.dividend.factors.total_return",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "total_return",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "confirmed",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        },
+        {
+          "caType": "cash_dividend",
+          "status": "paid",
+          "exDate": "2026-06-15",
+          "amount": 0.5,
+          "currency": "USD"
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 },
+        { "date": "2026-06-12", "open": 50.25, "high": 50.75, "low": 49.75, "close": 50.0, "volume": 900000 },
+        { "date": "2026-06-15", "open": 49.6, "high": 49.9, "low": 49.2, "close": 49.5, "volume": 950000 },
+        { "date": "2026-09-15", "open": 54.5, "high": 55.25, "low": 54.25, "close": 55.0, "volume": 1100000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 2,
+      "steps.0.beforeDate": "2026-03-10",
+      "steps.0.priceFactor": 0.5,
+      "steps.0.volumeFactor": 2,
+      "steps.0.kind": "split",
+      "steps.1.beforeDate": "2026-06-15",
+      "steps.1.priceFactor": 0.99,
+      "steps.1.volumeFactor": 1,
+      "steps.1.kind": "dividend"
+    },
+    "tol": {
+      "steps.length": 0,
+      "steps.0.priceFactor": 1e-12,
+      "steps.0.volumeFactor": 1e-12,
+      "steps.1.priceFactor": 1e-12,
+      "steps.1.volumeFactor": 1e-12
+    },
+    "source": "TESTING §7.9 case adjust.split.dividend, factor table (synthetic, closed form): split priceFactor = ratio_old/ratio_new = 0.50, dividend priceFactor = 1 - 0.50/50.00 = 0.99 where 50.00 is the unadjusted close of 2026-06-12, the last session before the ex-date"
+  },
+  {
+    "id": "adjust.split.dividend.factors.price",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "price",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "confirmed",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        },
+        {
+          "caType": "cash_dividend",
+          "status": "paid",
+          "exDate": "2026-06-15",
+          "amount": 0.5,
+          "currency": "USD"
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 },
+        { "date": "2026-06-12", "open": 50.25, "high": 50.75, "low": 49.75, "close": 50.0, "volume": 900000 },
+        { "date": "2026-06-15", "open": 49.6, "high": 49.9, "low": 49.2, "close": 49.5, "volume": 950000 },
+        { "date": "2026-09-15", "open": 54.5, "high": 55.25, "low": 54.25, "close": 55.0, "volume": 1100000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 1,
+      "steps.0.beforeDate": "2026-03-10",
+      "steps.0.priceFactor": 0.5,
+      "steps.0.volumeFactor": 2,
+      "steps.0.kind": "split"
+    },
+    "tol": {
+      "steps.length": 0,
+      "steps.0.priceFactor": 1e-12,
+      "steps.0.volumeFactor": 1e-12
+    },
+    "source": "TESTING §7.9: policy 'price' carries the split only — the cash dividend is a total-return effect (DATA_MODEL §6.1 L1017)"
+  },
+  {
+    "id": "adjust.split.dividend.series.unadjusted",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "unadjusted",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "confirmed",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        },
+        {
+          "caType": "cash_dividend",
+          "status": "paid",
+          "exDate": "2026-06-15",
+          "amount": 0.5,
+          "currency": "USD"
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 },
+        { "date": "2026-06-12", "open": 50.25, "high": 50.75, "low": 49.75, "close": 50.0, "volume": 900000 },
+        { "date": "2026-06-15", "open": 49.6, "high": 49.9, "low": 49.2, "close": 49.5, "volume": 950000 },
+        { "date": "2026-09-15", "open": 54.5, "high": 55.25, "low": 54.25, "close": 55.0, "volume": 1100000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 0,
+      "close.2026-03-06": 100.0,
+      "close.2026-03-09": 102.0,
+      "close.2026-03-10": 51.0,
+      "close.2026-06-12": 50.0,
+      "close.2026-06-15": 49.5,
+      "close.2026-09-15": 55.0,
+      "factor.2026-03-06": 1.0,
+      "factor.2026-06-12": 1.0,
+      "volume.2026-03-06": 1000000,
+      "returnPct": -45.0
+    },
+    "tol": {
+      "steps.length": 0,
+      "close.2026-03-06": 1e-9,
+      "close.2026-03-09": 1e-9,
+      "close.2026-03-10": 1e-9,
+      "close.2026-06-12": 1e-9,
+      "close.2026-06-15": 1e-9,
+      "close.2026-09-15": 1e-9,
+      "factor.2026-03-06": 1e-12,
+      "factor.2026-06-12": 1e-12,
+      "volume.2026-03-06": 0,
+      "returnPct": 1e-9
+    },
+    "source": "TESTING §7.9 expected close series, column 'unadjusted'; window return 55/100 - 1 = -45.000000 %; volume is left alone under 'unadjusted'"
+  },
+  {
+    "id": "adjust.split.dividend.series.price",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "price",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "confirmed",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        },
+        {
+          "caType": "cash_dividend",
+          "status": "paid",
+          "exDate": "2026-06-15",
+          "amount": 0.5,
+          "currency": "USD"
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 },
+        { "date": "2026-06-12", "open": 50.25, "high": 50.75, "low": 49.75, "close": 50.0, "volume": 900000 },
+        { "date": "2026-06-15", "open": 49.6, "high": 49.9, "low": 49.2, "close": 49.5, "volume": 950000 },
+        { "date": "2026-09-15", "open": 54.5, "high": 55.25, "low": 54.25, "close": 55.0, "volume": 1100000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 1,
+      "close.2026-03-06": 50.0,
+      "close.2026-03-09": 51.0,
+      "close.2026-03-10": 51.0,
+      "close.2026-06-12": 50.0,
+      "close.2026-06-15": 49.5,
+      "close.2026-09-15": 55.0,
+      "factor.2026-03-06": 0.5,
+      "factor.2026-03-09": 0.5,
+      "factor.2026-03-10": 1.0,
+      "factor.2026-06-12": 1.0,
+      "factor.2026-06-15": 1.0,
+      "factor.2026-09-15": 1.0,
+      "volume.2026-03-06": 2000000,
+      "returnPct": 10.0
+    },
+    "tol": {
+      "steps.length": 0,
+      "close.2026-03-06": 1e-9,
+      "close.2026-03-09": 1e-9,
+      "close.2026-03-10": 1e-9,
+      "close.2026-06-12": 1e-9,
+      "close.2026-06-15": 1e-9,
+      "close.2026-09-15": 1e-9,
+      "factor.2026-03-06": 1e-12,
+      "factor.2026-03-09": 1e-12,
+      "factor.2026-03-10": 1e-12,
+      "factor.2026-06-12": 1e-12,
+      "factor.2026-06-15": 1e-12,
+      "factor.2026-09-15": 1e-12,
+      "volume.2026-03-06": 0,
+      "returnPct": 1e-9
+    },
+    "source": "TESTING §7.9 expected close series, column 'price' (cum factor in the same table); window return 55/50 - 1 = +10.000000 %; volume on 2026-03-06 is multiplied by 2"
+  },
+  {
+    "id": "adjust.split.dividend.series.total_return",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "total_return",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "confirmed",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        },
+        {
+          "caType": "cash_dividend",
+          "status": "paid",
+          "exDate": "2026-06-15",
+          "amount": 0.5,
+          "currency": "USD"
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 },
+        { "date": "2026-06-12", "open": 50.25, "high": 50.75, "low": 49.75, "close": 50.0, "volume": 900000 },
+        { "date": "2026-06-15", "open": 49.6, "high": 49.9, "low": 49.2, "close": 49.5, "volume": 950000 },
+        { "date": "2026-09-15", "open": 54.5, "high": 55.25, "low": 54.25, "close": 55.0, "volume": 1100000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 2,
+      "close.2026-03-06": 49.5,
+      "close.2026-03-09": 50.49,
+      "close.2026-03-10": 50.49,
+      "close.2026-06-12": 49.5,
+      "close.2026-06-15": 49.5,
+      "close.2026-09-15": 55.0,
+      "factor.2026-03-06": 0.495,
+      "factor.2026-03-09": 0.495,
+      "factor.2026-03-10": 0.99,
+      "factor.2026-06-12": 0.99,
+      "factor.2026-06-15": 1.0,
+      "factor.2026-09-15": 1.0,
+      "volume.2026-03-06": 2000000,
+      "returnPct": 11.111111,
+      "tri.2026-03-06": 100.0,
+      "tri.2026-03-09": 102.0,
+      "tri.2026-03-10": 102.0,
+      "tri.2026-06-12": 100.0,
+      "tri.2026-06-15": 100.0,
+      "tri.2026-09-15": 111.111111
+    },
+    "tol": {
+      "steps.length": 0,
+      "close.2026-03-06": 1e-9,
+      "close.2026-03-09": 1e-9,
+      "close.2026-03-10": 1e-9,
+      "close.2026-06-12": 1e-9,
+      "close.2026-06-15": 1e-9,
+      "close.2026-09-15": 1e-9,
+      "factor.2026-03-06": 1e-12,
+      "factor.2026-03-09": 1e-12,
+      "factor.2026-03-10": 1e-12,
+      "factor.2026-06-12": 1e-12,
+      "factor.2026-06-15": 1e-12,
+      "factor.2026-09-15": 1e-12,
+      "volume.2026-03-06": 0,
+      "returnPct": 1e-6,
+      "tri.2026-03-06": 1e-9,
+      "tri.2026-03-09": 1e-9,
+      "tri.2026-03-10": 1e-9,
+      "tri.2026-06-12": 1e-9,
+      "tri.2026-06-15": 1e-9,
+      "tri.2026-09-15": 1e-6
+    },
+    "source": "TESTING §7.9 expected close series, column 'total_return' (combined cum factor 0.50 x 0.99 = 0.495); window return 55/49.50 - 1 = +11.111111 % — quoted to six decimals in TESTING, hence tol 1e-6 on that key and on the matching tri point, while the exactly quoted series keys keep 1e-9. tri.* is totalReturnIndex(), i.e. the total_return series rebased to the first close (49.50 x 100/49.50 = 100)"
+  },
+  {
+    "id": "adjust.split.dividend.status.cancelled",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "total_return",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "cancelled",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 0,
+      "close.2026-03-06": 100.0,
+      "volume.2026-03-06": 1000000
+    },
+    "tol": { "steps.length": 0, "close.2026-03-06": 1e-9, "volume.2026-03-06": 0 },
+    "source": "TESTING §7.9 status gating: a 'cancelled' action produces no factor at all under every policy"
+  },
+  {
+    "id": "adjust.split.dividend.status.estimated",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "total_return",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "estimated",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 0,
+      "close.2026-03-06": 100.0,
+      "volume.2026-03-06": 1000000
+    },
+    "tol": { "steps.length": 0, "close.2026-03-06": 1e-9, "volume.2026-03-06": 0 },
+    "source": "TESTING §7.9 status gating: 'estimated' is CACS display only and produces no factor"
+  },
+  {
+    "id": "adjust.split.dividend.status.announced",
+    "engine": "adjust",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "policy": "total_return",
+      "actions": [
+        {
+          "caType": "split",
+          "status": "announced",
+          "exDate": "2026-03-10",
+          "ratioNew": 2,
+          "ratioOld": 1
+        },
+        {
+          "caType": "cash_dividend",
+          "status": "announced",
+          "exDate": "2026-06-15",
+          "amount": 0.5,
+          "currency": "USD"
+        }
+      ],
+      "bars": [
+        { "date": "2026-03-06", "open": 99.0, "high": 100.5, "low": 98.5, "close": 100.0, "volume": 1000000 },
+        { "date": "2026-03-09", "open": 100.5, "high": 102.5, "low": 100.0, "close": 102.0, "volume": 1200000 },
+        { "date": "2026-03-10", "open": 51.0, "high": 51.5, "low": 50.5, "close": 51.0, "volume": 2400000 },
+        { "date": "2026-06-12", "open": 50.25, "high": 50.75, "low": 49.75, "close": 50.0, "volume": 900000 },
+        { "date": "2026-06-15", "open": 49.6, "high": 49.9, "low": 49.2, "close": 49.5, "volume": 950000 },
+        { "date": "2026-09-15", "open": 54.5, "high": 55.25, "low": 54.25, "close": 55.0, "volume": 1100000 }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00.000Z",
+    "expected": {
+      "steps.length": 2,
+      "steps.0.priceFactor": 0.5,
+      "steps.1.priceFactor": 0.99,
+      "close.2026-03-06": 49.5
+    },
+    "tol": {
+      "steps.length": 0,
+      "steps.0.priceFactor": 1e-12,
+      "steps.1.priceFactor": 1e-12,
+      "close.2026-03-06": 1e-9
+    },
+    "source": "TESTING §7.9 status gating: 'announced', 'confirmed' and 'paid' all apply"
+  }
+]

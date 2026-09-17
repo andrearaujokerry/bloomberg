@@ -1,0 +1,36 @@
+[
+  {
+    "id": "bsm.deep.itm.call",
+    "engine": "bsm",
+    "engineVersion": "1.0.0",
+    "inputs": { "S": 100, "K": 50, "r": 0.05, "q": 0, "sigma": 0.2, "T": 1 },
+    "valuationTs": "2026-01-02T00:00:00Z",
+    "expected": {
+      "call": 52.438862117161854,
+      "put": 0.0003333421975566112,
+      "d1": 3.815735902799726,
+      "d2": 3.615735902799726,
+      "deltaCall": 0.9999321111667006,
+      "deltaPut": -0.00006788883329942418,
+      "gamma": 0.00001374835954598021,
+      "vega": 0.02749671909196042,
+      "thetaCall": -2.380467121884606,
+      "rhoCall": 47.5543489995082,
+      "discountFactor": 0.951229424500714
+    },
+    "tol": {
+      "call": 1e-9,
+      "put": 1e-12,
+      "d1": 1e-12,
+      "d2": 1e-12,
+      "deltaCall": 1e-12,
+      "deltaPut": 1e-12,
+      "gamma": 1e-12,
+      "vega": 1e-12,
+      "thetaCall": 1e-9,
+      "rhoCall": 1e-9,
+      "discountFactor": 1e-12
+    },
+    "source": "closed form — TESTING §7.2 case bsm.deep.itm.call, which pins the tail behaviour as inequalities (deltaCall > 0.999, gamma < 1e-4, call - (S - K*e^(-rT)) >= 0, vega > 0) rather than as numbers. The numbers here were produced by an independent CPython evaluation of the Black-Scholes closed form over math.erfc, not by this package, and satisfy every one of those inequalities: 0.99993 > 0.999, 1.3748e-5 < 1e-4, call - intrinsic = 3.3334e-4 >= 0, vega = 0.0275 > 0."
+  }
+]

@@ -1,0 +1,147 @@
+[
+  {
+    "id": "stats.vol.sharpe.10",
+    "engine": "stats",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "dates": [
+        "2026-01-01",
+        "2026-01-02",
+        "2026-01-03",
+        "2026-01-04",
+        "2026-01-05",
+        "2026-01-06",
+        "2026-01-07",
+        "2026-01-08",
+        "2026-01-09",
+        "2026-01-10"
+      ],
+      "conventions": {
+        "returns": "simple",
+        "annualisation": 252,
+        "ddof": 1,
+        "riskFree": 0.02
+      }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "n": 10,
+      "meanDaily": 0.0025,
+      "stdevDaily": 0.01099242,
+      "volAnnualised": 0.17449928,
+      "returnAnnualised": 0.63,
+      "excessAnnualised": 0.61,
+      "sharpe": 3.495716,
+      "maxDrawdown": -0.0125,
+      "maxDrawdownPeakDate": "2026-01-04",
+      "maxDrawdownTroughDate": "2026-01-05",
+      "maxDrawdownRecoveryDate": "2026-01-06"
+    },
+    "tol": {
+      "n": 0,
+      "meanDaily": 1e-14,
+      "stdevDaily": 1e-8,
+      "volAnnualised": 1e-8,
+      "returnAnnualised": 1e-14,
+      "excessAnnualised": 1e-14,
+      "sharpe": 1e-6,
+      "maxDrawdown": 1e-11,
+      "maxDrawdownPeakDate": 0,
+      "maxDrawdownTroughDate": 0,
+      "maxDrawdownRecoveryDate": 0
+    },
+    "source": "TESTING.md §7.8 table, hand-checked closed form. The table is quoted in percent (mean 0.250000 %, stdev 1.099242 %, vol 17.449928 %, return 63.000000 %, excess 61.000000 %, maxDrawdown -1.250000 %, sharpe 3.495716); the values here are those divided by 100, because this module works in decimal fractions. Tolerances are §7.8's, likewise divided by 100 for the percent-quoted rows (1e-6 % -> 1e-8, 1e-12 % -> 1e-14, 1e-9 % -> 1e-11). The ten returns are dated as consecutive calendar days from 2026-01-01, which is what makes the fifth return (-1.25 %) fall on 2026-01-05 as §7.8 states; the drawdown is that single return, from the 2026-01-04 peak, recovered on 2026-01-06."
+  },
+  {
+    "id": "stats.vol.population.10",
+    "engine": "stats",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "conventions": {
+        "returns": "simple",
+        "annualisation": 252,
+        "ddof": 0,
+        "riskFree": 0.02
+      }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "n": 10,
+      "meanDaily": 0.0025,
+      "stdevDaily": 0.01042833,
+      "returnAnnualised": 0.63,
+      "excessAnnualised": 0.61
+    },
+    "tol": {
+      "n": 0,
+      "meanDaily": 1e-14,
+      "stdevDaily": 1e-8,
+      "returnAnnualised": 1e-14,
+      "excessAnnualised": 1e-14
+    },
+    "source": "TESTING.md §7.8 companion assertion: the population (n) stdev on the same series is 1.042833 % = sqrt(10.875/10) = sqrt(1.0875) in percent-squared, and the engine returns it ONLY because conventions.ddof = 0 is passed explicitly. Same series and same 1e-6 % tolerance as stats.vol.sharpe.10, in decimal."
+  },
+  {
+    "id": "stats.beta.10",
+    "engine": "stats",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "benchmark": [0.008, -0.002, 0.006, 0.004, -0.01, 0.016, -0.004, 0.002, 0.012, -0.008],
+      "dates": [
+        "2026-01-01",
+        "2026-01-02",
+        "2026-01-03",
+        "2026-01-04",
+        "2026-01-05",
+        "2026-01-06",
+        "2026-01-07",
+        "2026-01-08",
+        "2026-01-09",
+        "2026-01-10"
+      ],
+      "conventions": {
+        "returns": "simple",
+        "annualisation": 252,
+        "ddof": 1,
+        "riskFree": 0.02,
+        "betaBenchmark": "stats.beta.10.benchmark",
+        "betaWindow": 10
+      }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "n": 10,
+      "beta": 1.284034653465,
+      "olsSlope": 1.284034653465,
+      "olsIntercept": -0.000581683168,
+      "alphaAnnualised": -0.146584158416,
+      "correlation": 0.989948918862,
+      "rSquared": 0.979998861955,
+      "olsSlopeStdErr": 0.064855426412,
+      "olsInterceptStdErr": 0.000544167561,
+      "trackingErrorAnnualised": 0.045488460075,
+      "informationRatio": 0.55398665856,
+      "downsideDeviationAnnualised": 0.098011535152,
+      "sortino": 6.223757224612
+    },
+    "tol": {
+      "n": 0,
+      "beta": 1e-9,
+      "olsSlope": 1e-9,
+      "olsIntercept": 1e-9,
+      "alphaAnnualised": 1e-9,
+      "correlation": 1e-9,
+      "rSquared": 1e-9,
+      "olsSlopeStdErr": 1e-9,
+      "olsInterceptStdErr": 1e-9,
+      "trackingErrorAnnualised": 1e-9,
+      "informationRatio": 1e-9,
+      "downsideDeviationAnnualised": 1e-9,
+      "sortino": 1e-9
+    },
+    "source": "Closed form on the fixed TESTING.md §7.8 series against a fixed synthetic benchmark (§7.8: 'Sortino, information ratio and beta use the same series against a fixed benchmark series in stats.beta.10, with OLS beta asserted against the closed form cov/var within 1e-12'). beta = cov(a,b)/var(b) with n-1 = 9 degrees of freedom: cov = 9.22222222222e-05, var(b) = 7.18222222222e-05, beta = 1.284034653465; alpha = mean(a) - beta*mean(b) per day, annualised x252; correlation = cov/(sd_a*sd_b), rSquared = correlation^2 = the OLS r^2; OLS standard errors on n-2 = 8 residual degrees of freedom; tracking error = sample sd of (a - b) x sqrt(252); IR = mean(a-b)x252 / trackingErrorAnnualised; Sortino target = riskFree/252 with four shortfall days. Values recorded to 12 decimal places, tolerance 1e-9 absolute (double-precision only)."
+  }
+]

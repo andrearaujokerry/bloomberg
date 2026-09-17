@@ -1,0 +1,118 @@
+[
+  {
+    "id": "solver.newton",
+    "engine": "bond.yield",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "cleanPrice": 98.141451,
+      "y0": 0.05
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "ok": true,
+      "yieldPercent": 6.0,
+      "method": "newton",
+      "iterations": 4,
+      "lastStep": 0.0
+    },
+    "tol": {
+      "ok": 0,
+      "yieldPercent": 2e-7,
+      "method": 0,
+      "iterations": 0,
+      "lastStep": 1e-12
+    },
+    "source": "TESTING.md §7.5 case solver.newton: the bond.discount.2y cashflows, target clean price 98.141451, y0 = 0.05 (the coupon) -> y = 0.060000000000, method = 'newton', iterations <= 4, final |dy| < 1e-12. The target price is the exact price rounded to six decimals: P(6 %) = 98.14145079859480, so the literal target sits 2.01e-7 above the true price and, with dP/dy = -183.63 per unit yield, the root of the *rounded* target is 0.0599999989032 - 1.10e-9 below 6 %, i.e. 1.10e-7 in percent. The pinned 1e-12 is therefore asserted on the identity fed the unrounded price (case solver.newton.exact below); here yieldPercent carries the tolerance the rounding of the pinned literal permits (2e-7 percent), stated with its reason as TESTING §7.1 requires. method, iterations and the final |dy| are the pins the case actually turns on and are asserted exactly."
+  },
+  {
+    "id": "solver.newton.exact",
+    "engine": "bond.yield",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "cleanPrice": 98.1414507985948,
+      "y0": 0.05
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "ok": true,
+      "yieldPercent": 6.0,
+      "method": "newton",
+      "iterations": 4,
+      "lastStep": 0.0
+    },
+    "tol": {
+      "ok": 0,
+      "yieldPercent": 1e-12,
+      "method": 0,
+      "iterations": 0,
+      "lastStep": 1e-12
+    },
+    "source": "derived: solver.newton, fed the engine's own unrounded price P(6 %) = 98.1414507985948 instead of the six-decimal literal. This is the form in which TESTING §7.5's y = 0.060000000000 at tolerance 1e-12 is satisfiable: the round trip yieldFromPrice(priceFromYield(0.06)) returns 0.06 to 1.6e-16. Same method ('newton') and iteration bound (<= 4) as solver.newton."
+  },
+  {
+    "id": "solver.bisection",
+    "engine": "bond.yield",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "cleanPrice": 98.141451,
+      "y0": 9.5
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "ok": true,
+      "yieldPercent": 6.0,
+      "method": "bisection",
+      "firstNewtonStep": -1111.4,
+      "residual": 0.0
+    },
+    "tol": {
+      "ok": 0,
+      "yieldPercent": 2e-7,
+      "method": 0,
+      "firstNewtonStep": 0.05,
+      "residual": 1e-10
+    },
+    "source": "TESTING.md §7.5 case solver.bisection: identical cashflows and target, y0 = 9.5. The first Newton step is y1 = y0 - f/f' = 9.5 - (-97.524135)/(-0.0870027) ~ -1111.4 - outside the bracket [-0.99, 10.0] - so the guard fires and the solve completes by bisection: method = 'bisection', iterations <= 60 (50 halvings to a 1e-14 interval), |f(y)| < 1e-10. The exact first iterate is -1111.4307317292, pinned here to the 1e-1 precision TESTING §7.5 prints it at. yieldPercent carries the same rounded-target tolerance as solver.newton, and the two convergent cases agree with each other to 1e-10 as TESTING §7.5 requires (they agree to 5e-15)."
+  },
+  {
+    "id": "solver.noRoot",
+    "engine": "bond.yield",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "cleanPrice": 0.005,
+      "y0": 0.05
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": { "ok": false, "reason": "NO_ROOT_IN_BRACKET" },
+    "tol": { "ok": 0, "reason": 0 },
+    "source": "TESTING.md §7.5 case solver.noRoot: identical cashflows, target clean price 0.005. f has no sign change on the bracket because P(10.0) = 0.576775 > 0.005, so the engine returns { ok: false, reason: 'NO_ROOT_IN_BRACKET' } - it does not diverge, does not return NaN and does not throw. Exact closed form at y = 10.0: the semiannual rate is 5, v = 1/6, so P = 2.5(1 - 6^-4)/5 + 100 x 6^-4 = 0.5767746913580247, which rounds to 0.576775 at six decimals; TESTING §7.5 prints 0.576774, a truncation 6.91e-7 from the true value. bond.solver.test.ts pins the exact closed form at 1e-12 and keeps the §7.5 literal as a 1e-6 cross-check."
+  }
+]

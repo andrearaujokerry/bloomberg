@@ -1,0 +1,97 @@
+[
+  {
+    "id": "bond.par.roundtrip",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.0425,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2036-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0425
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 100.0,
+      "dirtyPrice": 100.0,
+      "accrued": 0.0,
+      "yieldPercent": 4.25,
+      "periodsRemaining": 20,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": {
+      "cleanPrice": 1e-10,
+      "dirtyPrice": 1e-10,
+      "accrued": 0,
+      "yieldPercent": 1e-12,
+      "periodsRemaining": 0,
+      "firstPeriodFraction": 0
+    },
+    "source": "TESTING.md \u00a77.3 case bond.par.roundtrip (definitional identity): a 10-year note, coupon 4.250 % semiannual, dated and settling 2026-08-15, maturing 2036-08-15, price 100.000000 clean per 100 face. On a coupon date, price = 100 <=> yield = coupon, so priceFromYield(4.250000 %) = 100.000000 to 1e-10 and accrued = 0 exactly. Terms are the seeded on-the-run 10-year T 4.25 08/15/36 (fixtures/seed/treasuries.json, curated; CUSIP 91282CLM6 per FUNCTIONS_TIER3 \u00a71 SRCH example row)."
+  },
+  {
+    "id": "bond.discount.2y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.06
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 98.141451,
+      "dirtyPrice": 98.141451,
+      "accrued": 0.0,
+      "yieldPercent": 6.0,
+      "periodsRemaining": 4,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": {
+      "cleanPrice": 1e-06,
+      "dirtyPrice": 1e-06,
+      "accrued": 0,
+      "yieldPercent": 1e-12,
+      "periodsRemaining": 0,
+      "firstPeriodFraction": 0
+    },
+    "source": "TESTING.md \u00a77.3 case bond.discount.2y, the hand-checkable discount bond: coupon 5.000 % semiannual, 4 remaining periods, settlement on a coupon date, yield 6.000 %. v = 1/1.03; v^2 = 0.942595909, v^3 = 0.915141659, v^4 = 0.888487048; annuity = (1 - v^4)/0.03 = 3.717098403 (TESTING \u00a77.3 prints 3.71709839; the exact value is 3.7170984028103744, so the printed intermediate is 1.3e-9 low); price = 2.5 x 3.717098403 + 100 x 0.888487048 = 98.141451 (98.1414508 per 100), tolerance 1e-6. The pinned price is correct and was reproduced exactly. Unrounded reference: 98.14145079859480."
+  },
+  {
+    "id": "bond.premium.short",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2028-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.04
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 101.903864,
+      "accrued": 0.0,
+      "yieldPercent": 4.0,
+      "periodsRemaining": 4
+    },
+    "tol": {
+      "cleanPrice": 1e-06,
+      "accrued": 0,
+      "yieldPercent": 1e-12,
+      "periodsRemaining": 0
+    },
+    "source": "TESTING.md \u00a77.3 case bond.premium.short: coupon 5 %, yield 4 %, 4 periods -> price = 101.903864, exactly 2.5 x (1 - 1.02^-4)/0.02 + 100 x 1.02^-4 = 101.903864349...: 1.02^-4 = 0.923845426026514, annuity 3.807728699, 9.519321747 + 92.384542603. Tolerance 1e-6. (TESTING \u00a77.3 prints the three intermediates as 3.807728710 / 9.519321774 / 92.384542576; exact rational arithmetic gives 3.8077286986742953 / 9.5193217466857387 / 92.384542602651408, so each is wrong in the 8th decimal. The pinned price 101.903864 is correct and was reproduced exactly: 101.90386434933714.) Asserts price > 100 <=> yield < coupon. (TESTING \u00a77.3 records that an earlier draft's 101.905126 was arithmetically wrong by 1.26e-3.)"
+  }
+]

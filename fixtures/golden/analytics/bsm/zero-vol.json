@@ -1,0 +1,30 @@
+[
+  {
+    "id": "bsm.zero.vol",
+    "engine": "bsm",
+    "engineVersion": "1.0.0",
+    "inputs": { "S": 100, "K": 100, "r": 0.05, "q": 0, "sigma": 0, "T": 1 },
+    "valuationTs": "2026-01-02T00:00:00Z",
+    "expected": {
+      "call": 4.877057549928594,
+      "put": 0,
+      "gamma": 0,
+      "vega": 0,
+      "discountFactor": 0.951229424500714,
+      "dividendDiscount": 1,
+      "deltaCall": 1,
+      "deltaPut": 0
+    },
+    "tol": {
+      "call": 1e-9,
+      "put": 1e-12,
+      "gamma": 1e-12,
+      "vega": 1e-12,
+      "discountFactor": 1e-12,
+      "dividendDiscount": 1e-12,
+      "deltaCall": 1e-12,
+      "deltaPut": 1e-12
+    },
+    "source": "TESTING §7.2 case bsm.zero.vol: call = max(S*e^(-qT) - K*e^(-rT), 0) = 4.877058 at tolerance 1e-9, gamma = 0, vega = 0, no NaN anywhere. 4.877057549928594 IS that pinned value, evaluated in CPython at full double precision — the 4.877058 printed in TESTING is the same number rounded to six decimals, and a 1e-9 tolerance can only be applied to the unrounded one (the rounded literal is 4.5e-7 away, the same trap TESTING §7.2 assertion 7 documents for the implied-vol round trip). The test asserts both: 1e-6 against the printed 4.877058 and 1e-9 against the closed form."
+  }
+]

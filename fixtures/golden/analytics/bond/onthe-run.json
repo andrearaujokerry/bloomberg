@@ -1,0 +1,170 @@
+[
+  {
+    "id": "bond.otr.2y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.0375,
+      "frequency": 2,
+      "datedDate": "2026-09-30",
+      "maturity": "2028-09-30",
+      "settlement": "2026-09-30",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0439
+    },
+    "valuationTs": "2026-09-30T00:00:00Z",
+    "expected": {
+      "cleanPrice": 98.787271,
+      "accrued": 0.0,
+      "periodsRemaining": 4,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  },
+  {
+    "id": "bond.otr.3y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.03875,
+      "frequency": 2,
+      "datedDate": "2026-09-15",
+      "maturity": "2029-09-15",
+      "settlement": "2026-09-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0446
+    },
+    "valuationTs": "2026-09-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 98.374223,
+      "accrued": 0.0,
+      "periodsRemaining": 6,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  },
+  {
+    "id": "bond.otr.5y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.04,
+      "frequency": 2,
+      "datedDate": "2026-08-31",
+      "maturity": "2031-08-31",
+      "settlement": "2026-08-31",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0455
+    },
+    "valuationTs": "2026-08-31T00:00:00Z",
+    "expected": {
+      "cleanPrice": 97.564957,
+      "accrued": 0.0,
+      "periodsRemaining": 10,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  },
+  {
+    "id": "bond.otr.7y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.04125,
+      "frequency": 2,
+      "datedDate": "2026-08-31",
+      "maturity": "2033-08-31",
+      "settlement": "2026-08-31",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0466
+    },
+    "valuationTs": "2026-08-31T00:00:00Z",
+    "expected": {
+      "cleanPrice": 96.835538,
+      "accrued": 0.0,
+      "periodsRemaining": 14,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  },
+  {
+    "id": "bond.otr.10y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.0425,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2036-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0479
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 95.748876,
+      "accrued": 0.0,
+      "periodsRemaining": 20,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  },
+  {
+    "id": "bond.otr.20y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.05,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2046-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0527
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 96.68689,
+      "accrued": 0.0,
+      "periodsRemaining": 40,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  },
+  {
+    "id": "bond.otr.30y",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.0475,
+      "frequency": 2,
+      "datedDate": "2026-08-15",
+      "maturity": "2056-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0527
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "cleanPrice": 92.205179,
+      "accrued": 0.0,
+      "periodsRemaining": 60,
+      "firstPeriodFraction": 1.0
+    },
+    "tol": { "cleanPrice": 1e-6, "accrued": 0, "periodsRemaining": 0, "firstPeriodFraction": 0 },
+    "source": "treasury.yieldcurve capture + treasuries seed"
+  }
+]

@@ -1,0 +1,109 @@
+[
+  {
+    "id": "portfolio.attribution.twoSector",
+    "engine": "portfolio/attribution",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "segments": [
+        {
+          "segment": "Information Technology",
+          "portfolioWeight": 0.75,
+          "portfolioReturn": 0.125,
+          "benchmarkWeight": 0.5,
+          "benchmarkReturn": 0.0625
+        },
+        {
+          "segment": "Utilities",
+          "portfolioWeight": 0.25,
+          "portfolioReturn": -0.0625,
+          "benchmarkWeight": 0.5,
+          "benchmarkReturn": -0.03125
+        }
+      ],
+      "conventions": { "model": "brinson-fachler", "segmentBasis": "sector" }
+    },
+    "valuationTs": "2026-06-30T20:00:00Z",
+    "expected": {
+      "portfolioReturn": 0.078125,
+      "benchmarkReturn": 0.015625,
+      "activeReturn": 0.0625,
+      "allocation": 0.0234375,
+      "selection": 0.015625,
+      "interaction": 0.0234375,
+      "total": 0.0625,
+      "residual": 0,
+      "portfolioWeightSum": 1,
+      "benchmarkWeightSum": 1
+    },
+    "tol": {
+      "portfolioReturn": 0,
+      "benchmarkReturn": 0,
+      "activeReturn": 0,
+      "allocation": 0,
+      "selection": 0,
+      "interaction": 0,
+      "total": 0,
+      "residual": 0,
+      "portfolioWeightSum": 0,
+      "benchmarkWeightSum": 0
+    },
+    "source": "closed form, hand-computed. Every weight and return is a dyadic rational (a power-of-two fraction: 3/4, 1/8, 1/16, 1/32), so every product and sum below is exact in IEEE-754 double precision and the tolerance is 0 — the allocation + selection + interaction = active-return identity of WORKPLAN L549 is asserted bit-for-bit, not to within a rounding. R_P = 0.75x0.125 + 0.25x(-0.0625) = 0.09375 - 0.015625 = 0.078125; R_B = 0.5x0.0625 + 0.5x(-0.03125) = 0.03125 - 0.015625 = 0.015625; active = 0.0625. Allocation (Fachler, vs R_B): (0.75-0.5)x(0.0625-0.015625) = 0.01171875 and (0.25-0.5)x(-0.03125-0.015625) = 0.01171875, total 0.0234375. Selection: 0.5x(0.125-0.0625) = 0.03125 and 0.5x(-0.0625+0.03125) = -0.015625, total 0.015625. Interaction: 0.25x0.0625 = 0.015625 and (-0.25)x(-0.03125) = 0.0078125, total 0.0234375. 0.0234375 + 0.015625 + 0.0234375 = 0.0625."
+  },
+  {
+    "id": "portfolio.attribution.unheldSector",
+    "engine": "portfolio/attribution",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "segments": [
+        {
+          "segment": "Energy",
+          "portfolioWeight": 0,
+          "portfolioReturn": 0,
+          "benchmarkWeight": 0.25,
+          "benchmarkReturn": 0.25
+        },
+        {
+          "segment": "Information Technology",
+          "portfolioWeight": 0.75,
+          "portfolioReturn": 0.125,
+          "benchmarkWeight": 0.5,
+          "benchmarkReturn": 0.0625
+        },
+        {
+          "segment": "Utilities",
+          "portfolioWeight": 0.25,
+          "portfolioReturn": -0.0625,
+          "benchmarkWeight": 0.25,
+          "benchmarkReturn": -0.03125
+        }
+      ],
+      "conventions": { "model": "brinson-fachler", "segmentBasis": "sector" }
+    },
+    "valuationTs": "2026-06-30T20:00:00Z",
+    "expected": {
+      "portfolioReturn": 0.078125,
+      "benchmarkReturn": 0.0859375,
+      "activeReturn": -0.0078125,
+      "allocation": -0.046875,
+      "selection": -0.0390625,
+      "interaction": 0.078125,
+      "total": -0.0078125,
+      "residual": 0,
+      "portfolioWeightSum": 1,
+      "benchmarkWeightSum": 1
+    },
+    "tol": {
+      "portfolioReturn": 0,
+      "benchmarkReturn": 0,
+      "activeReturn": 0,
+      "allocation": 0,
+      "selection": 0,
+      "interaction": 0,
+      "total": 0,
+      "residual": 0,
+      "portfolioWeightSum": 0,
+      "benchmarkWeightSum": 0
+    },
+    "source": "closed form, hand-computed, dyadic rationals throughout so the tolerance is 0. The portfolio holds no Energy while the benchmark holds 25% of it returning +25% — the case Brinson-Fachler's (rB_i - R_B) term exists to price. R_B = 0.5x0.0625 + 0.25x(-0.03125) + 0.25x0.25 = 0.03125 - 0.0078125 + 0.0625 = 0.0859375; R_P = 0.078125; active = -0.0078125. Allocation: Energy (0-0.25)x(0.25-0.0859375) = -0.041015625, Tech (0.75-0.5)x(0.0625-0.0859375) = -0.005859375, Utilities 0 (no active weight), total -0.046875. Selection: Energy 0.25x(0-0.25) = -0.0625, Tech 0.5x0.0625 = 0.03125, Utilities 0.25x(-0.03125) = -0.0078125, total -0.0390625. Interaction: Energy (-0.25)x(-0.25) = 0.0625, Tech 0.25x0.0625 = 0.015625, Utilities 0, total 0.078125. -0.046875 - 0.0390625 + 0.078125 = -0.0078125."
+  }
+]

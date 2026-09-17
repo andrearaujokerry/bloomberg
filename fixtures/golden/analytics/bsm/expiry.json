@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bsm.expiry",
+    "engine": "bsm",
+    "engineVersion": "1.0.0",
+    "inputs": { "S": 100, "K": 95, "r": 0.05, "q": 0, "sigma": 0.2, "T": 0 },
+    "valuationTs": "2026-01-02T00:00:00Z",
+    "expected": {
+      "call": 5,
+      "put": 0,
+      "deltaCall": 1,
+      "deltaPut": 0,
+      "gamma": 0,
+      "vega": 0,
+      "thetaCall": 0,
+      "thetaPut": 0,
+      "rhoCall": 0,
+      "rhoPut": 0,
+      "discountFactor": 1,
+      "dividendDiscount": 1
+    },
+    "tol": {
+      "call": 0,
+      "put": 0,
+      "deltaCall": 0,
+      "deltaPut": 0,
+      "gamma": 0,
+      "vega": 0,
+      "thetaCall": 0,
+      "thetaPut": 0,
+      "rhoCall": 0,
+      "rhoPut": 0,
+      "discountFactor": 0,
+      "dividendDiscount": 0
+    },
+    "source": "TESTING §7.2 case bsm.expiry: T = 0 returns the payoff exactly and every greek is 0 except delta, which is in {0, 1}. Exact integers, so the tolerance is 0: max(100 - 95, 0) = 5 for the call, 0 for the put, deltaCall = 1 (in the money), deltaPut = 0."
+  }
+]

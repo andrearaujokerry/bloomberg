@@ -1,0 +1,119 @@
+[
+  {
+    "id": "curve.interp.flat",
+    "engine": "curve.interp",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "times": [1, 2, 3, 5, 7, 10],
+      "forwards": [0.04, 0.04, 0.04, 0.04, 0.04, 0.04],
+      "sampleTimes": [0.25, 0.5, 1, 2, 3, 4, 5, 7, 8.5, 10],
+      "interpolations": ["linear_zero", "log_linear_df", "monotone_convex"]
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "df@0.25": 0.99004983374916811,
+      "df@0.5": 0.98019867330675525,
+      "df@1": 0.96078943915232318,
+      "df@2": 0.92311634638663576,
+      "df@3": 0.88692043671715748,
+      "df@4": 0.85214378896621135,
+      "df@5": 0.81873075307798182,
+      "df@7": 0.75578374145572547,
+      "df@8.5": 0.71177032276260976,
+      "df@10": 0.67032004603563933,
+      "forwardEverywhere": 0.04
+    },
+    "tol": {
+      "df@0.25": 1e-15,
+      "df@0.5": 1e-15,
+      "df@1": 1e-15,
+      "df@2": 1e-15,
+      "df@3": 1e-15,
+      "df@4": 1e-15,
+      "df@5": 1e-15,
+      "df@7": 1e-15,
+      "df@8.5": 1e-15,
+      "df@10": 1e-15,
+      "forwardEverywhere": 1e-15
+    },
+    "source": "Closed form. The node set is df(t) = exp(-0.04 t) at t = 1,2,3,5,7,10 (a flat 4 % continuous forward). A curve whose discrete forwards are all equal has one and only one interpolant under each of the three rules -- the flat one -- so every sample, node or not, is exp(-0.04 t) to double precision. Values transcribed from Math.exp(-0.04 t) at 17 significant digits, not from the interpolators."
+  },
+  {
+    "id": "curve.interp.monotone.stressed",
+    "engine": "curve.interp",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "times": [0.25, 0.5, 1, 2, 3, 5, 7, 10],
+      "forwards": [0.0525, 0.001, 0.06, 0.0005, 0.045, 0.08, 0.001, 0.03],
+      "gridStep": 0.005,
+      "interpolation": "monotone_convex"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "df@0.25": 0.9869607572146836,
+      "df@0.5": 0.9867140478653335,
+      "df@1": 0.9575522406404818,
+      "df@2": 0.9570735841942452,
+      "df@3": 0.9149599364186777,
+      "df@5": 0.7796774269720959,
+      "df@7": 0.7781196304339553,
+      "df@10": 0.7111477961253148,
+      "forwardLowerBound": 0.00025,
+      "forwardUpperBound": 0.24,
+      "forwardsNonNegative": true,
+      "dfStrictlyDecreasing": true,
+      "nodeDiscreteForwardsReproduced": true
+    },
+    "tol": {
+      "df@0.25": 1e-15,
+      "df@0.5": 1e-15,
+      "df@1": 1e-15,
+      "df@2": 1e-15,
+      "df@3": 1e-15,
+      "df@5": 1e-15,
+      "df@7": 1e-15,
+      "df@10": 1e-15,
+      "forwardLowerBound": 0,
+      "forwardUpperBound": 0
+    },
+    "source": "Closed form plus the Hagan & West (2006) bounds. The eight nodes are df_i = exp(-sum_k f_k dt_k) for the alternating discrete forward set in `forwards` (5.25 %, 0.10 %, 6.00 %, 0.05 %, 4.50 %, 8.00 %, 0.10 %, 3.00 %) -- a curve that a cubic spline through the zero rates sends negative. The node discount factors are transcribed from that sum at 17 significant digits. `forwardLowerBound` is the paper's section 5 positivity collar consequence f(t) >= min_i(f_i^disc)/2 = 0.0005/2, and `forwardUpperBound` is the matching algebraic ceiling f(t) <= 3*max_i(f_i^disc) = 3*0.08 (the collar caps a node forward at twice the smaller adjacent discrete forward, and region (iv)'s plateau moves f by at most the smaller endpoint deviation): both are bounds the method guarantees, not observed values. The booleans are the invariants under test, checked on a grid of step `gridStep`."
+  },
+  {
+    "id": "curve.interp.monotone.increasing",
+    "engine": "curve.interp",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "times": [0.5, 1, 2, 3, 5, 7, 10],
+      "forwards": [0.01, 0.015, 0.02, 0.028, 0.035, 0.04, 0.045],
+      "gridStep": 0.005,
+      "interpolation": "monotone_convex"
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "df@0.5": 0.9950124791926823,
+      "df@1": 0.9875778004938814,
+      "df@2": 0.968022449831306,
+      "df@3": 0.9412937690184057,
+      "df@5": 0.8776564929487385,
+      "df@7": 0.8101790551533476,
+      "df@10": 0.7078663318038575,
+      "forwardMonotoneNonDecreasing": true,
+      "forwardsNonNegative": true,
+      "dfStrictlyDecreasing": true,
+      "forwardLowerBound": 0,
+      "forwardUpperBound": 0.135
+    },
+    "tol": {
+      "df@0.5": 1e-15,
+      "df@1": 1e-15,
+      "df@2": 1e-15,
+      "df@3": 1e-15,
+      "df@5": 1e-15,
+      "df@7": 1e-15,
+      "df@10": 1e-15,
+      "forwardLowerBound": 0,
+      "forwardUpperBound": 0
+    },
+    "source": "Closed form plus the monotonicity theorem. The node discount factors are exp(-sum_k f_k dt_k) over a strictly increasing discrete forward set, transcribed at 17 significant digits. Hagan & West's monotone convex method is monotonicity preserving: over data whose discrete forwards increase, the interpolated instantaneous forward is non-decreasing across the whole domain -- the assertion this case exists for. The bounds are the guaranteed ones (f >= 0 from the section 5 collar, f <= 3*max f^disc), not the data's own extremes: the paper's end conditions deliberately undershoot the first discrete forward at t = 0 and overshoot the last at t = T, which is monotone but outside the data range."
+  }
+]

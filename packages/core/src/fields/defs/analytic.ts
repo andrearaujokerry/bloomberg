@@ -27,6 +27,37 @@ const chain = (path: string): FieldSource[] => [
 ];
 const engine = (name: string): FieldSource[] => [src('*', 'internal.derived', 'analytics', name)];
 
+/** Asset classes a curve, swap or policy-path number applies to. */
+const RATES = ['govt', 'rate'] as const;
+/** Asset classes the statistics engine runs a return series for. */
+const SERIES = ['equity', 'etf', 'index', 'fx', 'crypto'] as const;
+
+/**
+ * A constant-maturity par point of the Treasury curve. Published by `treasury.yieldcurve` as
+ * `BC_<tenor>` and reproduced by the terminal's own bootstrap, so both sources are declared.
+ */
+const crvPoint = (id: string, tenor: string, providerKey: string, value: number): FieldDef => ({
+  id,
+  label: `Treasury par yield (${tenor})`,
+  definition:
+    `Constant-maturity par yield of the US Treasury curve at the ${tenor} tenor, in percent — the ` +
+    'coupon a par bond of that maturity would carry on the curve build of CURVE_DATE.',
+  type: 'number',
+  unit: 'pct',
+  decimals: 3,
+  fieldClass: 'analytic',
+  assetClasses: [...RATES],
+  sources: [
+    src('govt', 'treasury.yieldcurve', 'yieldcurve', `data.dailyTreasuryYieldCurve.${providerKey}`),
+    src('govt', 'internal.derived', 'analytics', 'core/analytics/curve/bootstrap.ts#parYield'),
+  ],
+  updateFreq: 'daily',
+  pit: true,
+  derivation: `published CMT point, or CURVE_PAR of the active build at t = ${tenor}`,
+  example: { ref: 'UST_PAR Curve', value, asOf: '2026-09-15' },
+  since: SINCE,
+});
+
 export const analyticFields: readonly FieldDef[] = [
   // ── Fixed income (core/analytics/bond/*) ─────────────────────────────────────────────────────
   {
@@ -472,6 +503,983 @@ export const analyticFields: readonly FieldDef[] = [
     pit: false,
     derivation: 'stdev(ln(P_t/P_{t−1}), n = 30) × sqrt(252) × 100',
     example: { ref: 'AAPL US Equity', value: 21.36, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+
+  {
+    id: 'VOL_90D',
+    label: 'Realised volatility (90d)',
+    definition:
+      'Annualised standard deviation of the last 90 daily log returns of the total-return series, ' +
+      'in percent, on a 252-day year. Requires at least 75 observations or it is unavailable.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#volatility'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'stdev(ln(P_t/P_{t−1}), n = 90) × sqrt(252) × 100',
+    example: { ref: 'AAPL US Equity', value: 23.71, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RET_1D',
+    label: 'Total return (1 day)',
+    definition:
+      'Total return over the last completed session, in percent, on the dividend-reinvested series ' +
+      '— not the tape’s raw change, so an ex-dividend date does not show as a loss.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#simpleReturn'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 1 session) − 1, ×100',
+    example: { ref: 'AAPL US Equity', value: 0.41, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RET_1W',
+    label: 'Total return (1 week)',
+    definition:
+      'Total return over the trailing five sessions, in percent, on the dividend-reinvested series.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#simpleReturn'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 5 sessions) − 1, ×100',
+    example: { ref: 'AAPL US Equity', value: 1.87, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RET_1M',
+    label: 'Total return (1 month)',
+    definition:
+      'Total return over the trailing 21 sessions, in percent, on the dividend-reinvested series.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#simpleReturn'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 21 sessions) − 1, ×100',
+    example: { ref: 'AAPL US Equity', value: 3.42, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RET_YTD',
+    label: 'Total return (year to date)',
+    definition:
+      'Total return from the last session of the previous calendar year to validAt, in percent, on ' +
+      'the dividend-reinvested series.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#simpleReturn'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(last session of year − 1) − 1, ×100',
+    example: { ref: 'AAPL US Equity', value: 14.62, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RET_1Y',
+    label: 'Total return (1 year)',
+    definition:
+      'Total return over the trailing 252 sessions, in percent, on the dividend-reinvested series. ' +
+      'Not annualised — it already covers one year.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#simpleReturn'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 252 sessions) − 1, ×100',
+    example: { ref: 'AAPL US Equity', value: 22.08, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'BETA_1Y',
+    label: 'Beta (1 year)',
+    definition:
+      'OLS slope of the instrument’s daily returns on the benchmark’s daily returns over the ' +
+      'trailing 252 sessions — how much the instrument moves for a one-unit move in the benchmark.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#beta'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'cov(r_i, r_b) / var(r_b) over 252 sessions, equal to the OLS slope',
+    example: { ref: 'AAPL US Equity', value: 1.184, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'CORR_1Y',
+    label: 'Correlation to benchmark (1 year)',
+    definition:
+      'Pearson correlation of the instrument’s daily returns with the benchmark’s over the trailing ' +
+      '252 sessions, between −1 and +1.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#correlation'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'cov(r_i, r_b) / (stdev(r_i) × stdev(r_b)) over 252 sessions',
+    example: { ref: 'AAPL US Equity', value: 0.812, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SHARPE_1Y',
+    label: 'Sharpe ratio (1 year)',
+    definition:
+      'Annualised excess return over annualised volatility on the trailing window: mean daily ' +
+      'simple return less the daily risk-free rate, ×252, divided by the sample (n−1) standard ' +
+      'deviation ×√252. The Conventions object that fixes ddof, the 252-day year and the risk-free ' +
+      'rate is echoed in the engine output.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#sharpe'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: '(mean(r) × 252 − rf) / (stdev(r, ddof = 1) × sqrt(252))',
+    example: { ref: 'TESTING §7.8 stats.vol.sharpe.10', value: 3.495716, asOf: '2026-01-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SORTINO_1Y',
+    label: 'Sortino ratio (1 year)',
+    definition:
+      'Annualised excess return over annualised downside deviation — the same numerator as ' +
+      'SHARPE_1Y, but the denominator counts only returns below the target, so upside volatility ' +
+      'is not penalised.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#sortino'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: '(mean(r) × 252 − rf) / (stdev(min(r − target, 0), ddof = 1) × sqrt(252))',
+    example: { ref: 'AAPL US Equity', value: 1.462, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'INFO_RATIO_1Y',
+    label: 'Information ratio (1 year)',
+    definition:
+      'Annualised active return divided by annualised tracking error over the trailing window: ' +
+      'return per unit of risk taken away from the benchmark.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#informationRatio'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'mean(r_i − r_b) × 252 / (stdev(r_i − r_b, ddof = 1) × sqrt(252))',
+    example: { ref: 'AAPL US Equity', value: 0.734, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'MAX_DD_1Y',
+    label: 'Maximum drawdown (1 year)',
+    definition:
+      'Largest peak-to-trough fall of the compounded return series over the trailing window, in ' +
+      'percent. Always ≤ 0; 0 means the series never fell below a previous peak.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: [...SERIES],
+    sources: engine('core/analytics/stats/index.ts#maxDrawdown'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'min over t of (V_t / max_{s ≤ t} V_s − 1), ×100, on the compounded series',
+    example: { ref: 'TESTING §7.8 stats.vol.sharpe.10', value: -1.25, asOf: '2026-01-15' },
+    since: SINCE,
+  },
+
+  // ── Bond risk, spreads and bill yields (core/analytics/bond/*, bill.ts — ANAL-01, YAS) ────────
+  {
+    id: 'CONVEXITY_MID',
+    label: 'Convexity',
+    definition:
+      'Second-order price sensitivity in years²: the curvature of the price-yield curve, ' +
+      '(1/P) × d²P/dy² with the yield in decimal on the issue’s compounding basis. It is what the ' +
+      'first-order DUR_ADJ_MID estimate misses for a large yield move.',
+    type: 'number',
+    unit: 'years',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bond/risk.ts#convexity'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(1/PX_DIRTY_MID) × Σ t(t + 1/f) · PV(cf_t) / (1 + y/f)²',
+    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 4.484914, asOf: '2026-08-15' },
+    since: SINCE,
+  },
+  {
+    id: 'DV01',
+    label: 'DV01',
+    definition:
+      'Dollar value of one basis point: the change in the position’s value, in the instrument ' +
+      'currency, for a one basis point parallel fall in yield, on the face amount the analytic was ' +
+      'run with. Positive for a long position.',
+    type: 'number',
+    unit: 'ccy',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/analytics/bond/risk.ts#dv01'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'DUR_ADJ_MID × PX_DIRTY_MID × face / 100 × 0.0001',
+    example: {
+      ref: 'TESTING §7.3 bond.discount.2y on 1,000,000 face',
+      value: 183.63,
+      asOf: '2026-08-15',
+    },
+    since: SINCE,
+  },
+  {
+    id: 'DV01_PER_100',
+    label: 'DV01 per 100 face',
+    definition:
+      'DV01 expressed in price points per 100 of face, so it is comparable across issues without ' +
+      'knowing the face amount. DV01 = DV01_PER_100 × face / 100.',
+    type: 'number',
+    unit: 'price',
+    decimals: 6,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/analytics/bond/risk.ts#dv01Per100'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'DUR_ADJ_MID × PX_DIRTY_MID × 0.0001',
+    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0.018363, asOf: '2026-08-15' },
+    since: SINCE,
+  },
+  {
+    id: 'KRD_2Y',
+    label: 'Key-rate duration (2y)',
+    definition:
+      'Price sensitivity in years to a 1 bp bump of the 2-year node of the pricing curve’s zero ' +
+      'curve, with a triangular kernel peaking at 2y and the issue’s z-spread held fixed. The key-' +
+      'rate durations sum to DUR_ADJ_MID.',
+    type: 'number',
+    unit: 'years',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 2y',
+    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 1.871103, asOf: '2026-08-15' },
+    since: SINCE,
+  },
+  {
+    id: 'KRD_5Y',
+    label: 'Key-rate duration (5y)',
+    definition:
+      'Price sensitivity in years to a 1 bp triangular bump of the 5-year node of the zero curve, ' +
+      'the issue’s z-spread held fixed. Zero for a bond with no cash flow near 5 years.',
+    type: 'number',
+    unit: 'years',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 5y',
+    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0, asOf: '2026-08-15' },
+    since: SINCE,
+  },
+  {
+    id: 'KRD_10Y',
+    label: 'Key-rate duration (10y)',
+    definition:
+      'Price sensitivity in years to a 1 bp triangular bump of the 10-year node of the zero curve, ' +
+      'the issue’s z-spread held fixed.',
+    type: 'number',
+    unit: 'years',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 10y',
+    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0, asOf: '2026-08-15' },
+    since: SINCE,
+  },
+  {
+    id: 'KRD_30Y',
+    label: 'Key-rate duration (30y)',
+    definition:
+      'Price sensitivity in years to a 1 bp bump of the 30-year node of the zero curve, flat beyond ' +
+      'the last key tenor, the issue’s z-spread held fixed.',
+    type: 'number',
+    unit: 'years',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 30y',
+    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0, asOf: '2026-08-15' },
+    since: SINCE,
+  },
+  {
+    id: 'YLD_VAL_32ND',
+    label: 'Yield value of 1/32',
+    definition:
+      'Yield change, in basis points, produced by a price change of one thirty-second of a point — ' +
+      'the tick value of the Treasury market expressed in yield terms.',
+    type: 'number',
+    unit: 'bp',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bond/risk.ts#yieldValueOf32nd'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(1/32) / DV01_PER_100 × 0.01, in bp',
+    example: { ref: 'T 4 1/4 11/15/35 Govt', value: 0.42, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'ACCRUED_DAYS',
+    label: 'Accrued days',
+    definition:
+      'Number of days of interest accrued from the last coupon date to the settlement date, counted ' +
+      'on the issue’s day-count convention — the numerator of the accrual fraction.',
+    type: 'integer',
+    unit: 'days',
+    decimals: 0,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bond/cashflows.ts#accrualDays'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'dayCount.days(lastCouponDate, settlementDate) on the issue convention',
+    example: { ref: 'T 4 1/4 11/15/35 Govt', value: 31, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'DAY_CNT_FRAC',
+    label: 'Day-count fraction',
+    definition:
+      'Fraction of the current coupon period that has elapsed at settlement on the issue’s day-count ' +
+      'convention: ACCRUED_DAYS over the days in the period. ACCRUED is the coupon times this.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 9,
+    fieldClass: 'analytic',
+    assetClasses: ['govt', 'rate'],
+    sources: engine('core/daycount/conventions.ts#yearFraction'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'ACCRUED_DAYS / days in the coupon period, on the issue convention',
+    example: { ref: 'T 4 1/4 11/15/35 Govt', value: 0.168478261, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'DISC_RATE',
+    label: 'Discount rate (bill)',
+    definition:
+      'Treasury bill discount rate in percent on the ACT/360 bank-discount basis, quoted off the ' +
+      'face rather than the price. It is not a return: BEY is the comparable yield.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 3,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: [
+      src('govt', 'treasury.bills', 'bills', 'securities[].highDiscountRate'),
+      src('govt', 'internal.derived', 'analytics', 'core/analytics/bill.ts#discountFromPrice'),
+    ],
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(100 − price) / 100 × 360 / daysToMaturity × 100',
+    example: { ref: '912797VE4 Govt', value: 3.69, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'BEY',
+    label: 'Bond-equivalent yield',
+    definition:
+      'Investment yield of a bill on the ACT/365 coupon-equivalent basis, in percent, so it can be ' +
+      'compared with a note’s YLD_YTM_MID. Bills of 182 days or less use the simple formula; longer ' +
+      'bills use the quadratic solution that accounts for the intermediate coupon.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bill.ts#beyFromDiscount'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '365 d / (360 − d·t) for t ≤ 182 days; the quadratic coupon-equivalent above 182',
+    example: { ref: '912797VE4 Govt', value: 3.7603, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'MM_YIELD',
+    label: 'Money-market yield',
+    definition:
+      'Bill yield on the ACT/360 money-market basis, in percent — the discount rate restated as a ' +
+      'return on the price paid rather than on the face received.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bill.ts#moneyMarketYield'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '360 × d / (360 − d × daysToMaturity)',
+    example: { ref: '912797VE4 Govt', value: 3.7096, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SPRD_TO_CRV',
+    label: 'Spread to curve',
+    definition:
+      'Yield of the security less the pricing curve’s interpolated par yield at the same time to ' +
+      'maturity, in basis points. Positive means the security yields more than the curve.',
+    type: 'number',
+    unit: 'bp',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bond/risk.ts#spreadToCurve'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(YLD_YTM_MID − CURVE_PAR at the security’s maturity) × 100',
+    example: { ref: 'T 4 1/4 11/15/35 Govt', value: 0, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SPRD_TO_BENCH',
+    label: 'Spread to benchmark',
+    definition:
+      'Yield of the security less the yield of the on-the-run issue at the nearest standard tenor ' +
+      'at or beyond its maturity, in basis points. Unavailable for bills and when the security is ' +
+      'itself the benchmark.',
+    type: 'number',
+    unit: 'bp',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bond/risk.ts#spreadToBenchmark'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(YLD_YTM_MID − benchmark YLD_YTM_MID) × 100',
+    example: { ref: 'T 4 1/4 11/15/35 Govt', value: 4.2, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'Z_SPRD_MID',
+    label: 'Z-spread',
+    definition:
+      'Constant spread in basis points added to every zero rate of the pricing curve that makes the ' +
+      'discounted cash flows equal PX_DIRTY_MID. Unlike SPRD_TO_CRV it uses the whole curve rather ' +
+      'than one interpolated point, so it is zero for a bond priced off the curve.',
+    type: 'number',
+    unit: 'bp',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['govt'],
+    sources: engine('core/analytics/bond/risk.ts#zSpread'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'Brent solve of Σ cf_t · df(t, z) = PX_DIRTY_MID over ±2000 bp',
+    example: { ref: 'T 4 1/4 11/15/35 Govt', value: 1.3, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+
+  // ── Curve (core/analytics/curve/*, ANAL-02 — CRVF, ICVS, SWPM, WIRP) ─────────────────────────
+  crvPoint('CRV_1M', '1 month', 'BC_1MONTH', 4.021),
+  crvPoint('CRV_2M', '2 month', 'BC_2MONTH', 4.008),
+  crvPoint('CRV_3M', '3 month', 'BC_3MONTH', 3.987),
+  crvPoint('CRV_6M', '6 month', 'BC_6MONTH', 3.921),
+  crvPoint('CRV_1Y', '1 year', 'BC_1YEAR', 3.842),
+  crvPoint('CRV_2Y', '2 year', 'BC_2YEAR', 3.764),
+  crvPoint('CRV_3Y', '3 year', 'BC_3YEAR', 3.748),
+  crvPoint('CRV_5Y', '5 year', 'BC_5YEAR', 3.812),
+  crvPoint('CRV_7Y', '7 year', 'BC_7YEAR', 3.936),
+  crvPoint('CRV_10Y', '10 year', 'BC_10YEAR', 4.073),
+  crvPoint('CRV_20Y', '20 year', 'BC_20YEAR', 4.512),
+  crvPoint('CRV_30Y', '30 year', 'BC_30YEAR', 4.658),
+  {
+    id: 'CURVE_PAR',
+    label: 'Par rate',
+    definition:
+      'Par rate of the built curve at the requested time to maturity, in percent: the coupon that ' +
+      'prices a bond of that maturity at 100 off the curve’s own discount factors.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: [...RATES],
+    sources: engine('core/analytics/curve/curve.ts#parRate'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(1 − CURVE_DF(T)) / Σ accrualFactor_i × CURVE_DF(t_i), ×100',
+    example: { ref: 'UST_PAR Curve @ 10y', value: 4.0731, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'CURVE_ZERO',
+    label: 'Zero rate',
+    definition:
+      'Continuously-compounded zero-coupon rate of the built curve at the requested time, in ' +
+      'percent — the rate that discounts a single cash flow at that maturity. The curve’s ' +
+      'interpolation (linear_zero, log_linear_df or monotone_convex) is echoed with the build.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 6,
+    fieldClass: 'analytic',
+    assetClasses: [...RATES],
+    sources: engine('core/analytics/curve/curve.ts#zero'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '−ln(CURVE_DF(t)) / t × 100',
+    example: { ref: 'UST_PAR Curve @ 10y', value: 4.021873, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'CURVE_DF',
+    label: 'Discount factor',
+    definition:
+      'Present value on the built curve of one unit paid at the requested time. Strictly positive ' +
+      'and non-increasing in t for an arbitrage-free build; 1.0 at the curve date.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 9,
+    fieldClass: 'analytic',
+    assetClasses: [...RATES],
+    sources: engine('core/analytics/curve/curve.ts#df'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'exp(−CURVE_ZERO/100 × t) from the bootstrapped nodes',
+    example: { ref: 'UST_PAR Curve @ 10y', value: 0.669321044, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'CURVE_FWD_3M',
+    label: 'Forward rate (3 month)',
+    definition:
+      'Three-month forward rate implied by the built curve starting at the requested time, in ' +
+      'percent: the rate the curve says will apply over the three months after that date.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: [...RATES],
+    sources: engine('core/analytics/curve/curve.ts#fwd'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(CURVE_DF(t1)/CURVE_DF(t2) − 1) / (t2 − t1), ×100 with t2 = t1 + 0.25',
+    example: { ref: 'UST_PAR Curve @ 2y', value: 3.7412, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+
+  // ── SOFR OIS swap (core/analytics/swap/ois.ts — SWPM) ────────────────────────────────────────
+  {
+    id: 'SWAP_PAR_RATE',
+    label: 'Swap par rate',
+    definition:
+      'Fixed rate in percent that makes the swap’s net present value zero on the SOFR_OIS build: ' +
+      'the market rate for the trade’s start, tenor and schedule.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/swap/ois.ts#parRate'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'pvFloat / Σ accrualFactor_i × CURVE_DF(t_i), ×100',
+    example: { ref: 'USD SOFR OIS 5Y', value: 3.7412, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SWAP_FIXED_RATE',
+    label: 'Swap fixed rate',
+    definition:
+      'Fixed rate of the swap as traded, in percent. When the trade is struck at market it equals ' +
+      'SWAP_PAR_RATE and SWAP_NPV is zero.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/swap/ois.ts#fixedLeg'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'the trade’s fixed rate, or SWAP_PAR_RATE when none was given',
+    example: { ref: 'USD SOFR OIS 5Y', value: 3.75, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SWAP_NPV',
+    label: 'Swap NPV',
+    definition:
+      'Net present value of the swap in the trade currency from the payer’s side: the PV of the ' +
+      'floating leg less the PV of the fixed leg, negated for a receiver. Zero at the par rate.',
+    type: 'number',
+    unit: 'ccy',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/swap/ois.ts#npv'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'pvFloat − pvFixed for side = pay; negated for receive',
+    example: { ref: 'USD SOFR OIS 5Y', value: -4061.42, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SWAP_PV01',
+    label: 'Swap PV01',
+    definition:
+      'Present value of one basis point on the fixed leg — the annuity of the schedule — in the ' +
+      'trade currency. It is the denominator that turns an NPV into a rate difference.',
+    type: 'number',
+    unit: 'ccy',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/swap/ois.ts#pv01'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'Σ accrualFactor_i × CURVE_DF(t_i) × notional × 0.0001',
+    example: { ref: 'USD SOFR OIS 5Y', value: 4612.08, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'SWAP_ACCRUED',
+    label: 'Swap accrued',
+    definition:
+      'Net interest accrued on the current period to the valuation date: fixed-leg accrual less ' +
+      'the compounded floating accrual from the published SOFR fixings, in the trade currency.',
+    type: 'number',
+    unit: 'ccy',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/swap/ois.ts#accrued'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'fixed accrual − compounded float accrual on the current period',
+    example: { ref: 'USD SOFR OIS 5Y', value: 1284.31, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+
+  // ── Volatility surface (core/analytics/vol/surface.ts — ANAL-04, OVML/OMON) ───────────────────
+  {
+    id: 'IVOL_30D',
+    label: 'Implied volatility (30d)',
+    definition:
+      'At-the-money implied volatility at a constant 30-day horizon, in percent, interpolated in ' +
+      'total variance between the two listed expiries that bracket 30 days on the fitted surface.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 2,
+    fieldClass: 'analytic',
+    assetClasses: ['equity', 'etf', 'index'],
+    sources: engine('core/analytics/vol/surface.ts#atmVol'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'linear interpolation in σ²T between the bracketing expiries at k = 0, ×100',
+    example: { ref: 'AAPL US Equity', value: 26.84, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'OPT_FWD_PX',
+    label: 'Forward price (chain-implied)',
+    definition:
+      'Forward price of the underlying for the option’s expiry implied by put-call parity across ' +
+      'the chain’s most liquid strikes. It is the abscissa the SVI slice is fitted in, so it is ' +
+      'published with the fit.',
+    type: 'number',
+    unit: 'price',
+    decimals: null,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#forwardFromParity'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'K* + (call(K*) − put(K*)) · e^{rT} at the least-absolute-difference strike K*',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 352.18, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'OPT_LOG_MNY',
+    label: 'Log-moneyness',
+    definition:
+      'Natural logarithm of strike over OPT_FWD_PX — the x-axis of the SVI slice. Negative below ' +
+      'the forward, zero at the money, positive above it.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 6,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#logMoneyness'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'ln(OPT_STRIKE_PX / OPT_FWD_PX)',
+    example: { ref: 'AAPL US 12/19/26 C350 Equity', value: -0.006209, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_A',
+    label: 'SVI a (level)',
+    definition:
+      'Vertical-shift parameter of the raw SVI slice w(k) = a + b(ρ(k − m) + √((k − m)² + σ²)): the ' +
+      'level of total implied variance for the expiry. Stored as vol_surfaces.svi.a.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 8,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'least-squares fit of raw SVI total variance to the slice’s mid implied vols',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 0.01284219, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_B',
+    label: 'SVI b (slope)',
+    definition:
+      'Wing-slope parameter of the raw SVI slice: half the sum of the left and right asymptotic ' +
+      'slopes of total variance in log-moneyness. Non-negative. Stored as vol_surfaces.svi.b.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 8,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'least-squares fit of raw SVI total variance to the slice’s mid implied vols',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 0.0921437, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_RHO',
+    label: 'SVI rho (skew)',
+    definition:
+      'Rotation parameter of the raw SVI slice, in (−1, 1): the skew of the smile. Negative tilts ' +
+      'variance towards low strikes, the usual equity shape. Stored as vol_surfaces.svi.rho.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 8,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'least-squares fit of raw SVI total variance to the slice’s mid implied vols',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: -0.4183625, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_M',
+    label: 'SVI m (shift)',
+    definition:
+      'Horizontal-shift parameter of the raw SVI slice: the log-moneyness at which the smile is ' +
+      'centred. Stored as vol_surfaces.svi.m.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 8,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'least-squares fit of raw SVI total variance to the slice’s mid implied vols',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 0.0217483, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_SIGMA',
+    label: 'SVI sigma (curvature)',
+    definition:
+      'Curvature parameter of the raw SVI slice: how rounded the smile is at its minimum. Strictly ' +
+      'positive. Stored as vol_surfaces.svi.sigma — it is not a volatility.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 8,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'least-squares fit of raw SVI total variance to the slice’s mid implied vols',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 0.1472066, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_RMSE',
+    label: 'SVI fit RMSE',
+    definition:
+      'Root-mean-square error of the fitted slice against the observed mid implied volatilities, in ' +
+      'volatility points. The quality measure of the fit; stored as vol_surfaces.svi.rmse.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 6,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'sqrt(mean((σ_fit(k_i) − σ_obs(k_i))²)) over the fitted points, ×100',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 0.184213, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+  {
+    id: 'SVI_N',
+    label: 'SVI fit points',
+    definition:
+      'Number of chain points that entered the SVI fit after the quote, moneyness and ivSuspect ' +
+      'filters. Fewer than five points returns no fit. Stored as vol_surfaces.svi.n.',
+    type: 'integer',
+    unit: 'count',
+    decimals: 0,
+    fieldClass: 'analytic',
+    assetClasses: ['option'],
+    sources: engine('core/analytics/vol/surface.ts#fitSlice'),
+    updateFreq: '1m',
+    pit: false,
+    derivation: 'count of strikes surviving the fit filters for the expiry',
+    example: { ref: 'AAPL US 12/19/26 Chain', value: 34, asOf: '2026-09-15T18:41:28Z' },
+    since: SINCE,
+  },
+
+  // ── Implied policy path (core/analytics/wirp/policyPath.ts — WIRP) ───────────────────────────
+  {
+    id: 'WIRP_IMPL_RATE',
+    label: 'Implied policy rate',
+    definition:
+      'Overnight rate in percent that the money-market curve implies will prevail after the FOMC ' +
+      'meeting, from the forward rate over the inter-meeting period. Derived from bill and OIS ' +
+      'forwards, not from fed funds futures, which this terminal has no source for.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 4,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/wirp/policyPath.ts#impliedRate'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'CURVE_FWD over [meeting, next meeting] on the money-market curve',
+    example: { ref: 'FOMC 2026-10-28', value: 3.8712, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'WIRP_MOVE_BP',
+    label: 'Implied cumulative move',
+    definition:
+      'Implied change in the policy rate from the current target midpoint to WIRP_IMPL_RATE, in ' +
+      'basis points, cumulative from today to that meeting. Negative means easing.',
+    type: 'number',
+    unit: 'bp',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/wirp/policyPath.ts#impliedMove'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '(WIRP_IMPL_RATE − (TARGET_FROM + TARGET_TO)/2) × 100',
+    example: { ref: 'FOMC 2026-10-28', value: -12.9, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'WIRP_PROB_HIKE',
+    label: 'Probability of a hike',
+    definition:
+      'Probability in percent that the meeting moves the target range up by at least one 25 bp ' +
+      'step, from the implied move split across the two bracketing 25 bp outcomes. The hold, hike ' +
+      'and cut probabilities of one meeting sum to 100.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/wirp/policyPath.ts#stepProbabilities'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'share of WIRP_MOVE_BP allocated to the +25 bp step and above',
+    example: { ref: 'FOMC 2026-10-28', value: 0, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'WIRP_PROB_CUT',
+    label: 'Probability of a cut',
+    definition:
+      'Probability in percent that the meeting moves the target range down by at least one 25 bp ' +
+      'step, from the implied move split across the two bracketing 25 bp outcomes.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/wirp/policyPath.ts#stepProbabilities'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'share of WIRP_MOVE_BP allocated to the −25 bp step and below',
+    example: { ref: 'FOMC 2026-10-28', value: 51.6, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'WIRP_PROB_HOLD',
+    label: 'Probability of no change',
+    definition:
+      'Probability in percent that the meeting leaves the target range unchanged: the remainder ' +
+      'after WIRP_PROB_HIKE and WIRP_PROB_CUT. A flat curve gives 100.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 1,
+    fieldClass: 'analytic',
+    assetClasses: ['rate'],
+    sources: engine('core/analytics/wirp/policyPath.ts#stepProbabilities'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: '100 − WIRP_PROB_HIKE − WIRP_PROB_CUT',
+    example: { ref: 'FOMC 2026-10-28', value: 48.4, asOf: '2026-09-15' },
     since: SINCE,
   },
 

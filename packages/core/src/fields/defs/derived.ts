@@ -313,6 +313,91 @@ export const derivedFields: readonly FieldDef[] = [
     since: SINCE,
   },
 
+  // ── Corporate-action adjustment (core/adjust/corporateActions.ts — REF-09) ───────────────────
+  {
+    id: 'ADJ_FACTOR_PX',
+    label: 'Price adjustment factor',
+    definition:
+      'Cumulative factor applied to the unadjusted close of a session to put it on the basis of the ' +
+      'last bar of the window: the product of every split and, under the total-return policy, every ' +
+      'dividend factor with an ex-date after that session. 1.0 when no action follows.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 9,
+    fieldClass: 'derived',
+    assetClasses: [...QUOTED_WIDE],
+    sources: derive('core/adjust/corporateActions.ts#adjustmentFactors'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation:
+      'Π over later actions of (ratioOld/ratioNew) for splits and (1 − amount/closeBeforeEx) for ' +
+      'dividends, where closeBeforeEx is the unadjusted close of the session before the ex-date',
+    example: {
+      ref: 'TESTING §7.9 case 1 (2:1 split + 0.50 dividend on a 50.00 close)',
+      value: 0.495,
+      asOf: '2026-09-15',
+    },
+    since: SINCE,
+  },
+  {
+    id: 'ADJ_FACTOR_VOL',
+    label: 'Volume adjustment factor',
+    definition:
+      'Cumulative factor applied to the unadjusted volume of a session so that share counts are ' +
+      'comparable across splits. It is the reciprocal of the split part of ADJ_FACTOR_PX; cash ' +
+      'dividends never move it.',
+    type: 'number',
+    unit: 'ratio',
+    decimals: 9,
+    fieldClass: 'derived',
+    assetClasses: [...QUOTED_WIDE],
+    sources: derive('core/adjust/corporateActions.ts#adjustmentFactors'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'Π over later splits of (ratioNew/ratioOld)',
+    example: { ref: 'AAPL US Equity (4:1 split, ex 2020-08-31)', value: 4, asOf: '2020-08-28' },
+    since: SINCE,
+  },
+  {
+    id: 'ADJ_POLICY',
+    label: 'Adjustment policy',
+    definition:
+      'Which corporate-action adjustment produced the series on the screen: unadjusted (raw tape), ' +
+      'price (splits only) or total_return (splits and dividends reinvested). Published with every ' +
+      'adjusted series, because two policies give two different numbers for the same day.',
+    type: 'enum',
+    unit: 'enum',
+    decimals: null,
+    enumValues: ['unadjusted', 'price', 'total_return'],
+    fieldClass: 'derived',
+    assetClasses: [...QUOTED_WIDE],
+    sources: derive('core/adjust/corporateActions.ts#applyAdjustment'),
+    updateFreq: 'daily',
+    pit: false,
+    derivation: 'the AdjustPolicy the run was asked for; echoed, never inferred',
+    example: { ref: 'AAPL US Equity', value: 'price', asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'DAYS_TO_MTY',
+    label: 'Days to maturity',
+    definition:
+      'Actual calendar days from the settlement date used by the analytic to the maturity date. The ' +
+      'day count that drives the bill formulas, and the branch that picks the ≤ 182-day or > 182-day ' +
+      'investment-yield formula.',
+    type: 'integer',
+    unit: 'days',
+    decimals: 0,
+    fieldClass: 'derived',
+    assetClasses: ['govt'],
+    sources: derive('core/calendars/tenor.ts#daysBetween'),
+    updateFreq: 'daily',
+    pit: true,
+    derivation: 'MATURITY − settlement date, in actual days',
+    example: { ref: '912797VE4 Govt', value: 28, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+
   // ── Harvested id kept for coverage (see reference.ts for why) ────────────────────────────────
   {
     id: 'CHG_',

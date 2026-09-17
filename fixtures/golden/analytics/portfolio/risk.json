@@ -1,0 +1,167 @@
+[
+  {
+    "id": "portfolio.risk.te.var.10",
+    "engine": "portfolio/risk",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "benchmark": [0.008, -0.002, 0.006, 0.004, -0.01, 0.016, -0.004, 0.002, 0.012, -0.008],
+      "portfolioValue": 10000000,
+      "conventions": {
+        "returns": "simple",
+        "annualisation": 252,
+        "ddof": 1,
+        "varConfidence": 0.95,
+        "percentileMethod": "linear",
+        "parametricMeanAdjusted": false
+      }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "n": 10,
+      "meanPeriod": 0.0025,
+      "stdevPeriod": 0.01099242,
+      "volAnnualised": 0.17449928,
+      "activeMeanPeriod": 0.0001,
+      "activeReturnAnnualised": 0.0252,
+      "trackingErrorPeriod": 0.00286550364,
+      "trackingErrorAnnualised": 0.04548846008,
+      "informationRatio": 0.553986659,
+      "varConfidence": 0.95,
+      "varZScore": 1.6448536269514722,
+      "historicalQuantileReturn": -0.011375,
+      "historicalVarReturn": 0.011375,
+      "historicalVarAmount": 113750,
+      "expectedShortfallReturn": 0.0125,
+      "expectedShortfallAmount": 125000,
+      "parametricVarReturn": 0.0180809245902,
+      "parametricVarAmount": 180809.245902
+    },
+    "tol": {
+      "n": 0,
+      "meanPeriod": 1e-14,
+      "stdevPeriod": 1e-8,
+      "volAnnualised": 1e-8,
+      "activeMeanPeriod": 1e-15,
+      "activeReturnAnnualised": 1e-14,
+      "trackingErrorPeriod": 1e-11,
+      "trackingErrorAnnualised": 1e-11,
+      "informationRatio": 1e-9,
+      "varConfidence": 0,
+      "varZScore": 1e-12,
+      "historicalQuantileReturn": 1e-15,
+      "historicalVarReturn": 1e-15,
+      "historicalVarAmount": 1e-8,
+      "expectedShortfallReturn": 1e-15,
+      "expectedShortfallAmount": 1e-8,
+      "parametricVarReturn": 1e-12,
+      "parametricVarAmount": 1e-6
+    },
+    "source": "closed form on the TESTING 7.8 series. The portfolio series and its stdev/vol are TESTING 7.8's own pins (mean 0.250000 %, sample sigma 1.099242 %, annualised 17.449928 %), reused verbatim. Benchmark series 0.80, -0.20, 0.60, 0.40, -1.00, 1.60, -0.40, 0.20, 1.20, -0.80 % (the stats.beta.10 benchmark). Active returns, in percent: 0.20, -0.30, 0.15, -0.15, -0.25, 0.40, -0.35, 0.30, 0.30, -0.20; sum = 0.10 %, mean = 0.01 %/day; deviations 0.19, -0.31, 0.14, -0.16, -0.26, 0.39, -0.36, 0.29, 0.29, -0.21; sum of squares = 0.7390 %^2; sample variance = 0.7390/9 = 0.08211111 %^2; tracking error = sqrt = 0.286550 %/day, x sqrt(252) = 4.548846 % annual; active return annualised = 0.01 x 252 = 2.52 %; information ratio = 2.52 / 4.548846 = 0.553987. Historical VaR: the sorted series is -1.25, -1.00, -0.75, -0.50, 0.25, 0.50, 0.75, 1.00, 1.50, 2.00 %; the type-7 5th percentile is h = 0.05 x 9 = 0.45 of the way from -1.25 to -1.00, i.e. -1.25 + 0.45 x 0.25 = -1.1375 %, so VaR = 1.1375 % = 113,750 USD on 10,000,000; the tail at or below it is the single -1.25 % return, so expected shortfall = 1.25 % = 125,000. Parametric VaR: z(0.95) = 1.6448536269514722 (published standard-normal quantile) x 1.099242163189 % = 1.808092459020 % = 180,809.245902 USD."
+  },
+  {
+    "id": "portfolio.risk.var.linear.80",
+    "engine": "portfolio/risk",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "portfolioValue": 10000000,
+      "conventions": { "varConfidence": 0.8, "percentileMethod": "linear" }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "historicalQuantileReturn": -0.008,
+      "historicalVarReturn": 0.008,
+      "historicalVarAmount": 80000,
+      "expectedShortfallReturn": 0.01125,
+      "varZScore": 0.8416212335729143
+    },
+    "tol": {
+      "historicalQuantileReturn": 1e-15,
+      "historicalVarReturn": 1e-15,
+      "historicalVarAmount": 1e-8,
+      "expectedShortfallReturn": 1e-15,
+      "varZScore": 1e-12
+    },
+    "source": "closed form, hand-computed on the TESTING 7.8 series. Type-7 20th percentile: h = 0.20 x 9 = 1.8, so 0.8 of the way from the 2nd to the 3rd order statistic, -1.00 + 0.8 x (-0.75 - -1.00) = -0.80 %. Tail at or below -0.80 %: -1.25 and -1.00, mean -1.125 %, so expected shortfall = 1.125 %. z(0.80) = 0.8416212335729143 (published standard-normal quantile)."
+  },
+  {
+    "id": "portfolio.risk.var.nearestRank.80",
+    "engine": "portfolio/risk",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "portfolioValue": 10000000,
+      "conventions": { "varConfidence": 0.8, "percentileMethod": "nearest-rank" }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "historicalQuantileReturn": -0.01,
+      "historicalVarReturn": 0.01,
+      "historicalVarAmount": 100000,
+      "expectedShortfallReturn": 0.01125
+    },
+    "tol": {
+      "historicalQuantileReturn": 1e-15,
+      "historicalVarReturn": 1e-15,
+      "historicalVarAmount": 1e-8,
+      "expectedShortfallReturn": 1e-15
+    },
+    "source": "closed form, hand-computed on the TESTING 7.8 series, same confidence as portfolio.risk.var.linear.80 and a different percentile convention, so the pair pins that the choice is never silent: the nearest-rank 20th percentile is order statistic ceil(0.20 x 10) = 2, i.e. -1.00 % exactly, against the type-7 answer of -0.80 %. The tail at or below -1.00 % is -1.25 and -1.00, mean -1.125 %, so the expected shortfall is 1.125 % either way."
+  },
+  {
+    "id": "portfolio.risk.scenarios",
+    "engine": "portfolio/risk",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "returns": [0.01, -0.005, 0.0075, 0.0025, -0.0125, 0.02, -0.0075, 0.005, 0.015, -0.01],
+      "portfolioValue": 10000000,
+      "holdings": [
+        {
+          "instrumentId": "UST_10Y",
+          "assetClass": "govt",
+          "currency": "USD",
+          "marketValue": 4000000,
+          "dv01": 3200,
+          "keyRateDv01": { "2Y": 300, "5Y": 400, "10Y": 2500, "30Y": 0 }
+        },
+        {
+          "instrumentId": "AAPL",
+          "assetClass": "equity",
+          "currency": "USD",
+          "marketValue": 3000000,
+          "beta": 1.2
+        },
+        {
+          "instrumentId": "SAP",
+          "assetClass": "equity",
+          "currency": "EUR",
+          "marketValue": 2000000,
+          "beta": 0.9
+        },
+        {
+          "instrumentId": "CASH_USD",
+          "assetClass": "cash",
+          "currency": "USD",
+          "marketValue": 1000000
+        }
+      ],
+      "scenarios": ["UST_PARALLEL_UP_100", "UST_STEEPEN_50", "EQUITY_DOWN_10", "USD_UP_5"],
+      "conventions": { "baseCurrency": "USD" }
+    },
+    "valuationTs": "2026-01-10T21:00:00Z",
+    "expected": {
+      "netAssetValue": 10000000,
+      "scenarioWorstId": "EQUITY_DOWN_10",
+      "scenarioWorstPnl": -540000,
+      "scenarioTotalPnl": -1010238.095238095
+    },
+    "tol": {
+      "netAssetValue": 0,
+      "scenarioWorstId": 0,
+      "scenarioWorstPnl": 1e-8,
+      "scenarioTotalPnl": 1e-6
+    },
+    "source": "closed form, hand-computed, first-order sensitivities. Book: 4,000,000 USD of a 10Y Treasury with DV01 3,200 USD/bp split across key rates 2Y 300, 5Y 400, 10Y 2,500, 30Y 0 (sum 3,200); 3,000,000 USD of AAPL at beta 1.20; 2,000,000 USD of SAP, EUR-denominated, at beta 0.90; 1,000,000 USD cash. NAV 10,000,000. UST_PARALLEL_UP_100: P&L = -dv01 x shiftBp = -3,200 x 100 = -320,000 (equities and cash unaffected by construction). UST_STEEPEN_50 (short end -25bp, long end +25bp, pivot at 5Y): -(300 x -25 + 400 x 0 + 2,500 x 25 + 0 x 25) = -(-7,500 + 62,500) = -55,000. EQUITY_DOWN_10: 3,000,000 x 1.20 x -0.10 + 2,000,000 x 0.90 x -0.10 = -360,000 - 180,000 = -540,000. USD_UP_5: only the EUR holding reprices, 2,000,000 x (1/1.05 - 1) = -95,238.095238095238. Worst is EQUITY_DOWN_10 at -540,000; the four together sum to -1,010,238.095238095."
+  }
+]

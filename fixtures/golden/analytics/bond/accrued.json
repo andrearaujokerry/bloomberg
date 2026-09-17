@@ -1,0 +1,54 @@
+[
+  {
+    "id": "bond.accrued.coupon.date",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.0425,
+      "frequency": 2,
+      "datedDate": "2026-02-15",
+      "maturity": "2036-08-15",
+      "settlement": "2026-08-15",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0479
+    },
+    "valuationTs": "2026-08-15T00:00:00Z",
+    "expected": {
+      "accrued": 0.0,
+      "firstPeriodFraction": 1.0,
+      "periodsRemaining": 20
+    },
+    "tol": {
+      "accrued": 0,
+      "firstPeriodFraction": 0,
+      "periodsRemaining": 0
+    },
+    "source": "TESTING.md \u00a77.3 'accrued on a coupon date and the day before', coupon-date half: settling on 2026-08-15, the coupon date itself, puts settlement at the start of the next accrual period, so accrued is exactly 0 and the first cashflow is a whole period away (firstPeriodFraction = 1). Exact, hence tolerance 0."
+  },
+  {
+    "id": "bond.accrued.day.before.coupon",
+    "engine": "bond.price",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "face": 100,
+      "couponRate": 0.0425,
+      "frequency": 2,
+      "datedDate": "2026-02-15",
+      "maturity": "2036-08-15",
+      "settlement": "2026-08-14",
+      "dayCount": "ACT/ACT",
+      "yield": 0.0479
+    },
+    "valuationTs": "2026-08-14T00:00:00Z",
+    "expected": {
+      "accrued": 2.11325966850829,
+      "periodsRemaining": 21
+    },
+    "tol": {
+      "accrued": 1e-12,
+      "periodsRemaining": 0
+    },
+    "source": "TESTING.md \u00a77.3 'accrued on a coupon date and the day before', day-before half, on the ACT/ACT ICMA convention of TESTING \u00a77.4. Coupon period 2026-02-15 -> 2026-08-15 is 181 actual days; settlement 2026-08-14 is 180 days in. accrued = 100 x 0.0425 x 180/(181 x 2) = 4.25 x 180/362 = 2.113259668508287 - the whole 2.125 coupon less one day of it (2.125 x 180/181). Closed form, tolerance 1e-12."
+  }
+]

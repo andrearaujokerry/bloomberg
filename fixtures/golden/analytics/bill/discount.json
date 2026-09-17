@@ -1,0 +1,82 @@
+[
+  {
+    "id": "bill.13wk",
+    "engine": "bill",
+    "engineVersion": "1.0.0",
+    "inputs": { "face": 100, "daysToMaturity": 91, "discountRate": 0.04 },
+    "valuationTs": "2026-09-01T00:00:00Z",
+    "expected": {
+      "price": 98.988889,
+      "discountRatePercent": 4.0,
+      "investmentYieldPercent": 4.096981,
+      "branch": "simple"
+    },
+    "tol": {
+      "price": 1e-6,
+      "discountRatePercent": 1e-9,
+      "investmentYieldPercent": 1e-6,
+      "branch": 0
+    },
+    "source": "TESTING.md §7.6 pin table (closed form), case bill.13wk: 13-week bill, 91 days, discount 4.000 %, face 100. price = 100 x (1 - 0.04 x 91/360) = 98.98888889 (tol 1e-6); discountFromPrice(98.988889) = 4.000000 % (tol 1e-9, exact inverse); investmentYield = ((100 - P)/P) x 365/91 = 4.096981 % (tol 1e-6). Unrounded reference: price = 98.98888888888890, investmentYield = 4.09698058143448 %."
+  },
+  {
+    "id": "bill.52wk",
+    "engine": "bill",
+    "engineVersion": "1.0.0",
+    "inputs": { "face": 100, "daysToMaturity": 364, "discountRate": 0.0425 },
+    "valuationTs": "2026-09-01T00:00:00Z",
+    "expected": {
+      "price": 95.702778,
+      "discountRatePercent": 4.25,
+      "investmentYieldPercent": 4.453072,
+      "branch": "quadratic"
+    },
+    "tol": {
+      "price": 1e-6,
+      "discountRatePercent": 1e-9,
+      "investmentYieldPercent": 1e-6,
+      "branch": 0
+    },
+    "source": "TESTING.md §7.6 case bill.52wk: 364 days, discount 4.25 % - the > 182-day branch, which TESTING §7.6 requires be 'asserted against a numerical solve of the same definition within 1e-9'. price = 100 x (1 - 0.0425 x 364/360) = 95.70277778 (closed form). investmentYieldPercent is the positive root of ((D - 1/2)/2) i^2 + D i + (1 - 100/P) = 0 with D = 364/365, i.e. the i that solves P x (1 + i/2) x (1 + i (D - 1/2)) = 100; bill.test.ts re-solves that identity by bisection and agrees to within 1e-9. Unrounded reference: investmentYield = 4.45307223003108 %."
+  },
+  {
+    "id": "bill.4wk.912797VE4",
+    "engine": "bill",
+    "engineVersion": "1.0.0",
+    "inputs": { "face": 100, "daysToMaturity": 28, "discountRate": 0.0369 },
+    "valuationTs": "2026-09-01T00:00:00Z",
+    "expected": {
+      "price": 99.713,
+      "discountRatePercent": 3.69,
+      "investmentYieldPercent": 3.752018,
+      "branch": "simple"
+    },
+    "tol": {
+      "price": 1e-6,
+      "discountRatePercent": 1e-9,
+      "investmentYieldPercent": 1e-6,
+      "branch": 0
+    },
+    "source": "treasury-bills.xml (CUSIP_4WK = 912797VE4, QUOTE_DATE 2026-09-01, ROUND_B1_CLOSE_4WK_2 = 3.69 discount, MATURITY_DATE_4WK = 2026-09-29, term 28 days) - inputs transcribed into this file per WORKPLAN L474-478/L536; the capture itself is never opened by WP-02. Expected values are the closed form: price = 100 x (1 - 0.0369 x 28/360) = 99.713 exactly, investmentYield = (0.287/99.713) x 365/28 = 3.752018 % (simple branch, 28 <= 182 days). Cross-check: the sheet's own coupon-equivalent ROUND_B1_YIELD_4WK_2 = 3.75 is this number rounded to two decimals. Unrounded reference: 3.75201829249955 %."
+  },
+  {
+    "id": "bill.52wk.912797WA1",
+    "engine": "bill",
+    "engineVersion": "1.0.0",
+    "inputs": { "face": 100, "daysToMaturity": 364, "discountRate": 0.04 },
+    "valuationTs": "2026-09-01T00:00:00Z",
+    "expected": {
+      "price": 95.955556,
+      "discountRatePercent": 4.0,
+      "investmentYieldPercent": 4.182873,
+      "branch": "quadratic"
+    },
+    "tol": {
+      "price": 1e-6,
+      "discountRatePercent": 1e-9,
+      "investmentYieldPercent": 1e-6,
+      "branch": 0
+    },
+    "source": "treasury-bills.xml (CUSIP_52WK = 912797WA1, QUOTE_DATE 2026-09-01, ROUND_B1_CLOSE_52WK_2 = 4.00 discount, MATURITY_DATE_52WK = 2027-09-02, term 364 days = 52 weeks per WORKPLAN L536) - inputs transcribed into this file, the capture is never opened. Expected values are the closed form: price = 100 x (1 - 0.04 x 364/360) = 95.95555556; investmentYield = 4.182873 % from the > 182-day quadratic branch, re-solved numerically in bill.test.ts to within 1e-9. Cross-check: the sheet's own ROUND_B1_YIELD_52WK_2 = 4.18. Unrounded reference: 4.18287285162903 %."
+  }
+]

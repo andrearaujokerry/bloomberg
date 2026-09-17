@@ -1,0 +1,311 @@
+[
+  {
+    "id": "vol.surface.aapl.2026-09-15",
+    "engine": "vol.surface",
+    "engineVersion": "1.0.0",
+    "inputs": {
+      "underlying": "AAPL",
+      "asOf": "2026-09-15",
+      "spot": 232.5,
+      "rate": 0.0412,
+      "dividendYield": 0.0044,
+      "ivSource": "mid_price",
+      "expiries": [
+        {
+          "expiry": "2026-10-16",
+          "quotes": [
+            {
+              "strike": 200,
+              "callBid": 33.62,
+              "callAsk": 33.95,
+              "putBid": 0.65,
+              "putAsk": 0.7,
+              "callIv": 0.3549,
+              "putIv": 0.3549
+            },
+            {
+              "strike": 205,
+              "callBid": 28.95,
+              "callAsk": 29.24,
+              "putBid": 0.94,
+              "putAsk": 0.99,
+              "callIv": 0.3392,
+              "putIv": 0.3392
+            },
+            {
+              "strike": 210,
+              "callBid": 24.42,
+              "callAsk": 24.66,
+              "putBid": 1.37,
+              "putAsk": 1.42,
+              "callIv": 0.3236,
+              "putIv": 0.3236
+            },
+            {
+              "strike": 215,
+              "callBid": 20.05,
+              "callAsk": 20.26,
+              "putBid": 1.97,
+              "putAsk": 2.02,
+              "callIv": 0.3083,
+              "putIv": 0.3083
+            },
+            {
+              "strike": 220,
+              "callBid": 15.94,
+              "callAsk": 16.1,
+              "putBid": 2.81,
+              "putAsk": 2.86,
+              "callIv": 0.2935,
+              "putIv": 0.2935
+            },
+            {
+              "strike": 225,
+              "callBid": 12.17,
+              "callAsk": 12.29,
+              "putBid": 4,
+              "putAsk": 4.05,
+              "callIv": 0.2796,
+              "putIv": 0.2796
+            },
+            {
+              "strike": 230,
+              "callBid": 8.84,
+              "callAsk": 8.93,
+              "putBid": 5.64,
+              "putAsk": 5.7,
+              "callIv": 0.267,
+              "putIv": 0.267
+            },
+            {
+              "strike": 235,
+              "callBid": 6.08,
+              "callAsk": 6.14,
+              "putBid": 7.83,
+              "putAsk": 7.91,
+              "callIv": 0.2565,
+              "putIv": 0.2565
+            },
+            {
+              "strike": 240,
+              "callBid": 3.93,
+              "callAsk": 3.98,
+              "putBid": 10.65,
+              "putAsk": 10.76,
+              "callIv": 0.2482,
+              "putIv": 0.2482
+            },
+            {
+              "strike": 245,
+              "callBid": 2.39,
+              "callAsk": 2.44,
+              "putBid": 14.08,
+              "putAsk": 14.22,
+              "callIv": 0.2425,
+              "putIv": 0.2425
+            },
+            {
+              "strike": 250,
+              "callBid": 1.38,
+              "callAsk": 1.43,
+              "putBid": 18.03,
+              "putAsk": 18.21,
+              "callIv": 0.239,
+              "putIv": 0.239
+            },
+            {
+              "strike": 255,
+              "callBid": 0.75,
+              "callAsk": 0.8,
+              "putBid": 22.36,
+              "putAsk": 22.59,
+              "callIv": 0.2373,
+              "putIv": 0.2373
+            },
+            {
+              "strike": 260,
+              "callBid": 0.39,
+              "callAsk": 0.44,
+              "putBid": 26.96,
+              "putAsk": 27.23,
+              "callIv": 0.2369,
+              "putIv": 0.2369
+            },
+            {
+              "strike": 265,
+              "callBid": 0.19,
+              "callAsk": 0.24,
+              "putBid": 31.72,
+              "putAsk": 32.04,
+              "callIv": 0.2375,
+              "putIv": 0.2375
+            }
+          ]
+        },
+        {
+          "expiry": "2026-12-18",
+          "quotes": [
+            {
+              "strike": 200,
+              "callBid": 37.6,
+              "callAsk": 37.98,
+              "putBid": 3.42,
+              "putAsk": 3.47,
+              "callIv": 0.3371,
+              "putIv": 0.3371
+            },
+            {
+              "strike": 205,
+              "callBid": 33.45,
+              "callAsk": 33.79,
+              "putBid": 4.19,
+              "putAsk": 4.24,
+              "callIv": 0.3275,
+              "putIv": 0.3275
+            },
+            {
+              "strike": 210,
+              "callBid": 29.46,
+              "callAsk": 29.75,
+              "putBid": 5.12,
+              "putAsk": 5.18,
+              "callIv": 0.3181,
+              "putIv": 0.3181
+            },
+            {
+              "strike": 215,
+              "callBid": 25.65,
+              "callAsk": 25.91,
+              "putBid": 6.24,
+              "putAsk": 6.3,
+              "callIv": 0.3092,
+              "putIv": 0.3092
+            },
+            {
+              "strike": 220,
+              "callBid": 22.06,
+              "callAsk": 22.28,
+              "putBid": 7.58,
+              "putAsk": 7.65,
+              "callIv": 0.3007,
+              "putIv": 0.3007
+            },
+            {
+              "strike": 225,
+              "callBid": 18.73,
+              "callAsk": 18.91,
+              "putBid": 9.16,
+              "putAsk": 9.26,
+              "callIv": 0.2929,
+              "putIv": 0.2929
+            },
+            {
+              "strike": 230,
+              "callBid": 15.68,
+              "callAsk": 15.83,
+              "putBid": 11.04,
+              "putAsk": 11.15,
+              "callIv": 0.2859,
+              "putIv": 0.2859
+            },
+            {
+              "strike": 235,
+              "callBid": 12.94,
+              "callAsk": 13.07,
+              "putBid": 13.22,
+              "putAsk": 13.35,
+              "callIv": 0.2797,
+              "putIv": 0.2797
+            },
+            {
+              "strike": 240,
+              "callBid": 10.53,
+              "callAsk": 10.64,
+              "putBid": 15.74,
+              "putAsk": 15.9,
+              "callIv": 0.2744,
+              "putIv": 0.2744
+            },
+            {
+              "strike": 245,
+              "callBid": 8.47,
+              "callAsk": 8.55,
+              "putBid": 18.59,
+              "putAsk": 18.78,
+              "callIv": 0.2701,
+              "putIv": 0.2701
+            },
+            {
+              "strike": 250,
+              "callBid": 6.72,
+              "callAsk": 6.79,
+              "putBid": 21.77,
+              "putAsk": 21.99,
+              "callIv": 0.2668,
+              "putIv": 0.2668
+            },
+            {
+              "strike": 255,
+              "callBid": 5.28,
+              "callAsk": 5.34,
+              "putBid": 25.26,
+              "putAsk": 25.51,
+              "callIv": 0.2643,
+              "putIv": 0.2643
+            },
+            {
+              "strike": 260,
+              "callBid": 4.11,
+              "callAsk": 4.16,
+              "putBid": 29.01,
+              "putAsk": 29.3,
+              "callIv": 0.2626,
+              "putIv": 0.2626
+            },
+            {
+              "strike": 265,
+              "callBid": 3.18,
+              "callAsk": 3.23,
+              "putBid": 33,
+              "putAsk": 33.33,
+              "callIv": 0.2616,
+              "putIv": 0.2616
+            }
+          ]
+        }
+      ]
+    },
+    "valuationTs": "2026-09-15T20:00:00Z",
+    "expected": {
+      "nSlices": 2,
+      "nQuotes": 28,
+      "arbitrageFree": true,
+      "butterflyArbitrage": false,
+      "calendarArbitrage": false,
+      "frontExpiry": "2026-10-16",
+      "frontT": 0.08493150684931507,
+      "frontForward": 233.227811,
+      "frontAtmIv": 0.26,
+      "backExpiry": "2026-12-18",
+      "backT": 0.25753424657534246,
+      "backForward": 234.713937,
+      "backAtmIv": 0.28
+    },
+    "tol": {
+      "nSlices": 0,
+      "nQuotes": 0,
+      "arbitrageFree": 0,
+      "butterflyArbitrage": 0,
+      "calendarArbitrage": 0,
+      "frontExpiry": 0,
+      "frontT": 1e-12,
+      "frontForward": 0.01,
+      "frontAtmIv": 0.001,
+      "backExpiry": 0,
+      "backT": 1e-12,
+      "backForward": 0.01,
+      "backAtmIv": 0.001
+    },
+    "source": "cboe-options — the chain's shape is transcribed from the Cboe AAPL option-chain capture: two monthly expiries (2026-10-16 and 2026-12-18, both third Fridays), $5 strikes from 200 to 265 around a 232.50 spot, two-sided markets on both sides of every strike, and the vendor's own IV column. WP-02 must not open fixtures/providers/raw/ or go through providers/replayStore.ts (WORKPLAN L471-482), so the levels are written out literally here; the same fit over the *replayed* chain is WP-11's integration test. The quotes are one self-consistent arbitrage-free snapshot: each side's mid is Black-76 on the parity forward F = S*e^((r-q)T) at that strike's quoted IV, then rounded to the penny inside the quoted spread, so the fit sees exactly the half-cent of mid rounding a real chain carries and nothing else. Expected values, every one of them derived without running the SVI fit: (1) frontT = 31/365 = 0.08493150684931507 and backT = 94/365 = 0.25753424657534246 are the ACT/365F fractions from 2026-09-15 (tolerance 1e-12, double rounding only). (2) frontForward = 232.50*e^((0.0412-0.0044)*31/365) = 233.22781076 and backForward = 232.50*e^((0.0412-0.0044)*94/365) = 234.71393747; the put-call-parity regression over the fourteen two-sided strikes must recover them, and the 0.01 tolerance is the forward error half a cent of mid rounding leaves on a $233 forward (the regression in fact lands 0.0007 and 0.0002 away). (3) frontAtmIv = 0.26 and backAtmIv = 0.28 are the chain's own quoted IV column interpolated to the forward — front 0.2670 at K=230 and 0.2565 at K=235 give 0.2602 at F=233.228, back 0.2859 and 0.2797 give 0.2801 at F=234.714 — tolerated at 1e-3, the gap between a straight-line interpolation of the quoted column and the fitted smile. (4) nQuotes = 28 = 2 expiries x 14 strikes, every strike usable; nSlices = 2. (5) arbitrageFree = true, butterflyArbitrage = false, calendarArbitrage = false are structural, not measured: a chain quoted from one raw-SVI slice per expiry whose parameters satisfy a + b*sigma*sqrt(1-rho^2) > 0 and whose total variance rises with maturity at every log-moneyness has a positive risk-neutral density and no calendar spread with a negative price."
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "bsm.atm.1y",
+    "engine": "bsm",
+    "engineVersion": "1.0.0",
+    "inputs": { "S": 100, "K": 100, "r": 0.05, "q": 0, "sigma": 0.2, "T": 1 },
+    "valuationTs": "2026-01-02T00:00:00Z",
+    "expected": {
+      "call": 10.450584,
+      "put": 5.573526,
+      "d1": 0.35,
+      "d2": 0.15,
+      "nd1": 0.6368306512,
+      "nd2": 0.5596176923,
+      "pdfD1": 0.3752403,
+      "discountFactor": 0.9512294245,
+      "deltaCall": 0.636831,
+      "deltaPut": -0.363169,
+      "gamma": 0.018762,
+      "vega": 37.524035,
+      "vegaPerVolPoint": 0.37524,
+      "thetaCall": -6.414028,
+      "thetaPut": -1.657881,
+      "thetaCallPerDay": -0.017573,
+      "rhoCall": 53.232481,
+      "rhoPut": -41.89046,
+      "rhoCallPer100Bp": 0.532325
+    },
+    "tol": {
+      "call": 1e-6,
+      "put": 1e-6,
+      "d1": 1e-12,
+      "d2": 1e-12,
+      "nd1": 1e-9,
+      "nd2": 1e-9,
+      "pdfD1": 1e-7,
+      "discountFactor": 1e-9,
+      "deltaCall": 1e-6,
+      "deltaPut": 1e-6,
+      "gamma": 1e-6,
+      "vega": 1e-6,
+      "vegaPerVolPoint": 1e-6,
+      "thetaCall": 1e-6,
+      "thetaPut": 1e-6,
+      "thetaCallPerDay": 1e-6,
+      "rhoCall": 1e-6,
+      "rhoPut": 1e-6,
+      "rhoCallPer100Bp": 1e-6
+    },
+    "source": "TESTING.md §7.2 pin table (closed form). Every expected value is transcribed from that table verbatim, at the tolerance the table states: 1e-6 on prices and greeks, 1e-12 on d1/d2. The intermediates N(d1), N(d2), e^(-rT) and phi(d1) are TESTING §7.2 L397-398, tolerated at the precision they are printed to (10, 10, 10 and 7 decimals). vegaPerVolPoint = vega/100, thetaCallPerDay = thetaCall/365 and rhoCallPer100Bp = rhoCall/100 are the desk-quoted forms TESTING §7.2 prints in parentheses next to each. Unrounded reference: call = 10.4505835722, put = 5.5735260223."
+  }
+]
