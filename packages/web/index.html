@@ -1,0 +1,34 @@
+<!doctype html>
+<!--
+  WP-01 scaffold — CLIENT.md §1 L39, §2 L172-190.
+  The document shell only: one #root, the theme/density attributes the token sheet keys off, and the
+  module entry point. Everything visible is rendered by `src/main.tsx` → `src/App.tsx`.
+-->
+<html lang="en" data-theme="dark" data-density="normal">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Dark is the terminal default; `[data-theme="light"]` (TERM-13) flips the tokens. -->
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Terminal — market data workstation" />
+    <meta name="referrer" content="same-origin" />
+    <title>TERMINAL</title>
+    <!--
+      The mono face the whole UI is set in (CLIENT.md §12.3). The files land in
+      `public/fonts/` with the asset work package; until then the preload simply misses and the
+      stack falls through to SF Mono / Menlo / Consolas.
+    -->
+    <link
+      rel="preload"
+      href="/fonts/IBMPlexMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>The terminal requires JavaScript.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

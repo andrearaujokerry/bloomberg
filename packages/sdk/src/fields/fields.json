@@ -1,0 +1,3065 @@
+{
+  "version": "2026.09.1",
+  "generatedAt": "2026-09-17T00:00:00.000Z",
+  "fields": [
+    {
+      "id": "ACCRUED",
+      "label": "Accrued interest",
+      "definition": "Interest accrued per 100 of face from the last coupon date to the settlement date, on the issue’s day-count convention.",
+      "type": "number",
+      "unit": "price",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/bond/accrued.ts#accruedInterest"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "coupon × dayCountFraction(lastCoupon, settle) on the issue convention",
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 1.42196,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "ASK_SIZE",
+      "label": "Ask size",
+      "definition": "Quantity displayed at the best offer, in shares for equities and in contracts for options.",
+      "type": "integer",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.ask_size"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.ask_size"
+        },
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].ask_size"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 500,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "BID_SIZE",
+      "label": "Bid size",
+      "definition": "Quantity displayed at the best bid, in shares for equities and in contracts for options.",
+      "type": "integer",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.bid_size"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.bid_size"
+        },
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].bid_size"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 300,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "BS_TOT_ASSET",
+      "label": "Total assets",
+      "definition": "Total assets on the balance sheet at the period end, as reported.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.Assets"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 331520000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "BS_TOT_LIAB2",
+      "label": "Total liabilities",
+      "definition": "Total liabilities on the balance sheet at the period end. When the filer tags only LiabilitiesAndStockholdersEquity, the value is that figure less total equity, and the derivation is recorded in the statement provenance.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.Liabilities"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 264430000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CF_CAP_EXPEND",
+      "label": "Capital expenditure",
+      "definition": "Payments to acquire property, plant and equipment for the period, reported as a positive outflow so that free cash flow is CF_CASH_FROM_OPER − CF_CAP_EXPEND.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.PaymentsToAcquirePropertyPlantAndEquipment"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 2960000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CF_CASH_FROM_OPER",
+      "label": "Cash from operations",
+      "definition": "Net cash provided by operating activities for the period, from the cash-flow statement.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.NetCashProvidedByUsedInOperatingActivities"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 28900000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CHG_",
+      "label": "Change field family",
+      "definition": "Not a field: the CHG_* prefix, harvested from wildcard references to the change family (the cells that flash and carry a direction arrow). Use CHG_NET_1D or CHG_PCT_1D.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "-",
+        "value": "CHG_*",
+        "asOf": "2026-09-17"
+      },
+      "since": "2026.09.1",
+      "deprecated": {
+        "since": "2026.09.1",
+        "replacement": "CHG_NET_1D",
+        "removeAfter": "2027.01.1"
+      }
+    },
+    {
+      "id": "CHG_NET_1D",
+      "label": "Net change",
+      "definition": "PX_LAST minus PX_CLOSE_1D, in the instrument currency, from one and the same quote snapshot. Unavailable rather than zero when either input is missing.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/derive.ts#netChange"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "PX_LAST − PX_CLOSE_1D",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.36,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CHG_PCT_1D",
+      "label": "Percent change",
+      "definition": "CHG_NET_1D as a percentage of PX_CLOSE_1D. The previous close is unadjusted, so on an ex-dividend or split date the change is the raw one the tape shows, and the corporate action is flagged on the line.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/derive.ts#percentChange"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "(PX_LAST − PX_CLOSE_1D) / PX_CLOSE_1D × 100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 0.41,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CPNTO",
+      "label": "Coupon upper bound (screener token)",
+      "definition": "Not a field: the SRCH screener keyed token CPNTO=<rate>, which bounds a coupon filter from above. The coupon itself is carried by CPN_FREQ and the govt terms block.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 3,
+      "fieldClass": "reference",
+      "assetClasses": [],
+      "sources": [],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "-",
+        "value": "CPNTO=5",
+        "asOf": "2026-09-17"
+      },
+      "since": "2026.09.1",
+      "deprecated": {
+        "since": "2026.09.1",
+        "replacement": null,
+        "removeAfter": "2027.01.1"
+      }
+    },
+    {
+      "id": "CPN_FREQ",
+      "label": "Coupon frequency",
+      "definition": "Number of coupon payments per year fixed by the terms of the issue: 2 for a US Treasury note or bond, 0 for a discount bill.",
+      "type": "integer",
+      "unit": "count",
+      "decimals": 0,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "govt",
+          "sourceId": "treasury.bills",
+          "endpoint": "bills",
+          "providerPath": "securities[].interestPaymentFrequency"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": true,
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 2,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CUR_MKT_CAP",
+      "label": "Market capitalisation",
+      "definition": "PX_LAST multiplied by EQY_SH_OUT, in the listing currency. It moves on every tick while the share count stays at the last filing, so it is point-in-time through its share input.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/derive.ts#marketCap"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": true,
+      "derivation": "PX_LAST × EQY_SH_OUT",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 4900610000000,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "DUR_ADJ_MID",
+      "label": "Modified duration",
+      "definition": "Percentage change in dirty price for a 100 bp parallel change in yield: Macaulay duration divided by (1 + y/f). The first-order risk number YAS and the curve screens quote.",
+      "type": "number",
+      "unit": "years",
+      "decimals": 3,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/bond/risk.ts#modified"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "DUR_MID / (1 + YLD_YTM_MID/100 / CPN_FREQ)",
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 7.259,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "DUR_MID",
+      "label": "Macaulay duration",
+      "definition": "Cash-flow-weighted average time to receipt, in years, discounted at YLD_YTM_MID. Not a price sensitivity on its own — DUR_ADJ_MID is.",
+      "type": "number",
+      "unit": "years",
+      "decimals": 3,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/bond/risk.ts#macaulay"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "Σ t·PV(cf_t) / Σ PV(cf_t) at y = YLD_YTM_MID",
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 7.412,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "DVD_SH_12M",
+      "label": "Dividends per share (12M)",
+      "definition": "Sum of the cash dividends with an ex-date in the twelve months ending at validAt, per share, in the listing currency. Special dividends are included and flagged in provenance.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 4,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "events.dividends"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.04,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "DVD_YIELD",
+      "label": "Dividend yield",
+      "definition": "Trailing twelve-month cash dividends per share over PX_LAST, in percent. Zero-dividend issuers report 0, not unavailable.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/derive.ts#dividendYield"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "DVD_SH_12M / PX_LAST × 100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 0.31,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "ECO_",
+      "label": "Economic field family",
+      "definition": "Not a field: the ECO_* prefix, harvested from wildcard references to the economic-release family. Use the concrete member — ECO_VALUE, ECO_PERIOD, ECO_RELEASE_DT, ECO_VINTAGE.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "-",
+        "value": "ECO_*",
+        "asOf": "2026-09-17"
+      },
+      "since": "2026.09.1",
+      "deprecated": {
+        "since": "2026.09.1",
+        "replacement": "ECO_VALUE",
+        "removeAfter": "2027.01.1"
+      }
+    },
+    {
+      "id": "ECO_PERIOD",
+      "label": "Observation period",
+      "definition": "First day of the period the observation describes — 2026-08-01 for August 2026, 2026-07-01 for Q3 2026 — never the date the figure was published.",
+      "type": "date",
+      "unit": "date",
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "econ",
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].date"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.timeseries",
+          "endpoint": "timeseries",
+          "providerPath": "Results.series[].data[].period"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "CPIAUCSL Index",
+        "value": "2026-08-01",
+        "asOf": "2026-09-11"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "ECO_PRIOR",
+      "label": "Prior value",
+      "definition": "Value of the previous observation period as it stood in this release — the comparison the publisher printed, so it already reflects any revision made to that period by this release.",
+      "type": "number",
+      "unit": null,
+      "decimals": 3,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "econ",
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[-2].value"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": true,
+      "example": {
+        "ref": "CPIAUCSL Index",
+        "value": 323.048,
+        "asOf": "2026-08-13"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "ECO_RELEASE_DT",
+      "label": "Release date",
+      "definition": "Date the publisher released this observation. It is the knownAt of the value: a run as of the day before it returns the previous vintage instead.",
+      "type": "date",
+      "unit": "date",
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "econ",
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.calendar",
+          "endpoint": "calendar",
+          "providerPath": "release_dates[].date"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.schedule",
+          "endpoint": "schedule",
+          "providerPath": "rows[].release_date"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "CPIAUCSL Index",
+        "value": "2026-09-11",
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "ECO_VALUE",
+      "label": "Observation value",
+      "definition": "Value of the economic series for the observation period, in the unit the publisher uses (index level, percent, thousands of persons). The unit is a property of the series, so a screen must render it with the series metadata rather than assume percent.",
+      "type": "number",
+      "unit": null,
+      "decimals": 3,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "econ",
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].value"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.timeseries",
+          "endpoint": "timeseries",
+          "providerPath": "Results.series[].data[].value"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "worldbank",
+          "endpoint": "indicator",
+          "providerPath": "[1][].value"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "imf.datamapper",
+          "endpoint": "datamapper",
+          "providerPath": "values.<indicator>.<country>"
+        },
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentRate"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": true,
+      "example": {
+        "ref": "CPIAUCSL Index",
+        "value": 324.106,
+        "asOf": "2026-08-01"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "ECO_VINTAGE",
+      "label": "Vintage",
+      "definition": "Identifier of the release this value came from, as the publisher labels it (an ALFRED vintage date, a BLS release id). Two vintages of one period are two rows, never an update.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "econ",
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "vintage_dates[]"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": true,
+      "example": {
+        "ref": "CPIAUCSL Index",
+        "value": "2026-09-11",
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "EPS_BASIC",
+      "label": "Basic EPS (statement line)",
+      "definition": "The normalised income-statement line `EPS_BASIC`: net income attributable to common shareholders divided by the weighted average basic share count, as reported.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 2,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.EarningsPerShareBasic"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.59,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "EPS_DIL",
+      "label": "Diluted EPS (statement line)",
+      "definition": "The normalised income-statement line `EPS_DIL`, the row FA and the EQS screener read. Identical in meaning to IS_EPS_DIL.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 2,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.EarningsPerShareDiluted"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.57,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "EQY_FLOAT_PCT",
+      "label": "Free float",
+      "definition": "Publicly floated shares as a percentage of EQY_SH_OUT: shares outstanding less the holdings reported as restricted or insider-held in the latest filing.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/reference/float.ts#floatPct"
+        }
+      ],
+      "updateFreq": "on_filing",
+      "pit": true,
+      "derivation": "PUBLIC_FLOAT / EQY_SH_OUT × 100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 99.87,
+        "asOf": "2026-08-01"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "EQY_SH_OUT",
+      "label": "Shares outstanding",
+      "definition": "Number of common shares issued and outstanding as reported on the cover page of the most recent periodic filing known at knownAt. Not adjusted for splits after that filing date.",
+      "type": "number",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.dei.EntityCommonStockSharesOutstanding"
+        }
+      ],
+      "updateFreq": "on_filing",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 14840392000,
+        "asOf": "2026-08-01"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "FX_MISSING",
+      "label": "FX rate missing",
+      "definition": "True when no fx_rates row existed for the instrument currency on or before the analytic date, so the row could not be converted and was excluded from the totals. The reason travels with the row as NO_SOURCE on FX_USD.",
+      "type": "boolean",
+      "unit": null,
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "govt",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/fx/convert.ts#rateToBase"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "FX_USD is null for the row’s currency at the analytic date",
+      "example": {
+        "ref": "SAP GY Equity",
+        "value": false,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "FX_USD",
+      "label": "FX rate to USD",
+      "definition": "Rate used to convert one unit of the instrument currency into USD for the run, taken from the fx_rates row valid at the analytic date. Published so a converted figure can be undone.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "govt",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/fx/convert.ts#rateToBase"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "fx_rates(ccy → USD) on or before the analytic date",
+      "example": {
+        "ref": "SAP GY Equity",
+        "value": 1.086412,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "HIGH",
+      "label": "Bar high",
+      "definition": "Highest trade price inside one intraday bar of the requested interval. Unlike PX_HIGH it is a property of the bar, so it only exists on a bar-bearing subject (b1m:) or a history row.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "indicators.quote[0].high[]"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.61,
+        "asOf": "2026-09-15T18:41:00Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IDX_MEMBER_SHARES",
+      "label": "Index shares held",
+      "definition": "Share count of the member held by the index vehicle at the effective date of the holdings file; the basis of the weight when the index is share-weighted.",
+      "type": "number",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "index",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "index",
+          "sourceId": "sec.archives",
+          "endpoint": "archives",
+          "providerPath": "invstOrSec[].balance"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "ssga.holdings",
+          "endpoint": "holdings",
+          "providerPath": "rows[].Shares Held"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": true,
+      "example": {
+        "ref": "SPX Index",
+        "value": 173920000,
+        "asOf": "2026-08-31"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IDX_MEMBER_SINCE",
+      "label": "Member since",
+      "definition": "First date on which the member appears in the index membership history the terminal holds. It is the start of the bitemporal membership row, not an index-provider announcement date.",
+      "type": "date",
+      "unit": "date",
+      "decimals": null,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "index",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "index",
+          "sourceId": "sec.archives",
+          "endpoint": "archives",
+          "providerPath": "filing.periodOfReport"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": true,
+      "example": {
+        "ref": "SPX Index",
+        "value": "2013-04-30",
+        "asOf": "2026-08-31"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IDX_MEMBER_WEIGHT",
+      "label": "Index weight",
+      "definition": "Weight of the member in the index as of the effective date of the holdings file, expressed as a fraction of the index (0.0712 = 7.12 %).",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "index",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "index",
+          "sourceId": "sec.archives",
+          "endpoint": "archives",
+          "providerPath": "invstOrSec[].pctVal"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "ssga.holdings",
+          "endpoint": "holdings",
+          "providerPath": "rows[].Weight"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": true,
+      "example": {
+        "ref": "SPX Index",
+        "value": 0.0712,
+        "asOf": "2026-08-31"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IS_CORRECTION",
+      "label": "Correction",
+      "definition": "True when the publisher marked this story as a correction or a replacement of an earlier one. A corrected story is shown in place of the original and flagged in the story pane.",
+      "type": "boolean",
+      "unit": null,
+      "decimals": null,
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].title"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": false,
+        "asOf": "2026-09-15T18:39:02Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IS_EPS_DIL",
+      "label": "Diluted EPS",
+      "definition": "Diluted earnings per share for the period as reported, on the share count the filer used. Prior periods carry the filer’s own retroactive split adjustment, not the terminal’s.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 2,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.EarningsPerShareDiluted"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.57,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IS_FINAL",
+      "label": "Bar final",
+      "definition": "True once the interval of an intraday bar has closed and the bar will not be revised. The in-progress bar of the current interval is always false and is redrawn on every update.",
+      "type": "boolean",
+      "unit": null,
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/bars/intraday.ts#isFinal"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "barTs + interval ≤ validAt",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": true,
+        "asOf": "2026-09-15T18:41:00Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "IS_OPER_INC",
+      "label": "Operating income",
+      "definition": "Income from operations: revenue less cost of revenue and operating expenses, before non-operating items and tax, as reported.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.OperatingIncomeLoss"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 28200000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "LAST_SIZE",
+      "label": "Last trade size",
+      "definition": "Quantity of the trade that set PX_LAST, in shares or contracts.",
+      "type": "integer",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.last_trade_size"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.last_trade_size"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 100,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "LAST_TRADE_TIME",
+      "label": "Last trade time",
+      "definition": "Exchange timestamp of the trade that set PX_LAST, in UTC. It is the event time the staleness indicator measures against, never the time the row was ingested.",
+      "type": "datetime",
+      "unit": "datetime",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.last_trade_time"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.last_trade_time"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.last_trade_time"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": "2026-09-15T18:41:26Z",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "NET_INC",
+      "label": "Net income (statement line)",
+      "definition": "The normalised income-statement line `NET_INC` of fin_statements: the numerator of NET_MARGIN, ROE and ROA. Identical in meaning to NET_INCOME.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.NetIncomeLoss"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 23640000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "NET_INCOME",
+      "label": "Net income",
+      "definition": "Net income attributable to the parent for the period, after tax and minority interest, as reported on the income statement.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.NetIncomeLoss"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 23640000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "NET_MARGIN",
+      "label": "Net margin",
+      "definition": "Net income over revenue for the same reported period, in percent. Both inputs come from one statement version, so a restatement moves them together.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/analytics/ratios.ts#netMargin"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "derivation": "NET_INC / SALES_REV_TURN × 100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 24.9,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "NEWS_ID",
+      "label": "Story id",
+      "definition": "Stable terminal identifier of a headline, derived from the feed’s own guid. It is what NLRT alerts, saved stories and the story pane address, and it survives a re-poll of the feed.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].guid"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "sec.atom",
+          "endpoint": "atom",
+          "providerPath": "feed.entry[].id"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "fed.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].guid"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": "bbg.rss:8f2c1e04",
+        "asOf": "2026-09-15T18:39:02Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_",
+      "label": "Option field family",
+      "definition": "Not a field: the OPT_* prefix, harvested from wildcard references to the option field family. Use the concrete member — OPT_STRIKE_PX, OPT_DELTA, OPT_IV and the rest.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "reference",
+      "assetClasses": [],
+      "sources": [],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "-",
+        "value": "OPT_*",
+        "asOf": "2026-09-17"
+      },
+      "since": "2026.09.1",
+      "deprecated": {
+        "since": "2026.09.1",
+        "replacement": null,
+        "removeAfter": "2027.01.1"
+      }
+    },
+    {
+      "id": "OPT_BREAKEVEN",
+      "label": "Break-even",
+      "definition": "Underlying price at expiry at which the position returns its premium: strike plus premium for a long call, strike minus premium for a long put.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/value.ts#breakeven"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "OPT_STRIKE_PX ± mid premium, by put/call",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 368.42,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_CHARM",
+      "label": "Charm",
+      "definition": "Second-order sensitivity ∂²V/∂S∂t: the drift of delta over one calendar day with the underlying unchanged.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/greeks.ts#charm"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂²V/∂S∂t per calendar day under BSM",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": -0.000412,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_CONT_SIZE",
+      "label": "Contract size",
+      "definition": "Number of underlying units one contract delivers — 100 shares for a standard US equity option, less after an adjustment for a corporate action.",
+      "type": "integer",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.symbolBook",
+          "endpoint": "symbolBook",
+          "providerPath": "rows[].contract_size"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 100,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_DELTA",
+      "label": "Delta",
+      "definition": "Change in the option’s value for a one-unit change in the underlying price, per contract unit. Positive for calls, negative for puts.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].delta"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂V/∂S — venue-published, reproduced by core/analytics/option/greeks.ts",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0.4218,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_DVD_YIELD_USED",
+      "label": "Dividend yield used",
+      "definition": "Continuous dividend yield the valuation assumed for the underlying, from the trailing twelve-month cash dividends over the underlying price. Published for reproducibility.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/inputs.ts#dividendYield"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": true,
+      "derivation": "DVD_SH_12M / OPT_UNDL_PX, continuous",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0.3149,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_EXPIRE_DT",
+      "label": "Expiration date",
+      "definition": "Last date on which the option may be exercised, parsed from the OCC symbol; the expiry cut itself is a property of the venue, not of this field.",
+      "type": "date",
+      "unit": "date",
+      "decimals": null,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].option"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": "2026-12-19",
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_GAMMA",
+      "label": "Gamma",
+      "definition": "Change in delta for a one-unit change in the underlying price.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].gamma"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂²V/∂S²",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0.008341,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_IMPL_VOL_MID",
+      "label": "Implied volatility (mid, computed)",
+      "definition": "Volatility that reprices the option to the mid of PX_BID and PX_ASK under the terminal’s Black-Scholes-Merton implementation, on OPT_RATE_USED and OPT_DVD_YIELD_USED. Unavailable when the series has no two-sided quote.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/implied.ts#impliedVol"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "Brent solve of BSM(σ) = (PX_BID + PX_ASK)/2",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 27.08,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_INTRINSIC",
+      "label": "Intrinsic value",
+      "definition": "Value the option would have on immediate exercise: max(S − K, 0) for a call, max(K − S, 0) for a put, using OPT_UNDL_PX. Never negative.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/value.ts#intrinsic"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "max(OPT_UNDL_PX − OPT_STRIKE_PX, 0) for a call; the mirror for a put",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_IV",
+      "label": "Implied volatility (venue)",
+      "definition": "Implied volatility of the series as published by the venue, annualised, in percent. It is the venue’s model on the venue’s inputs; OPT_IMPL_VOL_MID is the terminal’s own solve.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].iv"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "venue-published; no terminal engine involved",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 27.14,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_MODEL_PX",
+      "label": "Model price",
+      "definition": "Option value from the terminal’s own Black-Scholes-Merton valuation at OPT_IMPL_VOL_MID (or the surface value when the series is unquoted), stated per contract unit.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/bsm.ts#price"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "BSM(S = OPT_UNDL_PX, K, T, r = OPT_RATE_USED, q = OPT_DVD_YIELD_USED, σ)",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 18.39,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_OI",
+      "label": "Open interest",
+      "definition": "Number of contracts of this option series outstanding at the end of the previous session, as published by the clearing house through the venue.",
+      "type": "integer",
+      "unit": "contracts",
+      "decimals": 0,
+      "fieldClass": "price",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].open_interest"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 48213,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_PUT_CALL",
+      "label": "Put/call",
+      "definition": "Whether the series is a call (C) or a put (P), from the OCC symbol.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "C",
+        "P"
+      ],
+      "fieldClass": "reference",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].option"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": "C",
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_RATE_USED",
+      "label": "Discount rate used",
+      "definition": "Continuously-compounded risk-free rate the valuation used, interpolated from the Treasury par curve at the option’s time to expiry. Published so that a model price is reproducible.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/curve/interpolate.ts#rateFor"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": true,
+      "derivation": "log-linear interpolation of CURVE_ZERO at T = (OPT_EXPIRE_DT − validAt)/365",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 4.0125,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_RHO",
+      "label": "Rho",
+      "definition": "Change in the option’s value for a one-percentage-point change in the discount rate.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].rho"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂V/∂r per rate point",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0.7719,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_STRIKE_PX",
+      "label": "Strike price",
+      "definition": "Exercise price of the option series, in the contract currency.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].option"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 350,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_THEO",
+      "label": "Theoretical value (venue)",
+      "definition": "Theoretical option value published by the venue alongside its greeks. Compare with OPT_MODEL_PX, which is the terminal’s own valuation on the terminal’s rate and dividend assumptions.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].theo"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "venue-published theoretical value",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 18.42,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_THETA",
+      "label": "Theta",
+      "definition": "Change in the option’s value for the passage of one calendar day, holding everything else constant. Negative for a long option away from a dividend.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].theta"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂V/∂t per calendar day",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": -0.0873,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_TIME_VALUE",
+      "label": "Time value",
+      "definition": "The part of the option’s price that is not intrinsic: the mid price less OPT_INTRINSIC. Goes to zero at expiry by construction.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/value.ts#timeValue"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "(PX_BID + PX_ASK)/2 − OPT_INTRINSIC",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 18.42,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_UNDL_PX",
+      "label": "Underlying price",
+      "definition": "Price of the underlying instrument used to quote and to value this option, taken from the same snapshot as the chain so the greeks and the underlying never disagree.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.current_price"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 330.27,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_UNDL_TICKER",
+      "label": "Underlying ticker",
+      "definition": "Display ticker of the instrument the option delivers, as the terminal resolves it — the root symbol of the OCC code mapped back onto a loadable security.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "reference",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.symbol"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": "AAPL US Equity",
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_VANNA",
+      "label": "Vanna",
+      "definition": "Second-order sensitivity ∂²V/∂S∂σ: how delta moves when implied volatility moves, per volatility point.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/greeks.ts#vanna"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂²V/∂S∂σ under BSM",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": -0.012844,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_VEGA",
+      "label": "Vega",
+      "definition": "Change in the option’s value for a one-percentage-point change in implied volatility.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].vega"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂V/∂σ per volatility point",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0.6142,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPT_VOLGA",
+      "label": "Volga",
+      "definition": "Second-order sensitivity ∂²V/∂σ²: how vega moves when implied volatility moves, per volatility point.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/option/greeks.ts#volga"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "∂²V/∂σ² under BSM",
+      "example": {
+        "ref": "AAPL US 12/19/26 C350 Equity",
+        "value": 0.041207,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_ASK",
+      "label": "Ask",
+      "definition": "Best offer price displayed on the primary venue at the quote timestamp.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.ask"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.ask"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.ask"
+        },
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].ask"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.29,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_BID",
+      "label": "Bid",
+      "definition": "Best bid price displayed on the primary venue at the quote timestamp.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.bid"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.bid"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.bid"
+        },
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].bid"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.25,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_CLEAN_MID",
+      "label": "Clean price (mid)",
+      "definition": "Mid price per 100 of face excluding accrued interest — the quoted price of the bond. PX_CLEAN_MID + ACCRUED = PX_DIRTY_MID by construction.",
+      "type": "number",
+      "unit": "price",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/bond/price.ts#clean"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "PX_DIRTY_MID − ACCRUED",
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 100.53125,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_CLOSE_1D",
+      "label": "Previous close",
+      "definition": "Official closing price of the previous trading session, unadjusted for corporate actions. It is the denominator of CHG_PCT_1D and never changes intraday.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.prev_day_close"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.prev_day_close"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.prev_day_close"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "meta.chartPreviousClose"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 328.91,
+        "asOf": "2026-09-14"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_DIRTY_MID",
+      "label": "Dirty price (mid)",
+      "definition": "Mid settlement price per 100 of face including accrued interest — what a buyer actually pays on the settlement date the analytic used.",
+      "type": "number",
+      "unit": "price",
+      "decimals": 6,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/bond/price.ts#dirty"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "PX_CLEAN_MID + ACCRUED at the T+1 settlement date",
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 101.95321,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_HIGH",
+      "label": "High",
+      "definition": "Highest trade price of the current regular session on the primary venue.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.high"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.high"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.high"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "indicators.quote[0].high"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 331.59,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_HIGH_52W",
+      "label": "52-week high",
+      "definition": "Highest daily high of the trailing 52 weeks ending at validAt, adjusted for splits but not for dividends, from bars_daily.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/window.ts#high52w"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "max(PX_HIGH) over the trailing 252 sessions, split-adjusted",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 341.12,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "definition": "Price of the most recent trade on the primary venue, in the instrument currency. Outside trading hours it holds the last trade of the most recent session and the line reports the session state rather than a new timestamp.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option",
+        "future"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.current_price"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.current_price"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.current_price"
+        },
+        {
+          "assetClass": "fx",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "meta.regularMarketPrice"
+        },
+        {
+          "assetClass": "crypto",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "meta.regularMarketPrice"
+        },
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].last_trade_price"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.27,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_LOW",
+      "label": "Low",
+      "definition": "Lowest trade price of the current regular session on the primary venue.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.low"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.low"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.low"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "indicators.quote[0].low"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 328.35,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_LOW_52W",
+      "label": "52-week low",
+      "definition": "Lowest daily low of the trailing 52 weeks ending at validAt, adjusted for splits but not for dividends, from bars_daily.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/window.ts#low52w"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "min(PX_LOW) over the trailing 252 sessions, split-adjusted",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 241.87,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_OFFICIAL_CLOSE",
+      "label": "Official close",
+      "definition": "The venue's official closing print for the session, published after the closing auction. It is the value stored in bars_daily and the one every end-of-day analytic uses.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.close"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.close"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.close"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "indicators.quote[0].close[]"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.27,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_OPEN",
+      "label": "Open",
+      "definition": "First trade price of the current regular session on the primary venue.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.open"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.open"
+        },
+        {
+          "assetClass": "index",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.open"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "indicators.quote[0].open"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.24,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_TO_BOOK_RATIO",
+      "label": "Price to book",
+      "definition": "CUR_MKT_CAP divided by total common equity of the most recent reported period. Negative book value yields an unavailable value rather than a negative ratio.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/analytics/ratios.ts#priceToBook"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "CUR_MKT_CAP / (TOT_ASSETS − TOT_LIAB)",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 73.12,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_TO_SALES_RATIO",
+      "label": "Price to sales",
+      "definition": "PX_LAST divided by SALES_PS, on trailing twelve-month revenue.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/analytics/ratios.ts#priceToSales"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "PX_LAST / SALES_PS",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 12.89,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PX_VOLUME",
+      "label": "Volume",
+      "definition": "Consolidated number of shares or contracts traded in the current session to the quote timestamp. Index subjects report the volume of their constituents only where the venue does.",
+      "type": "integer",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.volume"
+        },
+        {
+          "assetClass": "etf",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.volume"
+        },
+        {
+          "assetClass": "option",
+          "sourceId": "cboe.options",
+          "endpoint": "options",
+          "providerPath": "data.options[].volume"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "indicators.quote[0].volume[]"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 16591786,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SALES_GROWTH_YOY",
+      "label": "Revenue growth (YoY)",
+      "definition": "Revenue of the period over revenue of the same period one year earlier, minus one, in percent. The comparison period is matched on fiscal period, not on calendar date.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/analytics/ratios.ts#salesGrowthYoY"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "derivation": "SALES_REV_TURN(t) / SALES_REV_TURN(t − 4 quarters) − 1, ×100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 9.63,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SALES_PS",
+      "label": "Sales per share",
+      "definition": "Trailing twelve-month revenue divided by the diluted share count of the most recent reported period. The denominator of PX_TO_SALES_RATIO.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 4,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "internal.derived",
+          "endpoint": "finStatements",
+          "providerPath": "ttm(REVENUE)/SHARES_DIL"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "derivation": "ttm(SALES_REV_TURN) / SHARES_DIL of the latest reported period",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 25.61,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SALES_REV_TURN",
+      "label": "Revenue",
+      "definition": "Total net revenue of the period as reported on the income statement, in the reporting currency. Quarterly values are the filed quarter, never a derived difference of year-to-date figures unless the filer reports only year-to-date.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.RevenueFromContractWithCustomerExcludingAssessedTax"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 94930000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SPREAD",
+      "label": "Spread (formula function)",
+      "definition": "Not a field: the formula-language function SPREAD(a, b), which subtracts one security’s series from another’s in a computed watchlist column. A bid-ask spread is PX_ASK − PX_BID.",
+      "type": "number",
+      "unit": null,
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "-",
+        "value": "SPREAD(US10Y, US2Y)",
+        "asOf": "2026-09-17"
+      },
+      "since": "2026.09.1",
+      "deprecated": {
+        "since": "2026.09.1",
+        "replacement": null,
+        "removeAfter": "2027.01.1"
+      }
+    },
+    {
+      "id": "SPREADS",
+      "label": "Spreads (BTMM section)",
+      "definition": "Not a field: the SPREADS section token of the BTMM screen, which selects the money-market spread block. Kept only so that the harvested id list resolves.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [],
+      "updateFreq": "static",
+      "pit": false,
+      "example": {
+        "ref": "-",
+        "value": "BTMM SPREADS",
+        "asOf": "2026-09-17"
+      },
+      "since": "2026.09.1",
+      "deprecated": {
+        "since": "2026.09.1",
+        "replacement": null,
+        "removeAfter": "2027.01.1"
+      }
+    },
+    {
+      "id": "TOT_ASSETS",
+      "label": "Total assets (statement line)",
+      "definition": "The normalised balance-sheet line `TOT_ASSETS` of fin_statements, the row the ratio engine reads. Identical in meaning to BS_TOT_ASSET, which is the dictionary field a screen cites.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.Assets"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 331520000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "TOT_LIAB",
+      "label": "Total liabilities (statement line)",
+      "definition": "The normalised balance-sheet line `TOT_LIAB` of fin_statements, the denominator of the leverage ratios. Identical in meaning to BS_TOT_LIAB2.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 0,
+      "fieldClass": "fundamental",
+      "assetClasses": [
+        "equity",
+        "etf"
+      ],
+      "sources": [
+        {
+          "assetClass": "equity",
+          "sourceId": "sec.companyfacts",
+          "endpoint": "companyfacts",
+          "providerPath": "facts.us-gaap.Liabilities"
+        }
+      ],
+      "updateFreq": "quarterly",
+      "pit": true,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 264430000000,
+        "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "TOT_RETURN_INDEX",
+      "label": "Total return index",
+      "definition": "Price series rebased to 100 at the start of the requested window with cash dividends reinvested at the ex-date close. The policy that produced it (price, total return, or split-only) is a parameter of the run and is echoed in meta.engines.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 6,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/adjust/corporateActions.ts#totalReturnIndex"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "Π (1 + (P_t + D_t)/P_{t−1} − 1) rebased to 100 at the window start",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 118.412367,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "VOLUME_AVG_30D",
+      "label": "Average volume (30d)",
+      "definition": "Arithmetic mean of PX_VOLUME over the last 30 completed sessions. Sessions with no trading are excluded rather than counted as zero.",
+      "type": "number",
+      "unit": "shares",
+      "decimals": 0,
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/window.ts#avgVolume"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "mean(PX_VOLUME) over the trailing 30 sessions",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 48213900,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "VOL_30D",
+      "label": "Realised volatility (30d)",
+      "definition": "Annualised standard deviation of the last 30 daily log returns of the total-return series, in percent, on a 252-day year. Requires at least 25 observations or it is unavailable.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/stats/volatility.ts#realised"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "stdev(ln(P_t/P_{t−1}), n = 30) × sqrt(252) × 100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 21.36,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "YLD_YTM_MID",
+      "label": "Yield to maturity (mid)",
+      "definition": "Annualised yield that discounts the remaining cash flows of the bond to its mid dirty price, on the issue’s own day-count and coupon frequency. Semi-annual bond-equivalent for US Treasury notes and bonds; discount-to-BEY conversion for bills.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 4,
+      "fieldClass": "analytic",
+      "assetClasses": [
+        "govt"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/bond/yield.ts#ytm"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "derivation": "solve price(y) = PX_DIRTY_MID by Newton on the issue day-count (ACT/ACT for UST)",
+      "example": {
+        "ref": "T 4 1/4 11/15/35 Govt",
+        "value": 4.1832,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    }
+  ]
+}

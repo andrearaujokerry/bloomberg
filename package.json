@@ -1,0 +1,57 @@
+{
+  "name": "terminal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bloomberg Terminal clone — monorepo root",
+  "license": "UNLICENSED",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.19"
+  },
+  "scripts": {
+    "dev": "run-p server:dev web:dev",
+    "server:dev": "npm run dev --workspace @terminal/server",
+    "web:dev": "npm run dev --workspace @terminal/web",
+    "build": "run-s build:ts build:web",
+    "build:ts": "tsc -b",
+    "build:web": "npm run build --workspace @terminal/web",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:live": "PROVIDER_MODE=live vitest run",
+    "test:e2e": "npm run test --workspace @terminal/e2e",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -b",
+    "clean": "tsc -b --clean",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "build:core": "tsc -b packages/core",
+    "predb:seed": "npm run build:core",
+    "db:seed": "tsx scripts/seed.ts",
+    "predb:reset": "npm run build:core",
+    "db:reset": "tsx scripts/reset.ts",
+    "gen:functions": "tsx scripts/gen-function-index.ts",
+    "gen:fields": "tsx scripts/gen-fields.ts",
+    "fixtures:record": "PROVIDER_MODE=record tsx scripts/fixtures-record.ts",
+    "fixtures:import": "tsx scripts/fixtures-import.ts",
+    "replay:run": "tsx packages/server/src/replay/cli.ts run",
+    "replay:diff": "tsx packages/server/src/replay/cli.ts diff"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "eslint": "^9.15.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import": "^2.31.0",
+    "npm-run-all2": "^7.0.0",
+    "prettier": "^3.4.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.15.0",
+    "vitest": "^5.0.0"
+  }
+}

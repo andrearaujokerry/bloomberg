@@ -1,0 +1,52 @@
+{
+  // Lint-only program. It is deliberately NOT part of the solution build (`tsconfig.json`
+  // references the five packages and nothing else) and it emits nothing.
+  //
+  // It exists because typed linting needs every lintable file to belong to some program, and the
+  // five package tsconfigs include `src/**` only — `packages/*/test/**`, `scripts/**` and the root
+  // config files are outside them by design (tests must be free to use `node:fs`, `Date`, etc.,
+  // WORKPLAN §1.2). Without this file every test file added by a later work package would fail to
+  // lint with "was not found by the project service".
+  //
+  // Boundary enforcement is unaffected: "no DOM / no node in packages/core" is enforced by
+  // `tsc -b` against `packages/core/tsconfig.json`, plus the eslint `no-restricted-globals` and
+  // `no-restricted-imports` zones. This program is only wide enough to give the linter types.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "incremental": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "allowJs": false
+  },
+  "include": [
+    "packages/core/src/**/*.ts",
+    "packages/core/test/**/*.ts",
+    "packages/sdk/src/**/*.ts",
+    "packages/sdk/test/**/*.ts",
+    "packages/server/src/**/*.ts",
+    "packages/server/test/**/*.ts",
+    "packages/server/drizzle.config.ts",
+    "packages/web/src/**/*.ts",
+    "packages/web/src/**/*.tsx",
+    "packages/web/test/**/*.ts",
+    "packages/web/test/**/*.tsx",
+    "packages/e2e/**/*.ts",
+    "packages/*/vitest.config.ts",
+    "packages/*/vite.config.ts",
+    "scripts/**/*.ts",
+    "vitest.config.ts"
+  ],
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/dist-types/**",
+    "packages/server/drizzle/migrations/**"
+  ]
+}

@@ -1,5 +1,12 @@
 node_modules/
 dist/
+dist-types/
 .env
 *.log
 .DS_Store
+coverage/
+reports/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.vite/

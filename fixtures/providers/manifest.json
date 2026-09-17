@@ -1,0 +1,910 @@
+{
+  "0310ba903822f2e978261ebd0d377faa8082ac1cac3115d053cfa7942f3d3718": {
+    "providerId": "fred.calendar",
+    "method": "GET",
+    "url": "https://fred.stlouisfed.org/releases",
+    "captures": [
+      {
+        "file": "raw/fred-releases.html",
+        "status": 200,
+        "bytes": 45467,
+        "sha256": "12e6f7e509d1ab5593da840f2697e1d202c350ef59e29994069ae83eeac382c7",
+        "capturedAt": "2026-09-15T18:46:09Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/html; charset=utf-8"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "03a89aed6ee2d69ea054847cda8226a596066ebf79b4ec36d0e5c792eb998299": {
+    "providerId": "fred.csv",
+    "method": "GET",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
+    "captures": [
+      {
+        "file": "raw/fred-DGS10.csv",
+        "status": 200,
+        "bytes": 268695,
+        "sha256": "94c1e5b98460d7de645be32f3211853c3d749724ecb12cac33bc84623ea759b4",
+        "capturedAt": "2026-09-15T18:44:55Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/csv"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "084a4c7874120e07d63d41a2ba7503dc771bc763460ff8843bfea2a8901c04a5": {
+    "providerId": "cboe.quotes",
+    "method": "GET",
+    "url": "https://cdn.cboe.com/api/global/delayed_quotes/quotes/_VIX.json",
+    "captures": [
+      {
+        "file": "raw/cboe-vix",
+        "status": 200,
+        "bytes": 501,
+        "sha256": "8c95cc318b57196c76e57d2e1a7074e4f1e2154331f5779a0b369d7de59f2925",
+        "capturedAt": "2026-09-15T18:40:36Z",
+        "sourceTs": "2026-09-15T18:40:36Z",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "093164db7b6ddc51d4162dd2e3e6e72d0eb11e2b297b4d983a7557f26d59ff50": {
+    "providerId": "sec.tickers",
+    "method": "GET",
+    "url": "https://www.sec.gov/files/company_tickers.json",
+    "captures": [
+      {
+        "file": "raw/sec-company-tickers.json",
+        "status": 200,
+        "bytes": 797759,
+        "sha256": "82cd5fd9ccffda811b93ba76070460dd41429c02c00e726f83deb71f553c6cff",
+        "capturedAt": "2026-09-15T18:44:53Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "0aa18290d3656481057190c1e8564fb647b3fe67ca1b02e900476b3f801068d2": {
+    "providerId": "sec.atom",
+    "method": "GET",
+    "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&count=40&output=atom&type=8-K",
+    "captures": [
+      {
+        "file": "raw/sec-8k-atom.xml",
+        "status": 200,
+        "bytes": 28829,
+        "sha256": "be257bee25eda1b536f15b2591276c5814fd2110925352cebf32d95a77fc1d23",
+        "capturedAt": "2026-09-15T18:44:53Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/atom+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "1842214387228548c23044a9b202c80c32813ebf505bffbb384204769a7609d4": {
+    "providerId": "bls.timeseries",
+    "method": "POST",
+    "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+    "body": "{\"seriesid\":[\"CUUR0000SA0\"],\"startyear\":\"2024\",\"endyear\":\"2026\"}",
+    "captures": [
+      {
+        "file": "raw/bls-cpi.json",
+        "status": 200,
+        "bytes": 3023,
+        "sha256": "de3adea0292f2f73625966f5d4139b16df6064ba7c6ba69d899d4cf7ee1a7052",
+        "capturedAt": "2026-09-15T18:44:56Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "2593029a3021cb36781be0aaea75c54858fbd7aa707b2e47d3407bb55d405544": {
+    "providerId": "bbg.rss",
+    "method": "GET",
+    "url": "https://www.bloomberg.com/feeds/economics/news.rss",
+    "captures": [
+      {
+        "file": "raw/bbg-rss-econ",
+        "status": 200,
+        "bytes": 15108,
+        "sha256": "9073a1874157669c2979ba1ec4137e9e1ac1581f6601ce0cf05a7c87630c94a6",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/rss+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "26353fc4bedb3e87e0397f8eaf9b4d4300784ffe8bfc35025d55a250adbc3d44": {
+    "providerId": "bbg.rss",
+    "method": "GET",
+    "url": "https://www.bloomberg.com/feeds/politics/news.rss",
+    "captures": [
+      {
+        "file": "raw/bbg-rss-politics",
+        "status": 200,
+        "bytes": 15252,
+        "sha256": "78a4f700c2301eebaa9415952827867edb8d9ee8419a27bbb8889c6245f924ad",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/rss+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "2b1b37688d34dbabbf38e8d25150804d2dbc801adbbd3c99a78432f0e1018510": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=5m&range=1d",
+    "captures": [
+      {
+        "file": "raw/yahoo-fx",
+        "status": 200,
+        "bytes": 22062,
+        "sha256": "2df24c601eba034f003900a1b71be8b77adb611546e04333f93ef73c47aafa1f",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "2c8ae234c32ed5dfa0d88b12aac33e744ff60b4d55f5951a3102daf15c87687f": {
+    "providerId": "fed.rss",
+    "method": "GET",
+    "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+    "captures": [
+      {
+        "file": "raw/fed-press-rss.xml",
+        "status": 200,
+        "bytes": 14620,
+        "sha256": "b95d76bc188bdbbc49ccc436cee436d7a3b69eaf98e8257af441372b396f6fa3",
+        "capturedAt": "2026-09-15T18:44:56Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/rss+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "386f25ff5b0463143171524a801951aee484e5a775f5f34e73f18a085103e0ad": {
+    "providerId": "bls.schedule",
+    "method": "GET",
+    "url": "https://www.bls.gov/schedule/news_release/september26.htm",
+    "captures": [
+      {
+        "file": "raw/bls-schedule.html",
+        "status": 200,
+        "bytes": 57216,
+        "sha256": "c518a1be8cf19e9626a0c5bf33ef2d2d4c0765b22360319e7ac0f5265c8b2151",
+        "capturedAt": "2026-09-15T18:46:09Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/html; charset=utf-8"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "44128469a66963c71691fbfb23ea6483ec226e34488f543a851e4f5d5eadb5e5": {
+    "providerId": "fred.calendar",
+    "method": "GET",
+    "url": "https://fred.stlouisfed.org/releases/calendar",
+    "captures": [
+      {
+        "file": "raw/fred-cal",
+        "status": 200,
+        "bytes": 76534,
+        "sha256": "1633727eca1121a1d270a09bdf3843e11c2cee120d4d759cfad4982891ef9bc2",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/html; charset=utf-8"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "4e9d5d4ed606bb16574b56ebda8867616c4a24c1a3338813e895f83f9e68d72b": {
+    "providerId": "nyfed.rates",
+    "method": "GET",
+    "url": "https://markets.newyorkfed.org/api/rates/secured/sofr/last/5.json",
+    "captures": [
+      {
+        "file": "raw/nyfed-sofr",
+        "status": 200,
+        "bytes": 1208,
+        "sha256": "b918aedbe543391ec1fe917fe65c57aaedf49257108e4251e59a1a06b38defd8",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "59bb41cd37343ab6b9d077d438522e0f1ee8cb916610437fb941a33224329993": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?interval=1m&range=1d",
+    "captures": [
+      {
+        "file": "raw/yahoo-chart-1m",
+        "status": 200,
+        "bytes": 28767,
+        "sha256": "511268d60592d4614636c946309b1b56d0d2bdf8d4f1c6fdaceb5c25372768ec",
+        "capturedAt": "2026-09-15T18:41:43Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      },
+      {
+        "file": "raw/yahoo-chart-AAPL-1d-1m.json",
+        "status": 200,
+        "bytes": 29113,
+        "sha256": "c8771106a0b7fd8c4fcd26884f8480f3ecf66afb6d44f689472741234d694358",
+        "capturedAt": "2026-09-15T18:45:43Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "696cdefae49367f64a62c7734cbb8759cb5ac177cafd2c1050d3889392dc4a26": {
+    "providerId": "cboe.quotes",
+    "method": "GET",
+    "url": "https://cdn.cboe.com/api/global/delayed_quotes/quotes/AAPL.json",
+    "captures": [
+      {
+        "file": "raw/cboe-quote-AAPL.json",
+        "status": 200,
+        "bytes": 531,
+        "sha256": "2aca00a602cb38e6628a809e9d32159c44dce100e233d69fa9a07c096e556fac",
+        "capturedAt": "2026-09-15T18:41:28Z",
+        "sourceTs": "2026-09-15T18:41:28Z",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "69e49c798ff4eec1a9400f4c93e331e75cb45e7cc6a4563c1111cd25b764e832": {
+    "providerId": "sec.archives",
+    "method": "GET",
+    "url": "https://www.sec.gov/Archives/edgar/data/884394/000141036826089410/primary_doc.xml",
+    "captures": [
+      {
+        "file": "raw/sec-nport-SPY-primary_doc.xml",
+        "status": 200,
+        "bytes": 454892,
+        "sha256": "5a8faea251c09850a2d0baacd89f98fbb892209b7c88d186edba8cab6293e62f",
+        "capturedAt": "2026-09-15T18:47:33Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "718d7415ec501e089be6198a27895903f671f88d6914b2760c0861054ad191e6": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=5m&range=1d",
+    "captures": [
+      {
+        "file": "raw/yahoo-bond",
+        "status": 200,
+        "bytes": 6998,
+        "sha256": "2de7bf8eeb29d1180118b485e34df81c631363c1a097ba62f3f787e8015b8fc3",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "73b73721986259a31efa7d641aef29adc280485298c84e840881451ca326b960": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?interval=5m&range=5d",
+    "captures": [
+      {
+        "file": "raw/yahoo-chart-SPX-5d-5m.json",
+        "status": 200,
+        "bytes": 32911,
+        "sha256": "13519b756a623640d73c3846c704dcedb13de99a60db17fc163018eff6806385",
+        "capturedAt": "2026-09-15T18:45:48Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "7b694d2f099ed9d22ab518b9c68e02a59565c863f1769c659ee7b5a0514ceb9e": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?events=div%7Csplit&interval=1d&range=max",
+    "captures": [
+      {
+        "file": "raw/yahoo-chart-AAPL-max-1d.json",
+        "status": 200,
+        "bytes": 25248,
+        "sha256": "c7e7adaca6de2f84d2bbbaba6d8dbdd3c27cb9634af7a7caf0727e2012e00f23",
+        "capturedAt": "2026-09-15T18:45:48Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "7df5fb159e13df5c4797811729979ddc3a7c93cc78e1984b5dc38914aec02525": {
+    "providerId": "nyfed.rates",
+    "method": "GET",
+    "url": "https://markets.newyorkfed.org/api/rates/unsecured/effr/last/10.json",
+    "captures": [
+      {
+        "file": "raw/nyfed-effr.json",
+        "status": 200,
+        "bytes": 2847,
+        "sha256": "24b2f0b9b5356fcee9904067a14164a3ea840f03d10f245a74cda65fdb4788a3",
+        "capturedAt": "2026-09-15T18:45:50Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "8272d196d782f547e39c6b146f6483beea9545ec6b0b0fb3882009972c7f6887": {
+    "providerId": "ssga.holdings",
+    "method": "GET",
+    "url": "https://www.ssga.com/us/en/intermediary/library-content/products/fund-data/etfs/us/holdings-daily-us-en-spy.xlsx",
+    "captures": [
+      {
+        "file": "raw/ssga-spy-holdings.xlsx",
+        "status": 200,
+        "bytes": 54431,
+        "sha256": "e9560e027ab20ad71c9f53853672ca0d322a950f39044c957cbed4b97874ea77",
+        "capturedAt": "2026-09-15T18:45:45Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "a0a0395cd59aae8f02b99d6589ca280ba8a978f0d31fcf231adf7eec74488eab": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?events=div%7Csplit&interval=1d&range=5y",
+    "captures": [
+      {
+        "file": "raw/yahoo-chart-events",
+        "status": 200,
+        "bytes": 140053,
+        "sha256": "05db39b313dbd9711e033b70ca8dcb85c1b21c07420b4c9657047932ba433109",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "a871623cefc5c3054ff2d2ccf629ad726282baf3f9ac51de538df344c6fdcb0f": {
+    "providerId": "cboe.options",
+    "method": "GET",
+    "url": "https://cdn.cboe.com/api/global/delayed_quotes/options/AAPL.json",
+    "captures": [
+      {
+        "file": "raw/cboe-options",
+        "status": 200,
+        "bytes": 1562495,
+        "sha256": "3ca1b6f8210ddcec2f92b0f8511498dd670d4ecf524204e3d3dcf2ab192e3515",
+        "capturedAt": "2026-09-15T18:40:39Z",
+        "sourceTs": "2026-09-15T18:40:39Z",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "b0023bb436ed24e25893b6ecb4547f42c419fd52f0279327d0e4d6f182bf164b": {
+    "providerId": "imf.datamapper",
+    "method": "GET",
+    "url": "https://www.imf.org/external/datamapper/api/v1/indicators",
+    "captures": [
+      {
+        "file": "raw/imf-weo.json",
+        "status": 200,
+        "bytes": 48340,
+        "sha256": "7a9f9cad706b09f6fa035b14b89aa6365919c5a87a43ef1118d6fa0ca92574a7",
+        "capturedAt": "2026-09-15T18:46:10Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "b5686a48acd4186339228a0ecfb83778c6f443ce6312fff1a0d872e66d2f2cc5": {
+    "providerId": "wiki.sp500",
+    "method": "GET",
+    "url": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+    "captures": [
+      {
+        "file": "raw/wiki-sp500.html",
+        "status": 200,
+        "bytes": 568880,
+        "sha256": "716d98832531f5f97bd0753bf7b23970112f57ed3a09d615b7b12189b9ec91e4",
+        "capturedAt": "2026-09-15T18:45:49Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/html; charset=utf-8"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "b7a983546af222709741869a8edba2fd444cece443b905840490ef10a71ecdfe": {
+    "providerId": "openfigi.mapping",
+    "method": "POST",
+    "url": "https://api.openfigi.com/v3/search",
+    "body": "{\"query\":\"apple\",\"exchCode\":\"US\"}",
+    "captures": [
+      {
+        "file": "raw/openfigi-search",
+        "status": 200,
+        "bytes": 28665,
+        "sha256": "04935d9d906e5be2c56e1f3174f61d3037b06cc3b38c5197cffbbc2dcbf81b13",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "c43e10abbaebaeb830d00aeb40440aacedafa9b7caa3828f78cc1c350567245d": {
+    "providerId": "nyfed.rates",
+    "method": "GET",
+    "url": "https://markets.newyorkfed.org/api/rates/all/latest.json",
+    "captures": [
+      {
+        "file": "raw/nyfed-all",
+        "status": 200,
+        "bytes": 1426,
+        "sha256": "298eabfe35d09cfb487ed5e5f1d3d3f66f91ddac8afd821b47e2d1f0fcf8d93b",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "c70f8960ab1701e20e776d8fafc4879e7c08a5deb98105235828e2e1bb8c4390": {
+    "providerId": "bbg.rss",
+    "method": "GET",
+    "url": "https://www.bloomberg.com/feeds/markets/news.rss",
+    "captures": [
+      {
+        "file": "raw/bbg-rss-markets",
+        "status": 200,
+        "bytes": 15173,
+        "sha256": "4244e0bcbf246a7a99525f120e469738cc41234a255dc8e6863c8bfe250430b5",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/rss+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "c7a2a1a4c777b0ba602ccdd76a5473943911b143e7515368506a08bb98797a17": {
+    "providerId": "cboe.euIndices",
+    "method": "GET",
+    "url": "https://cdn.cboe.com/api/global/european_indices/index_quotes/BUK100P.json",
+    "captures": [
+      {
+        "file": "raw/cboe-eu-indices",
+        "status": 200,
+        "bytes": 534,
+        "sha256": "b59303980dc4e29653b179459bc64abcdd95ba25d8a1b23c8c15e82c0d6303dc",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "cc6b7afebb74bdbcf13ba0da3a9bccea910e7f229f416b627647af3d2c43698e": {
+    "providerId": "yahoo.search",
+    "method": "GET",
+    "url": "https://query2.finance.yahoo.com/v1/finance/search?newsCount=0&q=apple&quotesCount=8",
+    "captures": [
+      {
+        "file": "raw/yahoo-search",
+        "status": 200,
+        "bytes": 2551,
+        "sha256": "976f1781fbb4630b415e9703bec7af6b968a62e8f11edd7da1fb86d0fc1dd56a",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "d03312d2e621ebfeec800f7758e93276893e6288ffc6e276dcde2250a3b207e6": {
+    "providerId": "openfigi.mapping",
+    "method": "POST",
+    "url": "https://api.openfigi.com/v3/mapping",
+    "body": "[{\"idType\":\"TICKER\",\"idValue\":\"AAPL\",\"exchCode\":\"US\"},{\"idType\":\"TICKER\",\"idValue\":\"AAPL\"}]",
+    "captures": [
+      {
+        "file": "raw/openfigi-map",
+        "status": 200,
+        "bytes": 70534,
+        "sha256": "0b2956ba1687b061de7386356ec0704c304e519ae93812b9fc71143daab0e91c",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "d389df15f2c2f89850b24c1c7c6e481c40a9b18c0d7ca6d2bc7afde9c35ec591": {
+    "providerId": "sec.submissions",
+    "method": "GET",
+    "url": "https://data.sec.gov/submissions/CIK0000320193.json",
+    "captures": [
+      {
+        "file": "raw/sec-submissions-AAPL.json",
+        "status": 200,
+        "bytes": 164091,
+        "sha256": "cb90ffafc5b6f997b60aa109e07008223ad35abe896ec7918fd43652b4057329",
+        "capturedAt": "2026-09-15T18:44:52Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "d451ad3001223fca8b43274b71dd772b1bd046f59bc31c80d8a8de32bc92f50e": {
+    "providerId": "bbg.rss",
+    "method": "GET",
+    "url": "https://www.bloomberg.com/feeds/industries/news.rss",
+    "captures": [
+      {
+        "file": "raw/bbg-rss-industries",
+        "status": 200,
+        "bytes": 15060,
+        "sha256": "a769cf89a57ede94e59320d1b9285989b81158a095a9b00de670e7db099c1410",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/rss+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "d7c327157e4b05d87a4f9a9992590a4793ef08a0f555b10207fe945287bc2f36": {
+    "providerId": "bbg.rss",
+    "method": "GET",
+    "url": "https://www.bloomberg.com/feeds/technology/news.rss",
+    "captures": [
+      {
+        "file": "raw/bbg-rss-tech",
+        "status": 200,
+        "bytes": 16056,
+        "sha256": "c40670a40d96d98580ce5ed26783f2de01b62a57859ad13c5e5d0a1b4ca4f8d9",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/rss+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "d7c445a5ab7e397ae9af1b3b5efb1f8bd6c464700c1095952a63e2b1067de7bc": {
+    "providerId": "frankfurter",
+    "method": "GET",
+    "url": "https://api.frankfurter.dev/v1/latest?base=USD",
+    "captures": [
+      {
+        "file": "raw/frankfurter",
+        "status": 200,
+        "bytes": 434,
+        "sha256": "132026151e6aaefdaf6b36a396b99bfefa254dad73c10f505047117776272810",
+        "capturedAt": "2026-09-15T00:00:00Z",
+        "sourceTs": "2026-09-15T00:00:00Z",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "dd3854c8b2ead96b05eac9a4d38f5de3840d1ecc457f3a3eac0d9ddf7bde2187": {
+    "providerId": "worldbank",
+    "method": "GET",
+    "url": "https://api.worldbank.org/v2/country/US/indicator/NY.GDP.MKTP.CD?format=json&page=1&per_page=3",
+    "captures": [
+      {
+        "file": "raw/worldbank",
+        "status": 200,
+        "bytes": 724,
+        "sha256": "f681cb8323b72c963dea34f4e0c64390677a2c0b093840f95763132d4054ba55",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "e00a631fb73510221d653d539ac66c42e4eca5c54df3dbef473ee56073b73d1d": {
+    "providerId": "sec.submissions",
+    "method": "GET",
+    "url": "https://data.sec.gov/submissions/CIK0000884394.json",
+    "captures": [
+      {
+        "file": "raw/sec-spy-submissions.json",
+        "status": 200,
+        "bytes": 49210,
+        "sha256": "74fbb50da64a5002bfbfb271046af8c323309cdfd6de4f37ef85f5c9657d64c9",
+        "capturedAt": "2026-09-15T18:45:47Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "e3a4386cf9ad27f3b96ce8d764acb9ccea5d50f05e059819d5b6c5163a83529a": {
+    "providerId": "coingecko.simple",
+    "method": "GET",
+    "url": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum&include_24hr_change=true&vs_currencies=usd",
+    "captures": [
+      {
+        "file": "raw/coingecko-simple.json",
+        "status": 200,
+        "bytes": 124,
+        "sha256": "d63f4d8d58193b03c0a9b8c03fbdcb47c5a4d7463a00614a7b8ca1c31ff5a48a",
+        "capturedAt": "2026-09-15T18:44:56Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "e4019e17afeff11a2d2f000b9d294656b5dd7dc2a4398bd94ebdce74a91f36f7": {
+    "providerId": "treasury.bills",
+    "method": "GET",
+    "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_bill_rates&field_tdr_date_value_month=202609",
+    "captures": [
+      {
+        "file": "raw/treasury-bills.xml",
+        "status": 200,
+        "bytes": 35556,
+        "sha256": "2ea165629c3d51674eff1008416a36bb3e216987f643afd447362fff4fcaf9c1",
+        "capturedAt": "2026-09-15T18:46:08Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/atom+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "e607f559f820f1dfb3359bfc1052a5da3a0d62aa4ff767674517e6cf22b31e24": {
+    "providerId": "cboe.quotes",
+    "method": "GET",
+    "url": "https://cdn.cboe.com/api/global/delayed_quotes/quotes/_SPX.json",
+    "captures": [
+      {
+        "file": "raw/cboe-spx",
+        "status": 200,
+        "bytes": 536,
+        "sha256": "d5a60dc992f7183fb3fb2a0711c82150e5d67edf555c25c00d4121121a3d8e6a",
+        "capturedAt": "2026-09-15T18:40:36Z",
+        "sourceTs": "2026-09-15T18:40:36Z",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "e9d48a730a8ec2b1b17f8ac5bba4043e24007ec9f664e42bd81458159776632d": {
+    "providerId": "yahoo.chart",
+    "method": "GET",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EFTSE?interval=5m&range=1d",
+    "captures": [
+      {
+        "file": "raw/yahoo-ftse",
+        "status": 200,
+        "bytes": 9149,
+        "sha256": "2a62190a6c0df9bf07f1502e140921505d934f2c01c167255d88843f46dd6d9d",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "f0887b1428782313750c2a73b34fd4181950bd4b28192ef75ee6abad0004c846": {
+    "providerId": "sec.companyfacts",
+    "method": "GET",
+    "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json",
+    "captures": [
+      {
+        "file": "raw/sec-companyfacts-AAPL.json",
+        "status": 200,
+        "bytes": 3789099,
+        "sha256": "73a86c6aedc31f77cac2ea4df5f80f0b3bd7e6eb58bb4e01444fbedf3afb9c43",
+        "capturedAt": "2026-09-15T18:44:52Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "f28d848a08ed7d2fdc6d10d8a86c7495130bc960f2949b6259dad57243b82428": {
+    "providerId": "fed.h15",
+    "method": "GET",
+    "url": "https://www.federalreserve.gov/datadownload/Output.aspx?filetype=csv&from=&label=include&lastobs=&layout=seriescolumn&rel=H15&series=bf17364827e38702b42a58cf8eaa3f78&to=",
+    "captures": [
+      {
+        "file": "raw/fed-h15.csv",
+        "status": 200,
+        "bytes": 2306,
+        "sha256": "d69d5e6256c73b88f9f1883dea6be5179d57a1c1df1ea34b32217217aa227423",
+        "capturedAt": "2026-09-15T18:44:55Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/csv"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "f4df9e26e002602be6ff1a1f4443558a80a5da2a46c52b53d49cff2231afedc6": {
+    "providerId": "sec.frames",
+    "method": "GET",
+    "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/Assets/USD/CY2024Q4I.json",
+    "captures": [
+      {
+        "file": "raw/sec-frames-assets.json",
+        "status": 200,
+        "bytes": 834782,
+        "sha256": "1f6d2b68fab37dc2abd249bafffcd0a2a25941f3758528b7e60111dca0fd543e",
+        "capturedAt": "2026-09-15T18:45:48Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "f9a089f439b4b4d59a66000c9c9c8609d2c5cbfb9a2e27d86c273cc72d230fcf": {
+    "providerId": "cboe.symbolBook",
+    "method": "GET",
+    "url": "https://cdn.cboe.com/api/global/delayed_quotes/symbol_book/symbol-book.json",
+    "captures": [
+      {
+        "file": "raw/cboe-symbol-book.json",
+        "status": 200,
+        "bytes": 2309236,
+        "sha256": "e5bfb191bacde2c66e408d81b2c196a8f43a6a957c93f5bad912e3d02b177cd8",
+        "capturedAt": "2026-09-15T18:00:09Z",
+        "sourceTs": "2026-09-15T18:00:09Z",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "fb364095c96ada53eac3897ebec2ac26d564b2094fe0751ead13c6a9e00d75f8": {
+    "providerId": "finra.shortInterest",
+    "method": "GET",
+    "url": "https://api.finra.org/data/group/otcMarket/name/consolidatedShortInterest?limit=1000&offset=0",
+    "captures": [
+      {
+        "file": "raw/finra-trace",
+        "status": 200,
+        "bytes": 376,
+        "sha256": "c37a0041f56b61fd648d49f20d17f41d82bab936931ca1172294d42a5294a400",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "text/csv"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  },
+  "fc89850b980d514fa9bb39a56e08abf6e75467ed251dd330cd2114120a535736": {
+    "providerId": "treasury.yieldcurve",
+    "method": "GET",
+    "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value_month=202609",
+    "captures": [
+      {
+        "file": "raw/treasury-xml2",
+        "status": 200,
+        "bytes": 14578,
+        "sha256": "d838ffce6b394db8f1a6bd007421cee53ce679123a4c81aaf4781c10f86e45c0",
+        "capturedAt": "2026-09-15T18:44:51Z",
+        "sourceTs": null,
+        "headers": {
+          "content-type": "application/atom+xml"
+        },
+        "note": "imported by scripts/fixtures-import.ts"
+      }
+    ]
+  }
+}

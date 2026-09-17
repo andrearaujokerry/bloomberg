@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "incremental": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "useUnknownInCatchVariables": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@terminal/core": ["./packages/core/dist/index.d.ts"],
+      "@terminal/core/*": ["./packages/core/dist/*"],
+      "@terminal/sdk": ["./packages/sdk/dist/index.d.ts"],
+      "@terminal/sdk/*": ["./packages/sdk/dist/*"],
+      "@terminal/server": ["./packages/server/dist/index.d.ts"],
+      "@terminal/server/*": ["./packages/server/dist/*"],
+      "@terminal/web": ["./packages/web/dist/index.d.ts"],
+      "@terminal/web/*": ["./packages/web/dist/*"]
+    }
+  }
+}

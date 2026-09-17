@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+
+    // "no IO in core" is a compiler rule, not a convention (ARCHITECTURE L120):
+    //   - no "DOM"      → no fetch, no WebSocket, no document
+    //   - "types": []   → @types/node is not in scope, so `node:*` does not resolve either
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

@@ -1,0 +1,28 @@
+node_modules
+dist
+dist-types
+coverage
+reports
+playwright-report
+test-results
+package-lock.json
+*.tsbuildinfo
+
+# SQL migrations are transcribed verbatim from DATA_MODEL.md — never reformatted.
+packages/server/drizzle/migrations
+
+# Captured provider payloads and golden datasets are byte-exact.
+fixtures
+
+# Normative design documents — hand-wrapped, never reflowed.
+docs
+
+# GENERATED barrels (scripts/gen-function-index.ts, scripts/gen-fields.ts) — never hand-edited.
+packages/core/src/functions/manifests/index.ts
+packages/core/src/fields/defs/index.ts
+packages/sdk/src/wire/rest/index.ts
+packages/sdk/src/fields/fields.json
+packages/server/src/functions/index.ts
+packages/server/src/ingest/jobs/index.ts
+packages/server/src/http/routes/index.ts
+packages/web/src/screens/index.ts

@@ -1,0 +1,208 @@
+/* ---------------------------------------------------------------------------------------------
+ * src/theme/tokens.css — CLIENT.md §12.2 (colour) and §12.3 (density type stack); TERM-11/12.
+ *
+ * Colour is semantic only: up/down, entitled/blocked, stale/live, focus, error. No decorative
+ * colour; brand amber is used for labels and the prompt only. Dark is the default terminal look;
+ * `[data-theme="light"]` exists for TERM-13 locked-down desktops. Density is set on
+ * `<html data-density>` by `/density` or the settings store and is per device.
+ * ------------------------------------------------------------------------------------------- */
+
+/* ── colour, dark (default) ─────────────────────────────────────────────────────────────────── */
+:root {
+  --c-bg: #000000;
+  --c-bg-panel: #0a0a0a;
+  --c-bg-header: #141414;
+  --c-bg-row-alt: #0e0e0e;
+  --c-bg-selected: #1c2a3a;
+  --c-value: #f2f2f2; /* live numbers */
+  --c-label: #ffb000; /* field labels, prompt, titles (terminal amber) */
+  --c-muted: #8c8c8c; /* secondary text, na */
+  --c-up: #37d67a;
+  --c-down: #ff5252;
+  --c-flat: #f2f2f2;
+  --c-stale: #9a9a9a;
+  --c-closed: #cfcfcf;
+  --c-blocked: #c48bff;
+  --c-pending: #6e6e6e;
+  --c-focus: #4da3ff;
+  --c-error: #ff5252;
+  --c-warn: #ffb000;
+  --c-ok: #37d67a;
+  --c-info: #4da3ff;
+  --c-grid-line: #1f1f1f;
+  --c-axis: #8c8c8c;
+  --c-crosshair: #ffb000;
+  --c-series-1: #4da3ff;
+  --c-series-2: #ffb000;
+  --c-series-3: #37d67a;
+  --c-series-4: #ff7ab6;
+  --c-series-5: #c48bff;
+  --c-series-6: #ffd166;
+  --flash-up-bg: rgba(55, 214, 122, 0.35);
+  --flash-down-bg: rgba(255, 82, 82, 0.35);
+  --flash-flat-bg: rgba(242, 242, 242, 0.18);
+  --flash-ms: 700ms;
+}
+
+:root[data-theme='light'] {
+  --c-bg: #ffffff;
+  --c-bg-panel: #fafafa;
+  --c-bg-header: #ececec;
+  --c-bg-row-alt: #f4f4f4;
+  --c-bg-selected: #dbe9f7;
+  --c-value: #111111;
+  --c-label: #8a5a00;
+  --c-muted: #6b6b6b;
+  --c-up: #0f8a3c;
+  --c-down: #c62828;
+  --c-flat: #111111;
+  --c-stale: #7a7a7a;
+  --c-closed: #444444;
+  --c-blocked: #6a1fbf;
+  --c-pending: #9a9a9a;
+  --c-focus: #1565c0;
+  --c-error: #c62828;
+  --c-warn: #8a5a00;
+  --c-ok: #0f8a3c;
+  --c-info: #1565c0;
+  --c-grid-line: #e0e0e0;
+  --c-axis: #6b6b6b;
+  --c-crosshair: #8a5a00;
+  --flash-up-bg: rgba(15, 138, 60, 0.25);
+  --flash-down-bg: rgba(198, 40, 40, 0.25);
+  --flash-flat-bg: rgba(17, 17, 17, 0.12);
+}
+
+/* ── density type stack (CLIENT.md §12.3) ───────────────────────────────────────────────────── */
+/* One family everywhere; tabular figures; no whitespace beyond one cell padding. The numbers are
+ * the DENSITY table of `theme/type.ts` — that module and this sheet must stay in step. */
+:root {
+  --font-mono:
+    'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --font-ui: var(--font-mono); /* UI text is mono too */
+  --font-px: 12px;
+  --row-px: 18px;
+  --header-px: 20px;
+  --cell-pad-ch: 0.5ch;
+  --w-body: 400;
+  --w-label: 500;
+  --w-strong: 600; /* focused row key, panel titles */
+}
+
+:root[data-density='compact'] {
+  --font-px: 11px;
+  --row-px: 16px;
+  --header-px: 18px;
+  --cell-pad-ch: 0.5ch;
+  --flash-ms: 350ms;
+}
+
+:root[data-density='normal'] {
+  --font-px: 12px;
+  --row-px: 18px;
+  --header-px: 20px;
+  --cell-pad-ch: 0.5ch;
+  --flash-ms: 700ms;
+}
+
+:root[data-density='comfortable'] {
+  --font-px: 13px;
+  --row-px: 22px;
+  --header-px: 24px;
+  --cell-pad-ch: 0.75ch;
+  --flash-ms: 700ms;
+}
+
+html {
+  font: var(--w-body) var(--font-px) / var(--row-px) var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'zero' 1;
+  background: var(--c-bg);
+  color: var(--c-value);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-value);
+  overflow: hidden; /* panels scroll, the document never does */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 1px solid var(--c-focus);
+  outline-offset: -1px;
+}
+
+/* ── value state, direction and flash (CLIENT.md §12.1-12.2) ────────────────────────────────── */
+[data-st='stale'] {
+  color: var(--c-stale);
+}
+[data-st='stale']::after {
+  content: ' ·';
+}
+[data-st='closed'] {
+  color: var(--c-closed);
+}
+[data-st='blank'] {
+  color: var(--c-blocked);
+}
+[data-st='na'] {
+  color: var(--c-muted);
+}
+
+[data-dir='up'] .chg {
+  color: var(--c-up);
+}
+[data-dir='down'] .chg {
+  color: var(--c-down);
+}
+
+.flash-up {
+  animation: flash-up var(--flash-ms) ease-out 1;
+}
+.flash-down {
+  animation: flash-down var(--flash-ms) ease-out 1;
+}
+
+@keyframes flash-up {
+  from {
+    background-color: var(--flash-up-bg);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+@keyframes flash-down {
+  from {
+    background-color: var(--flash-down-bg);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-up,
+  .flash-down {
+    animation-duration: 120ms;
+  }
+}

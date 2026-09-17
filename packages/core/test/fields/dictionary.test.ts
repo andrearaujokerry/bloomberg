@@ -1,0 +1,254 @@
+// packages/core/test/fields/dictionary.test.ts — WP-01 acceptance test (WORKPLAN §1.11).
+//
+// Two obligations:
+//
+//   1. **Every field id declared in the design resolves.** CONTRACTS §4.3 is the mechanical
+//      extraction of every field id named anywhere in FUNCTIONS.md; the list below is copied from
+//      it verbatim. A field id is a public contract (it appears in `POST /data`, in `GET /fields`,
+//      in the CSV column header and in `field_licence`), so one that the design names but the
+//      dictionary does not define is a broken contract, not a missing nice-to-have.
+//
+//   2. **`gen:fields` output matches the committed `fields.json`.** `packages/sdk/src/fields/
+//      fields.json` is GENERATED from this dictionary (`scripts/gen-fields.ts`, WORKPLAN §1.10).
+//      The generator writes `JSON.stringify({version, generatedAt, fields}, null, 2) + '\n'`, and
+//      `--check` refuses to write and exits non-zero when either artefact is stale. Both are
+//      asserted: the cheap structural comparison here, and the generator's own `--check` run,
+//      which also validates the barrel and every definition.
+
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+import { describe, expect, it } from 'vitest';
+
+import {
+  FIELD_DICTIONARY_GENERATED_AT,
+  FIELD_DICTIONARY_VERSION,
+  fieldDefs,
+  fieldDictionary,
+  fieldIds,
+  getField,
+  hasField,
+  listFields,
+  requireField,
+} from '../../src/fields/dictionary.js';
+import type { FieldDef } from '../../src/types/fields.js';
+
+/** `packages/core/test/fields/` → the monorepo root. */
+const REPO_ROOT = fileURLToPath(new URL('../../../../', import.meta.url));
+const FIELDS_JSON = fileURLToPath(new URL('../../../sdk/src/fields/fields.json', import.meta.url));
+
+/**
+ * CONTRACTS.md §4.3 "Field ids declared so far", copied verbatim (94 ids, alphabetical).
+ * Update this list only when CONTRACTS §4.3 itself changes.
+ */
+const CONTRACTS_FIELD_IDS: readonly string[] = `
+ACCRUED ASK_SIZE BID_SIZE BS_TOT_ASSET BS_TOT_LIAB2 CF_CAP_EXPEND CF_CASH_FROM_OPER CHG_
+CHG_NET_1D CHG_PCT_1D CPNTO CPN_FREQ CUR_MKT_CAP DUR_ADJ_MID DUR_MID DVD_SH_12M DVD_YIELD ECO_
+ECO_PERIOD ECO_PRIOR ECO_RELEASE_DT ECO_VALUE ECO_VINTAGE EPS_BASIC EPS_DIL EQY_FLOAT_PCT
+EQY_SH_OUT FX_MISSING FX_USD HIGH IDX_MEMBER_SHARES IDX_MEMBER_SINCE IDX_MEMBER_WEIGHT
+IS_CORRECTION IS_EPS_DIL IS_FINAL IS_OPER_INC LAST_SIZE LAST_TRADE_TIME NET_INC NET_INCOME
+NET_MARGIN NEWS_ID OPT_ OPT_BREAKEVEN OPT_CHARM OPT_CONT_SIZE OPT_DELTA OPT_DVD_YIELD_USED
+OPT_EXPIRE_DT OPT_GAMMA OPT_IMPL_VOL_MID OPT_INTRINSIC OPT_IV OPT_MODEL_PX OPT_OI OPT_PUT_CALL
+OPT_RATE_USED OPT_RHO OPT_STRIKE_PX OPT_THEO OPT_THETA OPT_TIME_VALUE OPT_UNDL_PX OPT_UNDL_TICKER
+OPT_VANNA OPT_VEGA OPT_VOLGA PX_ASK PX_BID PX_CLEAN_MID PX_CLOSE_1D PX_DIRTY_MID PX_HIGH
+PX_HIGH_52W PX_LAST PX_LOW PX_LOW_52W PX_OFFICIAL_CLOSE PX_OPEN PX_TO_BOOK_RATIO PX_TO_SALES_RATIO
+PX_VOLUME SALES_GROWTH_YOY SALES_PS SALES_REV_TURN SPREAD SPREADS TOT_ASSETS TOT_LIAB
+TOT_RETURN_INDEX VOLUME_AVG_30D VOL_30D YLD_YTM_MID
+`
+  .trim()
+  .split(/\s+/);
+
+// ---------------------------------------------------------------------------------------------
+// 1. Every field id in CONTRACTS §4.3 resolves
+// ---------------------------------------------------------------------------------------------
+
+describe('field dictionary — CONTRACTS §4.3 coverage', () => {
+  it('declares exactly 94 ids in CONTRACTS §4.3', () => {
+    expect(CONTRACTS_FIELD_IDS).toHaveLength(94);
+    expect(new Set(CONTRACTS_FIELD_IDS).size).toBe(CONTRACTS_FIELD_IDS.length);
+  });
+
+  it('resolves every id through getField / hasField / requireField', () => {
+    const unresolved = CONTRACTS_FIELD_IDS.filter((id) => getField(id) === undefined);
+    expect(unresolved).toEqual([]);
+
+    for (const id of CONTRACTS_FIELD_IDS) {
+      expect(hasField(id)).toBe(true);
+      expect(requireField(id).id).toBe(id);
+    }
+  });
+
+  it('defines no field the design does not name, and names none it does not define', () => {
+    const declared = new Set(CONTRACTS_FIELD_IDS);
+    const defined = new Set(fieldIds());
+    expect([...declared].filter((id) => !defined.has(id))).toEqual([]);
+    expect([...defined].filter((id) => !declared.has(id))).toEqual([]);
+  });
+
+  it('throws a diagnosable error for an id the dictionary does not know', () => {
+    expect(getField('NOT_A_FIELD')).toBeUndefined();
+    expect(hasField('NOT_A_FIELD')).toBe(false);
+    expect(() => requireField('NOT_A_FIELD')).toThrow(/unknown field id 'NOT_A_FIELD'/);
+    expect(() => requireField('NOT_A_FIELD')).toThrow(FIELD_DICTIONARY_VERSION);
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+// 2. Dictionary invariants the generator and `GET /fields` both rely on
+// ---------------------------------------------------------------------------------------------
+
+describe('field dictionary — invariants', () => {
+  it('is sorted by id and free of duplicates', () => {
+    const ids = fieldIds();
+    expect(ids).toEqual([...ids].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('has a fixed generatedAt — the /fields ETag depends on it being reproducible', () => {
+    expect(FIELD_DICTIONARY_GENERATED_AT).toBe('2026-09-17T00:00:00.000Z');
+    expect(FIELD_DICTIONARY_VERSION).toMatch(/^\d{4}\.\d{2}\.\d+$/);
+    expect(fieldDictionary.version).toBe(FIELD_DICTIONARY_VERSION);
+    expect(fieldDictionary.generatedAt).toBe(FIELD_DICTIONARY_GENERATED_AT);
+    expect(fieldDictionary.fields).toBe(fieldDefs);
+  });
+
+  it('gives every definition the shape scripts/gen-fields.ts validates', () => {
+    const FIELD_ID_RE = /^[A-Z][A-Z0-9_]{1,39}$/;
+    const problems: string[] = [];
+    for (const def of fieldDefs) {
+      const at = (msg: string): void => void problems.push(`${def.id}: ${msg}`);
+      if (!FIELD_ID_RE.test(def.id)) at('id does not match the field-id pattern');
+      if (def.label.trim() === '') at('label is empty');
+      if (def.definition.trim() === '') at('definition is empty');
+      if (def.decimals !== null && !(Number.isInteger(def.decimals) && def.decimals >= 0)) {
+        at('decimals is neither null nor a non-negative integer');
+      }
+      if (def.type === 'enum' && (def.enumValues ?? []).length === 0) {
+        at("type 'enum' without enumValues");
+      }
+      if (def.type !== 'enum' && def.enumValues !== undefined) {
+        at("enumValues on a non-'enum' type");
+      }
+      if (new Set(def.assetClasses).size !== def.assetClasses.length) at('assetClasses repeats');
+      if (def.since === '') at('since is empty');
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it('gives every real field a source, and every sourceless entry is a deprecated placeholder', () => {
+    // CONTRACTS §4.3 was harvested mechanically from prose, so it contains family prefixes
+    // (`CHG_`, `ECO_`, `OPT_`), a screener token (`CPNTO`) and formula/section names (`SPREAD`,
+    // `SPREADS`). The dictionary keeps them so the harvested list resolves, but marks them
+    // deprecated with no asset class and no source — they must never look like real fields.
+    const sourceless = fieldDefs.filter((d) => d.sources.length === 0);
+    expect(sourceless.map((d) => d.id)).toEqual([
+      'CHG_',
+      'CPNTO',
+      'ECO_',
+      'OPT_',
+      'SPREAD',
+      'SPREADS',
+    ]);
+    for (const def of sourceless) {
+      expect(def.deprecated, `${def.id} must be marked deprecated`).toBeDefined();
+      expect(def.assetClasses, `${def.id} must claim no asset class`).toEqual([]);
+      expect(def.definition.startsWith('Not a field')).toBe(true);
+    }
+    for (const def of fieldDefs) {
+      if (sourceless.includes(def)) continue;
+      expect(def.sources.length, `${def.id} has no source`).toBeGreaterThan(0);
+      for (const src of def.sources) {
+        expect(src.sourceId).not.toBe('');
+        expect(src.endpoint).not.toBe('');
+      }
+    }
+  });
+
+  it('groups every field under one of the eight field classes', () => {
+    const classes = [
+      'price',
+      'reference',
+      'fundamental',
+      'econ',
+      'news',
+      'analytic',
+      'derived',
+      'portfolio',
+    ] as const;
+    const seen = new Set(fieldDefs.map((d) => d.fieldClass));
+    expect([...seen].filter((c) => !classes.includes(c))).toEqual([]);
+
+    for (const fieldClass of seen) {
+      const filtered = listFields({ fieldClass });
+      expect(filtered.every((d) => d.fieldClass === fieldClass)).toBe(true);
+      expect(filtered).toHaveLength(fieldDefs.filter((d) => d.fieldClass === fieldClass).length);
+    }
+  });
+
+  it('filters by asset class, and a subject-only field matches no asset class', () => {
+    const equity = listFields({ assetClass: 'equity' });
+    expect(equity.every((d) => d.assetClasses.includes('equity'))).toBe(true);
+    const subjectOnly = fieldDefs.filter((d) => d.assetClasses.length === 0);
+    for (const def of subjectOnly) {
+      expect(equity.some((d) => d.id === def.id)).toBe(false);
+    }
+    expect(listFields()).toEqual([...fieldDefs]);
+  });
+
+  it('returns a copy from listFields, so a caller cannot corrupt the dictionary', () => {
+    const list = listFields();
+    list.length = 0;
+    expect(fieldDefs.length).toBe(94);
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
+// 3. gen:fields output === the committed fields.json
+// ---------------------------------------------------------------------------------------------
+
+describe('gen:fields — the committed artefact is in sync', () => {
+  const committed = readFileSync(FIELDS_JSON, 'utf8');
+
+  it('matches what scripts/gen-fields.ts writes, byte for byte', () => {
+    const expected = `${JSON.stringify(
+      {
+        version: fieldDictionary.version,
+        generatedAt: fieldDictionary.generatedAt,
+        fields: fieldDictionary.fields,
+      },
+      null,
+      2,
+    )}\n`;
+    expect(committed).toBe(expected);
+  });
+
+  it('parses to the same field set the dictionary exposes', () => {
+    const parsed = JSON.parse(committed) as {
+      version: string;
+      generatedAt: string;
+      fields: FieldDef[];
+    };
+    expect(parsed.version).toBe(FIELD_DICTIONARY_VERSION);
+    expect(parsed.generatedAt).toBe(FIELD_DICTIONARY_GENERATED_AT);
+    expect(parsed.fields.map((f) => f.id)).toEqual(fieldIds());
+    expect(parsed.fields.map((f) => f.id)).toEqual([...CONTRACTS_FIELD_IDS].sort());
+  });
+
+  it('passes `gen:fields --check` (which also validates defs/*.ts and the generated barrel)', () => {
+    // `tsx` runs the generator's TypeScript directly; `--check` writes nothing and exits
+    // non-zero when either generated artefact is stale.
+    const output = execFileSync(
+      process.execPath,
+      [
+        fileURLToPath(new URL('../../../../node_modules/tsx/dist/cli.mjs', import.meta.url)),
+        'scripts/gen-fields.ts',
+        '--check',
+      ],
+      { cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    expect(output).toContain('94 fields in 8 classes');
+    expect(output).toContain(`dictionary v${FIELD_DICTIONARY_VERSION}`);
+    expect(output).not.toContain('STALE');
+  }, 120_000);
+});
