@@ -160,3 +160,243 @@ export {
   isoDateTimeFromEpochMs,
 } from './fields/format.js';
 export type { FieldFormat, FormatOptions } from './fields/format.js';
+
+// ── WP-03 ──────────────────────────────────────────────────────────────────────────────────────
+// Symbology, the command line, ranking and the formula language. WP-01 owns this file's structure;
+// this block is WP-03's export surface, added here because an unexported module is invisible to
+// `@terminal/core`'s consumers — WP-08 builds the server-side universe snapshot and runs the same
+// `rank()`, and WP-12 parses the command line in the web shell.
+
+// Identifier codecs with check digits (WORKPLAN L581, FUNCTIONS.md §2.3 step 4).
+export {
+  FIGI_LENGTH,
+  FIGI_ALPHABET,
+  figiCheckDigit,
+  parseFigi,
+  isValidFigi,
+  toFigi,
+} from './ids/figi.js';
+export type { FigiProblem, FigiProblemCode, FigiParseResult } from './ids/figi.js';
+export {
+  ISIN_LENGTH,
+  isinCheckDigit,
+  isinCountry,
+  isinNsin,
+  parseIsin,
+  isValidIsin,
+  toIsin,
+} from './ids/isin.js';
+export type { IsinProblem, IsinProblemCode, IsinParseResult } from './ids/isin.js';
+export {
+  CUSIP_LENGTH,
+  cusipCheckDigit,
+  cusipToIsin,
+  parseCusip,
+  isValidCusip,
+  toCusip,
+} from './ids/cusip.js';
+export type { CusipProblem, CusipProblemCode, CusipParseResult } from './ids/cusip.js';
+export {
+  SEDOL_LENGTH,
+  sedolCheckDigit,
+  parseSedol,
+  isValidSedol,
+  toSedol,
+} from './ids/sedol.js';
+export type { SedolProblem, SedolProblemCode, SedolParseResult } from './ids/sedol.js';
+export {
+  OCC_SYMBOL_LENGTH,
+  OCC_STRIKE_SCALE,
+  formatOcc,
+  occStrikeText,
+  parseOcc,
+  parseOccOrNull,
+  isOccSymbol,
+  isCboeOccSymbol,
+  isOsiOccSymbol,
+  toCboeForm,
+  toOsiForm,
+} from './ids/occ.js';
+export type {
+  OccForm,
+  OccOption,
+  OccOptionLike,
+  OccParseResult,
+  OccProblem,
+  OccProblemCode,
+  OccResult,
+  OptionRight,
+} from './ids/occ.js';
+// `pad`/`unpad` are exported under their unambiguous aliases only: the bare names say nothing about
+// what is being padded, and `cik.ts` already publishes both spellings (§18.6).
+export { CIK_PADDED_LENGTH, padCik, unpadCik, parseCik, isValidCik, cikUrlKey } from './ids/cik.js';
+export type { CikProblem, CikProblemCode, CikParseResult } from './ids/cik.js';
+
+// Security references — the eight ref forms (ARCHITECTURE L140-142).
+export {
+  SECURITY_REF_SCHEMES,
+  canonicaliseSecurityRef,
+  canonicaliseTicker,
+  formatSecurityRef,
+  isIdentifierToken,
+  isSecurityRef,
+  isSecurityRefScheme,
+  parseSecurityRef,
+  parseSecurityRefOrNull,
+} from './ids/securityRef.js';
+export type {
+  BondRefTerms,
+  OptionRefTerms,
+  SecurityRefForm,
+  SecurityRefParseOk,
+  SecurityRefParseFail,
+  SecurityRefParseResult,
+  SecurityRefProblem,
+  SecurityRefProblemCode,
+} from './ids/securityRef.js';
+
+// The one name normaliser (§18.7), shared by `refdata/resolve.ts` and the news matcher.
+export { foldName, normName, normNameTokens, sameName, stripLegalSuffixes } from './text/normName.js';
+export type { NormNameOptions } from './text/normName.js';
+
+// Market sector ↔ asset class (WORKPLAN L588).
+export {
+  ASSET_CLASS_SECTOR,
+  MARKET_SECTORS,
+  SECTOR_ALIASES,
+  SECTOR_ASSET_CLASSES,
+  assetClassesForSector,
+  isSectorToken,
+  lookupSector,
+  resolveSector,
+  sectorAllowsAssetClass,
+  sectorForAssetClass,
+  sectorInUniverse,
+  yellowKeyForSector,
+} from './command/sectors.js';
+export type { SectorLookup, SectorMatchKind, SectorMissReason } from './command/sectors.js';
+
+// The command line (CONTRACTS §4.1 L651-696, FUNCTIONS.md §2).
+export { QUOTE, isFormulaToken, formulaBody, formulaTokenText, joinTokens, quoteToken, tokenize } from './command/tokenizer.js';
+export type { Token } from './command/tokenizer.js';
+export {
+  COMMAND_SLOTS,
+  GRAMMAR_EBNF,
+  HELP_WORD,
+  MAX_SECTOR_TOKEN_INDEX,
+  MAX_TICKER_TOKENS,
+  RESERVED_KEYS,
+  RESERVED_WORDS,
+  SHELL_COMMANDS,
+  isReservedKey,
+  isReservedWord,
+  isShellWord,
+  shellCommand,
+  validateShellArgs,
+} from './command/grammar.js';
+export type { CommandSlot, CommandSlotName, ShellCommandSpec } from './command/grammar.js';
+export {
+  DEFAULT_FUNCTION,
+  SECURITY_FINDER_FUNCTION,
+  insertTextFor,
+  parse,
+  toRunRequest,
+} from './command/parser.js';
+export type {
+  CommandProblem,
+  CommandSecurity,
+  CommandSecurityInput,
+  CommandShape,
+  FunctionRunRequestInput,
+  PanelContext,
+  ParseEnv,
+  ParsedCommand,
+  RunRequest,
+  TickerHit,
+} from './command/parser.js';
+export {
+  BOOLEAN_WORDS,
+  RANGE_VALUES,
+  coerceArg,
+  isKeyedArg,
+  parseArgs,
+  parseArgDate,
+  parseArgNumber,
+} from './command/args.js';
+export type { ParseArgsOptions, ParseArgsResult } from './command/args.js';
+
+// Autocomplete: the universe index and the ranker (FUNCTIONS.md §3).
+export { UniverseIndex, jaccard, normalizeWords, trigramsOf } from './command/index.js';
+export type { BuildOptions, CodeHit, TickerLookupHit, TrigramHit } from './command/index.js';
+export {
+  LOCAL_HIT_MATCH_FLOOR,
+  MAX_PER_KIND,
+  MAX_RESULTS,
+  clampYahooBelowLocal,
+  compareCandidates,
+  isFunctionApplicable,
+  kindPrior,
+  popularity,
+  rank,
+  recencyBoost,
+} from './command/rank.js';
+export { mruKey } from './search/types.js';
+export type {
+  Candidate,
+  CandidateKind,
+  CandidateSource,
+  HighlightRange,
+  MatchedOn,
+  MruRank,
+  MruRecord,
+  RankContext,
+  RankPanelContext,
+  UniverseEntry,
+  UniverseFunctionTuple,
+  UniverseInstrumentTuple,
+  UniversePersonTuple,
+  UniverseSnapshot,
+  UniverseTopicTuple,
+} from './search/types.js';
+
+// The formula language (CHRT-07) — what `watchlists.columns[].formula` holds.
+export { lexFormula, formulaBody as formulaBodySpan } from './formula/lexer.js';
+export type { FormulaLexResult, FormulaToken, FormulaTokenKind } from './formula/lexer.js';
+export {
+  canonicaliseFormula,
+  isFormula,
+  parseFormula,
+  parseFormulaOrNull,
+} from './formula/parser.js';
+export type { FormulaParseResult } from './formula/parser.js';
+export {
+  FORMULA_FUNCTIONS,
+  MAX_FORMULA_DEPTH,
+  MAX_FORMULA_LENGTH,
+  formatFormula,
+  formulaDependencies,
+  formulaProblem,
+  hasErrorNode,
+  isSeriesNode,
+  lookupFormulaFunction,
+  walkFormula,
+} from './formula/ast.js';
+export type {
+  FormulaBinaryOp,
+  FormulaDependencies,
+  FormulaFunctionName,
+  FormulaFunctionSpec,
+  FormulaNode,
+  FormulaProblem,
+  FormulaProblemCode,
+  FormulaSpan,
+  FormulaUnaryOp,
+} from './formula/ast.js';
+export { DEFAULT_FORMULA_FIELD, evaluateFormula, evaluateFormulaNode } from './formula/evaluator.js';
+export type {
+  FormulaContext,
+  FormulaEvaluation,
+  FormulaInputRead,
+  FormulaNaReason,
+  FormulaSecurity,
+} from './formula/evaluator.js';

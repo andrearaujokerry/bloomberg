@@ -20,7 +20,11 @@ export default defineConfig({
           name: 'core',
           root: 'packages/core',
           environment: 'node',
-          include: ['test/**/*.test.ts'],
+          // `*.bench.ts` is included because `test/command/command.bench.ts` is a real assertion
+          // suite, not a `vitest bench` benchmark: it asserts the FUNCTIONS.md §3.5 ranking budget
+          // (≤ 4 ms p95 on 45 k entries), which is a WORKPLAN L614 acceptance row and cannot be
+          // allowed to stop running. Vitest's own `bench()` blocks are unaffected by `include`.
+          include: ['test/**/*.test.ts', 'test/**/*.bench.ts'],
           testTimeout: 5_000,
           // `threads` is the default pool.
         },

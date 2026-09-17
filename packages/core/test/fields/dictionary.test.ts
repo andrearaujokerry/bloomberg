@@ -81,20 +81,54 @@ YLD_VAL_32ND Z_SPRD_MID
   .trim()
   .split(/\s+/);
 
-/** Every id the design names, from either source. */
-const DESIGNED_FIELD_IDS: readonly string[] = [...CONTRACTS_FIELD_IDS, ...WP02_ANALYTIC_FIELD_IDS];
+/**
+ * WP-03's reference surface (WORKPLAN L558-622: `fields/defs/reference.ts` is WP-03's). CONTRACTS
+ * §4.3 harvested only the reference ids the design prose happened to name; these 95 are the
+ * security-master fields the DES, SECF, MEMB, HDS and CACS screens read — identifiers and names,
+ * sector and classification codes, exchange/MIC/calendar, currency and country, listing and issue
+ * attributes, Treasury terms (REF-04), option terms (REF-05), index-membership attributes (REF-07)
+ * and the corporate-action descriptors (REF-09, DATA-08). API-07 requires the dictionary to be
+ * complete, so they are listed here, sorted, and the exhaustiveness check below still holds:
+ * nothing reaches the dictionary without appearing in one of these three lists.
+ */
+const WP03_REFERENCE_FIELD_IDS: readonly string[] = `
+AMT_OUTSTANDING ASSET_CLASS BOND_TYPE BUSINESS_DAY_CONV CA_AMOUNT CA_CRNCY CA_DECLARED_DT
+CA_EFFECTIVE_DT CA_EX_DT CA_FREQUENCY CA_GROSS_NET CA_NEW_TICKER CA_PAY_DT CA_RATIO_NEW
+CA_RATIO_OLD CA_RECORD_DT CA_STATUS CA_TYPE CNTRY_OF_DOMICILE CNTRY_OF_ISSUE COMPANY_WEB_ADDRESS
+CPN CPN_TYP CRNCY DATED_DT DAY_CNT EXCH_CALENDAR_ID EXCH_CODE EXCH_TIMEZONE FIRST_CPN_DT
+FIRST_TRADE_DT FISCAL_YEAR_END FLT_SPREAD GICS_INDUSTRY_CODE GICS_INDUSTRY_GROUP_NAME
+GICS_INDUSTRY_NAME GICS_SECTOR_CODE GICS_SECTOR_NAME GICS_SUB_INDUSTRY_NAME HLD_AS_OF_DT
+HLD_HOLDER_NAME HLD_MKT_VAL HLD_PCT_OUT HLD_SHARES_HELD IDX_MEMBER_ASOF IDX_MEMBER_COUNT
+IDX_MEMBER_MKT_VAL IDX_MEMBER_SOURCE IDX_PROVIDER IDX_PROXY_FUND IDX_RATIO_BASE ID_BB_GLOBAL
+ID_BB_SHARE_CLASS ID_CIK ID_CUSIP ID_EXCH_TICKER ID_FIGI_LISTING ID_ISIN ID_LEI ID_OCC ID_SEDOL
+ID_TICKER ISSUER_TYPE ISSUE_DT IS_CALLABLE LISTING_STATUS LONG_COMP_NAME MARKET_SECTOR_DES
+MATURITY MIN_INCREMENT MIN_PIECE NAME NXT_CPN_DT ON_THE_RUN OPT_AM_PM OPT_EXER_TYP OPT_IS_WEEKLY
+OPT_LAST_TRADE_DT OPT_MULTIPLIER OPT_ROOT OPT_SETTLE_TYP OPT_TICK_SIZE PARSEKYABLE_DES PAR_VALUE
+PRIM_EXCH_MIC PRIM_EXCH_NAME REFERENCE_INDEX SECURITY_STATUS SECURITY_TERM SECURITY_TYP
+SETTLE_CALENDAR SETTLE_DAYS SIC_CODE SIC_DESCRIPTION STATE_OF_INCORPORATION
+`
+  .trim()
+  .split(/\s+/);
 
-/** The dictionary's total size: CONTRACTS §4.3's 94 plus WP-02's 68. */
-const FIELD_COUNT = 162;
+/** Every id the design names, from any of the three sources. */
+const DESIGNED_FIELD_IDS: readonly string[] = [
+  ...CONTRACTS_FIELD_IDS,
+  ...WP02_ANALYTIC_FIELD_IDS,
+  ...WP03_REFERENCE_FIELD_IDS,
+];
+
+/** The dictionary's total size: CONTRACTS §4.3's 94, WP-02's 68 analytics and WP-03's 95 reference. */
+const FIELD_COUNT = 257;
 
 // ---------------------------------------------------------------------------------------------
 // 1. Every field id in CONTRACTS §4.3 resolves
 // ---------------------------------------------------------------------------------------------
 
 describe('field dictionary — CONTRACTS §4.3 coverage', () => {
-  it('declares exactly 94 ids in CONTRACTS §4.3 and 68 more in WP-02 analytics', () => {
+  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics and 95 in WP-03 reference', () => {
     expect(CONTRACTS_FIELD_IDS).toHaveLength(94);
     expect(WP02_ANALYTIC_FIELD_IDS).toHaveLength(68);
+    expect(WP03_REFERENCE_FIELD_IDS).toHaveLength(95);
     expect(new Set(DESIGNED_FIELD_IDS).size).toBe(FIELD_COUNT);
   });
 
