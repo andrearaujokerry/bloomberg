@@ -151,7 +151,7 @@ share `providers/cboe/parse.ts`). The rule set:
 | Endpoint/shape change that invalidates recorded captures | major | new captures recorded; every `fixtures/sessions/*` re-baselined (QA-02) |
 
 Because `adapter_version` sits on `provenance`, a value stored in 2026 keeps pointing at the parser that
-produced it. `GET /api/v1/admin/trace/:id` (`observability/traceQuery.ts`) and the `Ctrl+I` provenance
+produced it. `GET /api/v1/admin/trace/:traceId` (`observability/traceQuery.ts`) and the `Ctrl+I` provenance
 panel both surface it, so "the number changed because the parser changed" is answerable from the row.
 
 ### 1.5 Writing through `db/bitemporal.ts`
@@ -326,7 +326,8 @@ tripping the breaker would mask it behind a stale screen.
 
 ### 2.6 Read-through for interactive requests
 
-`ctx.providers.get(kind, key, { maxAgeMs })` (FUNCTIONS §1.4 `ReadThrough`) is the only path by which a
+`ctx.providers.ensure(kind, key, { maxAgeMs })` (FUNCTIONS §1.4 `ReadThrough`, whose single method is
+`ensure`, L274 — not `get`) is the only path by which a
 function resolver can cause a fetch. It checks the database/plant first, and only if the stored value is
 older than `maxAgeMs` does it call the same adapter through the same buckets, marked
 `budgetShare: 'interactive'`. Sources whose fetch is slow (Treasury XML ≈ 18 s) are declared

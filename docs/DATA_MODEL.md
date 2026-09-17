@@ -116,8 +116,12 @@ END $$;
 
 -- 1.1.c Generic "close current versions overlapping a valid range" used by writeVersion() (one implementation
 -- for every bitemporal table; EXECUTE with format(%I) so the table/key are identifiers, values are parameters).
+-- p_now defaults to clock_timestamp(), NOT now(): now() is transaction start, so a version inserted and then closed
+-- in one transaction would get tx_to = tx_from and raise 'tx_to must be after tx_from' (bt_guard_update) as well as
+-- violating <table>_tx_range. clock_timestamp() advances within the transaction, so two writes to one key in one
+-- transaction still order. Callers that are backdating (a historical correction, a seed) pass p_now explicitly.
 CREATE FUNCTION bt_close_tx(tbl regclass, key_col text, key_val bigint, p_valid_from timestamptz, p_valid_to timestamptz,
-                            p_now timestamptz DEFAULT now())
+                            p_now timestamptz DEFAULT clock_timestamp())
 RETURNS int LANGUAGE plpgsql AS $$
 DECLARE n int;
 BEGIN
@@ -169,8 +173,14 @@ CREATE TRIGGER <table>_bt_guard BEFORE UPDATE ON <table> FOR EACH ROW EXECUTE FU
 ```
 
 Valid time = when the fact was true in the world. Transaction time = when we recorded it. Rows are
-never updated in place except to close `tx_to`. Deletion is a closed `tx_to`. `now()` (transaction
-start) is used for `tx_from` so every version written in one transaction shares one `known_at`.
+never updated in place except to close `tx_to`. Deletion is a closed `tx_to`. The column *default* for
+`tx_from` is `now()` (transaction start), which is what an ordinary ingest write wants: every version
+written in one transaction then shares one `known_at`. Two things override it. (1) A caller that knows the
+real knowledge instant — a filing's `acceptanceDateTime`, a corporate action's announcement — passes it
+explicitly as `VersionWrite.txFrom` (§1.3); backdating transaction time is the whole point of REF-03 and
+is impossible if the column default is the only way to set it. (2) Closing a version uses
+`clock_timestamp()`, not `now()`, so a write and its close inside one transaction do not collapse to the
+same instant (§1.1.c).
 `btree_gist` supplies the `=` operator class for `bigint`, `text` and enum keys inside the GiST
 exclusion (enum support exists since PG 11), so `entity_kind WITH =` and `scheme WITH =` are legal.
 
@@ -203,14 +213,25 @@ export interface VersionWrite<Row> {
   data: Omit<Row, BitemporalKeys | 'versionId'>;
   provenanceId: number;
   reason: 'initial' | 'change' | 'correction';   // audit label written to data_exceptions on conflict; mechanics identical
+  /** knownAt: the instant this became known to us. Written to tx_from of the new row AND passed as bt_close_tx's
+   *  p_now, so the closed version's tx_to equals the new version's tx_from and the transaction-time axis has no
+   *  gap and no overlap. Omitted → clock_timestamp() (the ordinary "we learned it now" case). REQUIRED whenever
+   *  the knowledge instant is historical: SEC acceptanceDateTime, a Yahoo event date, any seeded history
+   *  (REF-09/STOR-06 both depend on it). Must be strictly greater than the tx_from of the version being closed —
+   *  bt_guard_update rejects NEW.tx_to <= OLD.tx_from — and not in the future. */
+  txFrom?: Date;
 }
 /**
  * In ONE transaction (caller supplies tx):
  *  1. bt_close_tx(table, key, [validFrom, validTo)) closes every current version overlapping the new valid range.
  *  2. For each closed row whose valid range sticks out of [validFrom, validTo), re-insert the non-overlapping
  *     remainders [old.valid_from, validFrom) and [validTo, old.valid_to) as new rows with the OLD data and
- *     provenance and tx_from = now().
- *  3. Insert the new row. The exclusion constraint proves no two current rows overlap.
+ *     provenance and the same tx_from as step 3.
+ *  3. Insert the new row with tx_from = w.txFrom ?? clock_timestamp(). The exclusion constraint proves no two
+ *     current rows overlap.
+ * Steps 1 and 2 use the same instant as step 3, so two versions of one key may be written in ONE transaction
+ * (an initial value and a later correction, as the seed does): the first close sets tx_to = the second row's
+ * tx_from. With now() they would collide, because now() is transaction start.
  * A CHANGE (coupon effective from D) passes validFrom = D and narrows the old version; a CORRECTION
  * ("we were wrong all along") passes the old valid range and gets the same valid range with a later tx_from.
  * Never issues UPDATE on a data column. Returns the new version_id.
@@ -271,7 +292,8 @@ CREATE INDEX provenance_run_idx            ON provenance (run_id) WHERE run_id I
 CREATE TABLE licence_registry (                 -- DATA-09: machine-readable terms per source; bitemporal because terms change
   version_id      bigserial PRIMARY KEY,
   source_id       text NOT NULL,                -- 'cboe.quotes','cboe.options','cboe.symbolBook','cboe.euIndices','yahoo.chart','yahoo.search',
-                                                -- 'openfigi.mapping','openfigi.search','sec.tickers','sec.submissions','sec.companyfacts','sec.frames',
+                                                -- 'openfigi.mapping' (one row for both /v3/mapping and /v3/search, PROVIDERS.b §6.2),
+                                                -- 'sec.tickers','sec.submissions','sec.companyfacts','sec.frames',
                                                 -- 'sec.atom','sec.archives','fred.csv','fred.calendar','nyfed.rates','fed.h15','fed.rss','fed.fomc',
                                                 -- 'treasury.yieldcurve','treasury.bills','bls.timeseries','bls.schedule','worldbank','imf.datamapper',
                                                 -- 'frankfurter','finra.shortInterest','bbg.rss','coingecko.simple','ssga.holdings','wiki.sp500',
@@ -329,7 +351,7 @@ CREATE TRIGGER field_licence_source_known BEFORE INSERT OR UPDATE ON field_licen
 ```
 
 Rules: every value-bearing row cites a `provenance_id`; `provenance` is append-only (WORM trigger in
-§15) because it is the audit trail behind every number; `GET /api/v1/admin/trace/:id` joins
+§15) because it is the audit trail behind every number; `GET /api/v1/admin/trace/:traceId` joins
 `provenance.trace_id`. The registry is seeded by `packages/server/src/seed/licences.ts` from
 `packages/server/src/providers/licences.ts` (one row per `source_id` above, `display=true,
 redistribution=false, max_tier='delayed'` for Cboe/Yahoo/CoinGecko and `'eod'` for daily sources;
@@ -2188,7 +2210,7 @@ CREATE TRIGGER entitlement_grants_bump AFTER INSERT OR UPDATE OR DELETE ON entit
 CREATE TRIGGER calendar_holidays_bump  AFTER INSERT OR UPDATE OR DELETE ON calendar_holidays FOR EACH STATEMENT EXECUTE FUNCTION bump_config_version('calendars');
 ```
 
-The trace query (OPS-07) `GET /api/v1/admin/trace/:id` joins `access_log.trace_id`,
+The trace query (OPS-07) `GET /api/v1/admin/trace/:traceId` joins `access_log.trace_id`,
 `usage_events.trace_id`, `provenance.trace_id`, `ingest_runs.trace_id`, `messages.trace_id` and
 `help_tickets.trace_id` — every table above indexes it.
 
@@ -2221,8 +2243,13 @@ GRANT UPDATE ON firms, users, user_credentials, sessions, api_keys, entitlement_
                 econ_observations, rate_fixings, curve_points, econ_release_events, econ_series, econ_releases, fomc_meetings,
                 filings, xbrl_frames, bars_daily, bars_intraday, fx_rates, short_interest, etf_holdings, calendar_holidays,
                 calendar_sessions, calendars, exchanges, classification_codes, classification_schemes, indices, issuer_aliases,
-                topics, field_licence
+                topics, field_licence,
+                news_items, news_entity_links, vol_surfaces
   TO terminal_app;
+-- news_items / news_entity_links: NEWS-01/NEWS-02 re-ingest is an upsert on (source_id, provider_guid) — a correction
+-- rewrites headline/summary/is_correction, and a later linking run rewrites confidence/method on an existing link.
+-- vol_surfaces: ANAL-04 re-fits the same (underlying_instrument_id, as_of, expiry) key. Without UPDATE all three writers
+-- raise "permission denied for table" on their second run, which is exactly the idempotency the replay tests assert.
 GRANT DELETE ON watchlist_items, watchlists, positions, lots, chart_annotations, saved_searches, alerts, alert_events,
                 room_members, message_reads, quota_instruments_seen, quota_counters, field_licence, issuer_aliases,
                 calendar_holidays, calendar_sessions, dq_events
@@ -2244,6 +2271,48 @@ CREATE TRIGGER provenance_worm   BEFORE UPDATE OR DELETE ON provenance   FOR EAC
 CREATE TRIGGER usage_events_worm BEFORE UPDATE OR DELETE ON usage_events FOR EACH ROW EXECUTE FUNCTION worm_block();
 CREATE TRIGGER xbrl_facts_worm   BEFORE UPDATE OR DELETE ON xbrl_facts   FOR EACH ROW EXECUTE FUNCTION worm_block();   -- STOR-06: restatements are new rows
 -- Retention drops happen at partition level (DROP TABLE <partition>) by the owner role and never touch rows under an open legal hold.
+
+-- 15.d.1 Partition maintenance role (STOR-05, STOR-07, OPS-03)
+-- `terminal_app` holds USAGE on the schema plus SELECT/INSERT (and the UPDATE/DELETE lists above). That is deliberately
+-- not enough to maintain partitions: CREATE TABLE needs CREATE on the schema, DROP TABLE needs ownership of the
+-- partition, and ATTACH/DETACH needs ownership of the parent. Granting terminal_app ownership of the partitioned
+-- parents would also hand it the power to disable the 15.d WORM triggers on access_log and usage_events, which is the
+-- one thing those triggers exist to prevent. So maintenance gets its own role, which owns the six partitioned parents:
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'terminal_maint') THEN
+    CREATE ROLE terminal_maint LOGIN;          -- DATABASE_URL_MAINT; password set by ops
+  END IF;
+  EXECUTE format('GRANT CONNECT ON DATABASE %I TO terminal_maint', current_database());
+END $$;
+GRANT USAGE, CREATE ON SCHEMA public TO terminal_maint;
+ALTER TABLE bars_daily    OWNER TO terminal_maint;
+ALTER TABLE bars_intraday OWNER TO terminal_maint;
+ALTER TABLE quote_ticks   OWNER TO terminal_maint;
+ALTER TABLE option_quotes OWNER TO terminal_maint;
+ALTER TABLE access_log    OWNER TO terminal_maint;
+ALTER TABLE usage_events  OWNER TO terminal_maint;
+-- ownership moves only the six parents (and, by inheritance of the OWNER on new children, every partition
+-- terminal_maint creates); the 0016 partitions are re-owned in the same statement block:
+DO $$
+DECLARE p record;
+BEGIN
+  FOR p IN SELECT c.relname FROM pg_class c JOIN pg_inherits i ON i.inhrelid = c.oid
+           JOIN pg_class parent ON parent.oid = i.inhparent
+           WHERE parent.relname IN ('bars_daily','bars_intraday','quote_ticks','option_quotes','access_log','usage_events')
+  LOOP EXECUTE format('ALTER TABLE %I OWNER TO terminal_maint', p.relname); END LOOP;
+END $$;
+-- terminal_app keeps exactly the access it had (ownership changes do not revoke grants, but the default privileges
+-- above are attached to the migration owner, so restate them for the new owner's future partitions):
+ALTER DEFAULT PRIVILEGES FOR ROLE terminal_maint IN SCHEMA public GRANT SELECT, INSERT ON TABLES TO terminal_app;
+GRANT SELECT, INSERT ON bars_daily, bars_intraday, quote_ticks, option_quotes, access_log, usage_events TO terminal_app;
+GRANT UPDATE ON bars_daily, bars_intraday TO terminal_app;                 -- as listed in 15.b; access_log/usage_events stay WORM
+-- The WORM triggers of 15.d still fire for terminal_maint: DROP TABLE on a partition is DDL, not a row UPDATE/DELETE,
+-- so retention drops work while row-level rewrites remain blocked for every role.
+-- Consequence for the server (§15.1): `db/client.ts` opens a second, single-connection pool on DATABASE_URL_MAINT used
+-- only by `db/partitions.ts#ensurePartitions` / `#dropExpired` and by `retentionPurge`. Every other statement in the
+-- process runs on the terminal_app pool. On PG 14 the legacy PUBLIC CREATE grant on schema public would mask half of
+-- this in development and fail only in a hardened deployment, so the split is made explicit here rather than discovered.
 
 -- 15.e Per-room hash chain and sequence (MSG-02). The advisory lock serialises concurrent sends into one room.
 CREATE FUNCTION messages_chain() RETURNS trigger LANGUAGE plpgsql AS $$
@@ -2357,6 +2426,10 @@ export async function withTx<T>(ctx: RequestCtx | null, fn: (tx: Tx) => Promise<
     return fn(tx);
   });
 }
+/** Partition maintenance only (§15.d.1). A second pool, max 1 connection, on DATABASE_URL_MAINT as `terminal_maint`,
+ *  which owns the six partitioned parents. Nothing else in the process may use it: no RequestCtx is ever set on it,
+ *  so every tenant policy yields zero rows there. */
+export async function withMaintTx<T>(fn: (tx: Tx) => Promise<T>): Promise<T>;
 ```
 
 `server/test/integration/tenant-isolation.test.ts` connects as `terminal_app`, seeds two firms, reads

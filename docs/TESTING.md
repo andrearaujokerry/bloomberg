@@ -430,9 +430,14 @@ Assertions layered on top of the table:
    `vega` with `h = 1e-5` on sigma, `rho` with `h = 1e-6` on r — each within `1e-6` of the closed-form
    greek. The second-order truncation error is far below that, so the tolerance is really a guard
    against a sign or scaling slip.
-7. **Implied vol round trip (`options/bsm.ts#impliedVol`, Brent + Newton).** Feeding `10.450584` back
-   returns `sigma = 0.200000` within `1e-8` in ≤ 12 iterations; the same for the put price
-   `5.573526`. A price below the intrinsic bound (`call = 4.0`, intrinsic `= 4.877058`) returns
+7. **Implied vol round trip (`options/bsm.ts#impliedVol`, Brent + Newton).** The round trip must be fed
+   the engine's **own unrounded** output, not the rounded price pinned in the table above: the exact call
+   is `10.4505835722`, and feeding the table's rounded `10.450584` back returns `sigma = 0.2000000114`,
+   i.e. 1.14e-8 off — vega is 37.524 per unit vol, so the 4.3e-7 of price rounding becomes 1.1e-8 of vol
+   and a `1e-8` tolerance is unsatisfiable by a correct implementation. So: `impliedVol(bsm(sigma=0.20))`
+   returns `sigma = 0.20` within `1e-8` in ≤ 12 iterations, and the same for the put (`5.5735260223`;
+   the put branch would in fact pass from the rounded price, at 5.9e-10, but the assertion is written the
+   same way for both). A round trip that must start from a pinned literal uses tolerance `1e-7`. A price below the intrinsic bound (`call = 4.0`, intrinsic `= 4.877058`) returns
    `null` with `reason: 'NO_ARBITRAGE_BOUND'`, it does not throw and does not return a negative vol.
 8. **Two independent implementations (ANAL-09)** — `packages/core/test/analytics/bsm.crosscheck.test.ts`:
    - CRR binomial (`options/tree.ts`, 5 000 steps, European) reproduces `call = 10.450584` within
@@ -485,8 +490,11 @@ difference `(P(y − 1bp) − P(y + 1bp)) / 2` within `5e-9` (the truncation err
 convexity equals the second central difference with `h = 1 bp` within `1e-5`; the sum of key-rate
 durations (2y node only, here) equals the modified duration within `1e-9`.
 
-**Case `bond.premium.short`**: coupon 5 %, yield 4 %, 4 periods → `price = 101.905126`
-(`2.5 × (1 − 1.02⁻⁴)/0.02 + 100 × 1.02⁻⁴`), tolerance `1e-6`, asserting price > 100 ⇔ yield < coupon.
+**Case `bond.premium.short`**: coupon 5 %, yield 4 %, 4 periods → `price = 101.903864`
+(`2.5 × (1 − 1.02⁻⁴)/0.02 + 100 × 1.02⁻⁴`, exactly `101.903864349…`: `1.02⁻⁴ = 0.923845426`, annuity
+`3.807728710`, `9.519321774 + 92.384542576`), tolerance `1e-6`, asserting price > 100 ⇔ yield < coupon.
+(The earlier `101.905126` in this case was arithmetically wrong by 1.26e-3 — more than 1 000 tolerances —
+and would have been "fixed" by bending the engine to match it.)
 
 ### 7.4 Accrued interest across day counts (ANAL-01) — `packages/core/test/analytics/daycount.test.ts`
 
@@ -724,14 +732,30 @@ ANAL-04.
 
 ## 8. Provider replay tests (QA-02, FEED-08)
 
-All 50 recorded files in `fixtures/providers/raw/` are under test. Nothing here touches the network.
+**Every file present in `fixtures/providers/raw/` is under test** — the manifest-integrity test asserts
+that each file on disk is reachable from a `requestKey` (one each, save the two `yahoo-chart` files that
+share a key) and that no manifest entry names a missing file; it never asserts a literal count, so adding
+a capture does not break it. The directory holds
+**48** entries today (counted on disk; BRIEF §2 and ARCHITECTURE L97 said 50, and WORKPLAN §18.14 records
+the same correction). Three captures are missing outright and a fourth needs re-capturing — all four are a WP-05 task — until they land, their
+adapters are covered by the catalogue half of the response only:
+
+| Missing capture | Exact URL | Blocks |
+| --- | --- | --- |
+| IMF observations | `https://www.imf.org/external/datamapper/api/v1/NGDP_RPCH/USA` | `imf.datamapper` observation parse (PROVIDERS.b §10.7) |
+| Bloomberg `wealth` feed | `https://feeds.bloomberg.com/wealth/news.rss` (record the redirected `https://www.bloomberg.com/feeds/…` URL as the request key, PROVIDERS.b §11.1) | the sixth `bbg.rss` feed |
+| FOMC calendar page | `https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm` | `fed.fomc` parse (PROVIDERS.b §10.9) |
+| AAPL daily history with splits (re-capture, replaces a bad one) | `https://query1.finance.yahoo.com/v8/finance/chart/AAPL?range=max&interval=1d&events=div%7Csplit` | §7.9 `adjust.aapl.fixture`: the stored `yahoo-chart-AAPL-max-1d.json` came back at `dataGranularity 3mo` (169 quarterly bars), so no daily close exists for 2020-08-28 or pre-2014 and that golden runs on published closes instead (WORKPLAN §18.14) |
+
+When the three missing ones are captured, the count becomes 51 in one edit, here and in ARCHITECTURE L97. Nothing here
+touches the network.
 
 | Test | File | What it proves |
 | --- | --- | --- |
 | Request keys | `packages/server/test/replay/requestKey.test.ts` | `canonicalUrl()` obeys PROVIDERS §3.2 rules 1–5 — lower-cased scheme/host, dropped default port and fragment, `%5EGSPC`, `EURUSD%3DX`, `_SPX` preserved, query sorted by name then value, `events=div%7Csplit`, empty-value parameter kept as `name=`, `?` omitted when nothing survives. Two spellings of the same request must hash equal; two orderings of the same JSON body must hash **differently** (deliberate) |
 | Manifest integrity | `packages/server/test/replay/manifest.test.ts` | every `captures[].sha256` matches the bytes on disk; every raw file is reachable from exactly one `requestKey`; `yahoo-chart-1m` and `yahoo-chart-AAPL-1d-1m.json` collide on one key and are both retained as `captures[0]`/`captures[1]` ordered by `capturedAt`; `yahoo-chart-events` and `yahoo-chart-AAPL-max-1d.json` do **not** collide |
 | Importer idempotence | `packages/server/test/replay/import.test.ts` | running `scripts/fixtures-import.ts` twice produces a byte-identical `manifest.json` (two-space indent, trailing newline, keys sorted); an unmapped file in `raw/` is a hard error |
-| Normaliser goldens | `packages/server/test/replay/normalisers.test.ts` (ARCHITECTURE §8.1) | each adapter's pure `parse()` over each raw file deep-equals `fixtures/providers/normalised/<file>.json`. 50 files × 17 adapters mapped 1:1. Timestamp rules are part of the golden: Cboe `last_trade_time` ET→UTC into `ts.src`, Yahoo `meta.regularMarketTime` ×1000 into `capturedAt`, frankfurter `date` into `sourceTs` |
+| Normaliser goldens | `packages/server/test/replay/normalisers.test.ts` (ARCHITECTURE §8.1) | each adapter's pure `parse()` over each raw file deep-equals `fixtures/providers/normalised/<file>.json`. Every raw file on disk (48 today) is parsed by exactly one adapter, but the mapping is **not** 1:1 in the other direction: several adapters own more than one file, and two files (`yahoo-chart-1m` and `yahoo-chart-AAPL-1d-1m.json`) share one `requestKey`, so the test iterates the manifest, not a count. Timestamp rules are part of the golden: Cboe `last_trade_time` ET→UTC into `ts.src`, Yahoo `meta.regularMarketTime` ×1000 into `capturedAt`, frankfurter `date` into `sourceTs` |
 | Replay wall | `packages/server/test/replay/no-network.test.ts` (PROVIDERS §3.6) | with `PROVIDER_MODE=replay`, no `undici`/`http`/`https` request object is constructed during the entire suite; a miss raises `ReplayMissError` carrying `requestKey`, the `nearest` manifest URL and the fix line |
 | Ingest through replay | `packages/server/test/integration/ingest/jobs.test.ts` | every job in `ingest/jobs/` runs end-to-end off the replay store into `bloomberg_test`, writes an `ingest_runs` row with `status='ok'` and non-null `fetched/inserted`, and stamps a `provenance` row whose `request_key` equals the manifest key for every written value (DATA-10) |
 | Plant session replay | `packages/server/test/replay/sessions.test.ts` | every directory in `fixtures/sessions/` is replayed with a `VirtualClock` and diffed against its `expected.ndjson`, ignoring `ts.cap`/`ts.pub`; the first divergence is printed with subject and seq. Committed sessions: `cboe-aapl-poll`, `sim-ws-burst`, `sim-ws-backpressure`, `sim-ws-resync`, `fomc-release` (**addition required** — the session names are not fixed anywhere) |

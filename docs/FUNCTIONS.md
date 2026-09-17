@@ -49,8 +49,14 @@ by the manifest's payload type and both are checked against the same golden payl
 
 ### 1.2 Manifest — `packages/core/src/functions/manifest.ts`
 
-This file is the authority for the manifest type. ARCHITECTURE §5.2 shows the same interface; the
-fields `variants`, `aliasParams` and `payloadVersion` are additions recorded in §9.
+**This file is normative for the function framework**: the manifest, `defineFunction`, `ParamGrammar`,
+`LiveSpec`, `CsvColumn`/`CsvSpec`, `HelpSpec`, `KeyBinding`, `Payload`/`PayloadMeta`, the screen types
+(§1.5) and `ResolveContext` (§1.4.1). ARCHITECTURE §5.1/§5.2 show earlier copies of the same
+interfaces and are informative only; where they differ, this file wins. The differences are: the fields
+`variants`, `aliasParams` and `payloadVersion` (additions recorded in §9), the payload bound
+`T extends { variant: string }` where ARCHITECTURE has `T = unknown`, the six-value `user.role` union
+and `page.set(info)` in `ResolveContext`. CONTRACTS.md lists both copies (its §3.1 and §4.1) without
+ranking them — §4.1 is the one to build from.
 
 ```ts
 import { z } from 'zod';

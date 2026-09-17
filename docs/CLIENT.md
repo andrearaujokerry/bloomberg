@@ -639,6 +639,13 @@ sdk.live 'alert'   → Toast + alerts badge; 'message' → MSG screen if mounted
 rt/stalenessTicker.ts every 1 000 ms: subjects = sdk.live.quoteCache.sweep(now) → cellRegistry.restyle(subjects); chart legend restyle
 ```
 
+`sdk.live.quoteCache` is `LiveClient`'s own `QuoteCache` instance, exposed as `readonly quoteCache:
+QuoteCache` on the `LiveClient` declaration (API.md §10.2). The web client does **not** construct a second
+cache: `LiveClient.get(subject)` reads that same `Map<subject, QuoteView>`, so the ticker sweeps exactly
+the state the grid renders. `sweep(now)` returns the subjects whose `valueState`
+(`core/quote/staleness.ts`) changed at this tick, which is the whole TERM-12 mechanism — one 1 s timer per
+document, no per-cell timers.
+
 `LiveView` (`screen/liveView.ts`) implements FUNCTIONS §1.5: `get(subject, field)` returns the SDK
 `QuoteView` value as a `ValueCell` (`v = f[field]`, `st`, `r = r[field]`, `ts = fts[field]`, `provIdx`
 from the payload cell) or the payload cell when no frame has arrived; `state(subject)` maps status

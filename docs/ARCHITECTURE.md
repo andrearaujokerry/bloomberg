@@ -85,7 +85,7 @@ package.json                     npm workspaces ["packages/*"]; scripts: dev, bu
                                  fixtures:record, fixtures:import, replay:run, replay:diff
 tsconfig.base.json               strict, ESM ("module":"NodeNext"), "target":"ES2022", paths for @terminal/*
 eslint.config.js                 boundary rules (§1.1)
-vitest.workspace.ts              one project per package; server project uses DATABASE_URL_TEST
+vitest.config.ts                 root `test.projects` (TESTING §2.1); server-int uses DATABASE_URL_TEST
 scripts/
   gen-function-index.ts          writes core/src/functions/manifests/index.ts, server/src/functions/index.ts,
                                  web/src/screens/index.ts from directory listings (never hand-edited)
@@ -94,7 +94,7 @@ scripts/
 docs/                            REQUIREMENTS, BRIEF, ARCHITECTURE (this), DATA_MODEL, API, FUNCTIONS,
                                  PROVIDERS, TESTING, TRACEABILITY, FIXTURES
 fixtures/
-  providers/raw/                 verbatim captured responses (existing 50 files; see FIXTURES.md)
+  providers/raw/                 verbatim captured responses (48 files on disk; see FIXTURES.md and TESTING §8)
   providers/manifest.json        requestKey → { file, providerId, capturedAt, sha256, sourceTs }   (§8.1)
   providers/normalised/          golden NormalisedUpdate[] / row[] per raw file (diffed in tests)
   sessions/<name>/               plant replay sessions: events.ndjson, subscriptions.json, expected.ndjson (§8.2)
@@ -215,7 +215,11 @@ packages/sdk/
     index.ts                         public surface: createClient(), LiveClient, wire schemas, fields, registry
     wire/
       envelope.ts                    ErrorEnvelope, PayloadMeta schema, AsOf schema, ProvenanceRef schema
-      rest.ts                        zod request/response for every route in API.md (Rest.<Route>)
+      rest/<group>.ts                zod request/response for every route in API.md, one file per route
+                                     group (auth, reference, search, functions, data, fields, news,
+                                     workspaces, watchlists, portfolios, messages, alerts, help, usage,
+                                     admin, status) as Rest.<Group>.<Route>
+      rest/index.ts                  GENERATED barrel over rest/*.ts
       ws.ts                          zod ClientMsg / ServerMsg discriminated unions, SubjectId regex, close codes (§6.4)
       dataRequest.ts                 the one DataRequest / DataResponse model (API-02)
       reasonCodes.ts                 ReasonCode enum (mirrors core/types/entitlement.ts)
@@ -342,7 +346,7 @@ packages/server/
       metrics.ts                     in-process counters/histograms, /metrics (Prometheus text)
       usageEvents.ts                 batched usage_events writer (FUNC-04)
       dq.ts                          data-quality monitors → dq_events (OPS-03, QA-03)
-      traceQuery.ts                  GET /api/v1/admin/trace/:id join (OPS-07)
+      traceQuery.ts                  GET /api/v1/admin/trace/:traceId join (OPS-07)
     replay/
       harness.ts                     plant session replay with VirtualClock (§8.2)
       diff.ts                        expected vs actual ndjson diff; first divergence printed
@@ -599,7 +603,7 @@ CREATE TRIGGER <table>_bt_guard BEFORE UPDATE ON <table> FOR EACH ROW EXECUTE FU
 export interface AsOf { validAt: Date; knownAt: Date }
 export function asOf(t: BitemporalTable, at: AsOf): SQL;          // bt_as_of(t.valid_from, …, at.validAt, at.knownAt)
 export function current(t: BitemporalTable): SQL;                 // valid_to = 'infinity' AND tx_to = 'infinity'
-export interface VersionWrite<Row> { entityKey: Partial<Row>; validFrom: Date; validTo?: Date; data: Omit<Row, BitemporalKeys|'versionId'>; provenanceId: number; reason: 'initial'|'change'|'correction' }
+export interface VersionWrite<Row> { entityKey: Partial<Row>; validFrom: Date; validTo?: Date; data: Omit<Row, BitemporalKeys|'versionId'>; provenanceId: number; reason: 'initial'|'change'|'correction'; txFrom?: Date /* knownAt; written to tx_from and passed to bt_close_tx as p_now. Default clock_timestamp(), never now(). DATA_MODEL §1.3 is normative */ }
 /** In one transaction: close tx_to of current rows overlapping [validFrom, validTo); re-insert non-overlapping
  *  remainders as new versions; insert the new row. A CHANGE (coupon effective from D) narrows the old valid range;
  *  a CORRECTION (we were wrong all along) reuses the same valid range with a later tx_from. Never UPDATEs data. */
@@ -670,6 +674,13 @@ PRINT   export/csv.ts → GET /api/v1/functions/:code/csv?resultId=… → serve
 
 ### 5.1 `ResolveContext` — the only way a resolver touches data (`server/src/functions/context.ts`)
 
+> **Informative, not normative.** FUNCTIONS.md §1.4.1 is the authority for `ResolveContext`; the copy
+> below is kept for the lifecycle narrative and for the line citations other documents already make
+> against it. Two deltas, and FUNCTIONS.md wins on both: `user.role` is the six-value union
+> `'user'|'admin'|'compliance'|'dataops'|'helpdesk'|'newsroom'` matching the `users.role` CHECK (not
+> `'user'|'admin'`), and `page` carries `set(info)`. `providers` is `ReadThrough`, whose method is
+> `ensure(kind, key, { maxAgeMs })`.
+
 ```ts
 export interface ResolveContext {
   user: { userId: number; firmId: number; sessionId: string; role: 'user'|'admin' };
@@ -680,7 +691,7 @@ export interface ResolveContext {
   db: Db;                                              // request transaction with app.user_id / app.firm_id set (RLS)
   data: DataServices;                                  // reference, historical, intraday, ticks, snapshot, fundamentals, econ, curves, rates, options, news, filings, holdings, portfolio
   plant: PlantReader;                                  // snapshot(subject), snapshotMany(subjects) — entitlement-filtered views
-  providers: ReadThrough;                              // get(kind, key, { maxAgeMs }) → DB/plant if fresh, else adapter fetch + persist
+  providers: ReadThrough;                              // ensure(kind, key, { maxAgeMs }) → DB/plant if fresh, else adapter fetch + persist (FUNCTIONS.md §1.4.2 L274 is normative)
   entitle: (fieldIds: FieldId[], usage: UsageType, tier?: Tier) => Promise<EntitlementDecision>;
   prov: ProvenanceCollector;                           // add(ref) → index; every value block cites one (DATA-10)
   unavailable: UnavailableCollector;                   // add({ field, reason:'NO_SOURCE'|'NOT_LICENSED'|'NOT_APPLICABLE', detail })  (EE estimates)
@@ -693,6 +704,15 @@ export interface FunctionServerModule<P, T> { resolve: FunctionResolver<P, T>; v
 ```
 
 ### 5.2 Function manifest (FUNC-01/02/03/04) — `packages/core/src/functions/manifest.ts`
+
+> **Informative, not normative.** FUNCTIONS.md §1.2 is the authority for `FunctionManifest`,
+> `defineFunction`, `ParamGrammar`, `LiveSpec`, `CsvColumn`/`CsvSpec`, `HelpSpec`, `KeyBinding`,
+> `Payload`/`PayloadMeta` and the screen types. The version below predates three fields the whole
+> downstream set depends on — `variants` (18 files), `payloadVersion` (15) and `aliasParams` (11) —
+> and bounds the payload as `T = unknown` where FUNCTIONS.md bounds it as
+> `T extends { variant: string } = { variant: string }`. Build `core/src/functions/manifest.ts` from
+> FUNCTIONS.md §1.2: without the `{ variant: string }` bound, the runner's "choose the variant by
+> asset class" and every polymorphic resolver lose the variant assertion FUNCTIONS §8 requires.
 
 ```ts
 export interface ParamGrammar {
@@ -1031,7 +1051,7 @@ Mandatory headers: SEC `User-Agent: <SEC_USER_AGENT>` (descriptive, with contact
 browser-like `User-Agent` (empty body otherwise); OpenFIGI `X-OPENFIGI-APIKEY` when configured. Token
 buckets: openfigi 25/min, sec 10/s, cboe 4/s, yahoo 2/s, fred 1/s, bls 25/day, treasury 1/min, others 1/s.
 
-Read-through cache (`ctx.providers.get(kind, key, { maxAgeMs })`): resolvers never call adapters
+Read-through cache (`ctx.providers.ensure(kind, key, { maxAgeMs })` — the `ReadThrough` method name of FUNCTIONS.md §1.4.2 L274): resolvers never call adapters
 directly; the read-through returns DB/plant data if fresh enough, otherwise fetches through the same
 adapter and buckets and persists. Slow sources (Treasury XML ≈ 18 s) are only ever fetched by the
 scheduler; resolvers read `curve_points`.
@@ -1177,7 +1197,7 @@ The client never filters: the server nulls denied fields and returns the reason 
   response header, WS `hello.traceId`/`subAck.traceId`/`err.traceId`, the pino child logger, `usage_events.trace_id`,
   `access_log.trace_id`, `ingest_runs.trace_id`, `provenance.trace_id` (fetches triggered on behalf of a
   request), and `payload.meta.traceId`. The HELP overlay and every error dialog show the last trace id.
-  `GET /api/v1/admin/trace/:id` (`observability/traceQuery.ts`) joins logs, access log, usage events,
+  `GET /api/v1/admin/trace/:traceId` (`observability/traceQuery.ts`) joins logs, access log, usage events,
   provenance rows and the request keys they point at, so "why is this number wrong?" is one query from
   one string to the raw recorded response (OPS-07).
 - **Logs.** pino JSON to stdout; per-module levels; request log with route, status, latency bucket, userId, traceId.

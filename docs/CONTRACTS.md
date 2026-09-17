@@ -30,300 +30,300 @@ session_state = 'pre','open','auction','halted','closed','post','unknown'
 Format: `table(col type, col type, …)` — constraints/defaults elided; PK/FK/partitioning noted where declared inline.
 
 ```sql
--- L251
+-- L272
 provenance(provenance_id bigserial PRIMARY KEY, source_id text , -- licence_registry.source_id (validity enforced by trigger below), request_key text , -- replay store key: sha256(providerId|METHOD|url-sorted-query|sha256(body)) hex (ARCHITECTURE §8.1), request_url text, request_hash bytea , -- sha256(method + url + body), response_sha256 bytea, http_status int, bytes int, captured_at timestamptz , -- FEED-05 'cap', source_ts timestamptz, -- provider-published time when present ('src'); Cboe top-level `timestamp` (UTC), adapter_version text , -- 'cboe/1.0.0', trace_id uuid, -- when fetched on behalf of a request (OPS-07), run_id bigint -- ingest_runs.run_id when fetched by the scheduler (FK added in 0014))
--- L271
+-- L292
 licence_registry(version_id bigserial PRIMARY KEY, source_id text , -- 'cboe.quotes','cboe.options','cboe.symbolBook','cboe.euIndices','yahoo.chart','yahoo.search', source_name text, publisher text, terms_url text, contract_ref text, -- DATA-01: signed agreement reference; NULL for every v1 public source, licence_kind text CHECK (licence_kind IN ('public_domain','open_data','exchange_delayed','unofficial','cc_by_sa','vendor_terms','internal')), display boolean, non_display boolean , -- DATA-01 distinction: programmatic / non-display use, derived boolean, redistribution boolean, export_allowed boolean, api_allowed boolean, max_tier tier , -- ceiling any grant can reach for this source (evaluator rule 3), intrinsic_delay_min int, retention_days int, -- NULL = unlimited; the ONLY input to partition drops and retentionPurge (STOR-07), attribution text , -- screen footers and CSV header line, rate_limit text , -- '25/min', '10/s' — documentation; buckets live in providers/http.ts, requires_user_agent boolean, api_key_env text, -- 'OPENFIGI_API_KEY', 'FRED_API_KEY', audit_obligation text, notes text, valid_from timestamptz , valid_to timestamptz, tx_from timestamptz , tx_to timestamptz, provenance_id bigint →provenance, -- NULL only for rows written by seed/licences.ts (bootstrap))
    CONSTRAINT licence_registry_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT licence_registry_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT licence_registry_bt_excl EXCLUDE USING gist (source_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L320
+-- L342
 field_licence(field_id text , -- from core/fields/dictionary.ts ('PX_LAST', 'REVENUE', 'RATE_P25' …), asset_class asset_class, source_id text, field_class field_class)
    PRIMARY KEY (field_id, asset_class)
--- L353
+-- L375
 issuers(version_id bigserial PRIMARY KEY, issuer_id bigint, name text, legal_name text, lei char(20), cik char(10), -- zero-padded '0000320193', country char(2), state_of_inc text, sic char(4), -- SEC submissions.sic '3571', sic_description text, entity_type text ,'fund','sovereign','index_provider','central_bank','other')), fiscal_year_end char(4), -- 'MMDD' from SEC submissions.fiscalYearEnd ('0926'), filer_category text, -- 'Large accelerated filer', website text, former_names jsonb , -- [{name, from, to}] from SEC submissions.formerNames, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT issuers_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT issuers_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT issuers_bt_excl EXCLUDE USING gist (issuer_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L384
+-- L406
 issues(version_id bigserial PRIMARY KEY, issue_id bigint, issuer_id bigint, asset_class asset_class, security_type text , -- OpenFIGI securityType: 'Common Stock','ETP','REIT','Index','Spot','US GOVERNMENT','Equity Option', security_type2 text, share_class_figi char(12), isin char(12), cusip char(9), sedol char(7), name text, currency char(3), country_of_issue char(2), par_value numeric(18,6), valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT issues_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT issues_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT issues_bt_excl EXCLUDE USING gist (issue_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L414
+-- L436
 instruments(version_id bigserial PRIMARY KEY, instrument_id bigint, issue_id bigint, asset_class asset_class, market_sector market_sector, composite_figi char(12), ticker text , -- 'AAPL', 'SPX', 'EURUSD', '912797VE4', 'AAPL260916C00245000', 'SOFR', 'CPIAUCSL', exch_code text , -- OpenFIGI composite code 'US'; 'GOVT','FX','INDEX','RATE','ECON','CRYPTO' for non-listed, name text, currency char(3), primary_listing_id bigint, status text ,'delisted','pending','matured','expired')), search_weight real , -- autocomplete prior (index members > 1; Cboe-only symbols < 1), price_decimals smallint , -- display hint (Yahoo priceHint); the formatter in core decides, first_trade_date date, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT instruments_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT instruments_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT instruments_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L447
+-- L469
 listings(version_id bigserial PRIMARY KEY, listing_id bigint, instrument_id bigint, figi char(12), mic char(4), -- exchanges.mic 'XNAS','XNYS','ARCX','BATS','XCBO' (FK by convention: exchanges is created in 0005), exch_code text , -- OpenFIGI venue code 'UW', local_ticker text, is_primary boolean, listing_status text ,'suspended','delisted')), valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT listings_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT listings_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT listings_bt_excl EXCLUDE USING gist (listing_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L471
+-- L493
 md_lines(version_id bigserial PRIMARY KEY, md_line_id bigint, instrument_id bigint, listing_id bigint, -- NULL = composite line, source_id text , -- licence_registry.source_id (trigger-checked), provider_symbol text , -- cboe 'AAPL' | '_SPX'; yahoo 'AAPL' | '^GSPC' | 'EURUSD=X'; coingecko 'bitcoin'; nyfed 'SOFR', line_kind text CHECK (line_kind IN ('composite','venue','derived','reference')), intrinsic_delay_min int , -- cboe 15, yahoo 15, nyfed 0, expected_interval_ms int , -- poll cadence during session; drives staleness (10000 for cboe.quotes), priority smallint , -- lower wins ties in composite merge (cboe 10, yahoo 20), valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT md_lines_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT md_lines_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT md_lines_bt_excl EXCLUDE USING gist (md_line_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
    CONSTRAINT md_lines_symbol_excl EXCLUDE USING gist (source_id WITH =, provider_symbol WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L499
+-- L521
 identifiers(version_id bigserial PRIMARY KEY, entity_kind entity_kind, entity_id bigint, scheme id_scheme, value text , -- 'BBG000B9XRY4','US0378331005','037833100','2046251','0000320193','HWUPKR0MPOU8FGXBT394','XNAS','AAPL', qualifier text , -- TICKER_EXCH: exch code ('US','UW'); PROVIDER_SYMBOL / SERIES_CODE: source_id; RIC: '' ; MIC: '', is_primary boolean, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT identifiers_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT identifiers_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT identifiers_bt_excl EXCLUDE USING gist (scheme WITH =, value WITH =, qualifier WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L552
+-- L574
 govt_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, security_type text CHECK (security_type IN ('bill','note','bond','tips','frn')), cusip char(9), term_label text, -- '4WK','13WK','2Y','10Y','30Y', issue_date date, dated_date date, maturity_date date, coupon_type text ,'zero','float','step','inflation_linked')), coupon_rate numeric(9,6), -- percent; NULL for bills, coupon_freq smallint, day_count text CHECK (day_count IN ('ACT/ACT','ACT/360','ACT/365F','30/360','30E/360','ACT/ACT-ISDA')), -- notes/bonds ACT/ACT, bills ACT/360, first_coupon_date date, last_regular_coupon date, business_day_conv text ,'modified_following','preceding','none')), calendar_id text, settlement_days smallint, reference_index text, -- 'SOFR' for FRNs, spread_bp numeric(9,4), index_ratio_base numeric(14,8), -- TIPS, is_callable boolean, call_schedule jsonb , -- [{date, price, kind:'call'|'make_whole', spread_bp}] (empty for modern Treasuries; kept for REF-04 shape), put_schedule jsonb , -- [{date, price}], sink_schedule jsonb , -- [{date, amount_pct}], amortisation jsonb , -- [{date, factor}], make_whole jsonb, -- {benchmark, spread_bp}, covenants text, guarantors text[], seniority text, collateral text, min_denomination numeric(14,2), increment numeric(14,2), amount_outstanding numeric(28,2), on_the_run boolean, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT govt_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT govt_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT govt_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L601
+-- L623
 option_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, occ_symbol varchar(21) , -- 'AAPL260916C00245000' as Cboe publishes it (root unpadded); OSI form derived by core/ids/occ.ts, root text, underlying_instrument_id bigint, expiry date, strike numeric(14,4), put_call char(1) CHECK (put_call IN ('C','P')), exercise_style text ,'european')), settlement text ,'cash')), am_pm_settlement char(2) ,'pm')), multiplier int, tick_size numeric(8,4), exercise_cutoff_local time, is_weekly boolean, last_trade_date date, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT option_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT option_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT option_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L632
+-- L654
 future_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, root text, underlying_instrument_id bigint, exchange_mic char(4), expiry date, last_trade_date date, first_notice_date date, first_delivery_date date, multiplier numeric(14,4), tick_size numeric(10,6), tick_value numeric(14,6), settlement text CHECK (settlement IN ('physical','cash')), delivery_months text[], roll_convention jsonb, -- {rule:'days_before_expiry', days:5}, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT future_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT future_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT future_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L660
+-- L682
 fund_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, fund_type text ,'etn','mutual_fund','closed_end')), tracked_index_instrument_id bigint, sponsor text, cik char(10), series_id text, expense_ratio numeric(8,6), inception_date date, distribution_freq text, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT fund_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT fund_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT fund_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L683
+-- L705
 index_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, provider text , -- 'S&P Dow Jones','Cboe','FTSE Russell','Nikkei','STOXX', methodology text CHECK (methodology IN ('cap_weighted','float_cap_weighted','price_weighted','equal_weighted','volatility','other')), calc_currency char(3), region text, base_date date, base_value numeric(14,4), constituent_count int, proxy_fund_instrument_id bigint, -- SPY for SPX (membership + intraday proxy), valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT index_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT index_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT index_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L706
+-- L728
 fx_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, base_ccy char(3), quote_ccy char(3), spot_lag smallint , -- T+2 (USDCAD T+1), calendar_id text, pip_size numeric(10,8), quote_convention text ,'base_per_quote')), valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT fx_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT fx_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT fx_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L727
+-- L749
 rate_terms(version_id bigserial PRIMARY KEY, instrument_id bigint, rate_code text , -- NY Fed `type`, publisher text , -- 'NY Fed', day_count text, publication_time_et time, -- 08:00 for SOFR, tenor_days int, compounding text ,'compounded','index')), series_id bigint, -- econ_series.series_id holding the headline observations (§9), valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT rate_terms_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT rate_terms_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT rate_terms_bt_excl EXCLUDE USING gist (instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L761
+-- L783
 calendars(calendar_id text PRIMARY KEY, -- 'XNYS','XNAS','XCBO','SIFMA','USGOVT','FX_USD','TARGET2','XLON','WEEKEND', name text, tz text , -- 'America/New_York', kind text CHECK (kind IN ('exchange','settlement','currency','government','weekend')), source_id text -- 'internal.derived' (rule-GENERATED)
--- L770
+-- L792
 calendar_sessions(calendar_id text →calendars, weekday smallint CHECK (weekday BETWEEN 0 AND 6), -- 0 = Sunday, pre_open time, -- 04:00 NYSE/Nasdaq pre-market, open_time time , -- 09:30, close_time time , -- 16:00, post_close time, -- 20:00)
    PRIMARY KEY (calendar_id, weekday)
--- L780
+-- L802
 calendar_holidays(calendar_id text →calendars, day date, name text, kind text CHECK (kind IN ('closed','early_close')), close_time time, -- 13:00 on NYSE early closes; 14:00 SIFMA)
    PRIMARY KEY (calendar_id, day)
--- L789
+-- L811
 exchanges(mic char(4) PRIMARY KEY, -- 'XNAS','XNYS','ARCX','BATS','XCBO','XLON','XETR','XTKS', operating_mic char(4), name text, country char(2), tz text, calendar_id text →calendars, bbg_exch_code text, -- OpenFIGI venue code: 'UW'→XNAS, 'UN'→XNYS, 'UP'→ARCX, 'UF'→BATS, 'LN'→XLON, composite_code text, -- 'US' for every US venue, cboe_exchange_id int -- Cboe `exchange_id` (2 = Nasdaq-listed stock, 5 = Cboe index, 115 = Cboe Europe))
--- L802
+-- L824
 classification_schemes(scheme text PRIMARY KEY, -- 'GICS','SIC','NAICS','ICB','INTERNAL','NPORT_ASSETCAT', name text, source_id text , -- 'wiki.sp500' (GICS names, cc_by_sa), 'sec.submissions' (SIC), 'internal.derived', levels smallint)
--- L810
+-- L832
 classification_codes(scheme text →classification_schemes, code text , -- GICS '45' sector, '4520' industry group, '452020' industry, '45202030' sub-industry; SIC '3571', name text, parent_code text, level smallint)
    PRIMARY KEY (scheme, code)
--- L819
+-- L841
 entity_classifications(version_id bigserial PRIMARY KEY, entity_kind entity_kind CHECK (entity_kind IN ('issuer','instrument')), entity_id bigint, scheme text, code text, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT entity_classifications_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT entity_classifications_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT entity_classifications_bt_excl EXCLUDE USING gist (entity_kind WITH =, entity_id WITH =, scheme WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L839
+-- L861
 indices(index_id bigint GENERATED, code text UNIQUE, -- 'SPX','NDX','RTY','INDU','VIX','UKX','DAX','CAC','SX5E','NKY','HSI','AS51','BUK100P' …, instrument_id bigint UNIQUE, -- the 'SPX Index' instrument, proxy_fund_instrument_id bigint, -- SPY (N-PORT filer) — membership source for SPX, membership_source_id text, -- 'sec.archives' (N-PORT), 'ssga.holdings'; NULL = no membership source (WEI-only indices), provider text)
--- L848
+-- L870
 index_members(version_id bigserial PRIMARY KEY, index_id bigint →indices, instrument_id bigint, weight numeric(12,10), -- fraction: N-PORT pctVal / 100 (0.00083321585405), SSGA Weight / 100, shares numeric(20,4), -- N-PORT balance, market_value numeric(20,2), -- N-PORT valUSD, as_of_date date , -- N-PORT repPdDate (2026-06-30) or SSGA file date; = valid_from::date, source_id text , -- 'sec.archives' | 'ssga.holdings', valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT index_members_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT index_members_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT index_members_bt_excl EXCLUDE USING gist (index_id WITH =, instrument_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L871
+-- L893
 people(version_id bigserial PRIMARY KEY, person_id bigint, name text, role text, -- 'CEO','CFO','Fed Chair','Reporter', issuer_id bigint, user_id bigint, -- when the person is a platform user (users.user_id; FK by convention, users created in 0011), aliases text[], source_id text , -- 'sec.atom' | 'bbg.rss' | 'internal.user', valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT people_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT people_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT people_bt_excl EXCLUDE USING gist (person_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L893
+-- L915
 entity_relations(version_id bigserial PRIMARY KEY, from_kind entity_kind, from_id bigint, to_kind entity_kind, to_id bigint, relation text CHECK (relation IN ('parent_of','subsidiary_of','holds','officer_of','director_of','tracks','supplier_of','customer_of')), weight numeric(12,10), source_id text, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT entity_relations_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT entity_relations_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT entity_relations_bt_excl EXCLUDE USING gist (from_kind WITH =, from_id WITH =, to_kind WITH =, to_id WITH =, relation WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L915
+-- L937
 issuer_aliases(issuer_id bigint, alias text, kind text CHECK (kind IN ('former_name','short_name','brand','curated')))
    PRIMARY KEY (issuer_id, alias)
--- L939
+-- L961
 corporate_actions(version_id bigserial PRIMARY KEY, ca_id bigint, instrument_id bigint, ca_type ca_type, status ca_status , -- estimated → announced → confirmed → paid | cancelled (DATA-08 pre-announcement vs confirmed), declared_date date, ex_date date, record_date date, pay_date date, effective_date date, amount numeric(18,8), -- cash per share (dividends, capital return, tender price), currency char(3), ratio_new numeric(18,8), -- split 4:1 → new=4, old=1; reverse 1:10 → new=1, old=10; stock dividend 5 % → new=105, old=100, ratio_old numeric(18,8), new_instrument_id bigint, -- spinoff child / merger acquirer / new ticker's instrument, frequency text, -- 'quarterly','semiannual','annual','irregular', gross_or_net text ,'net')), details jsonb , -- merger terms, tender conditions, new ticker/name, note text, source_id text , -- 'yahoo.chart' (events), 'sec.atom' (8-K), 'internal.user' (data ops), review_state text ,'queued','reviewed','rejected')), -- REF-10 dual key, reviewed_by bigint, reviewed_at timestamptz, valid_from timestamptz, valid_to timestamptz, tx_from timestamptz, tx_to timestamptz, provenance_id bigint →provenance)
    CONSTRAINT corporate_actions_valid_range CHECK (valid_from < valid_to)
    CONSTRAINT corporate_actions_tx_range CHECK (tx_from < tx_to)
    CONSTRAINT corporate_actions_ratio_chk CHECK ((ratio_new IS NULL) = (ratio_old IS NULL))
    CONSTRAINT corporate_actions_bt_excl EXCLUDE USING gist (ca_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
    CONSTRAINT corporate_actions_natural_excl EXCLUDE USING gist (instrument_id WITH =, ca_type WITH =, ex_date WITH =, source_id WITH =, tstzrange(valid_from, valid_to, '[)') WITH &&) WHERE (tx_to = 'infinity')
--- L1043
+-- L1065
 bars_daily(instrument_id bigint, session_date date, md_line_id bigint , -- which line supplied the bar (yahoo.chart, frankfurter, treasury.yieldcurve), open numeric(18,6), high numeric(18,6), low numeric(18,6), close numeric(18,6), volume bigint, vwap numeric(18,6), trade_count int, official_close numeric(18,6), -- exchange official close when the source states it (Cboe 'close' after session), src_adj_close numeric(18,6), -- Yahoo adjclose, reconciliation only, never served, source_ts timestamptz, -- FEED-05 src, capture_ts timestamptz , -- FEED-05 cap, provenance_id bigint →provenance) PARTITION BY RANGE (session_date)
    PRIMARY KEY (instrument_id, session_date)
--- L1064
+-- L1086
 bars_intraday(instrument_id bigint, bar_interval text CHECK (bar_interval IN ('1m','5m','1d')), -- core/types/bars.ts BarInterval ('1d' only as a resample cache key), bar_ts timestamptz , -- bar start (UTC); Yahoo `timestamp[]` × 1000, md_line_id bigint, open numeric(18,6), high numeric(18,6), low numeric(18,6), close numeric(18,6), volume bigint, session text ,'regular','post')), is_final boolean , -- the last bar of a poll is provisional until the next poll passes it (b1m: IS_FINAL), capture_ts timestamptz, provenance_id bigint →provenance) PARTITION BY RANGE (bar_ts)
    PRIMARY KEY (instrument_id, bar_interval, bar_ts)
--- L1083
+-- L1105
 quote_ticks(tick_id bigint, capture_ts timestamptz , -- FEED-05 capture (partition key), instrument_id bigint, md_line_id bigint, kind text CHECK (kind IN ('trade','quote','summary')), source_ts timestamptz, -- FEED-05 provider-published (Cboe last_trade_time, ET → UTC), publish_ts timestamptz, -- FEED-05 plant publish, src_seq bigint, -- Cboe seqno (plant drops seq ≤ last), price numeric(18,6), size bigint, bid numeric(18,6), ask numeric(18,6), bid_size int, ask_size int, open numeric(18,6), high numeric(18,6), low numeric(18,6), prev_close numeric(18,6), volume bigint, iv30 numeric(10,6), tick_dir char(1) CHECK (tick_dir IN ('u','d','f')), conditions text[] , -- FEED-07 placeholder: no reachable source publishes sale conditions; 'delayed','synthetic_from_poll', session_state session_state, provenance_id bigint →provenance) PARTITION BY RANGE (capture_ts)
    PRIMARY KEY (capture_ts, tick_id)
--- L1108
+-- L1130
 option_quotes(capture_ts timestamptz, instrument_id bigint , -- option contract instrument, underlying_instrument_id bigint, md_line_id bigint, bid numeric(14,4), ask numeric(14,4), bid_size int, ask_size int, last numeric(14,4), last_ts timestamptz, prev_close numeric(14,6), volume int, open_interest int, iv numeric(10,6), delta numeric(10,6), gamma numeric(12,8), vega numeric(12,6), theta numeric(12,6), rho numeric(12,6), theo numeric(14,6), underlying_px numeric(18,6), provenance_id bigint →provenance) PARTITION BY RANGE (capture_ts)
    PRIMARY KEY (capture_ts, instrument_id)
--- L1125
+-- L1147
 quote_snapshots(instrument_id bigint PRIMARY KEY, subject text , -- 'q:42', seq bigint, state jsonb , -- core QuoteState (fields, fieldTs, ts, session, prov, lines, dq), updated_at timestamptz)
--- L1133
+-- L1155
 eod_snapshots(instrument_id bigint, session_date date, fields jsonb , -- PX_OFFICIAL_CLOSE, PX_CLOSE_1D, PX_OPEN/HIGH/LOW, PX_VOLUME, close_ts timestamptz , -- session close instant (ts.src for the eod view), provenance_id bigint →provenance)
    PRIMARY KEY (instrument_id, session_date)
--- L1142
+-- L1164
 fx_rates(base_ccy char(3), quote_ccy char(3), rate_date date, rate numeric(18,8) , -- quote per 1 base, source_id text , -- 'frankfurter' | 'yahoo.chart', provenance_id bigint →provenance)
    PRIMARY KEY (base_ccy, quote_ccy, rate_date, source_id)
--- L1152
+-- L1174
 short_interest(instrument_id bigint, settlement_date date, short_qty bigint, prev_short_qty bigint, avg_daily_volume bigint, days_to_cover numeric(10,2), change_pct numeric(10,4), revision boolean, provenance_id bigint →provenance)
    PRIMARY KEY (instrument_id, settlement_date)
--- L1165
+-- L1187
 etf_holdings(etf_instrument_id bigint, as_of_date date, source_id text , -- 'sec.archives' | 'ssga.holdings', line_no int , -- position in the file (stable within one file), holding_instrument_id bigint, -- resolved via CUSIP → ISIN → alias; NULL when unresolved (data_exceptions row), name text, cusip char(9), isin char(12), lei char(20), sedol char(7), ticker text, shares numeric(20,4), market_value numeric(20,2), weight numeric(12,10), asset_cat text, -- N-PORT assetCat 'EC','DBT','STIV', issuer_cat text, -- 'CORP', country char(2), provenance_id bigint →provenance)
    PRIMARY KEY (etf_instrument_id, as_of_date, source_id, line_no)
--- L1184
+-- L1206
 vol_surfaces(underlying_instrument_id bigint, as_of timestamptz, expiry date, forward numeric(18,6), atm_iv numeric(10,6), svi jsonb , -- {a,b,rho,m,sigma,rmse,n}, engine_name text , engine_version text , inputs_hash char(64) , -- ANAL-08, provenance_ids bigint[])
    PRIMARY KEY (underlying_instrument_id, as_of, expiry)
--- L1234
+-- L1256
 filings(accession_no char(20) PRIMARY KEY, -- '0000320193-26-000020', cik char(10), issuer_id bigint, -- resolved through identifiers CIK (NULL until the issuer exists), form text , -- '10-K','10-Q','8-K','8-K/A','4','13F-HR','NPORT-P','N-CEN','SC 13G' …, filed_date date, accepted_at timestamptz, -- acceptanceDateTime: the public-knowledge instant, report_date date, items text[] ,-- 8-K items '5.02','8.01','9.01', primary_doc text, primary_doc_desc text, is_xbrl boolean, is_inline_xbrl boolean, size_bytes int, url text , -- https://www.sec.gov/Archives/edgar/data/<cik>/<accn-no-dashes>/<primary_doc>, captured_at timestamptz, provenance_id bigint →provenance)
--- L1257
+-- L1279
 xbrl_facts(fact_id bigint GENERATED, cik char(10), issuer_id bigint, taxonomy text , -- 'us-gaap' | 'dei' | 'ifrs-full', concept text , -- 'RevenueFromContractWithCustomerExcludingAssessedTax', unit text , -- 'USD','shares','USD/shares','pure', period_start date, -- NULL for instant (balance-sheet) facts, period_end date, fy smallint, fp text, -- 'FY','Q1','Q2','Q3', form text, accession_no char(20), filed_at date , -- SEC `filed` — the point-in-time key, frame text, -- 'CY2026Q2' / 'CY2024Q4I' — SEC's canonical-period tag (NULL when omitted), value numeric(28,6), captured_at timestamptz, provenance_id bigint →provenance)
    CONSTRAINT xbrl_facts_period_chk CHECK (period_start IS NULL OR period_start < period_end)
--- L1282
+-- L1304
 xbrl_frames(taxonomy text, concept text , -- 'Assets', unit text , -- 'USD', frame text , -- 'CY2024Q4I', cik char(10), issuer_id bigint, accession_no char(20), period_end date, value numeric(28,6), filed_at date, -- from the matching xbrl_facts row when known; frames themselves carry no filed date, captured_at timestamptz, provenance_id bigint →provenance)
    PRIMARY KEY (taxonomy, concept, unit, frame, cik)
--- L1299
+-- L1321
 xbrl_concept_map(mapping_version text , -- 'std-map/2026.09', standard_item text , -- 'REVENUE','COGS','GROSS_PROFIT','OPEX','RND','OPER_INC','INT_EXP','PRETAX_INC','TAX','NET_INC','EPS_BASIC', taxonomy text, concept text, priority smallint , -- lower wins when several concepts exist (Revenues=1, RevenueFromContract…=2, SalesRevenueNet=3), sign smallint, statement char(2) CHECK (statement IN ('IS','BS','CF')))
    PRIMARY KEY (mapping_version, standard_item, taxonomy, concept)
--- L1311
+-- L1333
 fin_statements(issuer_id bigint, period_end date, period_type text CHECK (period_type IN ('Q','FY','TTM')), filed_at date , -- the filing that produced this version; a restatement adds a row, mapping_version text, fiscal_year smallint, fiscal_period text, accession_no char(20), currency char(3), revenue numeric(28,2), cogs numeric(28,2), gross_profit numeric(28,2), opex numeric(28,2), rnd numeric(28,2), oper_inc numeric(28,2), int_exp numeric(28,2), pretax_inc numeric(28,2), tax numeric(28,2), net_inc numeric(28,2), eps_basic numeric(12,4), eps_dil numeric(12,4), shares_dil numeric(20,0), tot_assets numeric(28,2), tot_liab numeric(28,2), equity numeric(28,2), cash numeric(28,2), lt_debt numeric(28,2), cfo numeric(28,2), capex numeric(28,2), fcf numeric(28,2), div_paid numeric(28,2), buyback numeric(28,2), dps numeric(12,6), dda numeric(28,2), derived_q4 boolean , -- Q4 = FY − (Q1+Q2+Q3), as_reported jsonb , -- {standard_item: {concept, value, fact_id}} — the FA "as reported" toggle, built_at timestamptz, engine_name text , engine_version text , inputs_hash char(64) , -- ANAL-08, provenance_ids bigint[])
    PRIMARY KEY (issuer_id, period_end, period_type, filed_at, mapping_version)
--- L1366
+-- L1388
 econ_releases(release_id bigint GENERATED, source_id text , -- 'fred.calendar','bls.schedule','fed.fomc', provider_release_id text , -- FRED release id '10' (CPI), BLS 'cpi'/'empsit', 'FOMC', name text , -- 'Consumer Price Index', country char(2), url text, importance smallint)
    UNIQUE (source_id, provider_release_id)
--- L1378
+-- L1400
 econ_series(series_id bigint GENERATED, series_code text UNIQUE, -- the code used on the command line, in `e:<seriesCode>` subjects and identifiers SERIES_CODE:, source_id text , -- 'fred.csv','bls.timeseries','nyfed.rates','fed.h15','worldbank','imf.datamapper','frankfurter', provider_code text , -- as the provider names it: 'DGS10','CUUR0000SA0','SOFR','RIFLGFCY10_N.B','NY.GDP.MKTP.CD','NGDP_RPCH', name text, units text , -- 'Percent', 'Index 1982-1984=100', 'Billions of U.S. dollars', frequency char(1) CHECK (frequency IN ('D','W','M','Q','A')), seasonal_adj text, country char(2), release_id bigint →econ_releases, instrument_id bigint, -- the asset_class='econ' instrument (command line, DES, GP), decimals smallint, first_obs_date date, last_obs_date date, last_updated_at timestamptz)
    UNIQUE (source_id, provider_code)
--- L1398
+-- L1420
 econ_observations(series_id bigint →econ_series, obs_date date , -- period start (monthly: first of month; daily: the day), vintage_at timestamptz , -- capture time of the poll that first showed this value, value numeric(20,6), -- NULL = '.', '-', 'ND' with status='missing', status text ,'preliminary','revised','missing')), footnote text, -- BLS footnote text, is_latest boolean , -- maintained by the ingest upsert: exactly one latest per (series, obs_date), provenance_id bigint →provenance)
    PRIMARY KEY (series_id, obs_date, vintage_at)
--- L1412
+-- L1434
 rate_fixings(rate_code text , -- 'SOFR','EFFR','OBFR','TGCR','BGCR','SOFRAI', effective_date date, vintage_at timestamptz , -- revisionIndicator <> '' → new vintage, rate numeric(12,8), -- percentRate (NULL for SOFRAI), pct_1 numeric(12,8), pct_25 numeric(12,8), pct_75 numeric(12,8), pct_99 numeric(12,8), volume_bn numeric(14,2), target_from numeric(8,4), target_to numeric(8,4), -- EFFR only, avg_30d numeric(12,8), avg_90d numeric(12,8), avg_180d numeric(12,8), index_value numeric(18,10), -- SOFRAI, revision_indicator text, is_latest boolean, provenance_id bigint →provenance)
    PRIMARY KEY (rate_code, effective_date, vintage_at)
--- L1428
+-- L1450
 econ_release_events(event_id bigint GENERATED, release_id bigint →econ_releases, scheduled_at timestamptz , -- BLS '08:30 AM' ET → UTC; FRED calendar date at 08:30 ET with time_known=false, time_known boolean, period_label text , -- 'August 2026', series_id bigint →econ_series, -- headline series when known, actual numeric(20,6), prior numeric(20,6), revised_prior numeric(20,6), consensus numeric(20,6), -- always NULL in v1: no consensus source (BRIEF §2), consensus_unavailable_reason text, status text ,'released','revised','delayed','cancelled')), provenance_id bigint →provenance)
    UNIQUE (release_id, scheduled_at, period_label)
--- L1446
+-- L1468
 fomc_meetings(meeting_date date PRIMARY KEY, -- decision day (second day of a two-day meeting), statement_at timestamptz, -- 14:00 ET, has_sep boolean, decision_bp smallint, -- filled after the meeting: change in target range, e.g. -25, provenance_id bigint →provenance)
--- L1454
+-- L1476
 curves(curve_id text PRIMARY KEY, -- 'UST_PAR','UST_BILL','UST_CMT','SOFR_FIX','SOFR_OIS' (plant subjects c:UST_PAR, c:SOFR_OIS), name text, currency char(3), kind text CHECK (kind IN ('par','bill','cmt','fixing','ois','zero')), day_count text , -- 'ACT/ACT' par, 'ACT/360' bills/SOFR, compounding text CHECK (compounding IN ('semiannual','annual','simple','continuous')), source_id text , -- 'treasury.yieldcurve','treasury.bills','fed.h15','nyfed.rates','internal.derived', default_interpolation text ,'log_linear_df','monotone_convex')))
--- L1466
+-- L1488
 curve_points(curve_id text →curves, curve_date date, tenor text , -- '1M','1.5M','2M','3M','4M','6M','1Y','2Y','3Y','5Y','7Y','10Y','20Y','30Y' | '4WK','6WK','8WK','13WK','17WK','26WK','52WK' | 'ON', quote_type text CHECK (quote_type IN ('par_yield','discount_rate','investment_yield','cmt_yield','ois_rate','zero_rate','fixing')), vintage_at timestamptz, tenor_days int, value numeric(12,8) , -- percent, instrument_id bigint, -- on-the-run bill/note for the tenor when known (CUSIP_13WK …), maturity_date date, is_latest boolean, provenance_id bigint →provenance)
    PRIMARY KEY (curve_id, curve_date, tenor, quote_type, vintage_at)
--- L1483
+-- L1505
 curve_builds(build_id bigint GENERATED, curve_id text →curves, curve_date date, valuation_ts timestamptz, method text , -- 'bills+par_bootstrap' | 'ois_bootstrap', interpolation text, engine_name text , engine_version text, inputs_hash char(64), inputs jsonb , -- the exact points + settings used, nodes jsonb , -- [{t, df, zero, fwd}], provenance_ids bigint[], built_at timestamptz)
    UNIQUE (curve_id, curve_date, method, interpolation, engine_version, inputs_hash)
--- L1516
+-- L1538
 topics(topic_id bigint GENERATED, code text UNIQUE, -- 'MARKETS','ECO','POLITICS','TECH','WEALTH','INDUSTRIES','FED','FILINGS','EARNINGS','CA','RATES','FX','AI', name text, kind text CHECK (kind IN ('feed','sector','theme','region','event','release')), parent_topic_id bigint →topics, keywords text[])
--- L1525
+-- L1547
 news_items(news_id bigint GENERATED, source_id text , -- 'bbg.rss' | 'sec.atom' | 'fed.rss', feed text , -- 'markets','economics','politics','technology','wealth','industries','8-K','press_all', provider_guid text , -- RSS guid 'TLEUW0KGZAKZ00' | Atom id 'urn:tag:sec.gov,2008:accession-number=…' | Fed URL, kind text CHECK (kind IN ('story','video','filing','press_release','fed_release')), headline text, summary text, -- description / Atom summary (HTML stripped), url text, author text, -- dc:creator, category text, -- Fed <category>; SEC form type, cik char(10), -- SEC feed: filer CIK, items_8k text[], -- ['5.02','9.01'], lang char(2), published_at timestamptz , -- pubDate / <updated> (FEED-05 src), captured_at timestamptz , -- our receipt (cap), is_correction boolean ,-- description starts with 'Correct:' / 'Fixes headline', machine_generated boolean , -- NEWS-08: always false in v1; the column exists so the render rule is enforceable, tsv tsvector GENERATED, setweight(to_tsvector('english', coalesce(headline, '')), 'A') ||, setweight(to_tsvector('english', coalesce(summary, '')), 'B')) STORED, -- two-arg to_tsvector is IMMUTABLE; STORED GENERATED, provenance_id bigint →provenance)
    UNIQUE (source_id, provider_guid)
--- L1556
+-- L1578
 news_entity_links(news_id bigint →news_items ON DELETE CASCADE, entity_kind entity_kind , -- instrument | issuer | person | topic, entity_id bigint, confidence real CHECK (confidence BETWEEN 0 AND 1), -- 1.0 CIK/ticker exact; 0.95 name exact; 0.9 alias; links < 0.9 are never written, method text CHECK (method IN ('cik','ticker_exact','name_exact','name_alias','feed_topic','keyword','manual')))
    PRIMARY KEY (news_id, entity_kind, entity_id)
--- L1579
+-- L1601
 firms(firm_id bigint GENERATED, name text, lei char(20), contract_ref text, seat_count int , -- reconciled against declarations (ENTL-06), retention_days int , -- messages / access-log retention floor: 7 years (MSG-03, REG-01), data_residency text , -- REG-07 recorded; single region in v1, policy jsonb , -- MSG-03: {permittedCounterpartyFirms:[], disclaimer, ethicalWalls:[{deskA,deskB}]}, status text ,'suspended','closed')), created_at timestamptz)
--- L1592
-users(user_id bigint GENERATED, firm_id bigint →firms, email text, display_name text, desk text, -- 'Equities PM','Rates' (ethical-wall unit, MSG-03), role text ,'admin','compliance','dataops','helpdesk','newsroom')), -- 'newsroom' = SEC-06 wall, status text ,'active','suspended','deprovisioned')), person_verified_at timestamptz, -- SEC-01 onboarding evidence, verified_by bigint, mfa_required boolean , -- SEC-02: WebAuthn required when true, sanctions_screened_at timestamptz, -- REG-06 mechanism (manual attestation in v1), sanctions_status text CHECK (sanctions_status IN ('clear','review','blocked')), scim_external_id text, -- SEC-01 SSO/SCIM (out of scope; column reserved), created_at timestamptz, last_login_at timestamptz, deprovisioned_at timestamptz, anonymised_at timestamptz -- REG-04 erasure: email/display_name replaced by 'user-<id>'; access_log kept)
 -- L1614
+users(user_id bigint GENERATED, firm_id bigint →firms, email text, display_name text, desk text, -- 'Equities PM','Rates' (ethical-wall unit, MSG-03), role text ,'admin','compliance','dataops','helpdesk','newsroom')), -- 'newsroom' = SEC-06 wall, status text ,'active','suspended','deprovisioned')), person_verified_at timestamptz, -- SEC-01 onboarding evidence, verified_by bigint, mfa_required boolean , -- SEC-02: WebAuthn required when true, sanctions_screened_at timestamptz, -- REG-06 mechanism (manual attestation in v1), sanctions_status text CHECK (sanctions_status IN ('clear','review','blocked')), scim_external_id text, -- SEC-01 SSO/SCIM (out of scope; column reserved), created_at timestamptz, last_login_at timestamptz, deprovisioned_at timestamptz, anonymised_at timestamptz -- REG-04 erasure: email/display_name replaced by 'user-<id>'; access_log kept)
+-- L1636
 user_credentials(credential_pk bigint GENERATED, user_id bigint →users, kind text CHECK (kind IN ('password','webauthn')), credential_id bytea, -- WebAuthn credential id (NULL for password), public_key bytea, sign_count bigint, transports text[], aaguid uuid, secret_hash text, -- crypt(password, gen_salt('bf', 12)) via pgcrypto (password kind only), created_at timestamptz, last_used_at timestamptz, revoked_at timestamptz, OR (kind = 'password' AND secret_hash IS AND credential_id IS NULL)))
    CONSTRAINT user_credentials_shape CHECK ((kind = 'webauthn' AND credential_id IS NOT NULL AND public_key IS NOT NULL AND secret_hash IS NULL)
--- L1633
+-- L1655
 sessions(session_id uuid PRIMARY KEY, user_id bigint →users, token_hash bytea UNIQUE, -- digest(token, 'sha256'); the token itself is never stored, client_kind text CHECK (client_kind IN ('web','api')), api_key_id bigint, -- api sessions: api_keys.api_key_id (FK added below), device_id text, -- client-GENERATED, ip inet, user_agent text, mfa_verified boolean, created_at timestamptz, last_seen_at timestamptz, expires_at timestamptz, revoked_at timestamptz, revoke_reason text CHECK (revoke_reason IN ('logout','superseded','expired','admin','deprovisioned')), superseded_count int)
--- L1653
+-- L1675
 api_keys(api_key_id bigint GENERATED, user_id bigint →users, key_hash bytea UNIQUE, label text, scopes text[] ,fn:run,ws:subscribe}', created_at timestamptz, last_used_at timestamptz, revoked_at timestamptz)
--- L1665
+-- L1687
 entitlement_grants(grant_id bigint GENERATED, subject_kind text CHECK (subject_kind IN ('user','firm')), subject_id bigint, source_id text, -- NULL = all sources, asset_class asset_class, -- NULL = all, field_class field_class, -- NULL = all, max_tier tier, usage_display boolean, usage_export boolean, usage_api boolean, valid_from timestamptz, valid_to timestamptz, granted_by bigint, contract_ref text, note text, created_at timestamptz)
    CONSTRAINT entitlement_grants_range CHECK (valid_from < valid_to)
--- L1688
+-- L1710
 access_log(log_id bigint, ts timestamptz, user_id bigint, firm_id bigint, session_id uuid, instrument_id bigint, -- NULL for non-instrument reads (econ series id in details), field_id text, field_class field_class, source_id text, requested_tier tier, tier tier, -- granted tier (NULL on deny), usage usage_type, purpose text , -- function code | route id | 'ws.sub', decision entl_decision, reason text , -- core ReasonCode, trace_id uuid, details jsonb) PARTITION BY RANGE (ts)
    PRIMARY KEY (ts, log_id)
--- L1713
+-- L1735
 usage_declarations(declaration_id bigint GENERATED, month date , -- first day of month, source_id text, firm_id bigint →firms, field_class field_class, tier tier, display_users int, export_users int, api_users int, distinct_users int, instrument_count int, data_points bigint, seat_count int , -- firms.seat_count at generation (reconciliation input), query_sql_hash char(64) , -- sha256 of the SQL text that produced the row, generated_at timestamptz, reconciled_at timestamptz, billing_ref text)
    UNIQUE (month, source_id, firm_id, field_class, tier)
--- L1734
+-- L1756
 quota_limits(subject_kind text CHECK (subject_kind IN ('user','firm')), subject_id bigint, daily_unique_instruments int, monthly_data_points bigint, concurrent_subscriptions int)
    PRIMARY KEY (subject_kind, subject_id)
--- L1742
+-- L1764
 quota_counters(user_id bigint →users, window_kind text CHECK (window_kind IN ('day','month')), window_start date, data_points bigint)
    PRIMARY KEY (user_id, window_kind, window_start)
--- L1749
+-- L1771
 quota_instruments_seen(user_id bigint, day date, instrument_id bigint)
    PRIMARY KEY (user_id, day, instrument_id)
--- L1777
+-- L1799
 workspaces(workspace_id bigint GENERATED, user_id bigint →users, firm_id bigint →firms, name text, is_active boolean, layout jsonb , -- WorkspaceLayout (API.md): panels[{id, frameStack[{security, fn, params}], history}], monitors, chart settings, focus, version int , -- optimistic concurrency: PUT must send the version it read (409 otherwise), created_at timestamptz, updated_at timestamptz)
    UNIQUE (user_id, name)
--- L1792
+-- L1814
 watchlists(watchlist_id bigint GENERATED, owner_user_id bigint →users, firm_id bigint →firms, name text, columns jsonb , -- [{id:'PX_LAST'} | {id:'c1', formula:'PX_LAST/PX_CLOSE_1D-1', label:'Chg', decimals:2}] (CHRT-07 formula language), sort jsonb, group_by text, shared_scope text ,'firm','users')), shared_user_ids bigint[], created_at timestamptz, updated_at timestamptz)
    UNIQUE (owner_user_id, name)
--- L1808
+-- L1830
 watchlist_items(watchlist_id bigint →watchlists ON DELETE CASCADE, position int, instrument_id bigint, -- NULL when the row is a formula/basket, formula text, -- CHRT-07 computed series as a row ('RATIO(AAPL US Equity, SPX Index)'), label text, note text, added_at timestamptz)
    PRIMARY KEY (watchlist_id, position)
    CONSTRAINT watchlist_items_kind CHECK ((instrument_id IS NULL) <> (formula IS NULL))
--- L1821
+-- L1843
 portfolios(portfolio_id bigint GENERATED, firm_id bigint →firms, owner_user_id bigint →users, name text, base_currency char(3), benchmark_instrument_id bigint, -- SPX Index / SPY, created_at timestamptz, updated_at timestamptz)
    UNIQUE (firm_id, name)
--- L1834
+-- L1856
 portfolio_imports(import_id bigint GENERATED, portfolio_id bigint →portfolios ON DELETE CASCADE, firm_id bigint, uploaded_by bigint, uploaded_at timestamptz, channel text CHECK (channel IN ('upload','file_drop','api','manual')), filename text, as_of_date date, rows_total int, rows_ok int, rows_error int, errors jsonb , -- [{row, identifier, column, reason}], reconciliation jsonb , -- {matched, added, removed, quantityDiffs:[{instrumentId, before, after}]}, status text CHECK (status IN ('accepted','partial','rejected')), provenance_id bigint →provenance -- source 'internal.user')
--- L1852
+-- L1874
 positions(position_id bigint GENERATED, portfolio_id bigint →portfolios ON DELETE CASCADE, firm_id bigint , -- denormalised for RLS, as_of_date date, instrument_id bigint, -- NULL = cash line or unresolved identifier, raw_identifier text , -- what the upload said ('AAPL US', 'US0378331005', 'USD'), is_cash boolean, cash_currency char(3), lot_id text, quantity numeric(24,8), cost_price numeric(18,6), cost_currency char(3), trade_date date, settle_date date, accrued numeric(18,6), recon_status text ,'unresolved','duplicate','price_missing')), import_id bigint →portfolio_imports)
    UNIQUE (portfolio_id, as_of_date, raw_identifier, lot_id)
--- L1874
+-- L1896
 lots(lot_id bigint GENERATED, portfolio_id bigint →portfolios ON DELETE CASCADE, firm_id bigint, instrument_id bigint, open_date date, quantity numeric(24,8), unit_cost numeric(24,8), currency char(3), closed_date date, external_ref text)
--- L1888
+-- L1910
 chart_annotations(annotation_id bigint GENERATED, owner_user_id bigint →users, firm_id bigint, instrument_id bigint, kind text CHECK (kind IN ('trendline','hline','vline','fib','text','regression_channel','rect')), anchors jsonb , -- [{t: epoch_ms, v: number}] (regression: {t0, t1, stdev}), style jsonb, label text, shared_scope text ,'firm','users')), shared_user_ids bigint[], created_at timestamptz, updated_at timestamptz)
--- L1905
+-- L1927
 saved_searches(search_id bigint GENERATED, owner_user_id bigint →users, firm_id bigint, kind text CHECK (kind IN ('news','eqs','srch')), name text, query jsonb , -- news: {text, instrumentIds[], topics[], feeds[]}; eqs/srch: ScreenCriteria (FUNCTIONS.md), created_at timestamptz, updated_at timestamptz)
    UNIQUE (owner_user_id, kind, name)
--- L1918
+-- L1940
 alerts(alert_id bigint GENERATED, owner_user_id bigint →users, firm_id bigint, kind text CHECK (kind IN ('price','news','filing','calendar')), instrument_id bigint, -- price alerts (evaluated on plant deltas), condition jsonb , -- price: {field:'PX_LAST', op:'>='|'<='|'crosses', value}; news: {savedSearchId}|{query}; filing: {ciks[], forms[], items[]}; calendar: {releaseId, minutesBefore}, delivery text[] , -- 'inapp' | 'email' | 'push' (email/push are recorded intents in v1), status text ,'paused','fired','deleted')), one_shot boolean, created_at timestamptz, last_fired_at timestamptz)
--- L1934
+-- L1956
 alert_events(event_id bigint GENERATED, alert_id bigint →alerts ON DELETE CASCADE, firm_id bigint, fired_at timestamptz, payload jsonb , -- {value, newsId, accessionNo, eventId, provenanceId}, delivered jsonb , -- {inapp: ts, email: null, push: null}, acknowledged_at timestamptz)
--- L1952
+-- L1974
 rooms(room_id bigint GENERATED, kind text CHECK (kind IN ('dm','group','firm','helpdesk')), name text, firm_id bigint →firms, -- NULL for cross-firm dm/group rooms (policy checked per member firm), scope text ,'external')), created_by bigint →users, created_at timestamptz, retention_days int , -- MSG-03 / REG-01: ≥ firm retention; purge never below 7 years, disclaimer text, -- MSG-03 shown on join, wall_tag text, -- MSG-03 / SEC-06 ethical wall: members' desks must all carry this tag (enforced by messaging/service.ts), policy jsonb , allowExternal:false})
--- L1966
+-- L1988
 room_members(room_id bigint →rooms, user_id bigint →users, role text ,'owner','supervisor')), joined_at timestamptz, left_at timestamptz)
    PRIMARY KEY (room_id, user_id)
--- L1976
+-- L1998
 messages(message_id bigint GENERATED, room_id bigint →rooms, seq bigint , -- per-room sequence, assigned by the chain trigger, sender_user_id bigint →users, sender_firm_id bigint, sent_at timestamptz, body text, attachments jsonb , -- MSG-04: [{kind:'security'|'chart'|'function'|'portfolio'|'watchlist', ref:{…}, params}] rendered live within the recipient's entitlements, structured jsonb, -- MSG-06 shape only: {type:'ioi'|'rfq', side, instrumentId, qty, price} — display only, no execution, client_msg_id uuid , -- idempotent send, prev_hash bytea, hash bytea , -- sha256(prev_hash || room_id || seq || sender || sent_at || body || attachments), trace_id uuid)
    UNIQUE (room_id, seq)
    UNIQUE (room_id, client_msg_id)
--- L1996
+-- L2018
 message_reads(room_id bigint, user_id bigint, last_read_seq bigint, updated_at timestamptz)
    PRIMARY KEY (room_id, user_id)
--- L2004
+-- L2026
 legal_holds(hold_id bigint GENERATED, firm_id bigint →firms, scope jsonb , -- {userIds:[], roomIds:[], from, to}, reason text, created_by bigint, created_at timestamptz, released_at timestamptz, released_by bigint)
--- L2016
+-- L2038
 surveillance_lexicon(term_id bigint GENERATED, firm_id bigint →firms, -- NULL = global list, pattern text , -- case-insensitive regex, severity smallint, active boolean, note text)
--- L2025
+-- L2047
 surveillance_hits(hit_id bigint GENERATED, message_id bigint →messages, term_id bigint →surveillance_lexicon, matched_text text, detected_at timestamptz, review_status text ,'escalated','cleared')), reviewed_by bigint, reviewed_at timestamptz, reviewer_note text)
    UNIQUE (message_id, term_id)
--- L2039
+-- L2061
 message_reviews(review_id bigint GENERATED, message_id bigint →messages, flagged_by text CHECK (flagged_by IN ('lexicon','random_sample','manual')), status text ,'reviewed','escalated')), reviewer_user_id bigint, reviewed_at timestamptz, note text)
--- L2062
+-- L2084
 usage_events(event_id bigint, ts timestamptz, user_id bigint, firm_id bigint, session_id uuid, panel_id text, kind text CHECK (kind IN ('fn.launch','fn.param','fn.page','fn.export','fn.help','search.select','cmd.parse_error', 'panel.switch','ws.subscribe','ws.slow','ws.resync','ticket.open')), code text, -- function code, params_hash text, -- sha256 of canonical params JSON, instrument_id bigint, duration_ms int, trace_id uuid, details jsonb) PARTITION BY RANGE (ts)
    PRIMARY KEY (ts, event_id)
--- L2084
+-- L2106
 help_tickets(ticket_id bigint GENERATED, user_id bigint →users, firm_id bigint, opened_at timestamptz, panel_id text, function_code text, instrument_id bigint, params jsonb, screen_state jsonb , -- visible fields + their provenance indexes, trace_id uuid, question text, room_id bigint →rooms, -- helpdesk room created for the ticket, status text ,'answered','closed')), answer text, answered_by bigint, answered_at timestamptz)
--- L2104
+-- L2126
 ingest_runs(run_id bigint GENERATED, job_id text , -- 'cboe.quotes.poll', 'yahooDaily', 'partitionMaintenance' …, source_id text, -- NULL for internal jobs, started_at timestamptz, finished_at timestamptz, status text CHECK (status IN ('running','ok','failed','skipped')), fetched int, inserted int, updated int, skipped int, errors jsonb , -- JobError[] {code, message, url?, requestKey?}, trace_id uuid)
--- L2121
+-- L2143
 dq_events(dq_id bigint GENERATED, ts timestamptz, kind text CHECK (kind IN ('stale_tick','cross_source_divergence','missing_close','field_population','poll_anomaly', 'provider_circuit_open','reconcile_mismatch','parse_error','default_partition_nonempty', 'ref_orphans','ws_backpressure','plant_degraded','replay_diff')), severity text CHECK (severity IN ('info','warn','error')), instrument_id bigint, md_line_id bigint, source_id text, subject text, -- plant subject or table name, details jsonb , -- {expected, actual, diffPct, sessionId …}, resolved_at timestamptz)
--- L2138
+-- L2160
 data_exceptions(exception_id bigint GENERATED, created_at timestamptz, kind text CHECK (kind IN ('source_conflict','missing_field','parse_error','manual_review','reported_error','unresolved_identifier','ca_review')), entity_kind entity_kind, entity_id bigint, field text, candidates jsonb , -- [{sourceId, provenanceId, value}], reported_by bigint, -- users.user_id for reported errors, status text ,'resolved','rejected')), assignee_user_id bigint, resolved_by bigint, resolution jsonb, -- {chosenProvenanceId, versionId, note}, resolved_at timestamptz, sla_due_at timestamptz)
--- L2156
+-- L2178
 status_incidents(incident_id bigint GENERATED, opened_at timestamptz, closed_at timestamptz, component text , -- 'provider:cboe.quotes','plant','ws','db', severity text CHECK (severity IN ('info','degraded','outage')), title text, updates jsonb , text}])
--- L2166
+-- L2188
 schema_meta(key text PRIMARY KEY, value text, updated_at timestamptz)
--- L2172
+-- L2194
 config_versions(name text PRIMARY KEY, -- 'entitlements', 'calendars', 'universe', version bigint, updated_at timestamptz)
 ```
 
@@ -333,66 +333,66 @@ config_versions(name text PRIMARY KEY, -- 'entitlements', 'calendars', 'universe
 -- L88  tier_rank(t tier) RETURNS int LANGUAGE sql IMMUTABLE PARALLEL SAFE AS
 -- L92  bt_as_of(vf timestamptz, vt timestamptz, tf timestamptz, tt timestamptz, valid_at timestamptz, known_at timestamptz) RETURNS boolean LANGUAGE sql IMMUTABLE PARALLEL SAFE AS
 -- L99  bt_guard_update() RETURNS trigger LANGUAGE plpgsql AS
--- L119  bt_close_tx(tbl regclass, key_col text, key_val bigint, p_valid_from timestamptz, p_valid_to timestamptz, p_now timestamptz DEFAULT now() RETURNS int LANGUAGE plpgsql AS
--- L132  set_updated_at() RETURNS trigger LANGUAGE plpgsql AS
--- L137  app_user_id() RETURNS bigint LANGUAGE sql STABLE PARALLEL SAFE AS
--- L139  app_firm_id() RETURNS bigint LANGUAGE sql STABLE PARALLEL SAFE AS
--- L141  app_role() RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS
--- L311  assert_source_known() RETURNS trigger LANGUAGE plpgsql AS
--- L2179  bump_config_version() RETURNS trigger LANGUAGE plpgsql AS
--- L2239  worm_block() RETURNS trigger LANGUAGE plpgsql AS
--- L2249  messages_chain() RETURNS trigger LANGUAGE plpgsql AS
--- L2313  is_room_member(p_room_id bigint, p_user_id bigint) RETURNS boolean
--- L2316  room_has_firm(p_room_id bigint, p_firm_id bigint) RETURNS boolean
--- L523  VIEW issuers_now
--- L524  VIEW issues_now
--- L525  VIEW instruments_now
--- L526  VIEW listings_now
--- L527  VIEW md_lines_now
--- L528  VIEW identifiers_now
--- L307  TRIGGER licence_registry_bt_guard → bt_guard_update
--- L318  TRIGGER provenance_source_known → assert_source_known
--- L328  TRIGGER field_licence_source_known → assert_source_known
--- L382  TRIGGER issuers_bt_guard → bt_guard_update
--- L412  TRIGGER issues_bt_guard → bt_guard_update
--- L445  TRIGGER instruments_bt_guard → bt_guard_update
--- L469  TRIGGER listings_bt_guard → bt_guard_update
--- L496  TRIGGER md_lines_bt_guard → bt_guard_update
--- L497  TRIGGER md_lines_source_known → assert_source_known
--- L520  TRIGGER identifiers_bt_guard → bt_guard_update
--- L599  TRIGGER govt_terms_bt_guard → bt_guard_update
--- L630  TRIGGER option_terms_bt_guard → bt_guard_update
--- L658  TRIGGER future_terms_bt_guard → bt_guard_update
--- L681  TRIGGER fund_terms_bt_guard → bt_guard_update
--- L704  TRIGGER index_terms_bt_guard → bt_guard_update
--- L725  TRIGGER fx_terms_bt_guard → bt_guard_update
--- L747  TRIGGER rate_terms_bt_guard → bt_guard_update
--- L768  TRIGGER calendars_source_known → assert_source_known
--- L808  TRIGGER classification_schemes_source_known → assert_source_known
--- L837  TRIGGER entity_classifications_bt_guard → bt_guard_update
--- L869  TRIGGER index_members_bt_guard → bt_guard_update
--- L891  TRIGGER people_bt_guard → bt_guard_update
--- L913  TRIGGER entity_relations_bt_guard → bt_guard_update
--- L979  TRIGGER corporate_actions_bt_guard → bt_guard_update
--- L1376  TRIGGER econ_releases_source_known → assert_source_known
--- L1396  TRIGGER econ_series_source_known → assert_source_known
--- L1464  TRIGGER curves_source_known → assert_source_known
--- L1554  TRIGGER news_items_source_known → assert_source_known
--- L1790  TRIGGER workspaces_updated → set_updated_at
--- L1806  TRIGGER watchlists_updated → set_updated_at
--- L1832  TRIGGER portfolios_updated → set_updated_at
--- L1903  TRIGGER chart_annotations_updated → set_updated_at
--- L1916  TRIGGER saved_searches_updated → set_updated_at
--- L2185  TRIGGER licence_registry_bump → bump_config_version
--- L2186  TRIGGER field_licence_bump → bump_config_version
--- L2187  TRIGGER entitlement_grants_bump → bump_config_version
--- L2188  TRIGGER calendar_holidays_bump → bump_config_version
--- L2241  TRIGGER messages_worm → worm_block
--- L2242  TRIGGER access_log_worm → worm_block
--- L2243  TRIGGER provenance_worm → worm_block
--- L2244  TRIGGER usage_events_worm → worm_block
--- L2245  TRIGGER xbrl_facts_worm → worm_block
--- L2263  TRIGGER messages_chain_trg → messages_chain
+-- L123  bt_close_tx(tbl regclass, key_col text, key_val bigint, p_valid_from timestamptz, p_valid_to timestamptz, p_now timestamptz DEFAULT clock_timestamp() RETURNS int LANGUAGE plpgsql AS
+-- L136  set_updated_at() RETURNS trigger LANGUAGE plpgsql AS
+-- L141  app_user_id() RETURNS bigint LANGUAGE sql STABLE PARALLEL SAFE AS
+-- L143  app_firm_id() RETURNS bigint LANGUAGE sql STABLE PARALLEL SAFE AS
+-- L145  app_role() RETURNS text LANGUAGE sql STABLE PARALLEL SAFE AS
+-- L333  assert_source_known() RETURNS trigger LANGUAGE plpgsql AS
+-- L2201  bump_config_version() RETURNS trigger LANGUAGE plpgsql AS
+-- L2266  worm_block() RETURNS trigger LANGUAGE plpgsql AS
+-- L2318  messages_chain() RETURNS trigger LANGUAGE plpgsql AS
+-- L2382  is_room_member(p_room_id bigint, p_user_id bigint) RETURNS boolean
+-- L2385  room_has_firm(p_room_id bigint, p_firm_id bigint) RETURNS boolean
+-- L545  VIEW issuers_now
+-- L546  VIEW issues_now
+-- L547  VIEW instruments_now
+-- L548  VIEW listings_now
+-- L549  VIEW md_lines_now
+-- L550  VIEW identifiers_now
+-- L329  TRIGGER licence_registry_bt_guard → bt_guard_update
+-- L340  TRIGGER provenance_source_known → assert_source_known
+-- L350  TRIGGER field_licence_source_known → assert_source_known
+-- L404  TRIGGER issuers_bt_guard → bt_guard_update
+-- L434  TRIGGER issues_bt_guard → bt_guard_update
+-- L467  TRIGGER instruments_bt_guard → bt_guard_update
+-- L491  TRIGGER listings_bt_guard → bt_guard_update
+-- L518  TRIGGER md_lines_bt_guard → bt_guard_update
+-- L519  TRIGGER md_lines_source_known → assert_source_known
+-- L542  TRIGGER identifiers_bt_guard → bt_guard_update
+-- L621  TRIGGER govt_terms_bt_guard → bt_guard_update
+-- L652  TRIGGER option_terms_bt_guard → bt_guard_update
+-- L680  TRIGGER future_terms_bt_guard → bt_guard_update
+-- L703  TRIGGER fund_terms_bt_guard → bt_guard_update
+-- L726  TRIGGER index_terms_bt_guard → bt_guard_update
+-- L747  TRIGGER fx_terms_bt_guard → bt_guard_update
+-- L769  TRIGGER rate_terms_bt_guard → bt_guard_update
+-- L790  TRIGGER calendars_source_known → assert_source_known
+-- L830  TRIGGER classification_schemes_source_known → assert_source_known
+-- L859  TRIGGER entity_classifications_bt_guard → bt_guard_update
+-- L891  TRIGGER index_members_bt_guard → bt_guard_update
+-- L913  TRIGGER people_bt_guard → bt_guard_update
+-- L935  TRIGGER entity_relations_bt_guard → bt_guard_update
+-- L1001  TRIGGER corporate_actions_bt_guard → bt_guard_update
+-- L1398  TRIGGER econ_releases_source_known → assert_source_known
+-- L1418  TRIGGER econ_series_source_known → assert_source_known
+-- L1486  TRIGGER curves_source_known → assert_source_known
+-- L1576  TRIGGER news_items_source_known → assert_source_known
+-- L1812  TRIGGER workspaces_updated → set_updated_at
+-- L1828  TRIGGER watchlists_updated → set_updated_at
+-- L1854  TRIGGER portfolios_updated → set_updated_at
+-- L1925  TRIGGER chart_annotations_updated → set_updated_at
+-- L1938  TRIGGER saved_searches_updated → set_updated_at
+-- L2207  TRIGGER licence_registry_bump → bump_config_version
+-- L2208  TRIGGER field_licence_bump → bump_config_version
+-- L2209  TRIGGER entitlement_grants_bump → bump_config_version
+-- L2210  TRIGGER calendar_holidays_bump → bump_config_version
+-- L2268  TRIGGER messages_worm → worm_block
+-- L2269  TRIGGER access_log_worm → worm_block
+-- L2270  TRIGGER provenance_worm → worm_block
+-- L2271  TRIGGER usage_events_worm → worm_block
+-- L2272  TRIGGER xbrl_facts_worm → worm_block
+-- L2332  TRIGGER messages_chain_trg → messages_chain
 ```
 
 ### 1.4 Migration files (section headings in DATA_MODEL.md)
@@ -400,146 +400,259 @@ config_versions(name text PRIMARY KEY, -- 'entitlements', 'calendars', 'universe
 - L43 0. Conventions
 - L61 1. Migration 0001 — extensions, enums, bitemporal machinery (REF-03)
 - L63 1.1 DDL
-- L145 1.2 The bitemporal column block (`-- [BT]`), normative (ARCHITECTURE §4.3)
-- L177 1.3 Write semantics — `packages/server/src/db/bitemporal.ts`
-- L228 1.4 Worked acceptance query (REF-03) — `packages/server/test/integration/bitemporal.test.ts`
-- L245 2. Migration 0002 — provenance and the licence registry (DATA-09, DATA-10, STOR-07)
-- L343 3. Migration 0003 — security master and identifier cross-reference (REF-01, REF-02, REF-03)
-- L531 3.1 Mapping rules from the recorded fixtures
-- L548 4. Migration 0004 — terms & conditions (REF-04, REF-05)
-- L757 5. Migration 0005 — exchanges, calendars, classifications, index membership, entities (REF-06, REF-07, REF-08)
-- L935 6. Migration 0006 — corporate actions and adjustment-on-read (DATA-08, REF-09)
-- L982 6.1 Adjustment policy (REF-09) — computed on read, one implementation: `packages/core/src/adjust/corporateActions.ts`
-- L1017 7. Migration 0007 — bars, ticks, quote snapshots and the partitioning strategy (STOR-01, STOR-02, STOR-05, FEED-05, FEED-07)
-- L1019 7.1 Partitioning on plain Postgres 14
-- L1039 7.2 DDL
-- L1197 7.3 `packages/server/src/db/partitions.ts`
-- L1226 8. Migration 0008 — filings and point-in-time fundamentals (DATA-06, NEWS-04, STOR-06)
-- L1336 8.1 Point-in-time read — `packages/server/src/data/fundamentals.ts`
-- L1362 9. Migration 0009 — econ series with vintages, releases calendar, rate fixings, curves (DATA-07, ANAL-02, ANAL-08)
-- L1512 10. Migration 0010 — news, entity links, full text (NEWS-01, NEWS-02, NEWS-08, STOR-04)
-- L1575 11. Migration 0011 — firms, users, sessions, entitlements, access log, quotas (ENTL-01..06, SEC-01, SEC-02, SEC-03, API-01, API-06)
-- L1770 12. Migration 0012 — workspaces, watchlists, portfolios, annotations, saved searches, alerts (TERM-05, PORT-01, PORT-02, PORT-07, CHRT-05, NEWS-07)
-- L1948 13. Migration 0013 — messaging (MSG-01, MSG-02, MSG-03, MSG-04, MSG-06)
-- L2057 14. Migration 0014 — ops: usage events, help tickets, data quality, ingest runs, exceptions (FUNC-04, TERM-09, OPS-03, OPS-04, OPS-07, REF-10, QA-03)
-- L2197 15. Migration 0015 — application role, grants, tenant isolation, WORM and the hash chain (PORT-07, SEC-05, SEC-06, MSG-02, REG-01, ENTL-04)
-- L2343 15.1 `packages/server/src/db/client.ts`
-- L2373 16. Migration 0016 — initial partitions (generated)
-- L2444 17. Index summary — hot paths and the index that serves each (NFR table)
-- L2478 18. Seed strategy and volumes (`packages/server/src/seed/*`, offline from the replay store)
-- L2510 19. Personal data and lawful basis (REG-04)
-- L2527 20. Decision log (where the candidates disagreed or were wrong for Postgres 14)
-- L2557 21. Drizzle mirror and migration mechanics (`packages/server/src/db/schema/*.ts`, `drizzle.config.ts`)
-- L2567 21.1 Open questions (not resolvable from the inputs)
+- L149 1.2 The bitemporal column block (`-- [BT]`), normative (ARCHITECTURE §4.3)
+- L187 1.3 Write semantics — `packages/server/src/db/bitemporal.ts`
+- L249 1.4 Worked acceptance query (REF-03) — `packages/server/test/integration/bitemporal.test.ts`
+- L266 2. Migration 0002 — provenance and the licence registry (DATA-09, DATA-10, STOR-07)
+- L365 3. Migration 0003 — security master and identifier cross-reference (REF-01, REF-02, REF-03)
+- L553 3.1 Mapping rules from the recorded fixtures
+- L570 4. Migration 0004 — terms & conditions (REF-04, REF-05)
+- L779 5. Migration 0005 — exchanges, calendars, classifications, index membership, entities (REF-06, REF-07, REF-08)
+- L957 6. Migration 0006 — corporate actions and adjustment-on-read (DATA-08, REF-09)
+- L1004 6.1 Adjustment policy (REF-09) — computed on read, one implementation: `packages/core/src/adjust/corporateActions.ts`
+- L1039 7. Migration 0007 — bars, ticks, quote snapshots and the partitioning strategy (STOR-01, STOR-02, STOR-05, FEED-05, FEED-07)
+- L1041 7.1 Partitioning on plain Postgres 14
+- L1061 7.2 DDL
+- L1219 7.3 `packages/server/src/db/partitions.ts`
+- L1248 8. Migration 0008 — filings and point-in-time fundamentals (DATA-06, NEWS-04, STOR-06)
+- L1358 8.1 Point-in-time read — `packages/server/src/data/fundamentals.ts`
+- L1384 9. Migration 0009 — econ series with vintages, releases calendar, rate fixings, curves (DATA-07, ANAL-02, ANAL-08)
+- L1534 10. Migration 0010 — news, entity links, full text (NEWS-01, NEWS-02, NEWS-08, STOR-04)
+- L1597 11. Migration 0011 — firms, users, sessions, entitlements, access log, quotas (ENTL-01..06, SEC-01, SEC-02, SEC-03, API-01, API-06)
+- L1792 12. Migration 0012 — workspaces, watchlists, portfolios, annotations, saved searches, alerts (TERM-05, PORT-01, PORT-02, PORT-07, CHRT-05, NEWS-07)
+- L1970 13. Migration 0013 — messaging (MSG-01, MSG-02, MSG-03, MSG-04, MSG-06)
+- L2079 14. Migration 0014 — ops: usage events, help tickets, data quality, ingest runs, exceptions (FUNC-04, TERM-09, OPS-03, OPS-04, OPS-07, REF-10, QA-03)
+- L2219 15. Migration 0015 — application role, grants, tenant isolation, WORM and the hash chain (PORT-07, SEC-05, SEC-06, MSG-02, REG-01, ENTL-04)
+- L2412 15.1 `packages/server/src/db/client.ts`
+- L2446 16. Migration 0016 — initial partitions (generated)
+- L2517 17. Index summary — hot paths and the index that serves each (NFR table)
+- L2551 18. Seed strategy and volumes (`packages/server/src/seed/*`, offline from the replay store)
+- L2583 19. Personal data and lawful basis (REG-04)
+- L2600 20. Decision log (where the candidates disagreed or were wrong for Postgres 14)
+- L2630 21. Drizzle mirror and migration mechanics (`packages/server/src/db/schema/*.ts`, `drizzle.config.ts`)
+- L2640 21.1 Open questions (not resolvable from the inputs)
 
 ## 2. HTTP + WebSocket contract (API.md)
 
 ### 2.1 Routes
 
+All paths are relative to the `/api/v1` prefix. Table rows are `| METHOD | `path` | request | response | role |` in API.md.
+
 ```
-L55  POST /auth/login
-L291  POST /data
-L811  POST /admin/users
-L1058  GET /fields
-L1120  GET /fields/changelog
-L1143  GET /usage/quota
-L1380  POST /api/v1/auth/login
-L1394  POST /api/v1/data
-L1418  POST /api/v1/functions/HP/run
-L1424  GET /api/v1/functions/HP/csv
-L1431  GET /api/v1/data/snapshot
-L1436  POST /api/v1/functions/YAS/run
+L56  POST /auth/login
+L117  POST /auth/logout
+L118  GET /auth/session
+L119  GET /auth/sessions
+L120  DELETE /auth/sessions/:sessionId
+L121  POST /auth/webauthn/register/options
+L122  POST /auth/webauthn/register/verify
+L123  POST /auth/webauthn/login/options
+L124  POST /auth/webauthn/login/verify
+L125  GET /auth/api-keys
+L126  POST /auth/api-keys
+L127  DELETE /auth/api-keys/:apiKeyId
+L292  POST /data
+L403  GET /ref/resolve
+L404  POST /ref/resolve
+L405  GET /ref/:instrumentId
+L406  GET /ref/:instrumentId/identifiers
+L407  GET /ref/:instrumentId/versions
+L408  GET /ref/:instrumentId/corporate-actions
+L409  GET /ref/:instrumentId/terms
+L410  GET /issuers/:issuerId
+L411  GET /calendars/:calendarId
+L412  GET /indices/:instrumentId/members
+L413  GET /classifications/:scheme
+L446  GET /search
+L447  GET /universe/snapshot
+L493  GET /functions
+L494  GET /functions/:code
+L495  GET /functions/:code/help
+L496  POST /functions/:code/run
+L497  POST /functions/:code/page
+L498  GET /results/:resultId
+L544  GET /data/reference
+L545  GET /data/history
+L546  GET /data/intraday
+L547  GET /data/ticks
+L548  GET /data/snapshot
+L549  GET /curves/:curveId
+L550  GET /curves/:curveId/history
+L551  GET /rates/:rateCode
+L552  GET /econ/series/:seriesCode
+L553  GET /econ/calendar
+L554  GET /econ/fomc
+L555  GET /options/chain
+L556  GET /holders/:instrumentId
+L557  GET /short-interest/:instrumentId
+L563  GET /fields
+L564  GET /fields/:id
+L565  GET /fields/changelog
+L571  GET /news
+L572  GET /news/top
+L573  GET /news/:newsId
+L574  GET /topics
+L634  GET /workspace
+L635  PUT /workspace
+L636  GET /workspaces
+L637  POST /workspaces
+L639  POST /workspaces/:workspaceId/activate
+L640  GET /annotations
+L662  GET /watchlists
+L663  POST /watchlists
+L665  PUT /watchlists/:watchlistId/items
+L666  GET /watchlists/:watchlistId/export.csv
+L690  GET /portfolios/:portfolioId/positions
+L691  PUT /portfolios/:portfolioId/positions
+L692  POST /portfolios/:portfolioId/import
+L693  GET /portfolios/:portfolioId/imports
+L694  GET /portfolios/:portfolioId/lots
+L695  POST /portfolios/:portfolioId/analytics
+L720  GET /rooms
+L721  POST /rooms
+L722  GET /rooms/:roomId
+L724  GET /rooms/:roomId/messages
+L725  POST /rooms/:roomId/messages
+L726  POST /rooms/:roomId/read
+L727  GET /directory
+L752  GET /alerts/events
+L753  POST /alerts/events/:eventId/ack
+L762  GET /help/:code
+L763  POST /help/tickets
+L764  GET /help/tickets
+L770  POST /usage/events
+L771  GET /usage/quota
+L772  GET /usage/entitlements
+L773  GET /usage/functions
+L791  GET /admin/trace/:traceId
+L792  GET /admin/declarations
+L793  POST /admin/declarations/generate
+L794  POST /admin/declarations/:declarationId/reconcile
+L795  GET /admin/licences
+L796  PUT /admin/licences/:sourceId
+L798  GET /admin/access-log
+L799  GET /admin/access-log/export.csv
+L800  GET /admin/exceptions
+L801  POST /admin/exceptions/:exceptionId/resolve
+L802  GET /admin/ca-queue
+L803  POST /admin/ca-queue/:caId/review
+L804  GET /admin/dq
+L805  POST /admin/dq/:dqId/resolve
+L806  GET /admin/ingest/runs
+L807  POST /admin/ingest/run/:jobId
+L808  GET /admin/compliance/reviews
+L809  POST /admin/compliance/reviews/:reviewId
+L811  GET /admin/export/messages
+L812  GET /admin/users
+L813  DELETE /admin/users/:userId
+L820  GET /health
+L821  GET /status
+L822  GET /metrics
+L1187  GET /functions/:code/csv
+L1188  POST /data/csv
+L1190  GET /portfolios/:portfolioId/export.csv
+L1399  POST /api/v1/auth/login
+L1413  POST /api/v1/data
+L1437  POST /api/v1/functions/HP/run
+L1443  GET /api/v1/functions/HP/csv
+L1450  GET /api/v1/data/snapshot
+L1455  POST /api/v1/functions/YAS/run
 ```
 
 ### 2.2 WebSocket message types
 
-```
-hello, welcome, sub, batch, snap, delta, essential, notice, status
+Extracted from the `ClientMsg` / `ServerMsg` discriminated unions in API.md §6.2 (`wire/ws.ts`). The discriminator is `t`.
+
+```ts
+ClientMsg.t = 'hello' | 'sub' | 'unsub' | 'resync' | 'conflation' | 'essential' | 'ping'
+ServerMsg.t = 'welcome' | 'subAck' | 'batch' | 'downgrade' | 'resync' | 'notice' | 'alert' | 'msg' | 'err' | 'pong' | 'bye' | 'snap' | 'delta' | 'status'
+
+close codes: 4000 IDLE, 4001 AUTH_REQUIRED, 4002 PROTOCOL_ERROR, 4003 SESSION_SUPERSEDED, 4008 SLOW_CONSUMER, 4010 PROTOCOL_VERSION, 4011 SUBSCRIPTION_LIMIT, 4029 RATE_LIMITED
 ```
 
 ### 2.3 Exported TypeScript declarations in API.md
 
 ```ts
-// L1064
+// L1082
 export interface FieldDef {
-// L1211
+// L1229
 export interface ClientOptions {
-// L1223
+// L1241
 export interface TerminalClient {
-// L1270
-export class RestClient {
-// L1278
-export class TerminalApiError extends Error {
-// L1286
-export type LiveState = 'idle'|'connecting'|'open'|'resyncing'|'closed';
-// L1287
-export interface SubscribeOptions { tier?: Tier; essential?: boolean; conflationMs?: number }
 // L1288
+export class RestClient {
+// L1296
+export class TerminalApiError extends Error {
+// L1304
+export type LiveState = 'idle'|'connecting'|'open'|'resyncing'|'closed';
+// L1305
+export interface SubscribeOptions { tier?: Tier; essential?: boolean; conflationMs?: number }
+// L1306
 export interface UpdateEvent { subject: string; seq: number; changed: FieldId[]; state: QuoteView; kind: 'snap'|'delta' }
-// L1289
+// L1307
 export interface QuoteView {                    // the SDK's projection of QuoteState for one subject (values ⊆ subscribed fields)
-// L1295
+// L1313
 export class LiveClient {
-// L1314
+// L1333
 export interface Subscription {
-// L1320
+// L1339
 export class QuoteCache {                        // Map<subject, QuoteView>; applies snap/delta with the prev-chain rule (§6.3); 1 s staleness ticker (TERM-12)
-// L1335
+// L1354
 export interface FieldsApi {
-// L1340
+// L1359
 export interface FunctionRegistry {              // re-export of core/functions/registry.ts
 ```
 
 ### 2.4 Section headings
 
-- L48 1. Auth and session model (SEC-01, SEC-02, SEC-03, ENTL-03, API-01)
-- L50 1.1 What ships
-- L65 1.2 Schemas — `wire/rest.ts` (`Rest.Auth.*`)
-- L111 1.3 Routes (`http/routes/auth.ts`)
-- L132 2. Error envelope
-- L198 3. Common wire types — `wire/common.ts`, `wire/envelope.ts`, `wire/reasonCodes.ts`
-- L289 4. The one request model — `wire/dataRequest.ts` (API-02)
-- L392 5. REST route table
-- L398 5.1 Resolution and reference (`reference.ts`) — REF-01, REF-02, REF-03, REF-04, REF-05, REF-06, REF-07, REF-08, REF-09
-- L437 5.2 Search and universe (`search.ts`, `universe.ts`) — TERM-02
-- L488 5.3 Functions (`functions.ts`) — FUNC-01, FUNC-02, FUNC-04
-- L538 5.4 Data (`data.ts`) — API-02, DATA-07, ANAL-02
-- L558 5.5 Fields (`fields.ts`) — API-07
-- L566 5.6 News (`news.ts`) — NEWS-01, NEWS-02, NEWS-07, NEWS-08
-- L596 5.7 Workspace and annotations (`workspaces.ts`) — TERM-04, TERM-05, TERM-10, CHRT-05
-- L642 5.8 Watchlists (`watchlists.ts`) — W, CHRT-07
-- L669 5.9 Portfolios (`portfolios.ts`) — PORT-01, PORT-02, PORT-07
-- L696 5.10 Messaging (`messages.ts`) — MSG-01, MSG-02, MSG-03, MSG-04, MSG-06
-- L731 5.11 Alerts and saved searches (`alerts.ts`) — NEWS-07
-- L757 5.12 Help (`help.ts`) — TERM-09
-- L765 5.13 Usage, quotas and entitlements (`usage.ts`) — FUNC-04, API-06, ENTL-05
-- L786 5.14 Admin and compliance (`admin.ts`) — OPS-07, ENTL-06, DATA-02, DATA-09, REF-10, REG-01, REG-04, MSG-02
-- L815 5.15 Status, health, metrics (`status.ts`, `health.ts`) — OPS-04, OPS-03
-- L839 6. WebSocket protocol — `/ws/v1`, `wire/ws.ts` (BUS-01..08, ENTL-05, TERM-12)
-- L846 6.1 Subject grammar (BUS-02) — `plant/subjects.ts`, regex `SubjectId` (§3)
-- L868 6.2 Messages — `wire/ws.ts` (verbatim from ARCHITECTURE §6.4)
-- L916 6.3 Handshake, sequencing and the snapshot-then-delta guarantee (BUS-01, BUS-07)
-- L947 6.4 Per-subscriber conflation with the latest-value guarantee (BUS-03)
-- L963 6.5 Slow-consumer downgrade and overload (BUS-04, NFR-02)
-- L981 6.6 Entitlement on subscribe and tier views (ENTL-05, BUS-06)
-- L994 6.7 Limits and close codes
-- L1013 6.8 Example exchange (from the recorded `cboe-quote-AAPL.json` fixture)
-- L1040 6.9 Non-quote subjects
-- L1054 7. Field dictionary format (API-07, API-03, API-05)
-- L1129 8. Quotas and rate limits (API-06)
-- L1161 9. Export endpoints (FUNC-03, API-05, ENTL-01)
-- L1202 10. The `@terminal/sdk` surface (API-01, API-03, API-05)
-- L1267 10.1 `RestClient` — `client/rest.ts`
-- L1283 10.2 `LiveClient` and subscriptions — `client/ws.ts`, `client/subscriptions.ts`, `client/quoteCache.ts`
-- L1332 10.3 `FieldsApi` and `FunctionRegistry`
-- L1346 10.4 Minimal usage
-- L1360 11. Versioning and compatibility (OPS-02, API-03)
-- L1375 12. Worked examples
-- L1377 12.1 Login, then a historical read with adjustment (REF-09, STOR-06)
-- L1415 12.2 Function run, then PRINT
-- L1428 12.3 Error and per-field denial
-- L1443 13. Decision log (where the candidates disagreed)
-- L1466 14. Open questions (not resolvable from the inputs)
+- L49 1. Auth and session model (SEC-01, SEC-02, SEC-03, ENTL-03, API-01)
+- L51 1.1 What ships
+- L66 1.2 Schemas — `wire/rest/auth.ts` (`Rest.Auth.*`)
+- L112 1.3 Routes (`http/routes/auth.ts`)
+- L133 2. Error envelope
+- L199 3. Common wire types — `wire/common.ts`, `wire/envelope.ts`, `wire/reasonCodes.ts`
+- L290 4. The one request model — `wire/dataRequest.ts` (API-02)
+- L393 5. REST route table
+- L399 5.1 Resolution and reference (`reference.ts`) — REF-01, REF-02, REF-03, REF-04, REF-05, REF-06, REF-07, REF-08, REF-09
+- L438 5.2 Search and universe (`search.ts`, `universe.ts`) — TERM-02
+- L489 5.3 Functions (`functions.ts`) — FUNC-01, FUNC-02, FUNC-04
+- L539 5.4 Data (`data.ts`) — API-02, DATA-07, ANAL-02
+- L559 5.5 Fields (`fields.ts`) — API-07
+- L567 5.6 News (`news.ts`) — NEWS-01, NEWS-02, NEWS-07, NEWS-08
+- L597 5.7 Workspace and annotations (`workspaces.ts`) — TERM-04, TERM-05, TERM-10, CHRT-05
+- L643 5.8 Watchlists (`watchlists.ts`) — W, CHRT-07
+- L670 5.9 Portfolios (`portfolios.ts`) — PORT-01, PORT-02, PORT-07
+- L697 5.10 Messaging (`messages.ts`) — MSG-01, MSG-02, MSG-03, MSG-04, MSG-06
+- L732 5.11 Alerts and saved searches (`alerts.ts`) — NEWS-07
+- L758 5.12 Help (`help.ts`) — TERM-09
+- L766 5.13 Usage, quotas and entitlements (`usage.ts`) — FUNC-04, API-06, ENTL-05
+- L787 5.14 Admin and compliance (`admin.ts`) — OPS-07, ENTL-06, DATA-02, DATA-09, REF-10, REG-01, REG-04, MSG-02
+- L816 5.15 Status, health, metrics (`status.ts`, `health.ts`) — OPS-04, OPS-03
+- L840 6. WebSocket protocol — `/ws/v1`, `wire/ws.ts` (BUS-01..08, ENTL-05, TERM-12)
+- L847 6.1 Subject grammar (BUS-02) — `plant/subjects.ts`, regex `SubjectId` (§3)
+- L869 6.2 Messages — `wire/ws.ts` (verbatim from ARCHITECTURE §6.4)
+- L917 6.3 Handshake, sequencing and the snapshot-then-delta guarantee (BUS-01, BUS-07)
+- L948 6.4 Per-subscriber conflation with the latest-value guarantee (BUS-03)
+- L981 6.5 Slow-consumer downgrade and overload (BUS-04, NFR-02)
+- L999 6.6 Entitlement on subscribe and tier views (ENTL-05, BUS-06)
+- L1012 6.7 Limits and close codes
+- L1031 6.8 Example exchange (from the recorded `cboe-quote-AAPL.json` fixture)
+- L1058 6.9 Non-quote subjects
+- L1072 7. Field dictionary format (API-07, API-03, API-05)
+- L1147 8. Quotas and rate limits (API-06)
+- L1179 9. Export endpoints (FUNC-03, API-05, ENTL-01)
+- L1220 10. The `@terminal/sdk` surface (API-01, API-03, API-05)
+- L1285 10.1 `RestClient` — `client/rest.ts`
+- L1301 10.2 `LiveClient` and subscriptions — `client/ws.ts`, `client/subscriptions.ts`, `client/quoteCache.ts`
+- L1351 10.3 `FieldsApi` and `FunctionRegistry`
+- L1365 10.4 Minimal usage
+- L1379 11. Versioning and compatibility (OPS-02, API-03)
+- L1394 12. Worked examples
+- L1396 12.1 Login, then a historical read with adjustment (REF-09, STOR-06)
+- L1434 12.2 Function run, then PRINT
+- L1447 12.3 Error and per-field denial
+- L1462 13. Decision log (where the candidates disagreed)
+- L1485 14. Open questions (not resolvable from the inputs)
 
 ## 3. Architecture (ARCHITECTURE.md)
 
@@ -548,131 +661,131 @@ export interface FunctionRegistry {              // re-export of core/functions/
 ```ts
 // L52
 function manifests + toCsv.
-// L418
+// L422
 export type AssetClass   = 'equity'|'etf'|'index'|'fx'|'govt'|'option'|'future'|'crypto'|'rate'|'econ';
-// L419
+// L423
 export type MarketSector = 'Equity'|'Index'|'Curncy'|'Govt'|'Corp'|'Comdty'|'Mtge'|'Muni'|'Pfd'|'M-Mkt'|'Crypto';
-// L420
-export type IdScheme = 'FIGI'|'COMPOSITE_FIGI'|'SHARE_CLASS_FIGI'|'ISIN'|'CUSIP'|'SEDOL'|'RIC'|'TICKER_EXCH'
 // L424
+export type IdScheme = 'FIGI'|'COMPOSITE_FIGI'|'SHARE_CLASS_FIGI'|'ISIN'|'CUSIP'|'SEDOL'|'RIC'|'TICKER_EXCH'
+// L428
 export interface Bitemporal {
-// L429
+// L433
 export interface Issuer extends Bitemporal {
-// L436
+// L440
 export interface Issue extends Bitemporal {
-// L445
+// L449
 export interface Instrument extends Bitemporal {
-// L454
+// L458
 export interface Listing extends Bitemporal {
-// L460
+// L464
 export interface MdLine extends Bitemporal {
-// L471
-export interface SecurityRef {
 // L475
+export interface SecurityRef {
+// L479
 export interface ResolvedRef {
-// L493
+// L497
 export type Tier         = 'realtime'|'delayed'|'eod';               // ordered eod < delayed < realtime
-// L494
+// L498
 export type SessionState = 'pre'|'open'|'auction'|'halted'|'closed'|'post'|'unknown';   // FEED-06
-// L496
+// L500
 export type ValueState   = 'live'|'stale'|'closed'|'blank'|'na';
-// L504
-export interface Timestamps3 { src: number|null; cap: number; pub: number }
-// L506
-export interface ProvRef { sourceId: string; provenanceId: number; srcSeq?: number }   // srcSeq = Cboe seqno
 // L508
+export interface Timestamps3 { src: number|null; cap: number; pub: number }
+// L510
+export interface ProvRef { sourceId: string; provenanceId: number; srcSeq?: number }   // srcSeq = Cboe seqno
+// L512
 export interface QuoteFields {
-// L517
+// L521
 export type QuoteFieldId = keyof QuoteFields;
-// L520
+// L524
 export interface LineState { mdLineId: number; sourceId: string; fields: QuoteFields; ts: Timestamps3; srcSeq?: number; provenanceId: number }
-// L523
+// L527
 export interface QuoteState {
-// L539
+// L543
 export interface NormalisedUpdate {
-// L557
+// L561
 export function valueState(q: Pick<QuoteState,'ts'|'session'|'expectedIntervalMs'|'delayMin'|'dq'>, now: number): ValueState {
-// L560
+// L564
 const limit = 3 * q.expectedIntervalMs;
-// L599
+// L603
 export interface AsOf { validAt: Date; knownAt: Date }
-// L600
+// L604
 export function asOf(t: BitemporalTable, at: AsOf): SQL;          // bt_as_of(t.valid_from, …, at.validAt, at.knownAt)
-// L601
+// L605
 export function current(t: BitemporalTable): SQL;                 // valid_to = 'infinity' AND tx_to = 'infinity'
-// L602
-export interface VersionWrite<Row> { entityKey: Partial<Row>; validFrom: Date; validTo?: Date; data: Omit<Row, BitemporalKeys|'versionId'>; provenanceId: number; reason: 'initial'|'change'|'correction' }
 // L606
+export interface VersionWrite<Row> { entityKey: Partial<Row>; validFrom: Date; validTo?: Date; data: Omit<Row, BitemporalKeys|'versionId'>; provenanceId: number; reason: 'initial'|'change'|'correction'; txFrom?: Date /* knownAt; written to tx_from and passed to bt_close_tx as p_now. Default clock_timestamp(), never now(). DATA_MODEL §1.3 is normative */ }
+// L610
 export function writeVersion<Row>(tx: Tx, table: BitemporalTable<Row>, w: VersionWrite<Row>): Promise<number>;
-// L608
+// L612
 export function upsertVersion<Row>(tx: Tx, table: BitemporalTable<Row>, w: VersionWrite<Row>): Promise<number|null>;
-// L674
+// L685
 export interface ResolveContext {
-// L691
+// L702
 export type FunctionResolver<P, T> = (ctx: ResolveContext, params: P) => Promise<T>;
-// L692
-export interface FunctionServerModule<P, T> { resolve: FunctionResolver<P, T>; variants?: Partial<Record<AssetClass, FunctionResolver<P, T>>> }
-// L698
-export interface ParamGrammar {
 // L703
+export interface FunctionServerModule<P, T> { resolve: FunctionResolver<P, T>; variants?: Partial<Record<AssetClass, FunctionResolver<P, T>>> }
+// L718
+export interface ParamGrammar {
+// L723
 export interface LiveSpec { subjects: string[]; fields: FieldId[] | '*'; conflationMs?: number }
-// L704
+// L724
 export interface CsvColumn { id: string; label: string; type: 'string'|'number'|'date'|'datetime'|'boolean'; decimals?: number }
-// L705
+// L725
 export interface CsvDocument { filename: string; attribution: string[]; asOf: string; columns: CsvColumn[]; rows: Array<Array<string|number|boolean|null>> }
-// L706
+// L726
 export interface CsvSpec<P, T> { filename(params: P, ctx: { display: string|null; asOf: string }): string; columns: CsvColumn[] | ((params: P, payload: T) => CsvColumn[]); rows(payload: T, params: P): CsvDocument['rows'] }
-// L707
-export interface HelpSpec { summary: string; description: string; params: Array<{ name: string; text: string; example?: string }>; keys: Array<{ key: string; action: string }>; sources: string[]; related: string[] }
-// L708
-export interface KeyBinding { key: string; action: string; when?: 'grid'|'chart'|'form'|'always'; description: string }
-// L710
-export interface FunctionManifest<P extends z.ZodObject<z.ZodRawShape> = z.ZodObject<z.ZodRawShape>, T = unknown> {
 // L727
+export interface HelpSpec { summary: string; description: string; params: Array<{ name: string; text: string; example?: string }>; keys: Array<{ key: string; action: string }>; sources: string[]; related: string[] }
+// L728
+export interface KeyBinding { key: string; action: string; when?: 'grid'|'chart'|'form'|'always'; description: string }
+// L730
+export interface FunctionManifest<P extends z.ZodObject<z.ZodRawShape> = z.ZodObject<z.ZodRawShape>, T = unknown> {
+// L747
 export const defineFunction = <P extends z.ZodObject<z.ZodRawShape>, T>(m: FunctionManifest<P, T>) => m;
-// L740
+// L760
 export interface PayloadMeta {
-// L750
+// L770
 export interface Payload<T> { data: T; meta: PayloadMeta }
-// L820
+// L840
 interface Subscription { subject: string; fieldMask: Uint32Array; lastSentSeq: number; tier: Tier; essential: boolean; denied: Map<FieldId, ReasonCode> }
-// L821
+// L841
 export class Conflator {
-// L828
+// L848
 const frames: ServerMsg[] = [];
-// L831
+// L851
 const view  = policyTier.view(state, sub.tier);   // BUS-06
-// L832
+// L852
 const f     = pick(view.fields, mask & sub.fieldMask);   // latest values only, read at flush time
-// L864
+// L884
 export const ClientMsg = z.discriminatedUnion('t', [
-// L877
+// L897
 const Ts = z.object({ src: z.number().nullable(), cap: z.number(), pub: z.number() });             // FEED-05
-// L878
+// L898
 const Prov = z.object({ p: z.string(), id: z.number(), seq: z.number().optional() });
-// L879
+// L899
 export const Snap  = z.object({ t: z.literal('snap'), s: SubjectId, seq: z.number().int(), tier: Tier, reason: ReasonCode,
-// L883
+// L903
 export const Delta = z.object({ t: z.literal('delta'), s: SubjectId, seq: z.number().int(), prev: z.number().int(),
-// L885
+// L905
 export const Status = z.object({ t: z.literal('status'), s: SubjectId, st: z.enum(['pending','stale','halted','closed','blank','shed','gone']), reason: z.string().optional(), ts: z.number() });
-// L886
+// L906
 export const ServerMsg = z.discriminatedUnion('t', [
-// L974
+// L994
 export interface IngestJob {
-// L982
+// L1002
 export interface JobContext { clock: Clock; db: Db; providers: ProviderRegistry; plant: TickerPlant; hotset: HotSet; traceId: string; log: Logger }
-// L1128
-function payloads carry `meta.provenance[]` and each screen block cites an index into it; `Ctrl+I` on any
-// L1142
-export type UsageType = 'display'|'export'|'api';
-// L1143
-export type ReasonCode = 'OK'|'SOURCE_TIER_CAP'|'NOT_ENTITLED_TIER'|'NO_FIRM_ENTITLEMENT'|'NO_USER_ENTITLEMENT'
-// L1145
-export interface EntitlementRequest { userId: number; firmId: number; sessionId: string; instrumentId: number|null; assetClass: AssetClass|null;
-// L1147
-export interface FieldDecision { fieldId: FieldId; sourceId: string; fieldClass: FieldClass; decision: 'allow'|'downgrade'|'deny'; effectiveTier: Tier|null; reason: ReasonCode }
 // L1148
+function payloads carry `meta.provenance[]` and each screen block cites an index into it; `Ctrl+I` on any
+// L1162
+export type UsageType = 'display'|'export'|'api';
+// L1163
+export type ReasonCode = 'OK'|'SOURCE_TIER_CAP'|'NOT_ENTITLED_TIER'|'NO_FIRM_ENTITLEMENT'|'NO_USER_ENTITLEMENT'
+// L1165
+export interface EntitlementRequest { userId: number; firmId: number; sessionId: string; instrumentId: number|null; assetClass: AssetClass|null;
+// L1167
+export interface FieldDecision { fieldId: FieldId; sourceId: string; fieldClass: FieldClass; decision: 'allow'|'downgrade'|'deny'; effectiveTier: Tier|null; reason: ReasonCode }
+// L1168
 export interface EntitlementDecision { effectiveTier: Tier|null; fields: FieldDecision[]; downgrades: Array<{ fieldId: FieldId; reason: ReasonCode }>; logIds: number[] }
 ```
 
@@ -707,193 +820,193 @@ packages/web/test/no-direct-io.test.ts
 - L113 3. Package boundaries and complete module lists
 - L115 3.1 `packages/core` (`@terminal/core`)
 - L209 3.2 `packages/sdk` (`@terminal/sdk`)
-- L238 3.3 `packages/server` (`@terminal/server`)
-- L358 3.4 `packages/web` (`@terminal/web`)
-- L395 3.5 `packages/e2e`
-- L413 4. Load-bearing models
-- L415 4.1 Instrument hierarchy (REF-01, REF-02) — `packages/core/src/types/instrument.ts`
-- L490 4.2 Quote state (FEED-03, FEED-05, TERM-12) — `packages/core/src/types/quote.ts`
-- L571 4.3 Bitemporal reference tables (REF-03, STOR-03, STOR-06)
-- L623 5. Request lifecycle: keystroke → command parse → function resolve → data → screen
-- L671 5.1 `ResolveContext` — the only way a resolver touches data (`server/src/functions/context.ts`)
-- L695 5.2 Function manifest (FUNC-01/02/03/04) — `packages/core/src/functions/manifest.ts`
-- L737 5.3 Payload envelope (`core/types/function.ts`) — identical on REST, cached result and CSV
-- L755 6. Real-time lifecycle: provider poll → normaliser → ticker plant → conflated WebSocket → grid cell flash
-- L757 6.1 Subjects (BUS-02)
-- L775 6.2 Ingest path and `plant.apply`
-- L815 6.3 Per-session conflation and backpressure (BUS-03, BUS-04, NFR-02)
-- L859 6.4 Wire protocol (BUS-01..08, ENTL-05) — `packages/sdk/src/wire/ws.ts`
-- L942 6.5 Tier policy (BUS-06, ENTL-05) — `plant/policyTier.ts`
-- L950 6.6 Client side: WS → quote cache → grid cell flash (TERM-08, TERM-12)
-- L969 7. Ingest and scheduler
-- L971 7.1 Scheduler (`server/src/ingest/scheduler.ts`)
-- L1025 7.2 Provider HTTP client (`server/src/providers/http.ts`)
-- L1041 8. Replay harness (FEED-08, QA-02)
-- L1043 8.1 Provider replay store (`server/src/providers/replayStore.ts`)
-- L1055 8.2 Plant session replay (`server/src/replay/harness.ts`)
-- L1072 9. Provenance and licence registry (DATA-09, DATA-10, STOR-07)
-- L1138 10. Entitlement evaluation (ENTL-01..06, API-06, SEC-03)
-- L1173 11. Observability (OPS-07, OPS-03, OPS-04, FUNC-04)
-- L1200 12. Runtime topology
-- L1221 12.1 Startup order (`packages/server/src/index.ts`)
-- L1239 13. How tagged requirements are honoured
-- L1268 14. Work-package boundaries implied by this document
-- L1291 15. Decision log (where the candidates disagreed)
+- L242 3.3 `packages/server` (`@terminal/server`)
+- L362 3.4 `packages/web` (`@terminal/web`)
+- L399 3.5 `packages/e2e`
+- L417 4. Load-bearing models
+- L419 4.1 Instrument hierarchy (REF-01, REF-02) — `packages/core/src/types/instrument.ts`
+- L494 4.2 Quote state (FEED-03, FEED-05, TERM-12) — `packages/core/src/types/quote.ts`
+- L575 4.3 Bitemporal reference tables (REF-03, STOR-03, STOR-06)
+- L627 5. Request lifecycle: keystroke → command parse → function resolve → data → screen
+- L675 5.1 `ResolveContext` — the only way a resolver touches data (`server/src/functions/context.ts`)
+- L706 5.2 Function manifest (FUNC-01/02/03/04) — `packages/core/src/functions/manifest.ts`
+- L757 5.3 Payload envelope (`core/types/function.ts`) — identical on REST, cached result and CSV
+- L775 6. Real-time lifecycle: provider poll → normaliser → ticker plant → conflated WebSocket → grid cell flash
+- L777 6.1 Subjects (BUS-02)
+- L795 6.2 Ingest path and `plant.apply`
+- L835 6.3 Per-session conflation and backpressure (BUS-03, BUS-04, NFR-02)
+- L879 6.4 Wire protocol (BUS-01..08, ENTL-05) — `packages/sdk/src/wire/ws.ts`
+- L962 6.5 Tier policy (BUS-06, ENTL-05) — `plant/policyTier.ts`
+- L970 6.6 Client side: WS → quote cache → grid cell flash (TERM-08, TERM-12)
+- L989 7. Ingest and scheduler
+- L991 7.1 Scheduler (`server/src/ingest/scheduler.ts`)
+- L1045 7.2 Provider HTTP client (`server/src/providers/http.ts`)
+- L1061 8. Replay harness (FEED-08, QA-02)
+- L1063 8.1 Provider replay store (`server/src/providers/replayStore.ts`)
+- L1075 8.2 Plant session replay (`server/src/replay/harness.ts`)
+- L1092 9. Provenance and licence registry (DATA-09, DATA-10, STOR-07)
+- L1158 10. Entitlement evaluation (ENTL-01..06, API-06, SEC-03)
+- L1193 11. Observability (OPS-07, OPS-03, OPS-04, FUNC-04)
+- L1220 12. Runtime topology
+- L1241 12.1 Startup order (`packages/server/src/index.ts`)
+- L1259 13. How tagged requirements are honoured
+- L1288 14. Work-package boundaries implied by this document
+- L1311 15. Decision log (where the candidates disagreed)
 
 ## 4. Function framework (FUNCTIONS.md)
 
 ### 4.1 Exported TypeScript declarations
 
 ```ts
-// L60
-export type Tier = 1 | 2 | 3;
-// L61
-export type FunctionCategory =
 // L66
+export type Tier = 1 | 2 | 3;
+// L67
+export type FunctionCategory =
+// L72
 export type ArgType =
-// L71
+// L77
 export interface ParamGrammar {
-// L78
+// L84
 export interface LiveSpec {
-// L85
+// L91
 export interface CsvColumn { id: string; label: string; type: 'string' | 'number' | 'date' | 'datetime' | 'boolean'; decimals?: number }
-// L86
+// L92
 export interface CsvDocument {
-// L93
-export interface CsvSpec<P, T> {
 // L99
+export interface CsvSpec<P, T> {
+// L105
 export interface HelpSpec {
-// L108
+// L114
 export interface KeyBinding {
-// L115
+// L121
 export interface FunctionManifest<P extends z.ZodObject<z.ZodRawShape> = z.ZodObject<z.ZodRawShape>, T extends { variant: string } = { variant: string }> {
-// L138
+// L144
 export const defineFunction = <P extends z.ZodObject<z.ZodRawShape>, T extends { variant: string }>(m: FunctionManifest<P, T>) => m;
-// L139
+// L145
 export type ParamsOf<M> = M extends FunctionManifest<infer P, any> ? z.infer<P> : never;
-// L140
+// L146
 export type PayloadOf<M> = M extends FunctionManifest<any, infer T> ? T : never;
-// L165
+// L171
 export type UnavailableReason = 'NO_SOURCE' | 'NOT_LICENSED' | 'NOT_APPLICABLE';
-// L168
+// L174
 export interface PayloadMeta {
-// L181
+// L187
 export interface Payload<T> { data: T; meta: PayloadMeta }
-// L185
+// L191
 export interface ValueCell {
-// L195
+// L201
 export interface BasePayload { variant: string }
-// L220
+// L226
 export interface ResolveContext {
-// L238
+// L244
 export type FunctionResolver<P, T> = (ctx: ResolveContext, params: P) => Promise<T>;
-// L239
+// L245
 export interface FunctionServerModule<P, T> {
-// L248
+// L254
 export interface ProvenanceCollector {
-// L256
+// L262
 export interface UnavailableCollector { add(n: { field: string; reason: UnavailableReason; detail: string }): void; list(): PayloadMeta['unavailable'] }
-// L257
+// L263
 export interface EngineCollector      { add(e: { name: string; version: string; inputsHash: string }): void; list(): PayloadMeta['engines'] }
-// L259
-export interface PlantReader {
 // L265
+export interface PlantReader {
+// L271
 export type ReadThroughKind =
-// L268
+// L274
 export interface ReadThrough {
-// L278
+// L284
 export interface DataServices {
-// L351
+// L357
 export interface CachedResult { resultId: string; userId: number; code: string; alias?: string; params: unknown; security: number | null; data: unknown; meta: PayloadMeta; storedAt: number }
-// L352
+// L358
 export class ResultCache { put(r: CachedResult): void; get(resultId: string, userId: number): CachedResult | undefined /* undefined when expired or another user */; }
-// L375
+// L381
 export interface LiveView {
-// L380
+// L386
 export interface ScreenCtx<P> {
-// L392
+// L398
 export interface ScreenProps<P, T> {
-// L401
+// L407
 export type FunctionScreen<P, T> = (props: ScreenProps<P, T>) => ScreenSpec;
-// L403
+// L409
 export interface ScreenSpec {
-// L412
+// L418
 export type Node =
-// L428
+// L434
 export interface Cell extends ValueCell { fmt?: 'px' | 'pct' | 'bp' | 'int' | 'ccy' | 'date' | 'datetime' | 'text' | 'shares'; decimals?: number; dir?: 'up' | 'down' | 'flat'; fieldId?: FieldId; command?: string }
-// L429
+// L435
 export interface GridColumn { id: string; label: string; fieldId?: FieldId; width?: number; align?: 'left' | 'right'; fmt?: Cell['fmt']; decimals?: number; sortable?: boolean; live?: boolean }
-// L430
+// L436
 export interface GridRow { id: string; cells: Record<string, Cell>; group?: string; subject?: string; instrumentId?: number; command?: string; tone?: 'normal' | 'muted' | 'highlight' }
-// L431
+// L437
 export interface FormField { id: string; label: string; type: 'text' | 'number' | 'date' | 'enum' | 'security' | 'boolean' | 'field'; value: unknown; values?: readonly string[]; step?: number; bigStep?: number; unit?: string; readonly?: boolean }
-// L432
+// L438
 export interface Badge { text: string; tone: 'info' | 'ok' | 'warn' | 'error' | 'stale' | 'blocked'; title?: string }
-// L439
+// L445
 export type SeriesType = 'line' | 'area' | 'mountain' | 'candle' | 'ohlc' | 'bar' | 'step' | 'scatter' | 'tick' | 'pnf' | 'profile' | 'heatmap';   // CHRT-01
-// L440
+// L446
 export interface ChartSeries {
-// L449
+// L455
 export interface ChartSpec {
-// L477
+// L483
 export interface CsvContext { display: string | null; asOf: string; attribution: string[] }
-// L478
+// L484
 export function toCsv<P, T>(manifest: FunctionManifest<any, T>, payload: T, params: P, ctx: CsvContext): CsvDocument;
-// L479
+// L485
 export function writeCsv(doc: CsvDocument, headerLines: string[]): string;   // RFC 4180, CRLF, UTF-8 no BOM, '#' comment lines first (API.md §9)
-// L506
+// L512
 export class FunctionRegistry {
-// L518
+// L524
 export const manifests = { DES, GP, /* … every file in this directory … */ } as const;
-// L519
+// L525
 export type FunctionCode = keyof typeof manifests;                // 'DES' | 'GP' | …  (canonical codes only)
-// L520
+// L526
 export type PayloadOf<C extends FunctionCode> = import('../manifest').PayloadOf<(typeof manifests)[C]>;
-// L521
+// L527
 export type ParamsOf<C extends FunctionCode> = import('../manifest').ParamsOf<(typeof manifests)[C]>;
-// L522
+// L528
 export const registry = new FunctionRegistry(Object.values(manifests));
-// L645
+// L651
 export interface Token { text: string; upper: string; start: number; end: number }
-// L646
+// L652
 export function tokenize(raw: string): Token[];
-// L661
+// L667
 export type CommandShape = 'empty' | 'shell' | 'help' | 'security' | 'function' | 'security+function' | 'invalid';
-// L662
+// L668
 export interface CommandProblem { code: 'UNKNOWN_FUNCTION' | 'UNKNOWN_SECTOR' | 'NOT_IN_UNIVERSE' | 'BAD_IDENTIFIER' | 'ARG_PARSE' | 'AMBIGUOUS' | 'NO_SECURITY_LOADED' | 'NOT_APPLICABLE'; span: [number, number]; message: string }
-// L663
+// L669
 export interface CommandSecurity {
-// L671
+// L677
 export interface ParsedCommand {
-// L681
+// L687
 export interface PanelContext { security: { instrumentId: number; assetClass: AssetClass; marketSector: MarketSector; display: string } | null; fn: string | null; params: Record<string, unknown> }
-// L682
+// L688
 export interface ParseEnv {
-// L689
+// L695
 export function parse(raw: string, env: ParseEnv): ParsedCommand[];   // ranked interpretations, best first; never throws
-// L690
+// L696
 export function toRunRequest(cmd: ParsedCommand, env: ParseEnv): { code: string; alias?: string; body: FunctionRunRequestInput } | { problem: CommandProblem };
-// L717
+// L723
 function token (else the interpretation is dropped); `args = tokens[j+2..]`. Sector is inferred from
-// L738
+// L744
 export function parseArgs(grammar: ParamGrammar, args: string[], env: ParseEnv): { params: Record<string, unknown>; problems: CommandProblem[] };
-// L892
+// L898
 export interface Candidate {
-// L905
+// L911
 export interface RankContext {
-// L912
+// L918
 export function rank(query: string, index: UniverseIndex, ctx: RankContext, registry: FunctionRegistry): Candidate[];   // ≤ 12, best first
-// L999
+// L1005
 export const HelpParams = z.object({
-// L1004
+// L1010
 export type HelpPayload =
-// L1022
+// L1028
 export const SecfParams = z.object({
-// L1032
+// L1038
 export interface SecfPayload {
-// L1229
+// L1235
 export const CrypParams = z.object({
-// L1240
+// L1246
 export type CrypPayload = {
 ```
 
@@ -902,43 +1015,43 @@ export type CrypPayload = {
 - L35 1. Framework contract (FUNC-01, FUNC-02, FUNC-03, FUNC-04)
 - L37 1.1 Vocabulary
 - L50 1.2 Manifest — `packages/core/src/functions/manifest.ts`
-- L158 1.3 Payload conventions — `packages/core/src/types/function.ts`
-- L212 1.4 Server side — `packages/server/src/functions/`
-- L369 1.5 Client side — `packages/web/src/screen/types.ts`
-- L474 1.6 CSV exporter — `packages/core/src/functions/csv.ts`
-- L502 1.7 Registry — construction on every side
-- L539 1.8 Adding a function (FUNC-01)
-- L557 1.9 Polymorphism by asset class (FUNC-02)
-- L574 1.10 Usage instrumentation (FUNC-04)
-- L603 2. The command line (TERM-01, TERM-03)
-- L605 2.1 Grammar — `packages/core/src/command/grammar.ts`
-- L642 2.2 Tokenizer — `packages/core/src/command/tokenizer.ts`
-- L657 2.3 Parser — `packages/core/src/command/parser.ts`
-- L735 2.4 Argument mapping — `packages/core/src/command/args.ts`
-- L767 2.5 Context rules (TERM-03) — `packages/web/src/command/dispatch.ts`
-- L784 2.6 Shell commands and reserved keys (TERM-06, TERM-07)
-- L813 2.7 Worked examples
-- L857 3. Autocomplete (TERM-02)
-- L859 3.1 Universe snapshot and the local index
-- L889 3.2 Candidate model — `packages/core/src/search/types.ts`
-- L918 3.3 Ranking algorithm — `packages/core/src/command/rank.ts`
-- L958 3.4 Server fallback — `GET /api/v1/search`
-- L969 3.5 Budget and measurement (NFR: autocomplete < 80 ms p95, keystroke < 16 ms)
-- L983 4. HELP (TERM-09)
-- L1016 5. SECF — Security Finder
-- L1063 6. Catalogue (BRIEF §6)
-- L1115 7. Template for `FUNCTIONS_TIER1.md`, `FUNCTIONS_TIER2.md`, `FUNCTIONS_TIER3.md`
-- L1117 7.1 File skeleton
-- L1125 <CODE> — <Name>
-- L1194 7.2 Rules for the tier files
-- L1213 7.3 Worked example — `CRYP` (normative; `FUNCTIONS_TIER3.md` reproduces this entry verbatim)
-- L1215 CRYP — Crypto Monitor
-- L1309 8. Tests owned by this contract
-- L1336 9. Decision log (where the candidates disagreed or the final docs needed reconciling)
-- L1357 10. Open questions (not resolvable from the inputs)
+- L164 1.3 Payload conventions — `packages/core/src/types/function.ts`
+- L218 1.4 Server side — `packages/server/src/functions/`
+- L375 1.5 Client side — `packages/web/src/screen/types.ts`
+- L480 1.6 CSV exporter — `packages/core/src/functions/csv.ts`
+- L508 1.7 Registry — construction on every side
+- L545 1.8 Adding a function (FUNC-01)
+- L563 1.9 Polymorphism by asset class (FUNC-02)
+- L580 1.10 Usage instrumentation (FUNC-04)
+- L609 2. The command line (TERM-01, TERM-03)
+- L611 2.1 Grammar — `packages/core/src/command/grammar.ts`
+- L648 2.2 Tokenizer — `packages/core/src/command/tokenizer.ts`
+- L663 2.3 Parser — `packages/core/src/command/parser.ts`
+- L741 2.4 Argument mapping — `packages/core/src/command/args.ts`
+- L773 2.5 Context rules (TERM-03) — `packages/web/src/command/dispatch.ts`
+- L790 2.6 Shell commands and reserved keys (TERM-06, TERM-07)
+- L819 2.7 Worked examples
+- L863 3. Autocomplete (TERM-02)
+- L865 3.1 Universe snapshot and the local index
+- L895 3.2 Candidate model — `packages/core/src/search/types.ts`
+- L924 3.3 Ranking algorithm — `packages/core/src/command/rank.ts`
+- L964 3.4 Server fallback — `GET /api/v1/search`
+- L975 3.5 Budget and measurement (NFR: autocomplete < 80 ms p95, keystroke < 16 ms)
+- L989 4. HELP (TERM-09)
+- L1022 5. SECF — Security Finder
+- L1069 6. Catalogue (BRIEF §6)
+- L1121 7. Template for `FUNCTIONS_TIER1.md`, `FUNCTIONS_TIER2.md`, `FUNCTIONS_TIER3.md`
+- L1123 7.1 File skeleton
+- L1131 <CODE> — <Name>
+- L1200 7.2 Rules for the tier files
+- L1219 7.3 Worked example — `CRYP` (normative; `FUNCTIONS_TIER3.md` reproduces this entry verbatim)
+- L1221 CRYP — Crypto Monitor
+- L1315 8. Tests owned by this contract
+- L1342 9. Decision log (where the candidates disagreed or the final docs needed reconciling)
+- L1363 10. Open questions (not resolvable from the inputs)
 
 ### 4.3 Field ids declared so far
 
 ```
-ACCRUED ASK_SIZE BID_SIZE BS_TOT_ASSET BS_TOT_LIAB2 CF_CAP_EXPEND CF_CASH_FROM_OPER CHG_ CHG_NET_1D CHG_PCT_1D CPN_FREQ CUR_MKT_CAP DUR_ADJ_MID DUR_MID DVD_SH_12M DVD_YIELD ECO_PERIOD ECO_PRIOR ECO_RELEASE_DT ECO_VALUE ECO_VINTAGE EPS_BASIC EPS_DIL EQY_FLOAT_PCT EQY_SH_OUT FX_USD HIGH IDX_MEMBER_WEIGHT IS_EPS_DIL IS_FINAL IS_OPER_INC LAST_SIZE LAST_TRADE_TIME NET_INC NET_INCOME NET_MARGIN OPT_ OPT_CONT_SIZE OPT_DELTA OPT_EXPIRE_DT OPT_GAMMA OPT_IV OPT_OI OPT_PUT_CALL OPT_RHO OPT_STRIKE_PX OPT_THEO OPT_THETA OPT_UNDL_PX OPT_UNDL_TICKER OPT_VEGA PX_ASK PX_BID PX_CLOSE_1D PX_DIRTY_MID PX_HIGH PX_HIGH_52W PX_LAST PX_LOW PX_LOW_52W PX_OFFICIAL_CLOSE PX_OPEN PX_TO_SALES_RATIO PX_VOLUME SALES_GROWTH_YOY SALES_PS SALES_REV_TURN SPREAD TOT_ASSETS TOT_LIAB TOT_RETURN_INDEX VOLUME_AVG_30D VOL_30D YLD_YTM_MID
+ACCRUED ASK_SIZE BID_SIZE BS_TOT_ASSET BS_TOT_LIAB2 CF_CAP_EXPEND CF_CASH_FROM_OPER CHG_ CHG_NET_1D CHG_PCT_1D CPNTO CPN_FREQ CUR_MKT_CAP DUR_ADJ_MID DUR_MID DVD_SH_12M DVD_YIELD ECO_ ECO_PERIOD ECO_PRIOR ECO_RELEASE_DT ECO_VALUE ECO_VINTAGE EPS_BASIC EPS_DIL EQY_FLOAT_PCT EQY_SH_OUT FX_MISSING FX_USD HIGH IDX_MEMBER_SHARES IDX_MEMBER_SINCE IDX_MEMBER_WEIGHT IS_CORRECTION IS_EPS_DIL IS_FINAL IS_OPER_INC LAST_SIZE LAST_TRADE_TIME NET_INC NET_INCOME NET_MARGIN NEWS_ID OPT_ OPT_BREAKEVEN OPT_CHARM OPT_CONT_SIZE OPT_DELTA OPT_DVD_YIELD_USED OPT_EXPIRE_DT OPT_GAMMA OPT_IMPL_VOL_MID OPT_INTRINSIC OPT_IV OPT_MODEL_PX OPT_OI OPT_PUT_CALL OPT_RATE_USED OPT_RHO OPT_STRIKE_PX OPT_THEO OPT_THETA OPT_TIME_VALUE OPT_UNDL_PX OPT_UNDL_TICKER OPT_VANNA OPT_VEGA OPT_VOLGA PX_ASK PX_BID PX_CLEAN_MID PX_CLOSE_1D PX_DIRTY_MID PX_HIGH PX_HIGH_52W PX_LAST PX_LOW PX_LOW_52W PX_OFFICIAL_CLOSE PX_OPEN PX_TO_BOOK_RATIO PX_TO_SALES_RATIO PX_VOLUME SALES_GROWTH_YOY SALES_PS SALES_REV_TURN SPREAD SPREADS TOT_ASSETS TOT_LIAB TOT_RETURN_INDEX VOLUME_AVG_30D VOL_30D YLD_YTM_MID
 ```

@@ -35,7 +35,8 @@ wire/common.ts        AssetClass, MarketSector, Tier, ValueState, SessionState, 
                       ResolvedRef, InstrumentSummary, FieldValue, AdjustPolicy, BarInterval                                  (§3)
 wire/reasonCodes.ts   ReasonCode (mirrors core/types/entitlement.ts)                                                          (§3)
 wire/dataRequest.ts   DataRequest, DataResponse, SeriesBlock, TickRow, RealtimeSubject                                       (§4)
-wire/rest.ts          Rest.<Route>.{params,query,body,response} for every row of §5; zod 4 objects
+wire/rest/<group>.ts  Rest.<Group>.<Route>.{params,query,body,response} for every row of §5; zod 4
+                      objects, one file per route group + a generated rest/index.ts barrel
 wire/ws.ts            ClientMsg, ServerMsg, Snap, Delta, Status, close codes, subject grammar, per-subject field sets     (§6)
 fields/fields.json    generated from core/fields/dictionary.ts (§7); fields/index.ts typed accessors + format()
 client/rest.ts        RestClient · client/ws.ts LiveClient · client/subscriptions.ts · client/quoteCache.ts           (§10)
@@ -62,7 +63,7 @@ index.ts              createClient(), TerminalClient, every schema and type     
 | Request context | Every authenticated request runs in a transaction with `set_config('app.user_id'\|'app.firm_id'\|'app.role', …, true)` so RLS (DATA_MODEL §15) applies (PORT-07, SEC-05). |
 | WebSocket auth | The `tsid` cookie is read on the HTTP upgrade of `/ws/v1`; bearer clients omit the cookie and send `hello.token`. A socket that has not sent `hello` within 5 s, or whose session is invalid, is closed with `4001 AUTH_REQUIRED`. |
 
-### 1.2 Schemas — `wire/rest.ts` (`Rest.Auth.*`)
+### 1.2 Schemas — `wire/rest/auth.ts` (`Rest.Auth.*`)
 
 ```ts
 import { z } from 'zod';
@@ -393,7 +394,7 @@ Rules:
 
 Every route requires an authenticated session unless marked *public*. `Role` column: `any` = any
 authenticated user; otherwise the `users.role` values allowed. Route files are those listed in
-ARCHITECTURE §3.3 (`http/routes/<file>.ts`); schemas are `Rest.<Group>.<Name>` in `wire/rest.ts`.
+ARCHITECTURE §3.3 (`http/routes/<file>.ts`); schemas are `Rest.<Group>.<Name>` in `wire/rest/<group>.ts`.
 
 ### 5.1 Resolution and reference (`reference.ts`) — REF-01, REF-02, REF-03, REF-04, REF-05, REF-06, REF-07, REF-08, REF-09
 
@@ -952,10 +953,27 @@ range 50–5000 via `hello.conflationMs` or the `conflation` message) flushes:
 
 - values are read **from the composite at flush time**, never from an intermediate update, so the
   flushed value of every field is the last applied value (latest-value guarantee);
-- a subject appears at most once per `batch`; at most one `batch` per session per `effectiveMs`;
+- a subject appears at most once per `batch`; at most one `batch` per session per `effectiveMs` **in
+  steady state** — see the snapshot-burst exception below;
 - a subject stays dirty until it has been sent; a skipped flush (backpressure) keeps the dirty set;
 - `eod`-tier subjects flush at most every 60 000 ms; `n:*` headlines are queued, not conflated;
 - the server may widen `effectiveMs` (§6.5) but never narrows below the client's request.
+
+**Snapshot-burst and frame-cap exception (BUS-01, BUS-03, BUS-08).** The one-`batch`-per-interval rule
+governs steady-state delta flushes. It cannot govern the initial snapshot burst: §6.3.2 guarantees exactly
+one `snap` per accepted subject, a single `sub` may carry up to 10 000 subjects with up to 100 fields each
+(§6.7), and a `batch` frame is capped at 1 MiB (§6.7) — several MiB of snapshots cannot be one frame. So:
+
+- a flush whose encoded size would exceed the 1 MiB frame cap is split across **consecutive `batch`
+  frames within that one flush**, emitted back-to-back before any later flush, in dirty-map insertion
+  order; a subject still appears at most once across the frames of one flush;
+- the initial snapshot burst for a `sub` is such a flush and is split the same way, so a large
+  subscription is acknowledged by `subAck` and then answered by an ordered run of `batch` frames;
+- the `prev` chain is unaffected: per-subject `seq`/`prev` continuity is a property of the subject, not of
+  the frame it travels in, so a client that applies frames in receipt order sees a contiguous chain;
+- steady-state flushes after the burst resume the at-most-one-`batch`-per-`effectiveMs` rule.
+
+WP-06's conflator and WP-13's prev-chain client are both written against these sentences.
 
 Property test (TESTING.md): for any input sequence, the last flushed value of every field equals the
 last applied value, and the `prev` chain is contiguous per session.
@@ -1060,7 +1078,7 @@ way on the screen, in the CSV and in the SDK. Its version is recorded in
 `schema_meta('field_dictionary_version')` and returned as `dictionaryVersion` by `/auth/session` and `/status`.
 
 ```ts
-// packages/core/src/fields/dictionary.ts (TypeScript source of truth) — zod mirror FieldDef in sdk/wire/rest.ts
+// packages/core/src/fields/dictionary.ts (TypeScript source of truth) — zod mirror FieldDef in sdk/wire/rest/fields.ts
 export interface FieldDef {
   id: FieldId;                                   // 'PX_LAST'; stable, never reused
   label: string;                                 // 'Last price' (column header)
@@ -1300,7 +1318,8 @@ export class LiveClient {
   subscribe(subjects: string[], fields: FieldId[] | '*', opts?: SubscribeOptions): Subscription;   // ref-counted per (subject, field); batches sub/unsub per animation frame
   setEssential(subjects: string[], essential: boolean): void;                                     // viewport → 'essential' message
   setConflation(ms: number): void;
-  get(subject: string): QuoteView | undefined;   // from QuoteCache
+  readonly quoteCache: QuoteCache;               // the instance this client applies snap/delta into; exposed so the host app can drive the 1 s staleness sweep (TERM-12)
+  get(subject: string): QuoteView | undefined;   // reads `quoteCache` above — the same instance, never a copy
   on(event: 'update', h: (e: UpdateEvent) => void): () => void;
   on(event: 'status', h: (e: { subject: string; st: Status['st']; reason?: string }) => void): () => void;
   on(event: 'downgrade', h: (e: { subject?: string; from: Tier; to: Tier|null; reason: ReasonCode }) => void): () => void;
