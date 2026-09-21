@@ -7,6 +7,25 @@
 // Add a module by adding the file and re-running the generator. Hand edits are
 // overwritten and fail CI, which re-runs the generator and diffs the result.
 
-// The glob matched no modules yet.
+import * as secNport from './secNport.js';
+import * as shortInterest from './shortInterest.js';
+import * as ssgaHoldings from './ssgaHoldings.js';
+import * as symbologyRefresh from './symbologyRefresh.js';
+import * as universeSymbolBook from './universeSymbolBook.js';
 
-export const ingestJobModules = {} as const;
+export {
+  secNport,
+  shortInterest,
+  ssgaHoldings,
+  symbologyRefresh,
+  universeSymbolBook,
+};
+
+/** Every module the glob matched, keyed by its file (or directory) name. */
+export const ingestJobModules = {
+  secNport,
+  shortInterest,
+  ssgaHoldings,
+  symbologyRefresh,
+  universeSymbolBook,
+} as const;

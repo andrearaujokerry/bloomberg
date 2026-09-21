@@ -45,7 +45,15 @@ export default defineConfig({
           root: 'packages/server',
           environment: 'node',
           include: ['test/**/*.test.ts'],
-          exclude: ['test/integration/**'],
+          // `test/replay/**` is excluded with `test/integration/**`: the replay suites drive real
+          // ingest jobs, and two of the three (`secNport`, `symbologyRefresh`) open the test
+          // transaction through `src/test/db.ts`. This project has no `globalSetup`, so nothing
+          // migrates the database for it, and it runs in sequence group 0 — BEFORE `server-int`.
+          // They only ever passed here because an earlier integration run had already migrated
+          // `bloomberg_test`; against a fresh database they fail with 42P01
+          // (`relation "provenance" does not exist`), which is what a clean CI has. They have
+          // their own project, `server-replay`, below.
+          exclude: ['test/integration/**', 'test/replay/**'],
           setupFiles: ['test/setup.unit.ts'],
           env: { PROVIDER_MODE: 'replay' },
           testTimeout: 10_000,
@@ -78,6 +86,33 @@ export default defineConfig({
           // that pins a worker count (four forks against one database), so it gets its own group;
           // the other four stay on the default group 0 and run first.
           sequence: { groupOrder: 1 },
+          testTimeout: 30_000,
+        },
+      },
+      {
+        test: {
+          // `server-replay`: the fixture-replay suites (TESTING §6), which drive a whole ingest
+          // job from a recorded capture into the database. They need what `server-int` has —
+          // `globalSetup`'s migrations, the forced test `DATABASE_URL`, `PROVIDER_MODE=replay` —
+          // and one thing it cannot give them: no concurrency at all. Each of them writes the
+          // real identifier space of its capture (`secNport` and `symbologyRefresh` both write
+          // Apple's ISIN), so two replay transactions running side by side contend on the same
+          // `identifiers` keys and Postgres resolves it as a deadlock. One worker, one file at a
+          // time, after the integration project.
+          name: 'server-replay',
+          root: 'packages/server',
+          environment: 'node',
+          include: ['test/replay/**/*.test.ts'],
+          setupFiles: ['test/setup.int.ts'],
+          globalSetup: ['test/globalSetup.ts'],
+          env: {
+            DATABASE_URL: TEST_DATABASE_URL,
+            PROVIDER_MODE: 'replay',
+          },
+          pool: 'forks',
+          fileParallelism: false,
+          maxWorkers: 1,
+          sequence: { groupOrder: 2 },
           testTimeout: 30_000,
         },
       },
