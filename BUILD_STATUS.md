@@ -14,8 +14,10 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-05 | Provider adapters, replay store, provenance, ingest runtime | merged |
 | WP-06 | Quote model, ticker plant, conflator, WebSocket gateway | merged |
 | WP-07 | Entitlements, auth, access log, quotas, compliance | merged |
-| WP-08 | Function runner, REST routes, field surface | not started |
+| WP-08 | Function runner, REST routes, export, search, observability | merged |
 | WP-09 … WP-15 | Screens, SDK client, web shell, seed and verification | not started |
+
+3,108 tests across 153 files.
 
 The suite runs with no network access: the replay store is a wall, and a fixture miss throws rather
 than falling through to a provider (FEED-08, QA-02).
@@ -50,6 +52,20 @@ Not fixed in WP-06 because both options reach outside it: the first edits a WP-0
 behaviour the plant cannot yet exercise, the second changes the documented schema. Neither should be
 done on speculation, and a third writer's worth of duplicated dedup logic would be worse than the
 gap.
+
+### No function manifests exist yet
+
+`packages/core/src/functions/manifests/` holds only its generated `index.ts`. WP-09, WP-10 and WP-11
+write the forty real manifests, so the runner currently has nothing real to run and every WP-08 test
+builds throwaway manifests with `defineFunction()` inside the test file. Nothing may be written into
+that directory before those packages: the generated registry globs it, and a stray fixture manifest
+would be served by `GET /functions` and then collide with the real one.
+
+Two guards exist for the resolvers those packages will write, and they matter because nothing
+violates them today: `runner.ts`'s `assertPayloadMeta` refuses a payload carrying a number with no
+provenance, or a null with no `meta.unavailable` entry (DATA-10), and `assertProvenanceExists`
+refuses a citation to a `provenance` row that is not there. Both throw in dev and test and warn in
+production, on the same flag as the existing variant assertion.
 
 ## Notes
 

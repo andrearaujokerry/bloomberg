@@ -67,6 +67,28 @@ export const ConfigSchema = z.object({
    * `https://terminal.example.com`, scheme and port included, no trailing slash.
    */
   RP_ORIGIN: z.string().min(1).optional(),
+  /**
+   * Bearer token for `GET /metrics` (API.md §5.15). The route is public on loopback — a sidecar
+   * scraper on the same host needs no credential — and requires `Authorization: Bearer
+   * <METRICS_TOKEN>` from anywhere else. Unset, a non-loopback scrape is **refused**: there is no
+   * value it could present, and serving the metric page to the internet because nobody set a
+   * variable is the wrong default. 16 characters minimum, as for `SESSION_SECRET`.
+   */
+  METRICS_TOKEN: z
+    .string()
+    .min(16, 'METRICS_TOKEN must be at least 16 characters (GET /metrics bearer token)')
+    .optional(),
+  /**
+   * `'1'` serves `GET /fields`, `GET /fields/:id` and `GET /fields/changelog` without a session
+   * (API.md §5.5 L563 — "any (*public* when `PUBLIC_FIELDS=1`)").
+   *
+   * The field dictionary is documentation: definitions, units, decimals and the licence terms of
+   * each source. It contains no instrument, no price and no firm, so publishing it lets an
+   * integrator read the schema before they have credentials. It is off by default all the same —
+   * a deployment should have to say so — and it never widens anything else: the values those
+   * fields carry still go through `POST /data` and the evaluator.
+   */
+  PUBLIC_FIELDS: z.enum(['0', '1']).default('0'),
   OPENFIGI_API_KEY: z.string().min(1).optional(),
   FRED_API_KEY: z.string().min(1).optional(),
   BLS_API_KEY: z.string().min(1).optional(),

@@ -32,6 +32,7 @@ import type { Db } from './db/client.js';
 import { registerErrorHandling } from './http/errors.js';
 import { registerTrace } from './http/trace.js';
 import { healthRoutes } from './http/routes/health.js';
+import { metricsPlugin } from './observability/metrics.js';
 import type { Plant } from './plant/tickerPlant.js';
 import { registerWsGateway, type WsGateway } from './ws/gateway.js';
 
@@ -187,6 +188,9 @@ export function buildApp(deps: AppDeps, options: BuildAppOptions = {}): FastifyI
   // Liveness alias at the root for probes and for `curl localhost:8080/health`; the canonical
   // documented path is `/api/v1/health`, served by the generated barrel.
   void app.register(healthRoutes);
+  // `/metrics` at the root: API.md §5.15 puts it outside `/api/v1`, so it cannot come from the
+  // generated barrel (which is registered under the prefix). Same special case as `/health` above.
+  void app.register(metricsPlugin);
   void app.register(generatedRoutes, { prefix: API_PREFIX });
 
   const gateway = registerWsGateway(app, {

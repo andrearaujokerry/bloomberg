@@ -9,20 +9,47 @@
 
 import * as admin from './admin.js';
 import * as auth from './auth.js';
+import * as data from './data.js';
+import * as $export from './export.js';
+import * as fields from './fields.js';
+import * as functions from './functions.js';
 import * as health from './health.js';
+import * as reference from './reference.js';
+import * as search from './search.js';
+import * as status from './status.js';
+import * as universe from './universe.js';
 import * as usage from './usage.js';
+import * as workspaces from './workspaces.js';
 
 export {
   admin,
   auth,
+  data,
+  $export,
+  fields,
+  functions,
   health,
+  reference,
+  search,
+  status,
+  universe,
   usage,
+  workspaces,
 };
 
 /** Every module the glob matched, keyed by its file (or directory) name. */
 export const routeModules = {
   admin,
   auth,
+  data,
+  $export,
+  fields,
+  functions,
   health,
+  reference,
+  search,
+  status,
+  universe,
   usage,
+  workspaces,
 } as const;

@@ -143,6 +143,24 @@ export class ConflictError extends AppError {
   }
 }
 
+/**
+ * 503 — a provider could not be reached and nothing usable is stored (API.md §2, retryable).
+ *
+ * Raised by `functions/context.ts#readThrough` when the circuit is open, the fetch failed or the
+ * source is scheduler-only **and** the store holds nothing for the resource. When the store holds
+ * something stale the read-through returns it labelled `fresh: false` instead, because a stale
+ * number with an honest age beats a 503 on a screen that only needed a reference read.
+ */
+export class ProviderUnavailableError extends AppError {
+  constructor(message: string, options: { retryAfterMs?: number; cause?: unknown } = {}) {
+    super('PROVIDER_UNAVAILABLE', message, {
+      retryAfterMs: options.retryAfterMs ?? 5_000,
+      ...(options.cause === undefined ? {} : { cause: options.cause }),
+    });
+    this.name = 'ProviderUnavailableError';
+  }
+}
+
 /** 503 — the process has not finished ARCHITECTURE §12.1 step 8 yet. Retryable. */
 export class StartingError extends AppError {
   constructor(retryAfterMs = 2_000) {

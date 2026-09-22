@@ -2,7 +2,7 @@
  * `http/routes/admin.ts` — the API.md §5.14 table (OPS-07, ENTL-06, DATA-02, DATA-09, REF-10,
  * REG-01, REG-04, MSG-02), WORKPLAN WP-07.
  *
- * Thirty-one routes over the operational tables: declarations, the licence registry, entitlement
+ * Thirty-two routes over the operational tables: the OPS-07 trace join, declarations, the licence registry, entitlement
  * grants, the access log and its CSV export, the REF-10 exception queue, the corporate-action
  * review queue, data-quality events, ingest runs, the MSG-02 surveillance queue, legal holds, the
  * REG-01 message production, user administration including the REG-04 erasure, and the OPS-04
@@ -60,6 +60,7 @@ import {
   ReconcileDeclarationRequest,
   ResolveExceptionRequest,
   ReviewCaRequest,
+  TraceParams,
   UpdateComplianceReviewRequest,
   UpdateUserRequest,
   UserQuery,
@@ -72,6 +73,7 @@ import {
   reconcileDeclaration,
   type DeclarationRow as GeneratedDeclarationRow,
 } from '../../entitlements/declarations.js';
+import { traceQuery } from '../../observability/traceQuery.js';
 import { setPassword } from '../auth/password.js';
 import { requireSession, type Principal } from '../auth/session.js';
 import {
@@ -108,6 +110,7 @@ const CSV_ROW_CAP = 100_000;
 const ROLES_ADMIN: readonly Role[] = ['admin'];
 const ROLES_ADMIN_COMPLIANCE: readonly Role[] = ['admin', 'compliance'];
 const ROLES_ADMIN_DATAOPS: readonly Role[] = ['admin', 'dataops'];
+const ROLES_ADMIN_DATAOPS_HELPDESK: readonly Role[] = ['admin', 'dataops', 'helpdesk'];
 const ROLES_ADMIN_DATAOPS_COMPLIANCE: readonly Role[] = ['admin', 'dataops', 'compliance'];
 const ROLES_DATAOPS: readonly Role[] = ['dataops'];
 const ROLES_COMPLIANCE: readonly Role[] = ['compliance'];
@@ -1002,6 +1005,23 @@ const DECLARATION_CSV_HEADERS = [
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 
 export const adminRoutes: FastifyPluginAsync = async (app) => {
+  // ═══ Trace (OPS-07) ═══════════════════════════════════════════════════════════════════
+
+  // The join itself is `observability/traceQuery.ts` (WP-08): it owns the firm scoping, which
+  // `access_log` and `usage_events` cannot get from RLS because migration 0015 gives them no
+  // policy. This route is the guard, the parse and the transaction, and nothing else.
+  app.get(
+    '/admin/trace/:traceId',
+    { preHandler: requireSession({ roles: ROLES_ADMIN_DATAOPS_HELPDESK }) },
+    async (request) => {
+      const principal = principalOf(request);
+      const params = parse(TraceParams, request.params, 'params');
+      return withTx(ctxOf(principal), (tx) =>
+        traceQuery(tx).byTraceId(params.traceId, principal.firmId),
+      );
+    },
+  );
+
   // ═══ Declarations (ENTL-06, DATA-02) ═══════════════════════════════════════════════════════
 
   app.get(

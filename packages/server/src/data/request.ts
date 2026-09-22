@@ -689,7 +689,24 @@ export class DataDispatcher {
       requestedTier,
       usage,
     );
-    if (gate.allowed.length === 0) {
+    const instrumentIds = hits.map((h) => h.instrument.instrumentId);
+
+    // Rule 8 of the evaluator denies every field with `QUOTA_EXCEEDED` when the caller is over an
+    // API quota, which arrives here looking exactly like an entitlement denial. It is not one: the
+    // caller is entitled to these fields and will be again when the window rolls. API.md §2 gives
+    // quota exhaustion its own `429 QUOTA_EXCEEDED { quota, used, limit, resetsAt }`, retryable,
+    // with `Retry-After` — a `403` tells a client to stop forever instead of backing off, and
+    // carries none of the four numbers it needs to know when to come back.
+    //
+    // So when quota is the *only* reason nothing survived, let the reserve below raise the real
+    // error rather than pre-empting it with a 403. It runs the same check with the same inputs and
+    // builds the documented envelope, so there is one quota error in the process, not two.
+    const quotaOnly =
+      gate.allowed.length === 0 &&
+      gate.notes.length > 0 &&
+      gate.notes.every((n) => n.reason === 'QUOTA_EXCEEDED');
+
+    if (gate.allowed.length === 0 && !quotaOnly) {
       throw new AppError(
         'ENTITLEMENT_DENIED',
         `no requested field is servable at tier '${requestedTier}' for usage '${usage}'`,
@@ -697,14 +714,30 @@ export class DataDispatcher {
       );
     }
 
-    const instrumentIds = hits.map((h) => h.instrument.instrumentId);
     if (this.deps.quota !== undefined) {
       await this.deps.quota.reserve({
         kind: req.kind,
         purpose: `data.${req.kind}`,
         instrumentIds,
-        dataPoints: upperBound(req, instrumentIds.length, gate.allowed.length),
+        // `gate.allowed` is empty on the quota-only path; the request still asked for
+        // `defs.length` fields, and that is the size the reserve must be checked against.
+        dataPoints: upperBound(
+          req,
+          instrumentIds.length,
+          quotaOnly ? defs.length : gate.allowed.length,
+        ),
       });
+    }
+
+    // The reserve passed, so quota was not the problem after all (no quota port wired, or the
+    // ceiling moved between the evaluation and here). Nothing is servable, so this is the denial
+    // the earlier branch would have raised.
+    if (gate.allowed.length === 0) {
+      throw new AppError(
+        'ENTITLEMENT_DENIED',
+        `no requested field is servable at tier '${requestedTier}' for usage '${usage}'`,
+        { details: { reasons: gate.notes } },
+      );
     }
 
     const results = await this.fetch(req, at, resolved, gate, defs);
