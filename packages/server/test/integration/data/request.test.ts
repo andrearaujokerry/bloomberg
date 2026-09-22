@@ -33,6 +33,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   ProvenanceIndex,
+  allowAllEntitlements,
   buildDataSources,
   createDispatcher,
   dataDeps,
@@ -443,6 +444,12 @@ describe('DataRequest dispatcher (API-02, API.md §4 and §12.1)', () => {
       traceId: TRACE_ID,
       prov,
       sources: sources ?? buildDataSources(deps),
+      // These cases are about resolution, bitemporality and shaping, not about who may read what,
+      // so entitlements are switched OFF explicitly. An omitted port denies everything (fail
+      // closed); saying `allowAllEntitlements` is how a caller opts out, and `extra` overrides it
+      // in the cases that do exercise the gate.
+      caller: { userId: 2, firmId: 1, sessionId: 'sess-1' },
+      entitlement: allowAllEntitlements,
       ...extra,
     });
   }
@@ -776,6 +783,26 @@ describe('DataRequest dispatcher (API-02, API.md §4 and §12.1)', () => {
         kind: 'reference',
         securities: [{ id: f.aapl }],
         fields: ['PX_BID'],
+      }),
+    ).rejects.toMatchObject({ code: 'ENTITLEMENT_DENIED', status: 403 });
+  });
+
+  it('rule 2: with NO entitlement port wired, nothing is served', async () => {
+    const f = await seed(t);
+
+    // A forgotten dependency used to mean "allow everything", shaped exactly like a decision in
+    // which every field was allowed — so a deployment that lost its evaluator would have looked
+    // identical to one that had it. WP-07's rule is the opposite: a field that cannot be proved
+    // licensed is denied with a reason. `entitlement: undefined` overrides the helper's explicit
+    // `allowAllEntitlements`, which is how a caller says "entitlements are off" out loud.
+    await expect(
+      dispatcher(asOf(KNOWN_NOW, KNOWN_NOW), {
+        caller: undefined,
+        entitlement: undefined,
+      }).dispatch({
+        kind: 'reference',
+        securities: [{ id: f.aapl }],
+        fields: ['NAME'],
       }),
     ).rejects.toMatchObject({ code: 'ENTITLEMENT_DENIED', status: 403 });
   });

@@ -107,6 +107,18 @@ export const denyAllEntitlements: WsEntitlements = {
   },
 };
 
+/**
+ * The quota source, as a port: `entitlements/quotas.ts` (WP-07) satisfies it structurally.
+ *
+ * Only the concurrency ceiling is needed here, and only the EXPLICIT one. API.md §8 puts the
+ * per-subject limits in `quota_limits` (user row, then firm row) and leaves the defaults to the
+ * host — 10 000 for a web session, 2 000 for an api one (BUS-08) — so `null` means "no row, use
+ * your own {@link WsLimits}" and is not the same answer as a row that happens to say 2 000.
+ */
+export interface WsQuotas {
+  concurrencyCeiling(userId: number, firmId: number): Promise<number | null>;
+}
+
 /** The socket, narrowed to what a session uses (`ws.WebSocket` satisfies it structurally). */
 export interface SessionSocket {
   readonly bufferedAmount: number;
@@ -163,6 +175,11 @@ export interface WsSessionDeps {
   timers: WsTimers;
   limits: WsLimits;
   entitlements: WsEntitlements;
+  /**
+   * API-06. Read ONCE, at `hello`, for this session's concurrent-subscription ceiling. Omitted →
+   * the ceiling is {@link WsLimits}'s, which is what every WP-06 test relies on.
+   */
+  quotas?: WsQuotas;
   /** Resolved on the upgrade from the `tsid` cookie; `null` until `hello.token` says otherwise. */
   principal: WsPrincipal | null;
   /** Answers `hello.token`; `null` when the socket already has a cookie principal. */
@@ -229,6 +246,9 @@ export class WsSession {
   readonly #clock: Clock;
   readonly #limits: WsLimits;
   readonly #socket: SessionSocket;
+
+  /** Resolved once at `hello` (API-06); `null` until then, when {@link WsLimits} decides. */
+  #subscriptionCeiling: number | null = null;
 
   #conflator: Conflator | null = null;
   #unsubscribePlant: (() => void) | null = null;
@@ -582,7 +602,7 @@ export class WsSession {
     this.#clearHelloTimer();
 
     if (this.principal !== null) {
-      this.#welcome(msg);
+      this.#beginWelcome(msg);
       return;
     }
     if (msg.token === undefined || msg.token.length === 0) {
@@ -602,8 +622,7 @@ export class WsSession {
           return;
         }
         this.principal = principal;
-        this.#welcome(msg);
-        this.#drainPending();
+        this.#beginWelcome(msg);
       })
       .catch((err: unknown) => {
         this.#authPending = false;
@@ -619,9 +638,36 @@ export class WsSession {
     }
   }
 
-  #welcome(msg: Extract<ClientMsg, { t: 'hello' }>): void {
+  /**
+   * `welcome` needs one asynchronous fact — the session's concurrent-subscription ceiling
+   * (API.md §8) — and `welcome` must still be the first frame the client sees. So the session
+   * keeps the `#authPending` gate raised across the lookup: frames that arrive meanwhile queue in
+   * `#pending`, exactly as they do while `hello.token` is being authenticated, and are drained
+   * once the conflator exists. Without the gate a `sub` sent immediately after `hello` would find
+   * no conflator and be answered "sub before hello".
+   */
+  #beginWelcome(msg: Extract<ClientMsg, { t: 'hello' }>): void {
+    this.#authPending = true;
+    void this.#welcome(msg)
+      .catch((err: unknown) => {
+        // `#resolveCeiling` already swallows a failed quota read, so reaching here is a server
+        // bug. `1001` is the one code whose documented client behaviour — reconnect with backoff
+        // and resync — is right for it (API.md §6.7).
+        this.#deps.log?.error({ err: String(err) }, 'ws: welcome failed');
+        this.close(WS_CLOSE.SERVER_SHUTDOWN, 'welcome-failed');
+      })
+      .finally(() => {
+        this.#authPending = false;
+        this.#drainPending();
+      });
+  }
+
+  async #welcome(msg: Extract<ClientMsg, { t: 'hello' }>): Promise<void> {
     const principal = this.principal;
     if (principal === null) return;
+
+    this.#subscriptionCeiling = await this.#resolveCeiling(principal);
+    if (!this.#open) return;
 
     const requestedMs = msg.conflationMs;
     this.#conflator = new Conflator({
@@ -661,10 +707,31 @@ export class WsSession {
     this.#armSweep();
   }
 
-  #maxSubscriptions(): number {
+  /**
+   * The host's own ceiling for this client kind (BUS-08): what applies when `quota_limits` holds
+   * no row for the user or the firm, and what a test injects through {@link WsLimits}.
+   */
+  #hostCeiling(): number {
     return this.principal?.clientKind === 'api'
       ? this.#limits.maxSubscriptionsApi
       : this.#limits.maxSubscriptionsWeb;
+  }
+
+  /** The explicit `quota_limits` ceiling, or the host's. Never throws: a failed read falls back. */
+  async #resolveCeiling(principal: WsPrincipal): Promise<number> {
+    const quotas = this.#deps.quotas;
+    if (quotas === undefined) return this.#hostCeiling();
+    try {
+      const explicit = await quotas.concurrencyCeiling(principal.userId, principal.firmId);
+      return explicit ?? this.#hostCeiling();
+    } catch (err) {
+      this.#deps.log?.warn({ err: String(err) }, 'ws: quota ceiling lookup failed');
+      return this.#hostCeiling();
+    }
+  }
+
+  #maxSubscriptions(): number {
+    return this.#subscriptionCeiling ?? this.#hostCeiling();
   }
 
   // -- sub ------------------------------------------------------------------
@@ -688,6 +755,24 @@ export class WsSession {
     const rejected: { s: string; code: RejectCode; reason: string }[] = [];
     const blanks: Subscription[] = [];
     const requestedTier: Tier = msg.tier ?? 'delayed';
+
+    // API-01: a bearer key carries scopes, and `ws:subscribe` is the one this frame needs. A key
+    // minted without it is a read-only key; the scope is checked HERE because there is nowhere
+    // else on this path that sees it. A web session is the person and always holds it.
+    if (principal.clientKind === 'api' && !principal.scopes.includes('ws:subscribe')) {
+      this.#send({
+        t: 'subAck',
+        id: msg.id,
+        accepted: [],
+        rejected: msg.subjects.slice(0, OVERSIZE_REJECT_CAP).map((item) => ({
+          s: item.s,
+          code: 'NOT_ENTITLED' as const,
+          reason: 'this API key does not carry the ws:subscribe scope',
+        })),
+        traceId: this.traceId,
+      });
+      return;
+    }
     /** Set only by the `maxSubscriptions` rung: that is the one `4011` counts (API.md §6.7). */
     let limitHit = false;
 
@@ -727,7 +812,9 @@ export class WsSession {
         limitHit = true;
         rejected.push({
           s: subject,
-          code: 'LIMIT',
+          // API.md §8: the concurrency ceiling is a QUOTA for an api session and the web ceiling
+          // alone is reported as `LIMIT`.
+          code: principal.clientKind === 'api' ? 'QUOTA_EXCEEDED' : 'LIMIT',
           reason: `at most ${String(this.#maxSubscriptions())} subscriptions per session`,
         });
         continue;

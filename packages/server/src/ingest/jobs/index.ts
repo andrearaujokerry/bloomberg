@@ -22,6 +22,7 @@ import * as shortInterest from './shortInterest.js';
 import * as ssgaHoldings from './ssgaHoldings.js';
 import * as symbologyRefresh from './symbologyRefresh.js';
 import * as universeSymbolBook from './universeSymbolBook.js';
+import * as usageDeclarations from './usageDeclarations.js';
 import * as yahooDaily from './yahooDaily.js';
 import * as yahooIntraday from './yahooIntraday.js';
 
@@ -41,6 +42,7 @@ export {
   ssgaHoldings,
   symbologyRefresh,
   universeSymbolBook,
+  usageDeclarations,
   yahooDaily,
   yahooIntraday,
 };
@@ -62,6 +64,7 @@ export const ingestJobModules = {
   ssgaHoldings,
   symbologyRefresh,
   universeSymbolBook,
+  usageDeclarations,
   yahooDaily,
   yahooIntraday,
 } as const;

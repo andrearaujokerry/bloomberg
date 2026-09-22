@@ -27,7 +27,7 @@ import { and, eq, gt, isNull } from 'drizzle-orm';
 import type { Clock } from '@terminal/core';
 
 import type { Db, Tx } from '../db/client.js';
-import { sessions, users } from '../db/schema/users.js';
+import { apiKeys, sessions, users } from '../db/schema/users.js';
 
 /** The identity every frame of a session is attributed to. */
 export interface WsPrincipal {
@@ -38,6 +38,13 @@ export interface WsPrincipal {
   clientKind: 'web' | 'api';
   /** `users.role` — the RLS identity a later query would run under. */
   role: string;
+  /**
+   * What this credential may do (API-01). A bearer session carries its key's `api_keys.scopes`; a
+   * web session IS the person and carries the defaults. The gateway checks `ws:subscribe` before
+   * accepting a `sub` — a key minted without it is a read-only key, and saying so in the docstring
+   * while checking it nowhere is not a control.
+   */
+  scopes: readonly string[];
 }
 
 /** What the gateway found on the wire: a cookie from the upgrade, a token from `hello`, or both. */
@@ -52,6 +59,13 @@ export interface WsAuthenticator {
   /** The principal, or `null` when nothing on the wire identifies a live session. */
   authenticate(input: WsAuthInput): Promise<WsPrincipal | null>;
 }
+
+/**
+ * What a web session carries. It is the person at the keyboard, so it holds every scope a key can
+ * be minted with; the same list as `http/auth/session.ts#DEFAULT_SCOPES`, duplicated rather than
+ * imported so `ws/auth.ts` keeps no dependency on the HTTP auth module.
+ */
+const WEB_SCOPES: readonly string[] = Object.freeze(['data:read', 'fn:run', 'ws:subscribe']);
 
 /** `digest(token, 'sha256')` — the `bytea` stored in `sessions.token_hash`. */
 export function tokenHash(token: string): Buffer {
@@ -77,9 +91,12 @@ export function dbAuthenticator(db: Db | Tx, clock: Clock): WsAuthenticator {
         firmId: users.firmId,
         role: users.role,
         status: users.status,
+        scopes: apiKeys.scopes,
       })
       .from(sessions)
       .innerJoin(users, eq(users.userId, sessions.userId))
+      // LEFT: a web session has no `api_key_id`, and its scopes are the defaults.
+      .leftJoin(apiKeys, eq(apiKeys.apiKeyId, sessions.apiKeyId))
       .where(
         and(
           eq(sessions.tokenHash, tokenHash(token)),
@@ -99,6 +116,9 @@ export function dbAuthenticator(db: Db | Tx, clock: Clock): WsAuthenticator {
       sessionId: row.sessionId,
       clientKind: kind,
       role: row.role,
+      // An api session with no key row behind it carries NOTHING, not the defaults: an
+      // unattributable bearer session must not inherit a web session's privileges.
+      scopes: kind === 'web' ? WEB_SCOPES : (row.scopes ?? []),
     };
   }
 

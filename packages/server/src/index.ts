@@ -27,19 +27,19 @@ import { SystemClock } from '@terminal/core';
 import { buildApp, type AppDeps, type ServerState } from './app.js';
 import { ConfigError, getConfig } from './config.js';
 import { closeDb, connectDb, pendingMigrations } from './db/client.js';
+import { accessLog } from './entitlements/accessLog.js';
+import { evaluator } from './entitlements/evaluator.js';
+import { licenceRegistry } from './entitlements/licenceRegistry.js';
+import { quotas } from './entitlements/quotas.js';
 import { buildPlant } from './plant/tickerPlant.js';
 
 /** Steps whose owning work package has not landed; logged once each, in order. */
 const PENDING_STEPS: readonly { step: number; what: string; wp: string }[] = [
-  { step: 3, what: 'licence registry, field_licence and the field dictionary', wp: 'WP-03/WP-11' },
+  { step: 3, what: 'the field dictionary and its field-id validation', wp: 'WP-03/WP-11' },
   { step: 4, what: 'calendars and the function registry consistency check', wp: 'WP-08' },
   { step: 5, what: 'universe search snapshot and ETag', wp: 'WP-09' },
   { step: 8, what: 'ingest leader lock and scheduler', wp: 'WP-07' },
-  {
-    step: 9,
-    what: 'access-log, usage-event and DQ writers, 1 s staleness sweep',
-    wp: 'WP-08/WP-13',
-  },
+  { step: 9, what: 'usage-event and DQ writers, 1 s staleness sweep', wp: 'WP-08/WP-13' },
 ];
 
 async function main(): Promise<void> {
@@ -69,12 +69,34 @@ async function main(): Promise<void> {
     return;
   }
 
-  // ── 6. Plant warm start (3, 4 and 5 are logged as pending below) ────────────────────────────
+  // ── 3. Entitlements (the licence half of step 3; the field dictionary is still pending) ─────
+  //
+  // The registry is loaded before anything can serve a field: an evaluator over an empty snapshot
+  // would answer `FIELD_UNKNOWN` for every request, which is fail-closed but wrong. `reload()` is
+  // awaited here so the process refuses to listen rather than serve from an empty registry;
+  // afterwards `refreshIfStale()` on each evaluation keeps it current through the
+  // `config_versions` bumps (ARCHITECTURE §10 rule 10).
+  const registry = licenceRegistry({ db, clock });
+  await registry.reload();
+  const log = accessLog({ db, clock });
+  const quotaService = quotas({ db, clock });
+  const entitlements = evaluator({ db, clock, registry, log, quotas: quotaService });
+
+  // ── 6. Plant warm start (4 and 5 are logged as pending below) ───────────────────────────────
   const plant = buildPlant({ config, clock, db });
   await plant.start();
 
-  const deps: AppDeps = { config, clock, db, plant, state };
+  // `entitlements` is what retires the WS gateway's fail-closed default (`denyAllEntitlements`,
+  // ws/gateway.ts L164-165): with it on `AppDeps`, a `sub` is decided by the real evaluator.
+  // `quotas` is what lets `ws/session.ts` read a session's concurrent-subscription ceiling from
+  // `quota_limits` instead of assuming the host default (API.md §8).
+  const deps: AppDeps = { config, clock, db, plant, state, entitlements, quotas: quotaService };
   const app = buildApp(deps);
+
+  app.log.info(
+    { step: 3, ...registry.stats() },
+    'licence registry loaded; entitlement evaluator wired',
+  );
 
   for (const { step, what, wp } of PENDING_STEPS) {
     app.log.warn({ step, wp }, `startup step ${step} skipped — ${what} (${wp})`);
@@ -82,6 +104,11 @@ async function main(): Promise<void> {
 
   // ── 7. Listen ──────────────────────────────────────────────────────────────────────────────
   await app.listen({ port: config.PORT, host: '0.0.0.0' });
+
+  // ── 9. The access-log writer (ENTL-04). Armed after the listener, so a request that arrives ──
+  //      during startup is still recorded: `append()` buffers from the first evaluation and the
+  //      timer only decides when the buffer is drained.
+  log.start();
 
   // ── 8. Scheduler (WP-07). Until it exists the process is up but degraded, which is the truth. ─
   state.phase = state.scheduler ? 'ok' : 'degraded';
@@ -102,6 +129,13 @@ async function main(): Promise<void> {
         await app.wsGateway.close();
         await plant.stop();
         await app.close();
+        // Nothing can append after the sockets are shut; the final flush writes what is buffered
+        // before the pool goes away, and reports anything it could not (ENTL-04).
+        await log.stop();
+        const logStats = log.stats();
+        if (logStats.dropped > 0) {
+          app.log.error(logStats, 'access-log rows abandoned at shutdown');
+        }
         await closeDb();
         app.log.info('shutdown complete');
         process.exit(0);

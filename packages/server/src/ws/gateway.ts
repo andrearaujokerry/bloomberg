@@ -49,10 +49,11 @@ import {
   WsSession,
   type WsEntitlements,
   type WsLimits,
+  type WsQuotas,
   type WsTimers,
 } from './session.js';
 
-export type { WsEntitlements, WsLimits, WsTimers } from './session.js';
+export type { WsEntitlements, WsLimits, WsQuotas, WsTimers } from './session.js';
 export type { WsAuthenticator, WsPrincipal } from './auth.js';
 
 /** The gateway's mount path (API.md §6). */
@@ -72,6 +73,8 @@ export interface WsGatewayDeps {
   db?: Db | Tx;
   auth?: WsAuthenticator;
   entitlements?: WsEntitlements;
+  /** API-06. With none wired the concurrency ceiling is {@link WsLimits}'s (BUS-08). */
+  quotas?: WsQuotas;
   hotset?: HotSet;
   thresholds?: Partial<BackpressureThresholds>;
   timers?: WsTimers;
@@ -100,6 +103,7 @@ declare module '../app.js' {
   // (app.ts L60-64). Nothing in app.ts moves.
   interface AppDeps {
     entitlements?: WsEntitlements;
+    quotas?: WsQuotas;
     wsAuth?: WsAuthenticator;
     hotset?: HotSet;
     /** One bag for the rest of {@link WsGatewayDeps} — what a test injects. */
@@ -163,6 +167,7 @@ export function registerWsGateway(app: FastifyInstance, deps: WsGatewayDeps): Ws
     deps.auth ?? injected.auth ?? app.deps.wsAuth ?? dbAuthenticator(db, clock);
   const entitlementsDep = deps.entitlements ?? injected.entitlements ?? app.deps.entitlements;
   const entitlements = entitlementsDep ?? denyAllEntitlements;
+  const wsQuotas = deps.quotas ?? injected.quotas ?? app.deps.quotas;
   const hotset = deps.hotset ?? injected.hotset ?? app.deps.hotset;
   const timers = deps.timers ?? injected.timers ?? systemTimers;
   const thresholds = deps.thresholds ?? injected.thresholds;
@@ -270,6 +275,7 @@ export function registerWsGateway(app: FastifyInstance, deps: WsGatewayDeps): Ws
       entitlements,
       principal,
       authenticate: (token: string) => auth.authenticate({ bearerToken: token }),
+      ...(wsQuotas === undefined ? {} : { quotas: wsQuotas }),
       ...(thresholds === undefined ? {} : { thresholds }),
       ...(db === undefined ? {} : { db }),
       ...(hotset === undefined ? {} : { hotset }),

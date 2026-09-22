@@ -42,7 +42,13 @@ import type { TestDb } from '../../../src/test/db.js';
 import type { WsAuthenticator } from '../../../src/ws/auth.js';
 import type { BackpressureThresholds } from '../../../src/ws/conflator.js';
 import type { WsAppOptions } from '../../../src/ws/gateway.js';
-import type { WsEntitlements, WsLimits, WsTimerHandle, WsTimers } from '../../../src/ws/session.js';
+import type {
+  WsEntitlements,
+  WsLimits,
+  WsQuotas,
+  WsTimerHandle,
+  WsTimers,
+} from '../../../src/ws/session.js';
 import type { HotSet } from '../../../src/ingest/hotset.js';
 import { readNormalised } from '../../../src/test/fixtures.js';
 
@@ -81,6 +87,11 @@ export interface StartWsAppOptions {
   thresholds?: Partial<BackpressureThresholds>;
   timers?: WsTimers;
   limits?: Partial<WsLimits>;
+  /**
+   * API-06. The gateway reads the session's concurrent-subscription ceiling from it once, at
+   * `hello`. Omitted — as it is everywhere in the WP-06 suite — the ceiling is `limits`'s.
+   */
+  quotas?: WsQuotas;
   /** Event-loop lag in ms, read once per gateway sweep (NFR-02; `ws/gateway.ts#checkOverload`). */
   lagProbe?: () => number;
   config?: Partial<Config>;
@@ -99,6 +110,7 @@ export async function startWsApp(options: StartWsAppOptions): Promise<StartedWsA
   if (options.thresholds !== undefined) ws.thresholds = options.thresholds;
   if (options.timers !== undefined) ws.timers = options.timers;
   if (options.limits !== undefined) ws.limits = options.limits;
+  if (options.quotas !== undefined) ws.quotas = options.quotas;
   if (options.lagProbe !== undefined) ws.lagProbe = options.lagProbe;
 
   const state: ServerState = {
@@ -283,13 +295,34 @@ async function insertSession(
   t: TestDb,
   userId: number,
   clientKind: 'web' | 'api',
+  scopes?: readonly string[],
 ): Promise<{ sessionId: string; token: string }> {
   const token = `tok-${randomUUID()}`;
   const hash = createHash('sha256').update(token, 'utf8').digest();
+
+  // An `api` session is minted BY a key in production (`http/auth/apikeys.ts`), and the key is
+  // where its scopes live — `ws/auth.ts` reads them to decide whether the socket may `sub` at all.
+  // A session row with `client_kind='api'` and no key behind it carries no scopes and can do
+  // nothing, which is right for production and useless as a fixture, so the fixture mints the key.
+  let apiKeyId: number | null = null;
+  if (clientKind === 'api') {
+    const key = await t.client.query<{ api_key_id: string }>(
+      `INSERT INTO api_keys (user_id, key_hash, label, scopes)
+       VALUES ($1, $2, $3, $4) RETURNING api_key_id`,
+      [
+        userId,
+        createHash('sha256').update(`key-${token}`, 'utf8').digest(),
+        'ws test key',
+        scopes === undefined ? ['data:read', 'fn:run', 'ws:subscribe'] : [...scopes],
+      ],
+    );
+    apiKeyId = Number(key.rows[0]!.api_key_id);
+  }
+
   const res = await t.client.query<{ session_id: string }>(
-    `INSERT INTO sessions (user_id, token_hash, client_kind, expires_at)
-     VALUES ($1, $2, $3, now() + interval '1 day') RETURNING session_id`,
-    [userId, hash, clientKind],
+    `INSERT INTO sessions (user_id, token_hash, client_kind, api_key_id, expires_at)
+     VALUES ($1, $2, $3, $4, now() + interval '1 day') RETURNING session_id`,
+    [userId, hash, clientKind, apiKeyId],
   );
   return { sessionId: res.rows[0]!.session_id, token };
 }
@@ -317,13 +350,13 @@ export async function createWebSession(
 /** An `api` session: the bearer token goes in `hello.token`, never in a cookie. */
 export async function createApiSession(
   t: TestDb,
-  spec: { userId?: number; firmId?: number; email?: string } = {},
+  spec: { userId?: number; firmId?: number; email?: string; scopes?: readonly string[] } = {},
 ): Promise<SeededSession> {
   const principal =
     spec.userId !== undefined && spec.firmId !== undefined
       ? { userId: spec.userId, firmId: spec.firmId }
       : await insertPrincipal(t, spec.email === undefined ? {} : { email: spec.email });
-  const { sessionId, token } = await insertSession(t, principal.userId, 'api');
+  const { sessionId, token } = await insertSession(t, principal.userId, 'api', spec.scopes);
   return { ...principal, sessionId, token };
 }
 

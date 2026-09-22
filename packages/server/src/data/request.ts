@@ -45,9 +45,10 @@
  *
  * `server/src/entitlements/evaluator.ts` (ARCHITECTURE §10) and the API-06 quota counters are not
  * WP-04 files. They arrive as the optional {@link EntitlementPort} / {@link QuotaPort} dependencies.
- * With no evaluator wired the dispatcher serves every dictionary field at the requested tier, which
- * is both the right behaviour for a deployment that has not turned entitlements on and the exact
- * shape the evaluator drops into without a line changing here.
+ * With NO evaluator wired the dispatcher serves NOTHING: every field is denied
+ * `NO_FIRM_ENTITLEMENT`, the same fail-closed default `ws/gateway.ts` takes. A deployment that
+ * genuinely wants entitlements off passes {@link allowAllEntitlements} and says so; an omitted
+ * dependency is never allowed to mean "allow everything".
  */
 
 import {
@@ -192,6 +193,32 @@ export interface DataSources {
 export interface EntitlementPort {
   evaluate(req: EntitlementRequest): Promise<EntitlementDecision>;
 }
+
+/**
+ * The explicit opt-out: every requested field allowed at the requested tier, no audit row.
+ *
+ * This exists so that "entitlements are off" is a value an operator or a test **passes**, never
+ * what a forgotten dependency silently means. {@link DispatcherDeps.entitlement} left undefined
+ * denies everything (fail closed, like `ws/gateway.ts`'s `denyAllEntitlements`); only this port
+ * opens it, and the call site then says so in one word.
+ */
+export const allowAllEntitlements: EntitlementPort = {
+  evaluate(req: EntitlementRequest): Promise<EntitlementDecision> {
+    return Promise.resolve({
+      effectiveTier: req.tier,
+      fields: req.fieldIds.map((fieldId) => ({
+        fieldId,
+        sourceId: '',
+        fieldClass: getField(fieldId)?.fieldClass ?? 'reference',
+        decision: 'allow' as const,
+        effectiveTier: req.tier,
+        reason: 'OK' as const,
+      })),
+      downgrades: [],
+      logIds: [],
+    });
+  },
+};
 
 export interface QuotaCharge {
   kind: DataKind;
@@ -448,11 +475,19 @@ async function gateFields(
   };
 
   if (deps.entitlement === undefined || deps.caller === undefined) {
-    // No evaluator wired: every dictionary field is served at the requested tier. The result is
-    // shaped exactly like a decision in which every field was allowed, so nothing downstream
-    // branches on whether entitlements are switched on.
-    gate.allowed = [...ids];
-    for (const id of ids) gate.tierOf.set(id, requestedTier);
+    // No evaluator or no caller: NOTHING is served. A field that cannot be proved licensed is
+    // denied with a reason (WP-07), which is what `ws/gateway.ts`'s `denyAllEntitlements` default
+    // already does. Serving everything here would make a forgotten dependency — not a decision —
+    // the thing that switches entitlements off, and it would look exactly like a decision in which
+    // everything was allowed. A deployment that genuinely wants no entitlements passes an explicit
+    // allow-all port; it does not omit one.
+    for (const id of ids) gate.denied.set(id, 'NO_FIRM_ENTITLEMENT');
+    gate.notes = ids.map((id) => ({
+      fieldId: id,
+      decision: 'deny' as const,
+      effectiveTier: null,
+      reason: 'NO_FIRM_ENTITLEMENT' as const,
+    }));
     return gate;
   }
 

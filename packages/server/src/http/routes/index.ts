@@ -7,13 +7,22 @@
 // Add a module by adding the file and re-running the generator. Hand edits are
 // overwritten and fail CI, which re-runs the generator and diffs the result.
 
+import * as admin from './admin.js';
+import * as auth from './auth.js';
 import * as health from './health.js';
+import * as usage from './usage.js';
 
 export {
+  admin,
+  auth,
   health,
+  usage,
 };
 
 /** Every module the glob matched, keyed by its file (or directory) name. */
 export const routeModules = {
+  admin,
+  auth,
   health,
+  usage,
 } as const;

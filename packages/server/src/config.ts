@@ -47,6 +47,26 @@ export const ConfigSchema = z.object({
   LOG_LEVEL: LogLevel.default('info'),
 
   // ── Optional ────────────────────────────────────────────────────────────────────────────────
+  /**
+   * WebAuthn relying-party id (SEC-02) — the registrable domain the credential is bound to, e.g.
+   * `terminal.example.com`. It is a bare host: no scheme, no port, no path.
+   *
+   * It MUST come from here and never from the request. `clientDataJSON.origin` and
+   * `authData.rpIdHash` are the two anti-phishing checks of the ceremony, and deriving the value
+   * they are compared against from the caller's own `Host` / `Origin` headers compares an
+   * attacker's value with itself. Unset, `http/routes/auth.ts` refuses every WebAuthn ceremony
+   * rather than guess (fail closed).
+   */
+  RP_ID: z
+    .string()
+    .min(1)
+    .refine((v) => !v.includes('/') && !v.includes(':'), 'RP_ID is a bare host: no scheme or port')
+    .optional(),
+  /**
+   * The exact origin the browser will send in `clientDataJSON.origin` —
+   * `https://terminal.example.com`, scheme and port included, no trailing slash.
+   */
+  RP_ORIGIN: z.string().min(1).optional(),
   OPENFIGI_API_KEY: z.string().min(1).optional(),
   FRED_API_KEY: z.string().min(1).optional(),
   BLS_API_KEY: z.string().min(1).optional(),

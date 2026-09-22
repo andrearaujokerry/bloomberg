@@ -13,7 +13,7 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-04 | Security master, bitemporal writes, data services | merged |
 | WP-05 | Provider adapters, replay store, provenance, ingest runtime | merged |
 | WP-06 | Quote model, ticker plant, conflator, WebSocket gateway | merged |
-| WP-07 | Entitlements, auth, access log, quotas, compliance | not started |
+| WP-07 | Entitlements, auth, access log, quotas, compliance | merged |
 | WP-08 | Function runner, REST routes, field surface | not started |
 | WP-09 … WP-15 | Screens, SDK client, web shell, seed and verification | not started |
 
@@ -57,6 +57,16 @@ gap.
   repo `.env` carries the root-relative `./fixtures/providers`, so a test reading a normalised
   fixture has to pin `process.env.REPLAY_DIR`. Three tests do. Worth fixing centrally in WP-15.
 - There is no metrics registry yet. The plant and the conflator expose counters through `stats()`.
-- `packages/server/src/ws/gateway.ts` takes injectable authentication and entitlement ports. Until
-  WP-07 lands its evaluator, the default entitlement port is fail-closed: every field is denied with
-  `NO_FIRM_ENTITLEMENT`. Tests inject a fake implementing the rules of ARCHITECTURE §10.
+- `packages/server/src/ws/gateway.ts` takes injectable authentication, entitlement and quota ports.
+  WP-07's evaluator is now on `AppDeps.entitlements` in both `index.ts` and `src/test/app.ts`, so the
+  fail-closed `denyAllEntitlements` default is only reached by a host that wires neither. Tests may
+  still inject a fake implementing the rules of ARCHITECTURE §10.
+- `RP_ID` and `RP_ORIGIN` are new required-in-practice configuration (SEC-02). They are the values
+  the two anti-phishing checks of a WebAuthn ceremony compare against, and they are NEVER derived
+  from the request's `Host`/`Origin` — that would compare an attacker's value with itself. Unset,
+  every `/auth/webauthn/*` route fails closed with a 500.
+- Scope enforcement is at the point of use: `requireSession({ scopes: ['data:read'] })` on the
+  `/usage` reads and a `ws:subscribe` check in `ws/session.ts`'s `sub` handler. `fn:run` has nowhere
+  to be checked yet — WP-08 owns the function routes and must pass it there.
+- `packages/server/src/data/request.ts#gateFields` now DENIES when no entitlement port is wired.
+  WP-08 wires the data routes: pass a real evaluator, or `allowAllEntitlements` explicitly.
