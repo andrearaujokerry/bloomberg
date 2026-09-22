@@ -285,6 +285,65 @@
       "since": "2026.09.1"
     },
     {
+      "id": "ATM_IV",
+      "label": "ATM implied vol",
+      "definition": "At-the-money implied volatility of the nearest listed expiry with at least seven days to expiry, interpolated between the two strikes bracketing the underlying price, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/vol/surface.ts#atmVol"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "linear interpolation of OPT_IV between the strikes bracketing UNDL_PX at the nearest expiry ≥ 7 d",
+      "example": {
+        "ref": "oc:42",
+        "value": 24.43,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "BAR_TS",
+      "label": "Bar time",
+      "definition": "Start of the interval a forming intraday bar covers, in UTC. On the b1m: subject a delta with IS_FINAL=true closes the bar and the next delta opens a new BAR_TS.",
+      "type": "datetime",
+      "unit": "datetime",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "yahoo.chart",
+          "endpoint": "chart",
+          "providerPath": "timestamp[]"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": "2026-09-15T18:41:00Z",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "BETA_1Y",
       "label": "Beta (1 year)",
       "definition": "OLS slope of the instrument’s daily returns on the benchmark’s daily returns over the trailing 252 sessions — how much the instrument moves for a one-unit move in the benchmark.",
@@ -479,6 +538,60 @@
         "ref": "AAPL US Equity",
         "value": 264430000000,
         "asOf": "2026-06-27"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "BUILD_ID",
+      "label": "Build id",
+      "definition": "Identifier of the curve build the c: subject currently carries (curve_builds.build_id).",
+      "type": "integer",
+      "unit": "count",
+      "decimals": 0,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/curve/build.ts#buildId"
+        }
+      ],
+      "updateFreq": "10s",
+      "pit": false,
+      "derivation": "curve_builds.build_id",
+      "example": {
+        "ref": "c:UST_PAR",
+        "value": 88213,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "BUILD_TS",
+      "label": "Build time",
+      "definition": "Time the curve build completed, in UTC.",
+      "type": "datetime",
+      "unit": "datetime",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/curve/build.ts#buildTs"
+        }
+      ],
+      "updateFreq": "10s",
+      "pit": false,
+      "derivation": "curve_builds.built_at",
+      "example": {
+        "ref": "c:UST_PAR",
+        "value": "2026-09-15T18:41:28Z",
+        "asOf": "2026-09-15T18:41:28Z"
       },
       "since": "2026.09.1"
     },
@@ -1199,6 +1312,60 @@
       "since": "2026.09.1"
     },
     {
+      "id": "CONFLATION_FLOOR_MS",
+      "label": "Conflation floor",
+      "definition": "Global lower bound on every session’s effective conflation interval, in milliseconds. 0 when the plant is healthy; raised to 1000 under overload (ARCHITECTURE §6.3).",
+      "type": "integer",
+      "unit": "count",
+      "decimals": 0,
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "server/plant/tickerPlant.ts#conflationFloorMs"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "1000 while PLANT_STATE is degraded, else 0",
+      "example": {
+        "ref": "sys:status",
+        "value": 0,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CONTRACT_COUNT",
+      "label": "Contracts",
+      "definition": "Number of listed option contracts in the chain of the underlying.",
+      "type": "integer",
+      "unit": "count",
+      "decimals": 0,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/vol/chain.ts#contractCount"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "count of listed contracts",
+      "example": {
+        "ref": "oc:42",
+        "value": 1864,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "CONVEXITY_MID",
       "label": "Convexity",
       "definition": "Second-order price sensitivity in years²: the curvature of the price-yield curve, (1/P) × d²P/dy² with the yield in decimal on the issue’s compounding basis. It is what the first-order DUR_ADJ_MID estimate misses for a large yield move.",
@@ -1838,6 +2005,33 @@
         "ref": "UST_PAR Curve",
         "value": 3.936,
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "CURVE_DATE",
+      "label": "Curve date",
+      "definition": "Valuation date of the curve build: the session whose quotes the pillars were taken from.",
+      "type": "date",
+      "unit": "date",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/curve/build.ts#curveDate"
+        }
+      ],
+      "updateFreq": "10s",
+      "pit": false,
+      "derivation": "curve_builds.curve_date",
+      "example": {
+        "ref": "c:UST_PAR",
+        "value": "2026-09-15",
+        "asOf": "2026-09-15T18:41:28Z"
       },
       "since": "2026.09.1"
     },
@@ -2750,6 +2944,33 @@
       "since": "2026.09.1"
     },
     {
+      "id": "EXPIRIES",
+      "label": "Expiries",
+      "definition": "Comma-separated ISO dates of every listed expiry in the option chain of the underlying, ascending, on the oc: subject.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/vol/chain.ts#expiries"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "sorted distinct expiry dates of the chain",
+      "example": {
+        "ref": "oc:42",
+        "value": "2026-09-18,2026-09-25,2026-10-16",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "FIRST_CPN_DT",
       "label": "First coupon date",
       "definition": "Date of the first coupon paid by the issue. When it is not one full period after the dated date, the first period is short or long and the schedule is built backwards from maturity.",
@@ -3107,6 +3328,44 @@
         "ref": "AAPL US Equity",
         "value": "Technology Hardware, Storage & Peripherals",
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "HEADLINE",
+      "label": "Headline",
+      "definition": "Headline text of the story as published, with the publisher’s own prefixes kept.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].title"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "sec.atom",
+          "endpoint": "atom",
+          "providerPath": "feed.entry[].title"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "fed.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].title"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": "Apple unveils new iPhone lineup",
+        "asOf": "2026-09-15T18:39:02Z"
       },
       "since": "2026.09.1"
     },
@@ -4216,6 +4475,43 @@
       "since": "2026.09.1"
     },
     {
+      "id": "KIND",
+      "label": "Kind",
+      "definition": "What the item is: a news story, a regulatory filing or a central-bank release.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "story",
+        "filing",
+        "release"
+      ],
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].category"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "sec.atom",
+          "endpoint": "atom",
+          "providerPath": "feed.entry[].category.term"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": "story",
+        "asOf": "2026-09-15T18:39:02Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "KRD_10Y",
       "label": "Key-rate duration (10y)",
       "definition": "Price sensitivity in years to a 1 bp triangular bump of the 10-year node of the zero curve, the issue’s z-spread held fixed.",
@@ -4416,6 +4712,44 @@
       "since": "2026.09.1"
     },
     {
+      "id": "LINK",
+      "label": "Link",
+      "definition": "Canonical URL of the story at the publisher; opened by the story pane.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].link"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "sec.atom",
+          "endpoint": "atom",
+          "providerPath": "feed.entry[].link.href"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "fed.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].link"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": "https://www.bloomberg.com/news/articles/2026-09-15/apple",
+        "asOf": "2026-09-15T18:39:02Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "LISTING_STATUS",
       "label": "Listing status",
       "definition": "State of the primary listing at the venue — trading, suspended or delisted — which can differ from SECURITY_STATUS when only one of several venues has stopped.",
@@ -4586,6 +4920,33 @@
         "ref": "TESTING §7.8 stats.vol.sharpe.10",
         "value": -1.25,
         "asOf": "2026-01-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "MIN_CLIENT_VERSION",
+      "label": "Minimum client",
+      "definition": "Lowest web client version the server still serves; an older client is told to reload on the next hello.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "server/config.ts#minClientVersion"
+        }
+      ],
+      "updateFreq": "static",
+      "pit": false,
+      "derivation": "config.minClientVersion",
+      "example": {
+        "ref": "sys:status",
+        "value": "0.1.0",
+        "asOf": "2026-09-15T18:41:28Z"
       },
       "since": "2026.09.1"
     },
@@ -4889,6 +5250,33 @@
         "ref": "T 4 1/4 11/15/35 Govt",
         "value": true,
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "OPEN_INCIDENTS",
+      "label": "Open incidents",
+      "definition": "Number of unresolved data-quality incidents (dq_events rows without a resolved_at) at SERVER_TIME.",
+      "type": "integer",
+      "unit": "count",
+      "decimals": 0,
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "server/observability/dq.ts#openIncidents"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "count(dq_events where resolved_at is null)",
+      "example": {
+        "ref": "sys:status",
+        "value": 0,
+        "asOf": "2026-09-15T18:41:28Z"
       },
       "since": "2026.09.1"
     },
@@ -5970,6 +6358,102 @@
       "since": "2026.09.1"
     },
     {
+      "id": "PERIOD",
+      "label": "Period",
+      "definition": "Observation period of VALUE as an ISO date: the first day of the month, quarter or year it covers.",
+      "type": "date",
+      "unit": "date",
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].date"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.timeseries",
+          "endpoint": "timeseries",
+          "providerPath": "Results.series[].data[].period"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "e:CPIAUCSL",
+        "value": "2026-08-01",
+        "asOf": "2026-09-11T12:30:00Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PLANT_STATE",
+      "label": "Plant state",
+      "definition": "Health of the ticker plant on the sys:status subject: ok, degraded (event-loop lag or apply queue over budget, a global conflation floor is in force) or restarting (clients resync).",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "ok",
+        "degraded",
+        "restarting"
+      ],
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "server/plant/tickerPlant.ts#state"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "degraded when event-loop lag > 200 ms or apply queue > 50 000",
+      "example": {
+        "ref": "sys:status",
+        "value": "ok",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PREV",
+      "label": "Previous",
+      "definition": "The observation immediately before VALUE, as last published (revised where the publisher revised it).",
+      "type": "number",
+      "unit": null,
+      "decimals": 3,
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].value"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.timeseries",
+          "endpoint": "timeseries",
+          "providerPath": "Results.series[].data[].value"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "e:CPIAUCSL",
+        "value": 323.048,
+        "asOf": "2026-09-11T12:30:00Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "PRIM_EXCH_MIC",
       "label": "Primary exchange MIC",
       "definition": "ISO 10383 market identifier code of the venue that carries the primary listing.",
@@ -6028,6 +6512,98 @@
         "ref": "AAPL US Equity",
         "value": "Nasdaq Stock Market",
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PROVIDERS_DOWN",
+      "label": "Providers down",
+      "definition": "Comma-separated source ids whose circuit breaker is open. Empty when every provider is reachable; a subject whose winning line is on a listed provider reports state stale.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "server/providers/circuit.ts#openCircuits"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "source ids with an open circuit breaker, joined by comma",
+      "example": {
+        "ref": "sys:status",
+        "value": "",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PUBLISHED_AT",
+      "label": "Published",
+      "definition": "Publisher timestamp of the story in UTC; the order headlines are delivered in on an n: subject.",
+      "type": "datetime",
+      "unit": "datetime",
+      "decimals": null,
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].pubDate"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "sec.atom",
+          "endpoint": "atom",
+          "providerPath": "feed.entry[].updated"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "fed.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.item[].pubDate"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": "2026-09-15T18:39:02Z",
+        "asOf": "2026-09-15T18:39:02Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PUT_CALL_RATIO",
+      "label": "Put/call ratio",
+      "definition": "Total put volume divided by total call volume across the chain for the current session.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 2,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/vol/chain.ts#putCallRatio"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "Σ put PX_VOLUME / Σ call PX_VOLUME",
+      "example": {
+        "ref": "oc:42",
+        "value": 0.83,
+        "asOf": "2026-09-15T18:41:28Z"
       },
       "since": "2026.09.1"
     },
@@ -6683,6 +7259,201 @@
       "since": "2026.09.1"
     },
     {
+      "id": "RATE",
+      "label": "Rate",
+      "definition": "Published level of a reference rate for the effective date, in percent (SOFR, EFFR, OBFR, the Treasury repo rates). It is the value the r: subject and the WIRP path key off.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentRate"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 4.31,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATES",
+      "label": "Rates",
+      "definition": "Comma-separated pillar rates in percent, positionally aligned with TENORS.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/curve/build.ts#rates"
+        }
+      ],
+      "updateFreq": "10s",
+      "pit": false,
+      "derivation": "CURVE_PAR at each pillar",
+      "example": {
+        "ref": "c:UST_PAR",
+        "value": "4.31,4.28,4.19,4.02,3.88,3.91,4.12,4.63",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_P1",
+      "label": "1st percentile",
+      "definition": "First percentile of the transaction-weighted rate distribution behind RATE, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentPercentile1"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 4.25,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_P25",
+      "label": "25th percentile",
+      "definition": "Twenty-fifth percentile of the transaction-weighted rate distribution behind RATE, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentPercentile25"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 4.29,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_P75",
+      "label": "75th percentile",
+      "definition": "Seventy-fifth percentile of the transaction-weighted rate distribution behind RATE, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentPercentile75"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 4.33,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_P99",
+      "label": "99th percentile",
+      "definition": "Ninety-ninth percentile of the transaction-weighted rate distribution behind RATE, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentPercentile99"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 4.4,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_VOLUME_BN",
+      "label": "Volume (bn)",
+      "definition": "Dollar volume of the transactions behind the rate fixing, in billions of US dollars.",
+      "type": "number",
+      "unit": "bn",
+      "decimals": 0,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].volumeInBillions"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 2412,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "REFERENCE_INDEX",
       "label": "Reference index",
       "definition": "Floating-rate index a coupon resets against — `SOFR` for a Treasury FRN. Empty for a fixed coupon.",
@@ -6708,6 +7479,38 @@
         "ref": "TF 0 01/31/28 Govt",
         "value": "SOFR",
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RELEASED_AT",
+      "label": "Released",
+      "definition": "Time the publisher released the observation carried in VALUE, in UTC.",
+      "type": "datetime",
+      "unit": "datetime",
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.calendar",
+          "endpoint": "calendar",
+          "providerPath": "release_dates[].date"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.schedule",
+          "endpoint": "schedule",
+          "providerPath": "rows[].release_date"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "e:CPIAUCSL",
+        "value": "2026-09-11T12:30:00Z",
+        "asOf": "2026-09-11T12:30:00Z"
       },
       "since": "2026.09.1"
     },
@@ -6873,6 +7676,32 @@
         "ref": "AAPL US Equity",
         "value": 14.62,
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "REVISED",
+      "label": "Revised",
+      "definition": "True when the latest release revised a previously published observation of the series.",
+      "type": "boolean",
+      "unit": null,
+      "decimals": null,
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].value"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "e:CPIAUCSL",
+        "value": false,
+        "asOf": "2026-09-11T12:30:00Z"
       },
       "since": "2026.09.1"
     },
@@ -7070,6 +7899,185 @@
       "since": "2026.09.1"
     },
     {
+      "id": "SERVER_TIME",
+      "label": "Server time",
+      "definition": "The server clock at publication of the sys:status frame, in UTC. Clients measure their skew against it.",
+      "type": "datetime",
+      "unit": "datetime",
+      "decimals": null,
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "server/clock#now"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "clock.now() at publication",
+      "example": {
+        "ref": "sys:status",
+        "value": "2026-09-15T18:41:28Z",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SESSION_FX",
+      "label": "FX session",
+      "definition": "Session phase of the FX_USD calendar at SERVER_TIME, over the session_state enum.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "pre",
+        "open",
+        "auction",
+        "halted",
+        "closed",
+        "post",
+        "unknown"
+      ],
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/session.ts#sessionState"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "sessionState(FX_USD, SERVER_TIME, false)",
+      "example": {
+        "ref": "sys:status",
+        "value": "open",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SESSION_NYSE",
+      "label": "NYSE session",
+      "definition": "Session phase of the NYSE calendar (XNYS) at SERVER_TIME, over the session_state enum.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "pre",
+        "open",
+        "auction",
+        "halted",
+        "closed",
+        "post",
+        "unknown"
+      ],
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/session.ts#sessionState"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "sessionState(XNYS, SERVER_TIME, true)",
+      "example": {
+        "ref": "sys:status",
+        "value": "open",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SESSION_SIFMA",
+      "label": "SIFMA session",
+      "definition": "Session phase of the SIFMA US bond-market calendar at SERVER_TIME, over the session_state enum.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "pre",
+        "open",
+        "auction",
+        "halted",
+        "closed",
+        "post",
+        "unknown"
+      ],
+      "fieldClass": "derived",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/session.ts#sessionState"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "sessionState(SIFMA, SERVER_TIME, false)",
+      "example": {
+        "ref": "sys:status",
+        "value": "open",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "SESSION_STATE",
+      "label": "Session",
+      "definition": "Trading-session phase of the subject at the quote timestamp (FEED-06): pre, open, auction, halted, closed, post or unknown. Halts come from the venue; every other phase from the instrument calendar and the exchange session template.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "pre",
+        "open",
+        "auction",
+        "halted",
+        "closed",
+        "post",
+        "unknown"
+      ],
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option",
+        "govt",
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "session",
+          "providerPath": "core/quote/session.ts#sessionState"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": "open",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "SETTLE_CALENDAR",
       "label": "Settlement calendar",
       "definition": "Calendar (REF-06) whose holidays the settlement and coupon dates are rolled against — `SIFMA` for US Treasuries.",
@@ -7253,6 +8261,44 @@
       "since": "2026.09.1"
     },
     {
+      "id": "SOURCE_ID",
+      "label": "Source",
+      "definition": "Source id of the feed the story came from (licence_registry.source_id), shown as the attribution.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "news",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "bbg.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.title"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "sec.atom",
+          "endpoint": "atom",
+          "providerPath": "feed.title"
+        },
+        {
+          "assetClass": "*",
+          "sourceId": "fed.rss",
+          "endpoint": "rss",
+          "providerPath": "channel.title"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "n:inst:42",
+        "value": "bbg.rss",
+        "asOf": "2026-09-15T18:39:02Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "SPRD_TO_BENCH",
       "label": "Spread to benchmark",
       "definition": "Yield of the security less the yield of the on-the-run issue at the nearest standard tenor at or beyond its maturity, in basis points. Unavailable for bills and when the security is itself the benchmark.",
@@ -7384,6 +8430,37 @@
         "ref": "AAPL US Equity",
         "value": "CA",
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "STATUS",
+      "label": "Status",
+      "definition": "Release status of VALUE: preliminary, final or revised, as the publisher marks the vintage.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "preliminary",
+        "final",
+        "revised"
+      ],
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].realtime_start"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "e:CPIAUCSL",
+        "value": "final",
+        "asOf": "2026-09-11T12:30:00Z"
       },
       "since": "2026.09.1"
     },
@@ -7736,6 +8813,128 @@
       "since": "2026.09.1"
     },
     {
+      "id": "TARGET_FROM",
+      "label": "Target range low",
+      "definition": "Lower bound of the FOMC federal funds target range in force on the effective date, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].targetRateFrom"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "EFFR Index",
+        "value": 4.25,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "TARGET_TO",
+      "label": "Target range high",
+      "definition": "Upper bound of the FOMC federal funds target range in force on the effective date, in percent.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "price",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].targetRateTo"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "EFFR Index",
+        "value": 4.5,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "TENORS",
+      "label": "Tenors",
+      "definition": "Comma-separated tenor codes of the curve pillars in order (1M,3M,6M,1Y,2Y,…) on the c: subject.",
+      "type": "string",
+      "unit": "text",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/curve/build.ts#tenors"
+        }
+      ],
+      "updateFreq": "10s",
+      "pit": false,
+      "derivation": "pillar tenors of the curve build",
+      "example": {
+        "ref": "c:UST_PAR",
+        "value": "1M,3M,6M,1Y,2Y,5Y,10Y,30Y",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "TICK_DIR",
+      "label": "Tick",
+      "definition": "Direction of PX_LAST against the previous composite print: up, down or flat. Derived by the plant from consecutive prints, never taken from a provider; absent on the first print.",
+      "type": "enum",
+      "unit": "enum",
+      "decimals": null,
+      "enumValues": [
+        "up",
+        "down",
+        "flat"
+      ],
+      "fieldClass": "derived",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "crypto",
+        "option"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "derive",
+          "providerPath": "core/quote/derive.ts#tickDirection"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "sign(PX_LAST − previous PX_LAST)",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": "down",
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "TOT_ASSETS",
       "label": "Total assets (statement line)",
       "definition": "The normalised balance-sheet line `TOT_ASSETS` of fin_statements, the row the ratio engine reads. Identical in meaning to BS_TOT_ASSET, which is the dictionary field a screen cites.",
@@ -7823,6 +9022,71 @@
         "ref": "AAPL US Equity",
         "value": 118.412367,
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "UNDL_PX",
+      "label": "Underlying price",
+      "definition": "Price of the underlying the chain summary was computed against, from the same snapshot as the chain so ATM_IV and the underlying never disagree.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "analytic",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.derived",
+          "endpoint": "analytics",
+          "providerPath": "core/analytics/vol/chain.ts#underlyingPrice"
+        }
+      ],
+      "updateFreq": "1m",
+      "pit": false,
+      "derivation": "PX_LAST of the underlying at the chain snapshot",
+      "example": {
+        "ref": "oc:42",
+        "value": 330.27,
+        "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "VALUE",
+      "label": "Value",
+      "definition": "Latest observation of the series on the e: subject, in the publisher’s unit. The point-in-time history is ECO_VALUE; this is the live head of it.",
+      "type": "number",
+      "unit": null,
+      "decimals": 3,
+      "fieldClass": "econ",
+      "assetClasses": [],
+      "sources": [
+        {
+          "assetClass": "econ",
+          "sourceId": "fred.csv",
+          "endpoint": "series",
+          "providerPath": "observations[].value"
+        },
+        {
+          "assetClass": "econ",
+          "sourceId": "bls.timeseries",
+          "endpoint": "timeseries",
+          "providerPath": "Results.series[].data[].value"
+        },
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].percentRate"
+        }
+      ],
+      "updateFreq": "monthly",
+      "pit": false,
+      "example": {
+        "ref": "e:CPIAUCSL",
+        "value": 324.106,
+        "asOf": "2026-09-11T12:30:00Z"
       },
       "since": "2026.09.1"
     },
@@ -7922,6 +9186,36 @@
         "ref": "AAPL US Equity",
         "value": 23.71,
         "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "VWAP",
+      "label": "VWAP",
+      "definition": "Volume-weighted average price of the current regular session as the venue publishes it. Absent when no reachable source reports it; it is never computed from bars here.",
+      "type": "number",
+      "unit": "price",
+      "decimals": null,
+      "fieldClass": "price",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "cboe.quotes",
+          "endpoint": "quotes",
+          "providerPath": "data.vwap"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 330.02,
+        "asOf": "2026-09-15T18:41:28Z"
       },
       "since": "2026.09.1"
     },

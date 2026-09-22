@@ -110,25 +110,48 @@ SETTLE_CALENDAR SETTLE_DAYS SIC_CODE SIC_DESCRIPTION STATE_OF_INCORPORATION
   .trim()
   .split(/\s+/);
 
-/** Every id the design names, from any of the three sources. */
+/**
+ * WP-06's subject fields (WORKPLAN L850-944; API.md §6.1 subject grammar). The WebSocket gateway
+ * rejects any `sub` field id the dictionary does not know with `FIELD_UNKNOWN`, so every field a
+ * subject can carry must be a dictionary entry: the `b1m:` bar (`BAR_TS`), the `q:` rate block and
+ * session state, the `oc:` chain summary, the `c:` curve build, the `e:` latest observation, the
+ * `n:` headline and the `sys:status` payload. Subject-only fields carry `assetClasses: []`
+ * (API.md §7). These 42 are listed here, sorted, so the exhaustiveness check below still holds.
+ */
+const WP06_SUBJECT_FIELD_IDS: readonly string[] = `
+ATM_IV BAR_TS BUILD_ID BUILD_TS CONFLATION_FLOOR_MS CONTRACT_COUNT CURVE_DATE EXPIRIES HEADLINE
+KIND LINK MIN_CLIENT_VERSION OPEN_INCIDENTS PERIOD PLANT_STATE PREV PROVIDERS_DOWN PUBLISHED_AT
+PUT_CALL_RATIO RATE RATES RATE_P1 RATE_P25 RATE_P75 RATE_P99 RATE_VOLUME_BN RELEASED_AT REVISED
+SERVER_TIME SESSION_FX SESSION_NYSE SESSION_SIFMA SESSION_STATE SOURCE_ID STATUS TARGET_FROM
+TARGET_TO TENORS TICK_DIR UNDL_PX VALUE VWAP
+`
+  .trim()
+  .split(/\s+/);
+
+/** Every id the design names, from any of the four sources. */
 const DESIGNED_FIELD_IDS: readonly string[] = [
   ...CONTRACTS_FIELD_IDS,
   ...WP02_ANALYTIC_FIELD_IDS,
   ...WP03_REFERENCE_FIELD_IDS,
+  ...WP06_SUBJECT_FIELD_IDS,
 ];
 
-/** The dictionary's total size: CONTRACTS §4.3's 94, WP-02's 68 analytics and WP-03's 95 reference. */
-const FIELD_COUNT = 257;
+/**
+ * The dictionary's total size: CONTRACTS §4.3's 94, WP-02's 68 analytics, WP-03's 95 reference and
+ * WP-06's 42 subject fields.
+ */
+const FIELD_COUNT = 299;
 
 // ---------------------------------------------------------------------------------------------
 // 1. Every field id in CONTRACTS §4.3 resolves
 // ---------------------------------------------------------------------------------------------
 
 describe('field dictionary — CONTRACTS §4.3 coverage', () => {
-  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics and 95 in WP-03 reference', () => {
+  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics, 95 in WP-03 reference and 42 in WP-06 subjects', () => {
     expect(CONTRACTS_FIELD_IDS).toHaveLength(94);
     expect(WP02_ANALYTIC_FIELD_IDS).toHaveLength(68);
     expect(WP03_REFERENCE_FIELD_IDS).toHaveLength(95);
+    expect(WP06_SUBJECT_FIELD_IDS).toHaveLength(42);
     expect(new Set(DESIGNED_FIELD_IDS).size).toBe(FIELD_COUNT);
   });
 

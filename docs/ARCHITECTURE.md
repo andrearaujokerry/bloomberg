@@ -816,7 +816,10 @@ jobs/cboeQuotes.ts   every 10 s (jitter ±1 s) over the hot set, concurrency 4, 
 4. Recompose (`core/quote/merge.ts`, BUS-05 rules, documented and tested):
    - `PX_LAST`, `LAST_SIZE`, `LAST_TRADE_TIME`: from the line with the greatest `ts.src` (ties: lowest `priority`).
    - `PX_BID/PX_ASK/BID_SIZE/ASK_SIZE`: only from lines with `lineKind ∈ {venue, composite}` that publish a book (Cboe); the freshest such line.
-   - `PX_VOLUME = max(line volumes)` (every reachable source reports consolidated volume).
+   - `PX_VOLUME = max(line volumes)` **across lines with the same session date** (every reachable
+     source reports consolidated volume, so among lines observing the same session the largest is
+     the most complete count; a line still reporting the previous session carries a full session's
+     volume and would publish yesterday's count as today's).
    - `PX_OPEN/HIGH/LOW`: high = max, low = min across lines with the same session date; open from the primary line.
    - `PX_CLOSE_1D`, `PX_OFFICIAL_CLOSE`: from the primary (lowest priority) line.
    - `IVOL_30D`: Cboe only. Rates/econ fields: single line.

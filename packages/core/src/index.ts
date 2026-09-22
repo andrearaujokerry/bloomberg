@@ -45,6 +45,63 @@ export type {
   NormalisedUpdate,
 } from './types/quote.js';
 
+// ── Quote model (ARCHITECTURE §6.2, BUS-02/05, FEED-06, TERM-12) — WP-06 ─────────────────────
+export {
+  MASK_BITS,
+  MASK_WORDS,
+  fieldIndex,
+  fieldAt,
+  emptyMask,
+  maskOf,
+  maskSet,
+  maskOr,
+  maskAnd,
+  maskClear,
+  maskIsEmpty,
+  maskHas,
+  maskCount,
+  maskEquals,
+  maskToIds,
+} from './quote/mask.js';
+export {
+  DERIVED_QUOTE_FIELD_IDS,
+  CHG_NET_DECIMALS,
+  CHG_PCT_DECIMALS,
+  netChange,
+  pctChange,
+  tickDirection,
+  tickDirCode,
+  derive,
+} from './quote/derive.js';
+export type { DerivedQuoteFields } from './quote/derive.js';
+export { STALENESS_MULTIPLIER, stalenessLimitMs, valueState, msUntilStale } from './quote/staleness.js';
+export type { StalenessInput } from './quote/staleness.js';
+export {
+  SUPPORTED_ZONES,
+  EXCHANGE_CLOSING_AUCTION_MINUTES,
+  utcOffsetMinutes,
+  localClock,
+  localTimeToUtc,
+  localMinutes,
+  sessionCalendar,
+  phaseAt,
+  sessionState,
+} from './quote/session.js';
+export type {
+  SessionTimes,
+  SessionDay,
+  SessionCalendar,
+  SessionCalendarOptions,
+} from './quote/session.js';
+export {
+  DIVERGENCE_FRACTION_DEFAULT,
+  DIVERGENCE_WINDOW_MS_DEFAULT,
+  lineTime,
+  utcSessionDate,
+  mergeComposite,
+} from './quote/merge.js';
+export type { LineKind, MergeOptions, MergeResult } from './quote/merge.js';
+
 // ── Field dictionary shapes (API.md §7, API-03/05/07) ─────────────────────────────────────────
 export type {
   FieldId,

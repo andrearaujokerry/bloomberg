@@ -70,7 +70,7 @@ async function main(): Promise<void> {
   }
 
   // ── 6. Plant warm start (3, 4 and 5 are logged as pending below) ────────────────────────────
-  const plant = buildPlant({ config, clock });
+  const plant = buildPlant({ config, clock, db });
   await plant.start();
 
   const deps: AppDeps = { config, clock, db, plant, state };
