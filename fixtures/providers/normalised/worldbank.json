@@ -1,0 +1,50 @@
+{
+  "updates": [],
+  "rows": {
+    "meta": {
+      "page": 1,
+      "pages": 22,
+      "perPage": 3,
+      "total": 66,
+      "sourceId": "2",
+      "lastUpdated": "2026-07-13"
+    },
+    "series": [
+      {
+        "providerCode": "NY.GDP.MKTP.CD",
+        "name": "GDP (current US$)",
+        "country": "US",
+        "countryName": "United States",
+        "countryIso3": "USA",
+        "units": null,
+        "decimals": 0,
+        "lastUpdatedAt": "2026-07-13T00:00:00Z"
+      }
+    ],
+    "observations": [
+      {
+        "providerCode": "NY.GDP.MKTP.CD",
+        "country": "US",
+        "obsDate": "2023-01-01",
+        "value": 27811517000000,
+        "status": "final"
+      },
+      {
+        "providerCode": "NY.GDP.MKTP.CD",
+        "country": "US",
+        "obsDate": "2024-01-01",
+        "value": 29298013000000,
+        "status": "final"
+      },
+      {
+        "providerCode": "NY.GDP.MKTP.CD",
+        "country": "US",
+        "obsDate": "2025-01-01",
+        "value": 30769700000000,
+        "status": "final"
+      }
+    ]
+  },
+  "sourceTs": "2026-07-13T00:00:00.000Z",
+  "problems": []
+}

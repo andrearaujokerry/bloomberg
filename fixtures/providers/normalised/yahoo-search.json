@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "query": "apple",
+  "reportedCount": 7,
+  "quotes": [
+    {
+      "symbol": "AAPL",
+      "shortName": "Apple Inc.",
+      "longName": "Apple Inc.",
+      "exchange": "NMS",
+      "exchDisp": "NASDAQ",
+      "quoteType": "EQUITY",
+      "typeDisp": "Equity",
+      "assetClass": "equity",
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "score": 377681
+    },
+    {
+      "symbol": "SAAPL=F",
+      "shortName": "Apple Inc Stock Futures,Sep-202",
+      "longName": "Apple Inc Single Stock futures",
+      "exchange": "CME",
+      "exchDisp": "Chicago Mercantile Exchange",
+      "quoteType": "FUTURE",
+      "typeDisp": "Futures",
+      "assetClass": "future",
+      "sector": null,
+      "industry": null,
+      "score": 30115
+    },
+    {
+      "symbol": "XAAPL=F",
+      "shortName": "Micro Apple Inc Stock Futures,S",
+      "longName": null,
+      "exchange": "CME",
+      "exchDisp": "Chicago Mercantile Exchange",
+      "quoteType": "FUTURE",
+      "typeDisp": "Futures",
+      "assetClass": "future",
+      "sector": null,
+      "industry": null,
+      "score": 30009
+    },
+    {
+      "symbol": "APLE",
+      "shortName": "Apple Hospitality REIT, Inc.",
+      "longName": "Apple Hospitality REIT, Inc.",
+      "exchange": "NYQ",
+      "exchDisp": "NYSE",
+      "quoteType": "EQUITY",
+      "typeDisp": "Equity",
+      "assetClass": "equity",
+      "sector": "Real Estate",
+      "industry": "REIT—Hotel & Motel",
+      "score": 20900
+    },
+    {
+      "symbol": "AAPL.TO",
+      "shortName": "APPLE CDR (CAD HEDGED)",
+      "longName": "Apple Inc.",
+      "exchange": "TOR",
+      "exchDisp": "Toronto",
+      "quoteType": "EQUITY",
+      "typeDisp": "Equity",
+      "assetClass": "equity",
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "score": 20173
+    },
+    {
+      "symbol": "AAPX",
+      "shortName": "T-Rex 2X Long Apple Daily Targe",
+      "longName": "T-Rex 2X Long Apple Daily Target ETF",
+      "exchange": "BTS",
+      "exchDisp": "BATS Trading",
+      "quoteType": "ETF",
+      "typeDisp": "ETF",
+      "assetClass": "etf",
+      "sector": null,
+      "industry": null,
+      "score": 20101
+    },
+    {
+      "symbol": "APC.DE",
+      "shortName": "Apple Inc.                    R",
+      "longName": "Apple Inc.",
+      "exchange": "GER",
+      "exchDisp": "XETRA",
+      "quoteType": "EQUITY",
+      "typeDisp": "Equity",
+      "assetClass": "equity",
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "score": 20056
+    }
+  ],
+  "problems": []
+}

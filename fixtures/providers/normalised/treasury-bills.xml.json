@@ -1,0 +1,2332 @@
+{
+  "capture": "treasury-bills.xml",
+  "providerId": "treasury.bills",
+  "requestKey": "e4019e17afeff11a2d2f000b9d294656b5dd7dc2a4398bd94ebdce74a91f36f7",
+  "adapterVersion": "treasury/1.0.0",
+  "sourceTs": "2026-09-15T02:01:31.000Z",
+  "updateCount": 7,
+  "problems": [],
+  "rows": {
+    "curvePoints": [
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.69,
+        "instrumentId": null,
+        "maturityDate": "2026-09-29"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-09-29"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.74,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-10-27"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.82,
+        "instrumentId": null,
+        "maturityDate": "2026-10-27"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.78,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.87,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.83,
+        "instrumentId": null,
+        "maturityDate": "2026-12-29"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.93,
+        "instrumentId": null,
+        "maturityDate": "2026-12-29"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.03,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-01",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.18,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.66,
+        "instrumentId": null,
+        "maturityDate": "2026-09-29"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.72,
+        "instrumentId": null,
+        "maturityDate": "2026-09-29"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.74,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-10-27"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.82,
+        "instrumentId": null,
+        "maturityDate": "2026-10-27"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.78,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.87,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.86,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.96,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.03,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 3.98,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-02",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.16,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.7,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.76,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.67,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.74,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.82,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.84,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.83,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.93,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.86,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.99,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 3.93,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-03",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.11,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.66,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.72,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.68,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-10-15"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.74,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.77,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.86,
+        "instrumentId": null,
+        "maturityDate": "2026-12-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.84,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.94,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.88,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.01,
+        "instrumentId": null,
+        "maturityDate": "2027-03-04"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 3.95,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-04",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.13,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.66,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.72,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.74,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.75,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.82,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.8,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.89,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.85,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.95,
+        "instrumentId": null,
+        "maturityDate": "2027-01-05"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.03,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 3.96,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-08",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.14,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.66,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.72,
+        "instrumentId": null,
+        "maturityDate": "2026-10-06"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.74,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.76,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.83,
+        "instrumentId": null,
+        "maturityDate": "2026-11-03"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 4.01,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.03,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 3.98,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-09",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.16,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.78,
+        "instrumentId": null,
+        "maturityDate": "2026-10-13"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.84,
+        "instrumentId": null,
+        "maturityDate": "2026-10-13"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.78,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.85,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.85,
+        "instrumentId": null,
+        "maturityDate": "2026-11-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.93,
+        "instrumentId": null,
+        "maturityDate": "2026-11-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.86,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.95,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.94,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 4.05,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 3.97,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.11,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.08,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-10",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.27,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.79,
+        "instrumentId": null,
+        "maturityDate": "2026-10-13"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.85,
+        "instrumentId": null,
+        "maturityDate": "2026-10-13"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.83,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.9,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.88,
+        "instrumentId": null,
+        "maturityDate": "2026-11-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.96,
+        "instrumentId": null,
+        "maturityDate": "2026-11-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.92,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 4.01,
+        "instrumentId": null,
+        "maturityDate": "2026-12-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 3.98,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 4.09,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.02,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.16,
+        "instrumentId": null,
+        "maturityDate": "2027-03-11"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.15,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-11",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.34,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "4WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.8,
+        "instrumentId": null,
+        "maturityDate": "2026-10-13"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "4WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 28,
+        "value": 3.86,
+        "instrumentId": null,
+        "maturityDate": "2026-10-13"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "6WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.82,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "6WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 42,
+        "value": 3.89,
+        "instrumentId": null,
+        "maturityDate": "2026-10-22"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "8WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.88,
+        "instrumentId": null,
+        "maturityDate": "2026-11-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "8WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 56,
+        "value": 3.96,
+        "instrumentId": null,
+        "maturityDate": "2026-11-10"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "13WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 3.97,
+        "instrumentId": null,
+        "maturityDate": "2026-12-17"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "13WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 91,
+        "value": 4.07,
+        "instrumentId": null,
+        "maturityDate": "2026-12-17"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "17WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 4,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "17WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 119,
+        "value": 4.11,
+        "instrumentId": null,
+        "maturityDate": "2027-01-12"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "26WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.07,
+        "instrumentId": null,
+        "maturityDate": "2027-03-18"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "26WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 182,
+        "value": 4.21,
+        "instrumentId": null,
+        "maturityDate": "2027-03-18"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "52WK",
+        "quoteType": "discount_rate",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.16,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      },
+      {
+        "curveId": "UST_BILL",
+        "curveDate": "2026-09-14",
+        "tenor": "52WK",
+        "quoteType": "investment_yield",
+        "vintageAt": "2026-09-15T18:46:08.000Z",
+        "tenorDays": 364,
+        "value": 4.35,
+        "instrumentId": null,
+        "maturityDate": "2027-09-02"
+      }
+    ],
+    "bills": [
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VE4",
+        "maturityDate": "2026-09-29",
+        "discountRate": 3.69,
+        "investmentYield": 3.75
+      },
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UK1",
+        "maturityDate": "2026-10-15",
+        "discountRate": 3.74,
+        "investmentYield": 3.81
+      },
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VN4",
+        "maturityDate": "2026-10-27",
+        "discountRate": 3.75,
+        "investmentYield": 3.82
+      },
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VA2",
+        "maturityDate": "2026-12-03",
+        "discountRate": 3.78,
+        "investmentYield": 3.87
+      },
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WH6",
+        "maturityDate": "2026-12-29",
+        "discountRate": 3.83,
+        "investmentYield": 3.93
+      },
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WD5",
+        "maturityDate": "2027-03-04",
+        "discountRate": 3.9,
+        "investmentYield": 4.03
+      },
+      {
+        "curveDate": "2026-09-01",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 4,
+        "investmentYield": 4.18
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VE4",
+        "maturityDate": "2026-09-29",
+        "discountRate": 3.66,
+        "investmentYield": 3.72
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UK1",
+        "maturityDate": "2026-10-15",
+        "discountRate": 3.74,
+        "investmentYield": 3.81
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VN4",
+        "maturityDate": "2026-10-27",
+        "discountRate": 3.75,
+        "investmentYield": 3.82
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VA2",
+        "maturityDate": "2026-12-03",
+        "discountRate": 3.78,
+        "investmentYield": 3.87
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WN3",
+        "maturityDate": "2027-01-05",
+        "discountRate": 3.86,
+        "investmentYield": 3.96
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WD5",
+        "maturityDate": "2027-03-04",
+        "discountRate": 3.9,
+        "investmentYield": 4.03
+      },
+      {
+        "curveDate": "2026-09-02",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 3.98,
+        "investmentYield": 4.16
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VK0",
+        "maturityDate": "2026-10-06",
+        "discountRate": 3.7,
+        "investmentYield": 3.76
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UK1",
+        "maturityDate": "2026-10-15",
+        "discountRate": 3.67,
+        "investmentYield": 3.74
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VP9",
+        "maturityDate": "2026-11-03",
+        "discountRate": 3.75,
+        "investmentYield": 3.82
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VA2",
+        "maturityDate": "2026-12-03",
+        "discountRate": 3.75,
+        "investmentYield": 3.84
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WN3",
+        "maturityDate": "2027-01-05",
+        "discountRate": 3.83,
+        "investmentYield": 3.93
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WD5",
+        "maturityDate": "2027-03-04",
+        "discountRate": 3.86,
+        "investmentYield": 3.99
+      },
+      {
+        "curveDate": "2026-09-03",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 3.93,
+        "investmentYield": 4.11
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VK0",
+        "maturityDate": "2026-10-06",
+        "discountRate": 3.66,
+        "investmentYield": 3.72
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UK1",
+        "maturityDate": "2026-10-15",
+        "discountRate": 3.68,
+        "investmentYield": 3.75
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VP9",
+        "maturityDate": "2026-11-03",
+        "discountRate": 3.74,
+        "investmentYield": 3.81
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VA2",
+        "maturityDate": "2026-12-03",
+        "discountRate": 3.77,
+        "investmentYield": 3.86
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WN3",
+        "maturityDate": "2027-01-05",
+        "discountRate": 3.84,
+        "investmentYield": 3.94
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WD5",
+        "maturityDate": "2027-03-04",
+        "discountRate": 3.88,
+        "investmentYield": 4.01
+      },
+      {
+        "curveDate": "2026-09-04",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 3.95,
+        "investmentYield": 4.13
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VK0",
+        "maturityDate": "2026-10-06",
+        "discountRate": 3.66,
+        "investmentYield": 3.72
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UL9",
+        "maturityDate": "2026-10-22",
+        "discountRate": 3.74,
+        "investmentYield": 3.81
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VP9",
+        "maturityDate": "2026-11-03",
+        "discountRate": 3.75,
+        "investmentYield": 3.82
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VG9",
+        "maturityDate": "2026-12-10",
+        "discountRate": 3.8,
+        "investmentYield": 3.89
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WN3",
+        "maturityDate": "2027-01-05",
+        "discountRate": 3.85,
+        "investmentYield": 3.95
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WK9",
+        "maturityDate": "2027-03-11",
+        "discountRate": 3.9,
+        "investmentYield": 4.03
+      },
+      {
+        "curveDate": "2026-09-08",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 3.96,
+        "investmentYield": 4.14
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VK0",
+        "maturityDate": "2026-10-06",
+        "discountRate": 3.66,
+        "investmentYield": 3.72
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UL9",
+        "maturityDate": "2026-10-22",
+        "discountRate": 3.74,
+        "investmentYield": 3.81
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VP9",
+        "maturityDate": "2026-11-03",
+        "discountRate": 3.76,
+        "investmentYield": 3.83
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VG9",
+        "maturityDate": "2026-12-10",
+        "discountRate": 3.81,
+        "investmentYield": 3.9
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WP8",
+        "maturityDate": "2027-01-12",
+        "discountRate": 3.9,
+        "investmentYield": 4.01
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WK9",
+        "maturityDate": "2027-03-11",
+        "discountRate": 3.9,
+        "investmentYield": 4.03
+      },
+      {
+        "curveDate": "2026-09-09",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 3.98,
+        "investmentYield": 4.16
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VL8",
+        "maturityDate": "2026-10-13",
+        "discountRate": 3.78,
+        "investmentYield": 3.84
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UL9",
+        "maturityDate": "2026-10-22",
+        "discountRate": 3.78,
+        "investmentYield": 3.85
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VW4",
+        "maturityDate": "2026-11-10",
+        "discountRate": 3.85,
+        "investmentYield": 3.93
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VG9",
+        "maturityDate": "2026-12-10",
+        "discountRate": 3.86,
+        "investmentYield": 3.95
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WP8",
+        "maturityDate": "2027-01-12",
+        "discountRate": 3.94,
+        "investmentYield": 4.05
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WK9",
+        "maturityDate": "2027-03-11",
+        "discountRate": 3.97,
+        "investmentYield": 4.11
+      },
+      {
+        "curveDate": "2026-09-10",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 4.08,
+        "investmentYield": 4.27
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VL8",
+        "maturityDate": "2026-10-13",
+        "discountRate": 3.79,
+        "investmentYield": 3.85
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UL9",
+        "maturityDate": "2026-10-22",
+        "discountRate": 3.83,
+        "investmentYield": 3.9
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VW4",
+        "maturityDate": "2026-11-10",
+        "discountRate": 3.88,
+        "investmentYield": 3.96
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VG9",
+        "maturityDate": "2026-12-10",
+        "discountRate": 3.92,
+        "investmentYield": 4.01
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WP8",
+        "maturityDate": "2027-01-12",
+        "discountRate": 3.98,
+        "investmentYield": 4.09
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797WK9",
+        "maturityDate": "2027-03-11",
+        "discountRate": 4.02,
+        "investmentYield": 4.16
+      },
+      {
+        "curveDate": "2026-09-11",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 4.15,
+        "investmentYield": 4.34
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "4WK",
+        "tenorDays": 28,
+        "cusip": "912797VL8",
+        "maturityDate": "2026-10-13",
+        "discountRate": 3.8,
+        "investmentYield": 3.86
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "6WK",
+        "tenorDays": 42,
+        "cusip": "912797UL9",
+        "maturityDate": "2026-10-22",
+        "discountRate": 3.82,
+        "investmentYield": 3.89
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "8WK",
+        "tenorDays": 56,
+        "cusip": "912797VW4",
+        "maturityDate": "2026-11-10",
+        "discountRate": 3.88,
+        "investmentYield": 3.96
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "13WK",
+        "tenorDays": 91,
+        "cusip": "912797VH7",
+        "maturityDate": "2026-12-17",
+        "discountRate": 3.97,
+        "investmentYield": 4.07
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "17WK",
+        "tenorDays": 119,
+        "cusip": "912797WP8",
+        "maturityDate": "2027-01-12",
+        "discountRate": 4,
+        "investmentYield": 4.11
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "26WK",
+        "tenorDays": 182,
+        "cusip": "912797UD7",
+        "maturityDate": "2027-03-18",
+        "discountRate": 4.07,
+        "investmentYield": 4.21
+      },
+      {
+        "curveDate": "2026-09-14",
+        "termLabel": "52WK",
+        "tenorDays": 364,
+        "cusip": "912797WA1",
+        "maturityDate": "2027-09-02",
+        "discountRate": 4.16,
+        "investmentYield": 4.35
+      }
+    ],
+    "unavailable": [],
+    "conflicts": [],
+    "crossChecks": [
+      {
+        "check": "ROUND_B1_CLOSE_4WK_2 vs CS_4WK_CLOSE_AVG",
+        "curveDate": "2026-09-02",
+        "published": "3.66",
+        "crossCheck": "3.68"
+      },
+      {
+        "check": "ROUND_B1_YIELD_4WK_2 vs CS_4WK_YIELD_AVG",
+        "curveDate": "2026-09-02",
+        "published": "3.72",
+        "crossCheck": "3.74"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_17WK_2 vs CS_17WK_CLOSE_AVG",
+        "curveDate": "2026-09-02",
+        "published": "3.86",
+        "crossCheck": "3.85"
+      },
+      {
+        "check": "ROUND_B1_YIELD_17WK_2 vs CS_17WK_YIELD_AVG",
+        "curveDate": "2026-09-02",
+        "published": "3.96",
+        "crossCheck": "3.95"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_52WK_2 vs CS_52WK_CLOSE_AVG",
+        "curveDate": "2026-09-02",
+        "published": "3.98",
+        "crossCheck": "3.99"
+      },
+      {
+        "check": "ROUND_B1_YIELD_52WK_2 vs CS_52WK_YIELD_AVG",
+        "curveDate": "2026-09-02",
+        "published": "4.16",
+        "crossCheck": "4.17"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_4WK_2 vs CS_4WK_CLOSE_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.70",
+        "crossCheck": "3.68"
+      },
+      {
+        "check": "ROUND_B1_YIELD_4WK_2 vs CS_4WK_YIELD_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.76",
+        "crossCheck": "3.74"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_6WK_2 vs CS_6WK_CLOSE_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.67",
+        "crossCheck": "3.72"
+      },
+      {
+        "check": "ROUND_B1_YIELD_6WK_2 vs CS_6WK_YIELD_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.74",
+        "crossCheck": "3.79"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_13WK_2 vs CS_13WK_CLOSE_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.75",
+        "crossCheck": "3.77"
+      },
+      {
+        "check": "ROUND_B1_YIELD_13WK_2 vs CS_13WK_YIELD_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.84",
+        "crossCheck": "3.86"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_17WK_2 vs CS_17WK_CLOSE_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.83",
+        "crossCheck": "3.84"
+      },
+      {
+        "check": "ROUND_B1_YIELD_17WK_2 vs CS_17WK_YIELD_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.93",
+        "crossCheck": "3.94"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_26WK_2 vs CS_26WK_CLOSE_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.86",
+        "crossCheck": "3.89"
+      },
+      {
+        "check": "ROUND_B1_YIELD_26WK_2 vs CS_26WK_YIELD_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.99",
+        "crossCheck": "4.02"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_52WK_2 vs CS_52WK_CLOSE_AVG",
+        "curveDate": "2026-09-03",
+        "published": "3.93",
+        "crossCheck": "3.97"
+      },
+      {
+        "check": "ROUND_B1_YIELD_52WK_2 vs CS_52WK_YIELD_AVG",
+        "curveDate": "2026-09-03",
+        "published": "4.11",
+        "crossCheck": "4.15"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_4WK_2 vs CS_4WK_CLOSE_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.66",
+        "crossCheck": "3.68"
+      },
+      {
+        "check": "ROUND_B1_YIELD_4WK_2 vs CS_4WK_YIELD_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.72",
+        "crossCheck": "3.74"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_6WK_2 vs CS_6WK_CLOSE_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.68",
+        "crossCheck": "3.71"
+      },
+      {
+        "check": "ROUND_B1_YIELD_6WK_2 vs CS_6WK_YIELD_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.75",
+        "crossCheck": "3.78"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_8WK_2 vs CS_8WK_CLOSE_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.74",
+        "crossCheck": "3.75"
+      },
+      {
+        "check": "ROUND_B1_YIELD_8WK_2 vs CS_8WK_YIELD_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.81",
+        "crossCheck": "3.82"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_26WK_2 vs CS_26WK_CLOSE_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.88",
+        "crossCheck": "3.89"
+      },
+      {
+        "check": "ROUND_B1_YIELD_26WK_2 vs CS_26WK_YIELD_AVG",
+        "curveDate": "2026-09-04",
+        "published": "4.01",
+        "crossCheck": "4.02"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_52WK_2 vs CS_52WK_CLOSE_AVG",
+        "curveDate": "2026-09-04",
+        "published": "3.95",
+        "crossCheck": "3.97"
+      },
+      {
+        "check": "ROUND_B1_YIELD_52WK_2 vs CS_52WK_YIELD_AVG",
+        "curveDate": "2026-09-04",
+        "published": "4.13",
+        "crossCheck": "4.15"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_17WK_2 vs CS_17WK_CLOSE_AVG",
+        "curveDate": "2026-09-09",
+        "published": "3.90",
+        "crossCheck": "3.88"
+      },
+      {
+        "check": "ROUND_B1_YIELD_17WK_2 vs CS_17WK_YIELD_AVG",
+        "curveDate": "2026-09-09",
+        "published": "4.01",
+        "crossCheck": "3.98"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_52WK_2 vs CS_52WK_CLOSE_AVG",
+        "curveDate": "2026-09-09",
+        "published": "3.98",
+        "crossCheck": "3.97"
+      },
+      {
+        "check": "ROUND_B1_YIELD_52WK_2 vs CS_52WK_YIELD_AVG",
+        "curveDate": "2026-09-09",
+        "published": "4.16",
+        "crossCheck": "4.15"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_4WK_2 vs CS_4WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.78",
+        "crossCheck": "3.70"
+      },
+      {
+        "check": "ROUND_B1_YIELD_4WK_2 vs CS_4WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.84",
+        "crossCheck": "3.76"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_6WK_2 vs CS_6WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.78",
+        "crossCheck": "3.75"
+      },
+      {
+        "check": "ROUND_B1_YIELD_6WK_2 vs CS_6WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.85",
+        "crossCheck": "3.82"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_8WK_2 vs CS_8WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.85",
+        "crossCheck": "3.79"
+      },
+      {
+        "check": "ROUND_B1_YIELD_8WK_2 vs CS_8WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.93",
+        "crossCheck": "3.86"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_13WK_2 vs CS_13WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.86",
+        "crossCheck": "3.82"
+      },
+      {
+        "check": "ROUND_B1_YIELD_13WK_2 vs CS_13WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.95",
+        "crossCheck": "3.91"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_17WK_2 vs CS_17WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.94",
+        "crossCheck": "3.90"
+      },
+      {
+        "check": "ROUND_B1_YIELD_17WK_2 vs CS_17WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "4.05",
+        "crossCheck": "4.00"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_26WK_2 vs CS_26WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "3.97",
+        "crossCheck": "3.92"
+      },
+      {
+        "check": "ROUND_B1_YIELD_26WK_2 vs CS_26WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "4.11",
+        "crossCheck": "4.06"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_52WK_2 vs CS_52WK_CLOSE_AVG",
+        "curveDate": "2026-09-10",
+        "published": "4.08",
+        "crossCheck": "4.01"
+      },
+      {
+        "check": "ROUND_B1_YIELD_52WK_2 vs CS_52WK_YIELD_AVG",
+        "curveDate": "2026-09-10",
+        "published": "4.27",
+        "crossCheck": "4.19"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_4WK_2 vs CS_4WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.79",
+        "crossCheck": "3.72"
+      },
+      {
+        "check": "ROUND_B1_YIELD_4WK_2 vs CS_4WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.85",
+        "crossCheck": "3.78"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_6WK_2 vs CS_6WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.83",
+        "crossCheck": "3.77"
+      },
+      {
+        "check": "ROUND_B1_YIELD_6WK_2 vs CS_6WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.90",
+        "crossCheck": "3.84"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_8WK_2 vs CS_8WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.88",
+        "crossCheck": "3.81"
+      },
+      {
+        "check": "ROUND_B1_YIELD_8WK_2 vs CS_8WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.96",
+        "crossCheck": "3.89"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_13WK_2 vs CS_13WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.92",
+        "crossCheck": "3.85"
+      },
+      {
+        "check": "ROUND_B1_YIELD_13WK_2 vs CS_13WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "4.01",
+        "crossCheck": "3.94"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_17WK_2 vs CS_17WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "3.98",
+        "crossCheck": "3.92"
+      },
+      {
+        "check": "ROUND_B1_YIELD_17WK_2 vs CS_17WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "4.09",
+        "crossCheck": "4.03"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_26WK_2 vs CS_26WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "4.02",
+        "crossCheck": "3.95"
+      },
+      {
+        "check": "ROUND_B1_YIELD_26WK_2 vs CS_26WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "4.16",
+        "crossCheck": "4.08"
+      },
+      {
+        "check": "ROUND_B1_CLOSE_52WK_2 vs CS_52WK_CLOSE_AVG",
+        "curveDate": "2026-09-11",
+        "published": "4.15",
+        "crossCheck": "4.04"
+      },
+      {
+        "check": "ROUND_B1_YIELD_52WK_2 vs CS_52WK_YIELD_AVG",
+        "curveDate": "2026-09-11",
+        "published": "4.34",
+        "crossCheck": "4.23"
+      }
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "capture": "sec-frames-assets.json",
+  "providerId": "sec.frames",
+  "requestKey": "f4df9e26e002602be6ff1a1f4443558a80a5da2a46c52b53d49cff2231afedc6",
+  "adapterVersion": "sec/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "taxonomy": "us-gaap",
+    "concept": "Assets",
+    "unit": "USD",
+    "frame": "CY2024Q4I",
+    "pts": 6264,
+    "frames": {
+      "$digest": {
+        "count": 6264,
+        "sha256": "ee74a2308f768ce80b9616c3db87a83ee3f0df957705b688482f4ab008bd4420",
+        "first": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "Assets",
+            "unit": "USD",
+            "frame": "CY2024Q4I",
+            "cik": "0000001750",
+            "accessionNo": "0001410578-25-000003",
+            "periodEnd": "2024-11-30",
+            "value": "2849300000",
+            "entityName": "AAR CORP"
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "Assets",
+            "unit": "USD",
+            "frame": "CY2024Q4I",
+            "cik": "0000001800",
+            "accessionNo": "0001628280-26-010185",
+            "periodEnd": "2024-12-31",
+            "value": "81414000000",
+            "entityName": "Abbott Laboratories"
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "Assets",
+            "unit": "USD",
+            "frame": "CY2024Q4I",
+            "cik": "0000001961",
+            "accessionNo": "0000001961-26-000030",
+            "periodEnd": "2024-12-31",
+            "value": "15130",
+            "entityName": "GEMAXEL INC. (formerly known as Worlds Inc.)"
+          }
+        ],
+        "last": [
+          {
+            "taxonomy": "us-gaap",
+            "concept": "Assets",
+            "unit": "USD",
+            "frame": "CY2024Q4I",
+            "cik": "0002130606",
+            "accessionNo": "0001193125-26-374729",
+            "periodEnd": "2024-12-31",
+            "value": "183713000",
+            "entityName": "OBSIDIAN THERAPEUTICS, INC."
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "Assets",
+            "unit": "USD",
+            "frame": "CY2024Q4I",
+            "cik": "0002136853",
+            "accessionNo": "0001628280-26-055300",
+            "periodEnd": "2024-12-31",
+            "value": "3245045000",
+            "entityName": "MN8 Energy Holdings LLC"
+          },
+          {
+            "taxonomy": "us-gaap",
+            "concept": "Assets",
+            "unit": "USD",
+            "frame": "CY2024Q4I",
+            "cik": "0002142801",
+            "accessionNo": "0001213900-26-099372",
+            "periodEnd": "2024-12-31",
+            "value": "234741199",
+            "entityName": "LAUNCH TWO ACQUISITION CORP."
+          }
+        ]
+      }
+    },
+    "periodEndFrom": "2024-11-22",
+    "periodEndTo": "2025-02-04"
+  }
+}

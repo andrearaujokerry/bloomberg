@@ -1,0 +1,429 @@
+{
+  "updates": [],
+  "rows": {
+    "feed": "industries",
+    "lang": "en",
+    "lastBuildDate": "2026-09-15T18:40:34Z",
+    "items": [
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLDN1TKK3NY800",
+        "kind": "story",
+        "headline": "China’s Aluminum Output Hits Record as Government Cap Looms",
+        "summary": "Chinese aluminum production climbed to a record last month as smelters rushed to fill the global shortfall caused by the conflict in the Middle East.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/china-s-aluminum-output-hits-record-as-government-limit-looms",
+        "author": "Bloomberg News",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T02:47:47Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLDQ7XKIP3IF00",
+        "kind": "story",
+        "headline": "CATL Gets Approval for Battery Deal in Consolidation Push",
+        "summary": "Contemporary Amperex Technology Co. Ltd. has been cleared to acquire a stake in a battery firm linked to one of China’s largest carmakers, highlighting Beijing’s growing support for consolidation in the sector.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/catl-gets-china-approval-for-battery-deal-in-consolidation-push",
+        "author": "Bloomberg News",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T02:55:53Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TL768OKJH6VB00",
+        "kind": "story",
+        "headline": "Petredec to Hire Gas Traders in Europe as It Expands Beyond LPG",
+        "summary": "Petredec Ltd., the Singapore-based energy and shipping firm, plans to build a team of liquefied natural gas traders in Europe as it expands beyond its core liquefied petroleum gas business.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/petredec-to-hire-gas-traders-in-europe-as-it-expands-beyond-lpg",
+        "author": "Eamon Akil Farhat",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T04:00:00Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TL471QKGCTGC00",
+        "kind": "story",
+        "headline": "Europe Builds SpaceX Rivals as Trump’s NASA Shifts Trans-Atlantic Space Ties",
+        "summary": "For the second week in a row, Paris is presenting itself as the center of the space industry.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/europe-builds-spacex-rivals-as-trump-s-nasa-shifts-trans-atlantic-space-ties",
+        "author": "Kate Duffy",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T04:15:00Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLCJVCT96OSJ00",
+        "kind": "story",
+        "headline": "EU Bank Breaks 40-Year Nuclear Taboo With Finnish Investment",
+        "summary": "The European Investment Bank is investing €40 million ($46 million) in a Finnish small modular reactor start-up, breaking a four-decade nuclear hiatus as the continent races to develop new clean energy technologies.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/eu-bank-breaks-40-year-nuclear-taboo-with-finnish-investment",
+        "author": "John Ainger",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T05:30:00Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TJ6PKLKK3NY800",
+        "kind": "story",
+        "headline": "Volvo Pivots to Long-Range Hybrids as Full EVs Take More Time",
+        "summary": "Volvo Car AB is rolling out new long-range plug-in hybrids in Europe and the US, betting demand for the dual technology will persist well into the next decade.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/volvo-pivots-to-long-range-hybrids-as-full-evs-take-more-time",
+        "author": "Rafaela Lindeberg",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T07:00:00Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLE6J4T96OSH00",
+        "kind": "story",
+        "headline": "Telefónica to Pay Streamer DAZN €1.65 Billion for LaLiga Matches",
+        "summary": "Telefónica SA agreed to pay sports streamer DAZN Group Ltd. around €1.65 billion ($1.9 billion) for the rights to broadcast matches from Spain’s top football leagues over five seasons.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/telefonica-to-pay-streamer-dazn-1-65-billion-for-laliga-matches",
+        "author": "Clara Hernanz Lizarraga",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T07:33:41Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TL35YSKK3NY800",
+        "kind": "story",
+        "headline": "Cookie Maker’s Debt Falls Deeper Into Distress on Mounting Costs",
+        "summary": "Biscuit International’s loans are sliding deeper into distress as declining sales volumes and cost pressures weigh on the business, just three months after a deal to extend and overhaul its debt.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/biscuit-s-debt-falls-deeper-into-distress-on-mounting-costs",
+        "author": "Edward Clark",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T07:33:58Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLE6VVKK3NY800",
+        "kind": "story",
+        "headline": "TotalEnergies Partners With Mistral AI to Boost Oil Exploration",
+        "summary": "TotalEnergies SE will work with French artificial intelligence startup Mistral AI to boost its oil and gas exploration abilities and extend the life of existing fields.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/totalenergies-partners-with-mistral-ai-to-boost-oil-exploration",
+        "author": "Francois de Beaupuy",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T07:38:38Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLE72LKGIFQC00",
+        "kind": "story",
+        "headline": "M&S Grocery Sales Soar as Hit From Cyberattack Fades, Data Show",
+        "summary": "Marks & Spencer Group Plc’s grocery sales soared over the summer, according to retail tracker Worldpanel by Numerator, as the British supermarket bounced back after last year’s cyberattack.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/m-s-grocery-sales-soar-as-hit-from-cyberattack-fades-data-show",
+        "author": "Maddie Parker",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T07:56:53Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TL507AKK3NY800",
+        "kind": "story",
+        "headline": "LVMH, Once Europe’s Largest Stock, Exits Top 10 by Value",
+        "summary": "LVMH lost its crown as France’s most valuable company and dropped out of Europe’s top 10 listed firms, a symbolic reversal for the luxury giant that led the region’s market during the post-pandemic boom.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/lvmh-once-europe-s-biggest-stock-exits-top-10-as-luxury-slumps",
+        "author": "Julien Ponthus and Michael Msika",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T08:07:16Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLEBQUKJH6VC00",
+        "kind": "story",
+        "headline": "Thailand Mulls 30% Tax on Imported EVs to Defend Industry, Finance Chief Says",
+        "summary": "Thailand could impose an excise tax of around 30% on fully imported electric vehicles, Finance Minister Ekniti Nitithanprapas said, revealing for the first time the potential rate of a levy designed to steer automakers toward local production.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/thailand-mulls-30-tax-on-imported-evs-to-defend-industry-finance-chief-says",
+        "author": "Haslinda Amin and Suttinee Yuvejwattana",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T08:49:43Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TL5INQKGCTHG00",
+        "kind": "story",
+        "headline": "Italy Banks to Lend Ethiopia €400 Million for New Hydropower Dam",
+        "summary": "Ethiopia is in negotiations with three Italian banks for €400 million in loans to complete the 1,800-megawatt Koysha dam.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/italy-banks-to-lend-ethiopia-400-million-for-new-hydropower-dam",
+        "author": "Fasika Tadesse",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T08:57:59Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLE412KIP3IN00",
+        "kind": "story",
+        "headline": "Kenya Joins African Nations Banning Unrefined-Mineral Exports",
+        "summary": "Kenya will ban exports of unprocessed minerals and plans to build at least three refineries to purify gold, joining other African nations seeking to extract more value from the natural resources they produce.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/kenya-joins-african-nations-banning-unrefined-mineral-exports",
+        "author": "Helen Nyambura",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T09:19:20Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLCU2KT96OSG00",
+        "kind": "story",
+        "headline": "Brazil’s Smaller Iron Ore Miners Battered by Shipping Costs",
+        "summary": "Smaller Brazilian iron ore producers are struggling with soaring shipping costs to top consumer China, squeezing margins and prompting production cuts.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/brazil-s-smaller-iron-ore-producers-battered-by-shipping-costs",
+        "author": "Mariana Durao and Katharine Gemmell",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T09:42:13Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLEAWJR24U8S00",
+        "kind": "story",
+        "headline": "Top Africa Clothes Retailer Pepkor Sinks on Earnings Outlook",
+        "summary": "Pepkor Holdings Ltd. shares tumbled the most in more than three years after the South African discount clothing retailer forecast muted profit growth as the cost of building its new banking business weighs on profit.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/top-africa-clothes-retailer-pepkor-sinks-on-earnings-outlook",
+        "author": "Janice Kew",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T09:58:02Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLD58UKK3NY800",
+        "kind": "story",
+        "headline": "JD Sports Names North America CEO, Chief Marketing Officer",
+        "summary": "JD Sports Fashion Plc named new executives for marketing and North America as the sports retailer looks to reverse soft sales and an extended slump in the stock market.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/jd-sports-names-new-north-america-ceo-chief-marketing-officer",
+        "author": "Annie Bang",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T11:00:00Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLDF1FKK3NYC00",
+        "kind": "story",
+        "headline": "GM to Offer Apple CarPlay After Shift Away From the System",
+        "summary": "General Motors Co. is integrating Apple Inc.’s CarPlay in its latest infotainment system, three years after upsetting some consumers by eliminating the popular interface from its electric vehicles.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/gm-s-new-user-interface-includes-apple-carplay-android-auto",
+        "author": "David Welch",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T11:00:00Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TJNQJ6KGCTG500",
+        "kind": "story",
+        "headline": "Vodacom to Appeal Kenya Court Ruling on Safaricom Stake Sale",
+        "summary": "Vodacom Group Ltd. said it will appeal a Kenyan High Court decision invalidating the government’s sale of a stake in East Africa’s biggest mobile-network operator to the South African-based wireless carrier.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/kenya-court-rules-safaricom-stake-should-return-to-treasury",
+        "author": "David Herbling",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T12:24:45Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      },
+      {
+        "sourceId": "bbg.rss",
+        "feed": "industries",
+        "providerGuid": "TLEPDYT96OSH00",
+        "kind": "story",
+        "headline": "Novonesis CEO Says EU Red Tape Risks Biosolutions Lead to China",
+        "summary": "Europe risks surrendering its status as a global frontrunner in biosolutions to China unless it dramatically speeds up regulation and approvals, according to the woman who runs the world’s largest maker of industrial enzymes.",
+        "url": "https://www.bloomberg.com/news/articles/2026-09-15/novonesis-ceo-says-eu-red-tape-risks-biosolutions-lead-to-china",
+        "author": "Sara Sjolin",
+        "category": null,
+        "cik": null,
+        "lang": "en",
+        "publishedAt": "2026-09-15T14:24:15Z",
+        "isCorrection": false,
+        "machineGenerated": false
+      }
+    ],
+    "people": [
+      {
+        "name": "Annie Bang",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Bloomberg News",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Clara Hernanz Lizarraga",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "David Herbling",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "David Welch",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Eamon Akil Farhat",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Edward Clark",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Fasika Tadesse",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Francois de Beaupuy",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Haslinda Amin and Suttinee Yuvejwattana",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Helen Nyambura",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Janice Kew",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "John Ainger",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Julien Ponthus and Michael Msika",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Kate Duffy",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Maddie Parker",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Mariana Durao and Katharine Gemmell",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Rafaela Lindeberg",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      },
+      {
+        "name": "Sara Sjolin",
+        "role": "Reporter",
+        "sourceId": "bbg.rss"
+      }
+    ]
+  },
+  "sourceTs": "2026-09-15T18:40:34.000Z",
+  "problems": []
+}

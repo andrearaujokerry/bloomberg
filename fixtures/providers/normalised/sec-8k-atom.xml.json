@@ -1,0 +1,1493 @@
+{
+  "capture": "sec-8k-atom.xml",
+  "providerId": "sec.atom",
+  "requestKey": "0aa18290d3656481057190c1e8564fb647b3fe67ca1b02e900476b3f801068d2",
+  "adapterVersion": "sec/1.0.0",
+  "sourceTs": "2026-09-15T18:44:53.000Z",
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "feedUpdated": "2026-09-15T18:44:53Z",
+    "newsItems": [
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001213900-26-100070",
+        "kind": "filing",
+        "headline": "8-K: Aerkomm Inc. — Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "summary": "Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "url": "https://www.sec.gov/Archives/edgar/data/1590496/000121390026100070/0001213900-26-100070-index.htm",
+        "category": "8-K",
+        "cik": "0001590496",
+        "items8k": [
+          "5.02"
+        ],
+        "publishedAt": "2026-09-15T18:21:20Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001140361-26-036625",
+        "kind": "filing",
+        "headline": "8-K: GREENE COUNTY BANCORP INC — Other Events",
+        "summary": "Other Events Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1070524/000114036126036625/0001140361-26-036625-index.htm",
+        "category": "8-K",
+        "cik": "0001070524",
+        "items8k": [
+          "8.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T18:12:23Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001331754-26-000181",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Indianapolis — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1331754/000133175426000181/0001331754-26-000181-index.htm",
+        "category": "8-K",
+        "cik": "0001331754",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T18:08:20Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001325878-26-000189",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Topeka — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1325878/000132587826000189/0001325878-26-000189-index.htm",
+        "category": "8-K",
+        "cik": "0001325878",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T18:03:51Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001331465-26-000165",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Atlanta — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1331465/000133146526000165/0001331465-26-000165-index.htm",
+        "category": "8-K",
+        "cik": "0001331465",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T17:46:21Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001193125-26-391682",
+        "kind": "filing",
+        "headline": "8-K: Jaguar Health, Inc. — Entry into a Material Definitive Agreement",
+        "summary": "Entry into a Material Definitive Agreement Unregistered Sales of Equity Securities Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526391682/0001193125-26-391682-index.htm",
+        "category": "8-K",
+        "cik": "0001585608",
+        "items8k": [
+          "1.01",
+          "3.02",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T17:44:55Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0000860731-26-000052",
+        "kind": "filing",
+        "headline": "8-K: TYLER TECHNOLOGIES INC — Other Events",
+        "summary": "Other Events",
+        "url": "https://www.sec.gov/Archives/edgar/data/860731/000086073126000052/0000860731-26-000052-index.htm",
+        "category": "8-K",
+        "cik": "0000860731",
+        "items8k": [
+          "8.01"
+        ],
+        "publishedAt": "2026-09-15T17:37:11Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001316944-26-000152",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of San Francisco — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1316944/000131694426000152/0001316944-26-000152-index.htm",
+        "category": "8-K",
+        "cik": "0001316944",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T17:18:54Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001193125-26-391642",
+        "kind": "filing",
+        "headline": "8-K: AB Private Credit Investors Corp — Submission of Matters to a Vote of Security Holders",
+        "summary": "Submission of Matters to a Vote of Security Holders",
+        "url": "https://www.sec.gov/Archives/edgar/data/1634452/000119312526391642/0001193125-26-391642-index.htm",
+        "category": "8-K",
+        "cik": "0001634452",
+        "items8k": [
+          "5.07"
+        ],
+        "publishedAt": "2026-09-15T16:59:26Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001637880-26-000042",
+        "kind": "filing",
+        "headline": "8-K: Tri-State Generation & Transmission Association, Inc. — Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "summary": "Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "url": "https://www.sec.gov/Archives/edgar/data/1637880/000163788026000042/0001637880-26-000042-index.htm",
+        "category": "8-K",
+        "cik": "0001637880",
+        "items8k": [
+          "5.02"
+        ],
+        "publishedAt": "2026-09-15T16:29:53Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001326771-26-000151",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Cincinnati — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1326771/000132677126000151/0001326771-26-000151-index.htm",
+        "category": "8-K",
+        "cik": "0001326771",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T16:27:03Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001193125-26-391600",
+        "kind": "filing",
+        "headline": "8-K: NexPoint Capital, Inc. — Other Events",
+        "summary": "Other Events",
+        "url": "https://www.sec.gov/Archives/edgar/data/1588272/000119312526391600/0001193125-26-391600-index.htm",
+        "category": "8-K",
+        "cik": "0001588272",
+        "items8k": [
+          "8.01"
+        ],
+        "publishedAt": "2026-09-15T16:15:55Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001493152-26-042702",
+        "kind": "filing",
+        "headline": "8-K: ABEONA THERAPEUTICS INC. — Regulation FD Disclosure",
+        "summary": "Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/318306/000149315226042702/0001493152-26-042702-index.htm",
+        "category": "8-K",
+        "cik": "0000318306",
+        "items8k": [
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T16:00:17Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001325814-26-000146",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Des Moines — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1325814/000132581426000146/0001325814-26-000146-index.htm",
+        "category": "8-K",
+        "cik": "0001325814",
+        "items8k": [
+          "2.03",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T15:54:35Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0000885245-26-000039",
+        "kind": "filing",
+        "headline": "8-K: BUCKLE INC — Other Events",
+        "summary": "Other Events Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/885245/000088524526000039/0000885245-26-000039-index.htm",
+        "category": "8-K",
+        "cik": "0000885245",
+        "items8k": [
+          "8.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T15:46:32Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001193125-26-391540",
+        "kind": "filing",
+        "headline": "8-K: ORION ENERGY SYSTEMS, INC. — Results of Operations and Financial Condition",
+        "summary": "Results of Operations and Financial Condition Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1409375/000119312526391540/0001193125-26-391540-index.htm",
+        "category": "8-K",
+        "cik": "0001409375",
+        "items8k": [
+          "2.02",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T15:35:26Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001493152-26-042696",
+        "kind": "filing",
+        "headline": "8-K: GEORGE RISK INDUSTRIES, INC. — Other Events",
+        "summary": "Other Events Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/84112/000149315226042696/0001493152-26-042696-index.htm",
+        "category": "8-K",
+        "cik": "0000084112",
+        "items8k": [
+          "8.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T15:33:03Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001683168-26-007139",
+        "kind": "filing",
+        "headline": "8-K: Invech Holdings, Inc. — Changes in Control of Registrant",
+        "summary": "Changes in Control of Registrant Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1009919/000168316826007139/0001683168-26-007139-index.htm",
+        "category": "8-K",
+        "cik": "0001009919",
+        "items8k": [
+          "5.01",
+          "5.02",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T15:29:45Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001331757-26-000167",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Dallas — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1331757/000133175726000167/0001331757-26-000167-index.htm",
+        "category": "8-K",
+        "cik": "0001331757",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T15:20:21Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001314152-26-000182",
+        "kind": "filing",
+        "headline": "8-K: JLL Income Property Trust, Inc. — Regulation FD Disclosure",
+        "summary": "Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1314152/000131415226000182/0001314152-26-000182-index.htm",
+        "category": "8-K",
+        "cik": "0001314152",
+        "items8k": [
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T14:52:53Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001104659-26-107790",
+        "kind": "filing",
+        "headline": "8-K: INNODATA INC — Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "summary": "Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926107790/0001104659-26-107790-index.htm",
+        "category": "8-K",
+        "cik": "0000903651",
+        "items8k": [
+          "5.02",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T14:45:53Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001213900-26-099968",
+        "kind": "filing",
+        "headline": "8-K: Launch Two Acquisition Corp. — Other Events",
+        "summary": "Other Events Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/2023676/000121390026099968/0001213900-26-099968-index.htm",
+        "category": "8-K",
+        "cik": "0002023676",
+        "items8k": [
+          "8.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T14:45:21Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001331451-26-000172",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Chicago — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "url": "https://www.sec.gov/Archives/edgar/data/1331451/000133145126000172/0001331451-26-000172-index.htm",
+        "category": "8-K",
+        "cik": "0001331451",
+        "items8k": [
+          "2.03"
+        ],
+        "publishedAt": "2026-09-15T14:33:46Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001493152-26-042691",
+        "kind": "filing",
+        "headline": "8-K: LifeMD, Inc. — Regulation FD Disclosure",
+        "summary": "Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/948320/000149315226042691/0001493152-26-042691-index.htm",
+        "category": "8-K",
+        "cik": "0000948320",
+        "items8k": [
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T14:18:33Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001185185-26-004012",
+        "kind": "filing",
+        "headline": "8-K: RTB Digital, Inc. — Regulation FD Disclosure",
+        "summary": "Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1419275/000118518526004012/0001185185-26-004012-index.htm",
+        "category": "8-K",
+        "cik": "0001419275",
+        "items8k": [
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T14:08:09Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001493152-26-042687",
+        "kind": "filing",
+        "headline": "8-K: XCF Global, Inc. — Entry into a Material Definitive Agreement",
+        "summary": "Entry into a Material Definitive Agreement Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/2019793/000149315226042687/0001493152-26-042687-index.htm",
+        "category": "8-K",
+        "cik": "0002019793",
+        "items8k": [
+          "1.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T14:05:41Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001437749-26-030399",
+        "kind": "filing",
+        "headline": "8-K: HEALTHSTREAM INC — Entry into a Material Definitive Agreement",
+        "summary": "Entry into a Material Definitive Agreement Unregistered Sales of Equity Securities Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095565/000143774926030399/0001437749-26-030399-index.htm",
+        "category": "8-K",
+        "cik": "0001095565",
+        "items8k": [
+          "1.01",
+          "3.02",
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:27:36Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001628280-26-061981",
+        "kind": "filing",
+        "headline": "8-K: Dream Finders Homes, Inc. — Entry into a Material Definitive Agreement",
+        "summary": "Entry into a Material Definitive Agreement Unregistered Sales of Equity Securities Material Modifications to Rights of Security Holders Amendments to Articles of Incorporation or Bylaws; Change in Fiscal Year Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1825088/000162828026061981/0001628280-26-061981-index.htm",
+        "category": "8-K",
+        "cik": "0001825088",
+        "items8k": [
+          "1.01",
+          "3.02",
+          "3.03",
+          "5.03",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:26:07Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001330399-26-000117",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Pittsburgh — Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant",
+        "summary": "Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1330399/000133039926000117/0001330399-26-000117-index.htm",
+        "category": "8-K",
+        "cik": "0001330399",
+        "items8k": [
+          "2.03",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:20:55Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001331451-26-000170",
+        "kind": "filing",
+        "headline": "8-K: Federal Home Loan Bank of Chicago — Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "summary": "Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "url": "https://www.sec.gov/Archives/edgar/data/1331451/000133145126000170/0001331451-26-000170-index.htm",
+        "category": "8-K",
+        "cik": "0001331451",
+        "items8k": [
+          "5.02"
+        ],
+        "publishedAt": "2026-09-15T13:16:11Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001104659-26-107736",
+        "kind": "filing",
+        "headline": "8-K: WhiteHorse Finance, Inc. — Other Events",
+        "summary": "Other Events",
+        "url": "https://www.sec.gov/Archives/edgar/data/1552198/000110465926107736/0001104659-26-107736-index.htm",
+        "category": "8-K",
+        "cik": "0001552198",
+        "items8k": [
+          "8.01"
+        ],
+        "publishedAt": "2026-09-15T13:11:46Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001193125-26-391415",
+        "kind": "filing",
+        "headline": "8-K: Jaguar Health, Inc. — Material Modifications to Rights of Security Holders",
+        "summary": "Material Modifications to Rights of Security Holders Amendments to Articles of Incorporation or Bylaws; Change in Fiscal Year Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526391415/0001193125-26-391415-index.htm",
+        "category": "8-K",
+        "cik": "0001585608",
+        "items8k": [
+          "3.03",
+          "5.03",
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:10:08Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001793229-26-000071",
+        "kind": "filing",
+        "headline": "8-K: Claritev Corp — Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "summary": "Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1793229/000179322926000071/0001793229-26-000071-index.htm",
+        "category": "8-K",
+        "cik": "0001793229",
+        "items8k": [
+          "5.02",
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:07:28Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001628280-26-061978",
+        "kind": "filing",
+        "headline": "8-K: Jazz Pharmaceuticals plc — Regulation FD Disclosure",
+        "summary": "Regulation FD Disclosure",
+        "url": "https://www.sec.gov/Archives/edgar/data/1232524/000162828026061978/0001628280-26-061978-index.htm",
+        "category": "8-K",
+        "cik": "0001232524",
+        "items8k": [
+          "7.01"
+        ],
+        "publishedAt": "2026-09-15T13:06:12Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001514416-26-000069",
+        "kind": "filing",
+        "headline": "8-K: Bandwidth Inc. — Regulation FD Disclosure",
+        "summary": "Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1514416/000151441626000069/0001514416-26-000069-index.htm",
+        "category": "8-K",
+        "cik": "0001514416",
+        "items8k": [
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:05:22Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0000811589-26-000155",
+        "kind": "filing",
+        "headline": "8-K: FIRST BANCORP /NC/ — Other Events",
+        "summary": "Other Events Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/811589/000081158926000155/0000811589-26-000155-index.htm",
+        "category": "8-K",
+        "cik": "0000811589",
+        "items8k": [
+          "8.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:05:11Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001628280-26-061976",
+        "kind": "filing",
+        "headline": "8-K: TREDEGAR CORP — Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
+        "summary": "Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/850429/000162828026061976/0001628280-26-061976-index.htm",
+        "category": "8-K",
+        "cik": "0000850429",
+        "items8k": [
+          "5.02",
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:02:25Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0002001557-26-000171",
+        "kind": "filing",
+        "headline": "8-K: Innventure, Inc. — Other Events",
+        "summary": "Other Events",
+        "url": "https://www.sec.gov/Archives/edgar/data/2001557/000200155726000171/0002001557-26-000171-index.htm",
+        "category": "8-K",
+        "cik": "0002001557",
+        "items8k": [
+          "8.01"
+        ],
+        "publishedAt": "2026-09-15T13:01:20Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001516912-26-000050",
+        "kind": "filing",
+        "headline": "8-K: Origin Bancorp, Inc. — Notice of Delisting or Failure to Satisfy a Continued Listing Rule or Standard; Transfer of Listing",
+        "summary": "Notice of Delisting or Failure to Satisfy a Continued Listing Rule or Standard; Transfer of Listing Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1516912/000151691226000050/0001516912-26-000050-index.htm",
+        "category": "8-K",
+        "cik": "0001516912",
+        "items8k": [
+          "3.01",
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:01:06Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      },
+      {
+        "sourceId": "sec.atom",
+        "feed": "8-K",
+        "providerGuid": "urn:tag:sec.gov,2008:accession-number=0001193125-26-391409",
+        "kind": "filing",
+        "headline": "8-K: 5E Advanced Materials, Inc. — Entry into a Material Definitive Agreement",
+        "summary": "Entry into a Material Definitive Agreement Unregistered Sales of Equity Securities Regulation FD Disclosure Financial Statements and Exhibits",
+        "url": "https://www.sec.gov/Archives/edgar/data/1888654/000119312526391409/0001193125-26-391409-index.htm",
+        "category": "8-K",
+        "cik": "0001888654",
+        "items8k": [
+          "1.01",
+          "3.02",
+          "7.01",
+          "9.01"
+        ],
+        "publishedAt": "2026-09-15T13:00:18Z",
+        "isCorrection": false,
+        "machineGenerated": false,
+        "lang": "en"
+      }
+    ],
+    "filings": [
+      {
+        "accessionNo": "0001213900-26-100070",
+        "cik": "0001590496",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T18:21:20Z",
+        "reportDate": null,
+        "items": [
+          "5.02"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 190464,
+        "url": "https://www.sec.gov/Archives/edgar/data/1590496/000121390026100070/0001213900-26-100070-index.htm"
+      },
+      {
+        "accessionNo": "0001140361-26-036625",
+        "cik": "0001070524",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T18:12:23Z",
+        "reportDate": null,
+        "items": [
+          "8.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 155648,
+        "url": "https://www.sec.gov/Archives/edgar/data/1070524/000114036126036625/0001140361-26-036625-index.htm"
+      },
+      {
+        "accessionNo": "0001331754-26-000181",
+        "cik": "0001331754",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T18:08:20Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 217088,
+        "url": "https://www.sec.gov/Archives/edgar/data/1331754/000133175426000181/0001331754-26-000181-index.htm"
+      },
+      {
+        "accessionNo": "0001325878-26-000189",
+        "cik": "0001325878",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T18:03:51Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 171008,
+        "url": "https://www.sec.gov/Archives/edgar/data/1325878/000132587826000189/0001325878-26-000189-index.htm"
+      },
+      {
+        "accessionNo": "0001331465-26-000165",
+        "cik": "0001331465",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T17:46:21Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 192512,
+        "url": "https://www.sec.gov/Archives/edgar/data/1331465/000133146526000165/0001331465-26-000165-index.htm"
+      },
+      {
+        "accessionNo": "0001193125-26-391682",
+        "cik": "0001585608",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T17:44:55Z",
+        "reportDate": null,
+        "items": [
+          "1.01",
+          "3.02",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 484352,
+        "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526391682/0001193125-26-391682-index.htm"
+      },
+      {
+        "accessionNo": "0000860731-26-000052",
+        "cik": "0000860731",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T17:37:11Z",
+        "reportDate": null,
+        "items": [
+          "8.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 147456,
+        "url": "https://www.sec.gov/Archives/edgar/data/860731/000086073126000052/0000860731-26-000052-index.htm"
+      },
+      {
+        "accessionNo": "0001316944-26-000152",
+        "cik": "0001316944",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T17:18:54Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 158720,
+        "url": "https://www.sec.gov/Archives/edgar/data/1316944/000131694426000152/0001316944-26-000152-index.htm"
+      },
+      {
+        "accessionNo": "0001193125-26-391642",
+        "cik": "0001634452",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T16:59:26Z",
+        "reportDate": null,
+        "items": [
+          "5.07"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 141312,
+        "url": "https://www.sec.gov/Archives/edgar/data/1634452/000119312526391642/0001193125-26-391642-index.htm"
+      },
+      {
+        "accessionNo": "0001637880-26-000042",
+        "cik": "0001637880",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T16:29:53Z",
+        "reportDate": null,
+        "items": [
+          "5.02"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 130048,
+        "url": "https://www.sec.gov/Archives/edgar/data/1637880/000163788026000042/0001637880-26-000042-index.htm"
+      },
+      {
+        "accessionNo": "0001326771-26-000151",
+        "cik": "0001326771",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T16:27:03Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 180224,
+        "url": "https://www.sec.gov/Archives/edgar/data/1326771/000132677126000151/0001326771-26-000151-index.htm"
+      },
+      {
+        "accessionNo": "0001193125-26-391600",
+        "cik": "0001588272",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T16:15:55Z",
+        "reportDate": null,
+        "items": [
+          "8.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 307200,
+        "url": "https://www.sec.gov/Archives/edgar/data/1588272/000119312526391600/0001193125-26-391600-index.htm"
+      },
+      {
+        "accessionNo": "0001493152-26-042702",
+        "cik": "0000318306",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T16:00:17Z",
+        "reportDate": null,
+        "items": [
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 5242880,
+        "url": "https://www.sec.gov/Archives/edgar/data/318306/000149315226042702/0001493152-26-042702-index.htm"
+      },
+      {
+        "accessionNo": "0001325814-26-000146",
+        "cik": "0001325814",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T15:54:35Z",
+        "reportDate": null,
+        "items": [
+          "2.03",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 212992,
+        "url": "https://www.sec.gov/Archives/edgar/data/1325814/000132581426000146/0001325814-26-000146-index.htm"
+      },
+      {
+        "accessionNo": "0000885245-26-000039",
+        "cik": "0000885245",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T15:46:32Z",
+        "reportDate": null,
+        "items": [
+          "8.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 202752,
+        "url": "https://www.sec.gov/Archives/edgar/data/885245/000088524526000039/0000885245-26-000039-index.htm"
+      },
+      {
+        "accessionNo": "0001193125-26-391540",
+        "cik": "0001409375",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T15:35:26Z",
+        "reportDate": null,
+        "items": [
+          "2.02",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 227328,
+        "url": "https://www.sec.gov/Archives/edgar/data/1409375/000119312526391540/0001193125-26-391540-index.htm"
+      },
+      {
+        "accessionNo": "0001493152-26-042696",
+        "cik": "0000084112",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T15:33:03Z",
+        "reportDate": null,
+        "items": [
+          "8.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 322560,
+        "url": "https://www.sec.gov/Archives/edgar/data/84112/000149315226042696/0001493152-26-042696-index.htm"
+      },
+      {
+        "accessionNo": "0001683168-26-007139",
+        "cik": "0001009919",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T15:29:45Z",
+        "reportDate": null,
+        "items": [
+          "5.01",
+          "5.02",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 329728,
+        "url": "https://www.sec.gov/Archives/edgar/data/1009919/000168316826007139/0001683168-26-007139-index.htm"
+      },
+      {
+        "accessionNo": "0001331757-26-000167",
+        "cik": "0001331757",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T15:20:21Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 241664,
+        "url": "https://www.sec.gov/Archives/edgar/data/1331757/000133175726000167/0001331757-26-000167-index.htm"
+      },
+      {
+        "accessionNo": "0001314152-26-000182",
+        "cik": "0001314152",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:52:53Z",
+        "reportDate": null,
+        "items": [
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 269312,
+        "url": "https://www.sec.gov/Archives/edgar/data/1314152/000131415226000182/0001314152-26-000182-index.htm"
+      },
+      {
+        "accessionNo": "0001104659-26-107790",
+        "cik": "0000903651",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:45:53Z",
+        "reportDate": null,
+        "items": [
+          "5.02",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 232448,
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926107790/0001104659-26-107790-index.htm"
+      },
+      {
+        "accessionNo": "0001213900-26-099968",
+        "cik": "0002023676",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:45:21Z",
+        "reportDate": null,
+        "items": [
+          "8.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 331776,
+        "url": "https://www.sec.gov/Archives/edgar/data/2023676/000121390026099968/0001213900-26-099968-index.htm"
+      },
+      {
+        "accessionNo": "0001331451-26-000172",
+        "cik": "0001331451",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:33:46Z",
+        "reportDate": null,
+        "items": [
+          "2.03"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 197632,
+        "url": "https://www.sec.gov/Archives/edgar/data/1331451/000133145126000172/0001331451-26-000172-index.htm"
+      },
+      {
+        "accessionNo": "0001493152-26-042691",
+        "cik": "0000948320",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:18:33Z",
+        "reportDate": null,
+        "items": [
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 775168,
+        "url": "https://www.sec.gov/Archives/edgar/data/948320/000149315226042691/0001493152-26-042691-index.htm"
+      },
+      {
+        "accessionNo": "0001185185-26-004012",
+        "cik": "0001419275",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:08:09Z",
+        "reportDate": null,
+        "items": [
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 221184,
+        "url": "https://www.sec.gov/Archives/edgar/data/1419275/000118518526004012/0001185185-26-004012-index.htm"
+      },
+      {
+        "accessionNo": "0001493152-26-042687",
+        "cik": "0002019793",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T14:05:41Z",
+        "reportDate": null,
+        "items": [
+          "1.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 219136,
+        "url": "https://www.sec.gov/Archives/edgar/data/2019793/000149315226042687/0001493152-26-042687-index.htm"
+      },
+      {
+        "accessionNo": "0001437749-26-030399",
+        "cik": "0001095565",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:27:36Z",
+        "reportDate": null,
+        "items": [
+          "1.01",
+          "3.02",
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 606208,
+        "url": "https://www.sec.gov/Archives/edgar/data/1095565/000143774926030399/0001437749-26-030399-index.htm"
+      },
+      {
+        "accessionNo": "0001628280-26-061981",
+        "cik": "0001825088",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:26:07Z",
+        "reportDate": null,
+        "items": [
+          "1.01",
+          "3.02",
+          "3.03",
+          "5.03",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 1048576,
+        "url": "https://www.sec.gov/Archives/edgar/data/1825088/000162828026061981/0001628280-26-061981-index.htm"
+      },
+      {
+        "accessionNo": "0001330399-26-000117",
+        "cik": "0001330399",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:20:55Z",
+        "reportDate": null,
+        "items": [
+          "2.03",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 276480,
+        "url": "https://www.sec.gov/Archives/edgar/data/1330399/000133039926000117/0001330399-26-000117-index.htm"
+      },
+      {
+        "accessionNo": "0001331451-26-000170",
+        "cik": "0001331451",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:16:11Z",
+        "reportDate": null,
+        "items": [
+          "5.02"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 140288,
+        "url": "https://www.sec.gov/Archives/edgar/data/1331451/000133145126000170/0001331451-26-000170-index.htm"
+      },
+      {
+        "accessionNo": "0001104659-26-107736",
+        "cik": "0001552198",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:11:46Z",
+        "reportDate": null,
+        "items": [
+          "8.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 192512,
+        "url": "https://www.sec.gov/Archives/edgar/data/1552198/000110465926107736/0001104659-26-107736-index.htm"
+      },
+      {
+        "accessionNo": "0001193125-26-391415",
+        "cik": "0001585608",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:10:08Z",
+        "reportDate": null,
+        "items": [
+          "3.03",
+          "5.03",
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 184320,
+        "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526391415/0001193125-26-391415-index.htm"
+      },
+      {
+        "accessionNo": "0001793229-26-000071",
+        "cik": "0001793229",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:07:28Z",
+        "reportDate": null,
+        "items": [
+          "5.02",
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 166912,
+        "url": "https://www.sec.gov/Archives/edgar/data/1793229/000179322926000071/0001793229-26-000071-index.htm"
+      },
+      {
+        "accessionNo": "0001628280-26-061978",
+        "cik": "0001232524",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:06:12Z",
+        "reportDate": null,
+        "items": [
+          "7.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 354304,
+        "url": "https://www.sec.gov/Archives/edgar/data/1232524/000162828026061978/0001628280-26-061978-index.htm"
+      },
+      {
+        "accessionNo": "0001514416-26-000069",
+        "cik": "0001514416",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:05:22Z",
+        "reportDate": null,
+        "items": [
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 3145728,
+        "url": "https://www.sec.gov/Archives/edgar/data/1514416/000151441626000069/0001514416-26-000069-index.htm"
+      },
+      {
+        "accessionNo": "0000811589-26-000155",
+        "cik": "0000811589",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:05:11Z",
+        "reportDate": null,
+        "items": [
+          "8.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 1048576,
+        "url": "https://www.sec.gov/Archives/edgar/data/811589/000081158926000155/0000811589-26-000155-index.htm"
+      },
+      {
+        "accessionNo": "0001628280-26-061976",
+        "cik": "0000850429",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:02:25Z",
+        "reportDate": null,
+        "items": [
+          "5.02",
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 194560,
+        "url": "https://www.sec.gov/Archives/edgar/data/850429/000162828026061976/0001628280-26-061976-index.htm"
+      },
+      {
+        "accessionNo": "0002001557-26-000171",
+        "cik": "0002001557",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:01:20Z",
+        "reportDate": null,
+        "items": [
+          "8.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 207872,
+        "url": "https://www.sec.gov/Archives/edgar/data/2001557/000200155726000171/0002001557-26-000171-index.htm"
+      },
+      {
+        "accessionNo": "0001516912-26-000050",
+        "cik": "0001516912",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:01:06Z",
+        "reportDate": null,
+        "items": [
+          "3.01",
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 236544,
+        "url": "https://www.sec.gov/Archives/edgar/data/1516912/000151691226000050/0001516912-26-000050-index.htm"
+      },
+      {
+        "accessionNo": "0001193125-26-391409",
+        "cik": "0001888654",
+        "form": "8-K",
+        "filedDate": "2026-09-15",
+        "acceptedAt": "2026-09-15T13:00:18Z",
+        "reportDate": null,
+        "items": [
+          "1.01",
+          "3.02",
+          "7.01",
+          "9.01"
+        ],
+        "primaryDoc": null,
+        "primaryDocDesc": null,
+        "isXbrl": false,
+        "isInlineXbrl": false,
+        "sizeBytes": 1048576,
+        "url": "https://www.sec.gov/Archives/edgar/data/1888654/000119312526391409/0001193125-26-391409-index.htm"
+      }
+    ],
+    "entryCount": 40
+  }
+}

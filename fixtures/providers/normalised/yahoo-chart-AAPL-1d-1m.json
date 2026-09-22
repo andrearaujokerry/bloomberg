@@ -1,0 +1,3247 @@
+{
+  "ok": true,
+  "symbol": "AAPL",
+  "meta": {
+    "symbol": "AAPL",
+    "currency": "USD",
+    "instrumentType": "EQUITY",
+    "exchangeName": "NMS",
+    "fullExchangeName": "NasdaqGS",
+    "exchangeTimezoneName": "America/New_York",
+    "timezoneAbbr": "EDT",
+    "gmtOffsetSec": -14400,
+    "firstTradeDateMs": 345479400000,
+    "priceHint": 2,
+    "dataGranularity": "1m",
+    "range": "1d",
+    "regularMarketTimeMs": 1789497943000,
+    "regularMarketPrice": 330.235,
+    "regularMarketDayHigh": 331.59,
+    "regularMarketDayLow": 328.35,
+    "regularMarketVolume": 17626556,
+    "previousClose": 333.08,
+    "chartPreviousClose": 333.08,
+    "fiftyTwoWeekHigh": 344.57,
+    "fiftyTwoWeekLow": 236.32,
+    "hasPrePostMarketData": true,
+    "longName": "Apple Inc.",
+    "shortName": "Apple Inc.",
+    "currentTradingPeriod": {
+      "pre": {
+        "start": 1789459200,
+        "end": 1789479000,
+        "gmtOffsetSec": -14400,
+        "timezone": "EDT"
+      },
+      "regular": {
+        "start": 1789479000,
+        "end": 1789502400,
+        "gmtOffsetSec": -14400,
+        "timezone": "EDT"
+      },
+      "post": {
+        "start": 1789502400,
+        "end": 1789516800,
+        "gmtOffsetSec": -14400,
+        "timezone": "EDT"
+      }
+    },
+    "regularPeriods": [
+      {
+        "start": 1789479000,
+        "end": 1789502400,
+        "gmtOffsetSec": -14400,
+        "timezone": "EDT"
+      }
+    ]
+  },
+  "quote": {
+    "fields": {
+      "PX_LAST": 330.235,
+      "PX_HIGH": 331.59,
+      "PX_LOW": 328.35,
+      "PX_VOLUME": 17626556,
+      "PX_CLOSE_1D": 333.08
+    },
+    "sourceTsMs": 1789497943000,
+    "session": "open",
+    "fiftyTwoWeekHigh": 344.57,
+    "fiftyTwoWeekLow": 236.32
+  },
+  "granularity": "1m",
+  "requestedInterval": "1m",
+  "granularityMatchesRequest": true,
+  "barKind": "intraday",
+  "barsWritable": true,
+  "bars": [
+    {
+      "barTs": 1789479000000,
+      "open": 330.260009765625,
+      "high": 331.1300048828125,
+      "low": 328.3500061035156,
+      "close": 331.0299987792969,
+      "volume": 1296997,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479060000,
+      "open": 330.9599914550781,
+      "high": 331.5,
+      "low": 330.2699890136719,
+      "close": 330.4200134277344,
+      "volume": 205009,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479120000,
+      "open": 330.3900146484375,
+      "high": 331.2786865234375,
+      "low": 330.3800048828125,
+      "close": 330.5899963378906,
+      "volume": 108865,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479180000,
+      "open": 330.6400146484375,
+      "high": 330.6799011230469,
+      "low": 329.8900146484375,
+      "close": 329.98968505859375,
+      "volume": 148125,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479240000,
+      "open": 329.9800109863281,
+      "high": 330.28289794921875,
+      "low": 329.69000244140625,
+      "close": 330.1700134277344,
+      "volume": 92368,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479300000,
+      "open": 330.1199951171875,
+      "high": 330.6300048828125,
+      "low": 330.0450134277344,
+      "close": 330.3699951171875,
+      "volume": 138301,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479360000,
+      "open": 330.3699951171875,
+      "high": 330.760009765625,
+      "low": 330.2749938964844,
+      "close": 330.6449890136719,
+      "volume": 87578,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479420000,
+      "open": 330.6300048828125,
+      "high": 330.9200134277344,
+      "low": 330.5199890136719,
+      "close": 330.9200134277344,
+      "volume": 85119,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479480000,
+      "open": 330.9150085449219,
+      "high": 331.3999938964844,
+      "low": 330.7799987792969,
+      "close": 331.2250061035156,
+      "volume": 123069,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479540000,
+      "open": 331.2300109863281,
+      "high": 331.375,
+      "low": 330.9200134277344,
+      "close": 331.28509521484375,
+      "volume": 81279,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479600000,
+      "open": 331.25,
+      "high": 331.3399963378906,
+      "low": 330.2701110839844,
+      "close": 330.6200866699219,
+      "volume": 93584,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479660000,
+      "open": 330.6499938964844,
+      "high": 330.8900146484375,
+      "low": 330.45001220703125,
+      "close": 330.7900085449219,
+      "volume": 62744,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479720000,
+      "open": 330.739990234375,
+      "high": 330.8500061035156,
+      "low": 330.19000244140625,
+      "close": 330.2049865722656,
+      "volume": 69955,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479780000,
+      "open": 330.2049865722656,
+      "high": 330.5050048828125,
+      "low": 330.1700134277344,
+      "close": 330.30999755859375,
+      "volume": 71791,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479840000,
+      "open": 330.29119873046875,
+      "high": 330.5899963378906,
+      "low": 330.2650146484375,
+      "close": 330.30499267578125,
+      "volume": 60411,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479900000,
+      "open": 330.3299865722656,
+      "high": 330.67498779296875,
+      "low": 330.0220031738281,
+      "close": 330.6400146484375,
+      "volume": 141260,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479960000,
+      "open": 330.69000244140625,
+      "high": 330.8699951171875,
+      "low": 330.5101013183594,
+      "close": 330.5400085449219,
+      "volume": 114305,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480020000,
+      "open": 330.5199890136719,
+      "high": 330.7799987792969,
+      "low": 330.3999938964844,
+      "close": 330.5950012207031,
+      "volume": 56559,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480080000,
+      "open": 330.5834045410156,
+      "high": 330.5899963378906,
+      "low": 330.20001220703125,
+      "close": 330.2850036621094,
+      "volume": 137937,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480140000,
+      "open": 330.2900085449219,
+      "high": 330.5899963378906,
+      "low": 330.2601013183594,
+      "close": 330.4599914550781,
+      "volume": 73200,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480200000,
+      "open": 330.4700012207031,
+      "high": 330.6000061035156,
+      "low": 330.260009765625,
+      "close": 330.2699890136719,
+      "volume": 82335,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480260000,
+      "open": 330.2699890136719,
+      "high": 330.55999755859375,
+      "low": 330.1000061035156,
+      "close": 330.19000244140625,
+      "volume": 55198,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480320000,
+      "open": 330.2149963378906,
+      "high": 330.8399963378906,
+      "low": 330.18499755859375,
+      "close": 330.7950134277344,
+      "volume": 87269,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480380000,
+      "open": 330.7699890136719,
+      "high": 330.9800109863281,
+      "low": 330.5400085449219,
+      "close": 330.7250061035156,
+      "volume": 66776,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480440000,
+      "open": 330.7250061035156,
+      "high": 330.82000732421875,
+      "low": 330.55999755859375,
+      "close": 330.7349853515625,
+      "volume": 52704,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480500000,
+      "open": 330.7099914550781,
+      "high": 330.8999938964844,
+      "low": 330.5603942871094,
+      "close": 330.7099914550781,
+      "volume": 50811,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480560000,
+      "open": 330.7099914550781,
+      "high": 330.7099914550781,
+      "low": 330.45001220703125,
+      "close": 330.5299987792969,
+      "volume": 58587,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480620000,
+      "open": 330.5299987792969,
+      "high": 331.45001220703125,
+      "low": 330.4400939941406,
+      "close": 331.32000732421875,
+      "volume": 149000,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480680000,
+      "open": 331.3674011230469,
+      "high": 331.5899963378906,
+      "low": 331.19000244140625,
+      "close": 331.4200134277344,
+      "volume": 183878,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480740000,
+      "open": 331.42498779296875,
+      "high": 331.57000732421875,
+      "low": 330.7099914550781,
+      "close": 330.7099914550781,
+      "volume": 118909,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480800000,
+      "open": 330.7349853515625,
+      "high": 330.7349853515625,
+      "low": 330.0199890136719,
+      "close": 330.5450134277344,
+      "volume": 248802,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480860000,
+      "open": 330.510009765625,
+      "high": 330.6000061035156,
+      "low": 330.1000061035156,
+      "close": 330.3999938964844,
+      "volume": 107472,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480920000,
+      "open": 330.3800048828125,
+      "high": 330.5199890136719,
+      "low": 330.1449890136719,
+      "close": 330.4750061035156,
+      "volume": 96603,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480980000,
+      "open": 330.4800109863281,
+      "high": 330.69000244140625,
+      "low": 330.3699951171875,
+      "close": 330.6300048828125,
+      "volume": 80676,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481040000,
+      "open": 330.6000061035156,
+      "high": 330.6000061035156,
+      "low": 330.0899963378906,
+      "close": 330.2200012207031,
+      "volume": 84103,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481100000,
+      "open": 330.2200012207031,
+      "high": 330.2200012207031,
+      "low": 329.75,
+      "close": 330.1036071777344,
+      "volume": 195380,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481160000,
+      "open": 330.1033020019531,
+      "high": 330.1099853515625,
+      "low": 329.54998779296875,
+      "close": 329.57000732421875,
+      "volume": 102003,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481220000,
+      "open": 329.5899963378906,
+      "high": 329.75,
+      "low": 329.4599914550781,
+      "close": 329.69000244140625,
+      "volume": 108650,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481280000,
+      "open": 329.67401123046875,
+      "high": 329.7349853515625,
+      "low": 329.5799865722656,
+      "close": 329.6510009765625,
+      "volume": 125922,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481340000,
+      "open": 329.6650085449219,
+      "high": 329.739990234375,
+      "low": 329.489990234375,
+      "close": 329.7200012207031,
+      "volume": 95491,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481400000,
+      "open": 329.7300109863281,
+      "high": 330.1000061035156,
+      "low": 329.6000061035156,
+      "close": 329.6499938964844,
+      "volume": 75738,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481460000,
+      "open": 329.6650085449219,
+      "high": 330.2699890136719,
+      "low": 329.6099853515625,
+      "close": 330.239990234375,
+      "volume": 71747,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481520000,
+      "open": 330.2449951171875,
+      "high": 330.30999755859375,
+      "low": 329.510009765625,
+      "close": 329.57501220703125,
+      "volume": 79801,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481580000,
+      "open": 329.5799865722656,
+      "high": 329.7200012207031,
+      "low": 329.4100036621094,
+      "close": 329.5350036621094,
+      "volume": 78470,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481640000,
+      "open": 329.5350036621094,
+      "high": 329.9399108886719,
+      "low": 329.5201110839844,
+      "close": 329.755615234375,
+      "volume": 59674,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481700000,
+      "open": 329.7300109863281,
+      "high": 329.7900085449219,
+      "low": 329.5216979980469,
+      "close": 329.55999755859375,
+      "volume": 39040,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481760000,
+      "open": 329.54998779296875,
+      "high": 329.989990234375,
+      "low": 329.54998779296875,
+      "close": 329.80999755859375,
+      "volume": 48297,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481820000,
+      "open": 329.82000732421875,
+      "high": 329.8387145996094,
+      "low": 329.4200134277344,
+      "close": 329.5566101074219,
+      "volume": 59040,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481880000,
+      "open": 329.54998779296875,
+      "high": 329.7900085449219,
+      "low": 329.5050048828125,
+      "close": 329.6400146484375,
+      "volume": 45634,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481940000,
+      "open": 329.6499938964844,
+      "high": 329.7250061035156,
+      "low": 329.5,
+      "close": 329.6000061035156,
+      "volume": 47888,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482000000,
+      "open": 329.614990234375,
+      "high": 330.2699890136719,
+      "low": 329.58709716796875,
+      "close": 330.2349853515625,
+      "volume": 83411,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482060000,
+      "open": 330.2349853515625,
+      "high": 330.2349853515625,
+      "low": 329.875,
+      "close": 329.9649963378906,
+      "volume": 58402,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482120000,
+      "open": 329.9700012207031,
+      "high": 330.039794921875,
+      "low": 329.70001220703125,
+      "close": 329.8699951171875,
+      "volume": 51163,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482180000,
+      "open": 329.8500061035156,
+      "high": 329.8900146484375,
+      "low": 329.4800109863281,
+      "close": 329.5299987792969,
+      "volume": 39515,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482240000,
+      "open": 329.55999755859375,
+      "high": 329.6099853515625,
+      "low": 329.2900085449219,
+      "close": 329.3900146484375,
+      "volume": 71819,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482300000,
+      "open": 329.3949890136719,
+      "high": 329.7900085449219,
+      "low": 329.3699951171875,
+      "close": 329.6600036621094,
+      "volume": 51711,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482360000,
+      "open": 329.6632080078125,
+      "high": 329.7250061035156,
+      "low": 329.4100036621094,
+      "close": 329.52508544921875,
+      "volume": 52891,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482420000,
+      "open": 329.5487976074219,
+      "high": 329.6300048828125,
+      "low": 329.3999938964844,
+      "close": 329.45001220703125,
+      "volume": 46305,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482480000,
+      "open": 329.4549865722656,
+      "high": 329.5398864746094,
+      "low": 329.32000732421875,
+      "close": 329.4700012207031,
+      "volume": 44228,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482540000,
+      "open": 329.489990234375,
+      "high": 329.6499938964844,
+      "low": 329.375,
+      "close": 329.5400085449219,
+      "volume": 69589,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482600000,
+      "open": 329.45001220703125,
+      "high": 329.55999755859375,
+      "low": 329.0588073730469,
+      "close": 329.1000061035156,
+      "volume": 271290,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482660000,
+      "open": 329.06500244140625,
+      "high": 329.3399963378906,
+      "low": 329,
+      "close": 329.239990234375,
+      "volume": 52970,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482720000,
+      "open": 329.2300109863281,
+      "high": 329.2799987792969,
+      "low": 329.110107421875,
+      "close": 329.125,
+      "volume": 33457,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482780000,
+      "open": 329.135009765625,
+      "high": 329.29998779296875,
+      "low": 329.0899963378906,
+      "close": 329.1600036621094,
+      "volume": 43464,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482840000,
+      "open": 329.1700134277344,
+      "high": 329.20001220703125,
+      "low": 328.8800048828125,
+      "close": 329.1499938964844,
+      "volume": 92092,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482900000,
+      "open": 329.1449890136719,
+      "high": 329.5,
+      "low": 329.1028137207031,
+      "close": 329.3999938964844,
+      "volume": 68922,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482960000,
+      "open": 329.3900146484375,
+      "high": 329.5400085449219,
+      "low": 329.36700439453125,
+      "close": 329.5378112792969,
+      "volume": 37788,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483020000,
+      "open": 329.5,
+      "high": 329.6600036621094,
+      "low": 329.2099914550781,
+      "close": 329.239990234375,
+      "volume": 58858,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483080000,
+      "open": 329.20001220703125,
+      "high": 329.2879943847656,
+      "low": 329.07501220703125,
+      "close": 329.239990234375,
+      "volume": 39264,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483140000,
+      "open": 329.2300109863281,
+      "high": 329.42999267578125,
+      "low": 329.2149963378906,
+      "close": 329.3599853515625,
+      "volume": 35793,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483200000,
+      "open": 329.3399963378906,
+      "high": 329.95001220703125,
+      "low": 329.2550048828125,
+      "close": 329.8999938964844,
+      "volume": 92799,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483260000,
+      "open": 329.8999938964844,
+      "high": 329.9800109863281,
+      "low": 329.70001220703125,
+      "close": 329.80999755859375,
+      "volume": 87193,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483320000,
+      "open": 329.82000732421875,
+      "high": 329.8699951171875,
+      "low": 329.4599914550781,
+      "close": 329.4599914550781,
+      "volume": 45760,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483380000,
+      "open": 329.4849853515625,
+      "high": 329.739990234375,
+      "low": 329.4549865722656,
+      "close": 329.6050109863281,
+      "volume": 42638,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483440000,
+      "open": 329.6000061035156,
+      "high": 329.6000061035156,
+      "low": 329.3800048828125,
+      "close": 329.5299987792969,
+      "volume": 61512,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483500000,
+      "open": 329.5249938964844,
+      "high": 329.6000061035156,
+      "low": 329.45001220703125,
+      "close": 329.55999755859375,
+      "volume": 35572,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483560000,
+      "open": 329.5199890136719,
+      "high": 329.8299865722656,
+      "low": 329.4200134277344,
+      "close": 329.6650085449219,
+      "volume": 54744,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483620000,
+      "open": 329.6400146484375,
+      "high": 329.9150085449219,
+      "low": 329.6300048828125,
+      "close": 329.8900146484375,
+      "volume": 39362,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483680000,
+      "open": 329.9200134277344,
+      "high": 329.92999267578125,
+      "low": 329.4599914550781,
+      "close": 329.4700012207031,
+      "volume": 44787,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483740000,
+      "open": 329.4750061035156,
+      "high": 329.6700134277344,
+      "low": 329.4601135253906,
+      "close": 329.6099853515625,
+      "volume": 39651,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483800000,
+      "open": 329.6083068847656,
+      "high": 329.7799987792969,
+      "low": 329.5199890136719,
+      "close": 329.7099914550781,
+      "volume": 32430,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483860000,
+      "open": 329.7099914550781,
+      "high": 329.8399963378906,
+      "low": 329.4800109863281,
+      "close": 329.67999267578125,
+      "volume": 41411,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483920000,
+      "open": 329.6650085449219,
+      "high": 329.8800048828125,
+      "low": 329.6000061035156,
+      "close": 329.7799987792969,
+      "volume": 36634,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483980000,
+      "open": 329.7699890136719,
+      "high": 329.7900085449219,
+      "low": 329.42999267578125,
+      "close": 329.5400085449219,
+      "volume": 44142,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484040000,
+      "open": 329.54998779296875,
+      "high": 329.7200012207031,
+      "low": 329.5199890136719,
+      "close": 329.68499755859375,
+      "volume": 40062,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484100000,
+      "open": 329.6899108886719,
+      "high": 330.0398864746094,
+      "low": 329.5400085449219,
+      "close": 329.9949951171875,
+      "volume": 72425,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484160000,
+      "open": 329.9949951171875,
+      "high": 330.125,
+      "low": 329.8200988769531,
+      "close": 330.0398864746094,
+      "volume": 66575,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484220000,
+      "open": 330.0284118652344,
+      "high": 330.17999267578125,
+      "low": 330.01959228515625,
+      "close": 330.05999755859375,
+      "volume": 107270,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484280000,
+      "open": 330.039306640625,
+      "high": 330.29998779296875,
+      "low": 329.8299865722656,
+      "close": 330.0950012207031,
+      "volume": 243070,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484340000,
+      "open": 330.07000732421875,
+      "high": 330.1000061035156,
+      "low": 329.7099914550781,
+      "close": 329.760009765625,
+      "volume": 33876,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484400000,
+      "open": 329.7900085449219,
+      "high": 329.8900146484375,
+      "low": 329.70001220703125,
+      "close": 329.8900146484375,
+      "volume": 50959,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484460000,
+      "open": 329.8699951171875,
+      "high": 330.0299987792969,
+      "low": 329.75,
+      "close": 329.8500061035156,
+      "volume": 44059,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484520000,
+      "open": 329.80999755859375,
+      "high": 330.0849914550781,
+      "low": 329.760009765625,
+      "close": 329.9949951171875,
+      "volume": 42656,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484580000,
+      "open": 329.9700012207031,
+      "high": 330.0400085449219,
+      "low": 329.8299865722656,
+      "close": 329.8699951171875,
+      "volume": 55822,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484640000,
+      "open": 329.8399963378906,
+      "high": 329.864990234375,
+      "low": 329.5400085449219,
+      "close": 329.5700988769531,
+      "volume": 39710,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484700000,
+      "open": 329.56500244140625,
+      "high": 329.6099853515625,
+      "low": 329.3399963378906,
+      "close": 329.3450012207031,
+      "volume": 48487,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484760000,
+      "open": 329.3500061035156,
+      "high": 329.5899963378906,
+      "low": 329.285888671875,
+      "close": 329.4599914550781,
+      "volume": 42660,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484820000,
+      "open": 329.4599914550781,
+      "high": 329.70001220703125,
+      "low": 329.3999938964844,
+      "close": 329.5299987792969,
+      "volume": 34526,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484880000,
+      "open": 329.5400085449219,
+      "high": 329.54998779296875,
+      "low": 329.2825012207031,
+      "close": 329.3349914550781,
+      "volume": 33175,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484940000,
+      "open": 329.3125,
+      "high": 329.4150085449219,
+      "low": 329.260009765625,
+      "close": 329.2900085449219,
+      "volume": 29246,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485000000,
+      "open": 329.2799987792969,
+      "high": 329.36248779296875,
+      "low": 329.1099853515625,
+      "close": 329.3399963378906,
+      "volume": 47125,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485060000,
+      "open": 329.3500061035156,
+      "high": 329.3900146484375,
+      "low": 329.04998779296875,
+      "close": 329.2149963378906,
+      "volume": 60011,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485120000,
+      "open": 329.22601318359375,
+      "high": 329.6600036621094,
+      "low": 329.17999267578125,
+      "close": 329.6199951171875,
+      "volume": 53326,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485180000,
+      "open": 329.6000061035156,
+      "high": 329.82000732421875,
+      "low": 329.5299987792969,
+      "close": 329.7149963378906,
+      "volume": 47574,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485240000,
+      "open": 329.7200012207031,
+      "high": 329.7900085449219,
+      "low": 329.4599914550781,
+      "close": 329.5199890136719,
+      "volume": 33701,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485300000,
+      "open": 329.510009765625,
+      "high": 329.5899963378906,
+      "low": 329.3900146484375,
+      "close": 329.4649963378906,
+      "volume": 1289142,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485360000,
+      "open": 329.44000244140625,
+      "high": 329.4949951171875,
+      "low": 329.3399963378906,
+      "close": 329.42999267578125,
+      "volume": 42424,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485420000,
+      "open": 329.42999267578125,
+      "high": 329.55999755859375,
+      "low": 329.260009765625,
+      "close": 329.55999755859375,
+      "volume": 48400,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485480000,
+      "open": 329.5599060058594,
+      "high": 329.8299865722656,
+      "low": 329.510009765625,
+      "close": 329.7401123046875,
+      "volume": 38370,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485540000,
+      "open": 329.75,
+      "high": 330.2637939453125,
+      "low": 329.739990234375,
+      "close": 330.19000244140625,
+      "volume": 83522,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485600000,
+      "open": 330.1700134277344,
+      "high": 330.2099914550781,
+      "low": 330.07000732421875,
+      "close": 330.1199951171875,
+      "volume": 32215,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485660000,
+      "open": 330.0950012207031,
+      "high": 330.2998962402344,
+      "low": 330.0799865722656,
+      "close": 330.2898864746094,
+      "volume": 69044,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485720000,
+      "open": 330.281005859375,
+      "high": 330.3299865722656,
+      "low": 330,
+      "close": 330.03399658203125,
+      "volume": 66470,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485780000,
+      "open": 330.0299987792969,
+      "high": 330.2699890136719,
+      "low": 330.0199890136719,
+      "close": 330.07501220703125,
+      "volume": 42985,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485840000,
+      "open": 330.05999755859375,
+      "high": 330.05999755859375,
+      "low": 329.8900146484375,
+      "close": 329.9150085449219,
+      "volume": 42597,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485900000,
+      "open": 329.92999267578125,
+      "high": 329.95001220703125,
+      "low": 329.7300109863281,
+      "close": 329.7799987792969,
+      "volume": 34114,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485960000,
+      "open": 329.7900085449219,
+      "high": 330.0899963378906,
+      "low": 329.789794921875,
+      "close": 330.05499267578125,
+      "volume": 48278,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486020000,
+      "open": 330.07000732421875,
+      "high": 330.1099853515625,
+      "low": 329.739990234375,
+      "close": 330,
+      "volume": 34126,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486080000,
+      "open": 330.010009765625,
+      "high": 330.0199890136719,
+      "low": 329.70001220703125,
+      "close": 329.8299865722656,
+      "volume": 43080,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486140000,
+      "open": 329.8599853515625,
+      "high": 330,
+      "low": 329.8212890625,
+      "close": 329.9100036621094,
+      "volume": 32206,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486200000,
+      "open": 329.9200134277344,
+      "high": 330.010009765625,
+      "low": 329.79998779296875,
+      "close": 329.9100036621094,
+      "volume": 46263,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486260000,
+      "open": 329.9100036621094,
+      "high": 329.9100036621094,
+      "low": 329.6099853515625,
+      "close": 329.6199951171875,
+      "volume": 46774,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486320000,
+      "open": 329.6300048828125,
+      "high": 329.6600036621094,
+      "low": 329.3399963378906,
+      "close": 329.6600036621094,
+      "volume": 55717,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486380000,
+      "open": 329.6650085449219,
+      "high": 329.6650085449219,
+      "low": 329.4200134277344,
+      "close": 329.44000244140625,
+      "volume": 19993,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486440000,
+      "open": 329.4599914550781,
+      "high": 329.5398864746094,
+      "low": 329.37701416015625,
+      "close": 329.5398864746094,
+      "volume": 36456,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486500000,
+      "open": 329.5400085449219,
+      "high": 329.67999267578125,
+      "low": 329.4599914550781,
+      "close": 329.6199951171875,
+      "volume": 35066,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486560000,
+      "open": 329.6099853515625,
+      "high": 329.75,
+      "low": 329.5799865722656,
+      "close": 329.7049865722656,
+      "volume": 31131,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486620000,
+      "open": 329.70001220703125,
+      "high": 329.7101135253906,
+      "low": 329.5050048828125,
+      "close": 329.5199890136719,
+      "volume": 36289,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486680000,
+      "open": 329.5450134277344,
+      "high": 329.67999267578125,
+      "low": 329.5450134277344,
+      "close": 329.5899963378906,
+      "volume": 28256,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486740000,
+      "open": 329.5899963378906,
+      "high": 329.69500732421875,
+      "low": 329.510009765625,
+      "close": 329.5899963378906,
+      "volume": 30201,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486800000,
+      "open": 329.5799865722656,
+      "high": 329.70001220703125,
+      "low": 329.54998779296875,
+      "close": 329.6700134277344,
+      "volume": 46104,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486860000,
+      "open": 329.6700134277344,
+      "high": 329.7300109863281,
+      "low": 329.5400085449219,
+      "close": 329.67999267578125,
+      "volume": 38359,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486920000,
+      "open": 329.69000244140625,
+      "high": 329.9700012207031,
+      "low": 329.69000244140625,
+      "close": 329.9649963378906,
+      "volume": 45277,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486980000,
+      "open": 329.95001220703125,
+      "high": 329.95001220703125,
+      "low": 329.80499267578125,
+      "close": 329.8699951171875,
+      "volume": 39651,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487040000,
+      "open": 329.875,
+      "high": 329.9700012207031,
+      "low": 329.8699951171875,
+      "close": 329.9049987792969,
+      "volume": 29359,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487100000,
+      "open": 329.8999938964844,
+      "high": 330,
+      "low": 329.885009765625,
+      "close": 329.9700012207031,
+      "volume": 35288,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487160000,
+      "open": 329.9800109863281,
+      "high": 330.0400085449219,
+      "low": 329.9150085449219,
+      "close": 329.9700012207031,
+      "volume": 41892,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487220000,
+      "open": 329.95001220703125,
+      "high": 329.9750061035156,
+      "low": 329.6466979980469,
+      "close": 329.6549987792969,
+      "volume": 29460,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487280000,
+      "open": 329.6700134277344,
+      "high": 329.7799987792969,
+      "low": 329.6499938964844,
+      "close": 329.6724853515625,
+      "volume": 22413,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487340000,
+      "open": 329.67999267578125,
+      "high": 329.70941162109375,
+      "low": 329.3800048828125,
+      "close": 329.5,
+      "volume": 33149,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487400000,
+      "open": 329.5,
+      "high": 329.80999755859375,
+      "low": 329.4750061035156,
+      "close": 329.6199951171875,
+      "volume": 69446,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487460000,
+      "open": 329.6099853515625,
+      "high": 329.62908935546875,
+      "low": 329.4599914550781,
+      "close": 329.5,
+      "volume": 31612,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487520000,
+      "open": 329.489990234375,
+      "high": 329.6300048828125,
+      "low": 329.4200134277344,
+      "close": 329.4200134277344,
+      "volume": 31274,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487580000,
+      "open": 329.4200134277344,
+      "high": 329.6099853515625,
+      "low": 329.3999938964844,
+      "close": 329.5450134277344,
+      "volume": 36453,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487640000,
+      "open": 329.5199890136719,
+      "high": 329.55999755859375,
+      "low": 329.2850036621094,
+      "close": 329.32000732421875,
+      "volume": 23633,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487700000,
+      "open": 329.31500244140625,
+      "high": 329.7799987792969,
+      "low": 329.29010009765625,
+      "close": 329.6449890136719,
+      "volume": 47378,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487760000,
+      "open": 329.6449890136719,
+      "high": 329.6600036621094,
+      "low": 329.4800109863281,
+      "close": 329.5799865722656,
+      "volume": 23526,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487820000,
+      "open": 329.5705871582031,
+      "high": 329.67999267578125,
+      "low": 329.5705871582031,
+      "close": 329.67999267578125,
+      "volume": 34627,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487880000,
+      "open": 329.67999267578125,
+      "high": 329.760009765625,
+      "low": 329.5299987792969,
+      "close": 329.6099853515625,
+      "volume": 25624,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487940000,
+      "open": 329.6199951171875,
+      "high": 329.7200012207031,
+      "low": 329.5892028808594,
+      "close": 329.6000061035156,
+      "volume": 28354,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488000000,
+      "open": 329.6050109863281,
+      "high": 329.7900085449219,
+      "low": 329.5899963378906,
+      "close": 329.6199951171875,
+      "volume": 29616,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488060000,
+      "open": 329.6199951171875,
+      "high": 329.67999267578125,
+      "low": 329.5950012207031,
+      "close": 329.6000061035156,
+      "volume": 18387,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488120000,
+      "open": 329.6000061035156,
+      "high": 329.6499938964844,
+      "low": 329.54998779296875,
+      "close": 329.625,
+      "volume": 27475,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488180000,
+      "open": 329.6260070800781,
+      "high": 329.75,
+      "low": 329.5,
+      "close": 329.6499938964844,
+      "volume": 50435,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488240000,
+      "open": 329.6400146484375,
+      "high": 329.82501220703125,
+      "low": 329.6400146484375,
+      "close": 329.7300109863281,
+      "volume": 25130,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488300000,
+      "open": 329.760009765625,
+      "high": 329.7650146484375,
+      "low": 329.6300048828125,
+      "close": 329.7049865722656,
+      "volume": 52270,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488360000,
+      "open": 329.69000244140625,
+      "high": 329.7900085449219,
+      "low": 329.67999267578125,
+      "close": 329.7300109863281,
+      "volume": 26589,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488420000,
+      "open": 329.7300109863281,
+      "high": 329.79998779296875,
+      "low": 329.55999755859375,
+      "close": 329.7099914550781,
+      "volume": 38537,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488480000,
+      "open": 329.7149963378906,
+      "high": 330.2799987792969,
+      "low": 329.70001220703125,
+      "close": 330.2250061035156,
+      "volume": 48328,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488540000,
+      "open": 330.2300109863281,
+      "high": 330.2900085449219,
+      "low": 330.010009765625,
+      "close": 330.114990234375,
+      "volume": 34575,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488600000,
+      "open": 330.1050109863281,
+      "high": 330.3399963378906,
+      "low": 330.0954895019531,
+      "close": 330.2799987792969,
+      "volume": 46182,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488660000,
+      "open": 330.239990234375,
+      "high": 330.3299865722656,
+      "low": 330.2099914550781,
+      "close": 330.29998779296875,
+      "volume": 36680,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488720000,
+      "open": 330.30999755859375,
+      "high": 330.3399963378906,
+      "low": 330.2164001464844,
+      "close": 330.32501220703125,
+      "volume": 51386,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488780000,
+      "open": 330.3399963378906,
+      "high": 330.42999267578125,
+      "low": 330.239990234375,
+      "close": 330.3299865722656,
+      "volume": 51143,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488840000,
+      "open": 330.30999755859375,
+      "high": 330.364990234375,
+      "low": 330.0632019042969,
+      "close": 330.114990234375,
+      "volume": 38506,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488900000,
+      "open": 330.1000061035156,
+      "high": 330.2200012207031,
+      "low": 330,
+      "close": 330.159912109375,
+      "volume": 41621,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488960000,
+      "open": 330.1400146484375,
+      "high": 330.19000244140625,
+      "low": 330.0199890136719,
+      "close": 330.1449890136719,
+      "volume": 22797,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489020000,
+      "open": 330.1499938964844,
+      "high": 330.33538818359375,
+      "low": 330.1499938964844,
+      "close": 330.2200012207031,
+      "volume": 41710,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489080000,
+      "open": 330.2250061035156,
+      "high": 330.239990234375,
+      "low": 330.0799865722656,
+      "close": 330.114990234375,
+      "volume": 21523,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489140000,
+      "open": 330.1400146484375,
+      "high": 330.3299865722656,
+      "low": 330.1400146484375,
+      "close": 330.2850036621094,
+      "volume": 29067,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489200000,
+      "open": 330.2799987792969,
+      "high": 330.4599914550781,
+      "low": 330.2749938964844,
+      "close": 330.3800048828125,
+      "volume": 54630,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489260000,
+      "open": 330.3800048828125,
+      "high": 330.7300109863281,
+      "low": 330.3800048828125,
+      "close": 330.6600036621094,
+      "volume": 59062,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489320000,
+      "open": 330.67498779296875,
+      "high": 330.8699951171875,
+      "low": 330.6328125,
+      "close": 330.75,
+      "volume": 47355,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489380000,
+      "open": 330.7101135253906,
+      "high": 330.82000732421875,
+      "low": 330.64678955078125,
+      "close": 330.7650146484375,
+      "volume": 41054,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489440000,
+      "open": 330.7699890136719,
+      "high": 330.80999755859375,
+      "low": 330.6099853515625,
+      "close": 330.6296081542969,
+      "volume": 22113,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489500000,
+      "open": 330.6300964355469,
+      "high": 330.739990234375,
+      "low": 330.590087890625,
+      "close": 330.6700134277344,
+      "volume": 24507,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489560000,
+      "open": 330.67498779296875,
+      "high": 330.67498779296875,
+      "low": 330.510009765625,
+      "close": 330.6199951171875,
+      "volume": 34837,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489620000,
+      "open": 330.625,
+      "high": 330.69000244140625,
+      "low": 330.55999755859375,
+      "close": 330.57000732421875,
+      "volume": 21743,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489680000,
+      "open": 330.57000732421875,
+      "high": 330.6600036621094,
+      "low": 330.510009765625,
+      "close": 330.5899963378906,
+      "volume": 27724,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489740000,
+      "open": 330.6050109863281,
+      "high": 330.6199951171875,
+      "low": 330.3900146484375,
+      "close": 330.4190979003906,
+      "volume": 43125,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489800000,
+      "open": 330.40020751953125,
+      "high": 330.4200134277344,
+      "low": 330.260009765625,
+      "close": 330.32501220703125,
+      "volume": 30238,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489860000,
+      "open": 330.3299865722656,
+      "high": 330.4599914550781,
+      "low": 330.2550048828125,
+      "close": 330.44000244140625,
+      "volume": 37604,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489920000,
+      "open": 330.44000244140625,
+      "high": 330.62921142578125,
+      "low": 330.4100036621094,
+      "close": 330.510009765625,
+      "volume": 39888,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489980000,
+      "open": 330.510009765625,
+      "high": 330.6099853515625,
+      "low": 330.5,
+      "close": 330.5199890136719,
+      "volume": 28308,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490040000,
+      "open": 330.5299987792969,
+      "high": 330.5799865722656,
+      "low": 330.5,
+      "close": 330.5199890136719,
+      "volume": 35674,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490100000,
+      "open": 330.510009765625,
+      "high": 330.5299987792969,
+      "low": 330.2200927734375,
+      "close": 330.29998779296875,
+      "volume": 39874,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490160000,
+      "open": 330.2950134277344,
+      "high": 330.375,
+      "low": 330.1300048828125,
+      "close": 330.19989013671875,
+      "volume": 52541,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490220000,
+      "open": 330.20001220703125,
+      "high": 330.32110595703125,
+      "low": 330.1499938964844,
+      "close": 330.17999267578125,
+      "volume": 28587,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490280000,
+      "open": 330.1794128417969,
+      "high": 330.1859130859375,
+      "low": 330,
+      "close": 330.1300048828125,
+      "volume": 52709,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490340000,
+      "open": 330.1300048828125,
+      "high": 330.17498779296875,
+      "low": 330.07000732421875,
+      "close": 330.0920104980469,
+      "volume": 21041,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490400000,
+      "open": 330.0899963378906,
+      "high": 330.17999267578125,
+      "low": 330.014404296875,
+      "close": 330.12249755859375,
+      "volume": 26505,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490460000,
+      "open": 330.1199951171875,
+      "high": 330.1199951171875,
+      "low": 329.80010986328125,
+      "close": 329.8399963378906,
+      "volume": 69089,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490520000,
+      "open": 329.8399963378906,
+      "high": 329.92498779296875,
+      "low": 329.8006896972656,
+      "close": 329.8949890136719,
+      "volume": 20347,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490580000,
+      "open": 329.9100036621094,
+      "high": 329.9100036621094,
+      "low": 329.7699890136719,
+      "close": 329.79998779296875,
+      "volume": 41785,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490640000,
+      "open": 329.80499267578125,
+      "high": 329.989990234375,
+      "low": 329.80499267578125,
+      "close": 329.9224853515625,
+      "volume": 41782,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490700000,
+      "open": 329.92999267578125,
+      "high": 330.1000061035156,
+      "low": 329.84259033203125,
+      "close": 330.0350036621094,
+      "volume": 41282,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490760000,
+      "open": 330.04998779296875,
+      "high": 330.19000244140625,
+      "low": 330,
+      "close": 330.122802734375,
+      "volume": 34705,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490820000,
+      "open": 330.1199951171875,
+      "high": 330.17999267578125,
+      "low": 330.04010009765625,
+      "close": 330.114990234375,
+      "volume": 23607,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490880000,
+      "open": 330.1199951171875,
+      "high": 330.1300048828125,
+      "low": 329.9649963378906,
+      "close": 330.0249938964844,
+      "volume": 28894,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490940000,
+      "open": 330.0249938964844,
+      "high": 330.05999755859375,
+      "low": 329.9501037597656,
+      "close": 330.05999755859375,
+      "volume": 22836,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491000000,
+      "open": 330.0400085449219,
+      "high": 330.1300048828125,
+      "low": 330,
+      "close": 330.0199890136719,
+      "volume": 27352,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491060000,
+      "open": 330.0199890136719,
+      "high": 330.07000732421875,
+      "low": 329.8999938964844,
+      "close": 329.8999938964844,
+      "volume": 32331,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491120000,
+      "open": 329.885009765625,
+      "high": 330,
+      "low": 329.8699951171875,
+      "close": 329.9750061035156,
+      "volume": 22382,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491180000,
+      "open": 329.97198486328125,
+      "high": 329.97198486328125,
+      "low": 329.7702941894531,
+      "close": 329.82000732421875,
+      "volume": 25739,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491240000,
+      "open": 329.82501220703125,
+      "high": 329.9700012207031,
+      "low": 329.82501220703125,
+      "close": 329.968994140625,
+      "volume": 35566,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491300000,
+      "open": 329.95001220703125,
+      "high": 330.010009765625,
+      "low": 329.78021240234375,
+      "close": 329.80999755859375,
+      "volume": 27420,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491360000,
+      "open": 329.7950134277344,
+      "high": 329.80999755859375,
+      "low": 329.5299987792969,
+      "close": 329.57000732421875,
+      "volume": 39851,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491420000,
+      "open": 329.54998779296875,
+      "high": 329.639892578125,
+      "low": 329.4200134277344,
+      "close": 329.6199951171875,
+      "volume": 58261,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491480000,
+      "open": 329.6199951171875,
+      "high": 329.6650085449219,
+      "low": 329.5450134277344,
+      "close": 329.659912109375,
+      "volume": 24737,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491540000,
+      "open": 329.6549987792969,
+      "high": 329.67999267578125,
+      "low": 329.44000244140625,
+      "close": 329.5299987792969,
+      "volume": 34969,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491600000,
+      "open": 329.5199890136719,
+      "high": 329.7200012207031,
+      "low": 329.5199890136719,
+      "close": 329.6400146484375,
+      "volume": 33332,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491660000,
+      "open": 329.6499938964844,
+      "high": 329.7200012207031,
+      "low": 329.6199951171875,
+      "close": 329.6199951171875,
+      "volume": 27154,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491720000,
+      "open": 329.6199951171875,
+      "high": 329.6759033203125,
+      "low": 329.4750061035156,
+      "close": 329.6449890136719,
+      "volume": 31974,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491780000,
+      "open": 329.64898681640625,
+      "high": 329.760009765625,
+      "low": 329.5799865722656,
+      "close": 329.7200012207031,
+      "volume": 22461,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491840000,
+      "open": 329.7372131347656,
+      "high": 329.7372131347656,
+      "low": 329.5899963378906,
+      "close": 329.6199951171875,
+      "volume": 21887,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491900000,
+      "open": 329.614990234375,
+      "high": 329.659912109375,
+      "low": 329.5400085449219,
+      "close": 329.5799865722656,
+      "volume": 37791,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491960000,
+      "open": 329.5950012207031,
+      "high": 329.70001220703125,
+      "low": 329.5799865722656,
+      "close": 329.6499938964844,
+      "volume": 21210,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492020000,
+      "open": 329.6499938964844,
+      "high": 329.8699951171875,
+      "low": 329.6499938964844,
+      "close": 329.7900085449219,
+      "volume": 262655,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492080000,
+      "open": 329.79998779296875,
+      "high": 329.8900146484375,
+      "low": 329.7900085449219,
+      "close": 329.8800048828125,
+      "volume": 23219,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492140000,
+      "open": 329.8800048828125,
+      "high": 329.9200134277344,
+      "low": 329.75,
+      "close": 329.75,
+      "volume": 36401,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492200000,
+      "open": 329.760009765625,
+      "high": 329.8399963378906,
+      "low": 329.739990234375,
+      "close": 329.79998779296875,
+      "volume": 19488,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492260000,
+      "open": 329.81500244140625,
+      "high": 329.9599914550781,
+      "low": 329.81500244140625,
+      "close": 329.9200134277344,
+      "volume": 28904,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492320000,
+      "open": 329.92999267578125,
+      "high": 329.92999267578125,
+      "low": 329.82000732421875,
+      "close": 329.82000732421875,
+      "volume": 20172,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492380000,
+      "open": 329.79998779296875,
+      "high": 329.8900146484375,
+      "low": 329.7699890136719,
+      "close": 329.8900146484375,
+      "volume": 27006,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492440000,
+      "open": 329.8800048828125,
+      "high": 329.8800048828125,
+      "low": 329.80999755859375,
+      "close": 329.8399963378906,
+      "volume": 21617,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492500000,
+      "open": 329.81500244140625,
+      "high": 329.8800048828125,
+      "low": 329.7950134277344,
+      "close": 329.8500061035156,
+      "volume": 19384,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492560000,
+      "open": 329.8399963378906,
+      "high": 329.9100036621094,
+      "low": 329.8030090332031,
+      "close": 329.8800048828125,
+      "volume": 22881,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492620000,
+      "open": 329.8900146484375,
+      "high": 329.8900146484375,
+      "low": 329.6499938964844,
+      "close": 329.67999267578125,
+      "volume": 23303,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492680000,
+      "open": 329.6700134277344,
+      "high": 329.81988525390625,
+      "low": 329.6700134277344,
+      "close": 329.7268981933594,
+      "volume": 22972,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492740000,
+      "open": 329.7099914550781,
+      "high": 329.7300109863281,
+      "low": 329.6499938964844,
+      "close": 329.6499938964844,
+      "volume": 17473,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492800000,
+      "open": 329.6600036621094,
+      "high": 329.8299865722656,
+      "low": 329.6600036621094,
+      "close": 329.79998779296875,
+      "volume": 18976,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492860000,
+      "open": 329.80999755859375,
+      "high": 329.8550109863281,
+      "low": 329.760009765625,
+      "close": 329.82000732421875,
+      "volume": 21016,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492920000,
+      "open": 329.82000732421875,
+      "high": 329.82000732421875,
+      "low": 329.69000244140625,
+      "close": 329.7650146484375,
+      "volume": 17517,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492980000,
+      "open": 329.7650146484375,
+      "high": 329.8550109863281,
+      "low": 329.7300109863281,
+      "close": 329.8550109863281,
+      "volume": 29497,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493040000,
+      "open": 329.8550109863281,
+      "high": 329.8550109863281,
+      "low": 329.7749938964844,
+      "close": 329.7749938964844,
+      "volume": 22854,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493100000,
+      "open": 329.7799987792969,
+      "high": 329.8999938964844,
+      "low": 329.7300109863281,
+      "close": 329.79998779296875,
+      "volume": 44974,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493160000,
+      "open": 329.79998779296875,
+      "high": 329.8900146484375,
+      "low": 329.79998779296875,
+      "close": 329.8500061035156,
+      "volume": 24320,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493220000,
+      "open": 329.8550109863281,
+      "high": 329.9800109863281,
+      "low": 329.82501220703125,
+      "close": 329.92498779296875,
+      "volume": 24030,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493280000,
+      "open": 329.92999267578125,
+      "high": 329.94000244140625,
+      "low": 329.8734130859375,
+      "close": 329.94000244140625,
+      "volume": 19640,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493340000,
+      "open": 329.93499755859375,
+      "high": 330.05499267578125,
+      "low": 329.93499755859375,
+      "close": 330.0299987792969,
+      "volume": 28481,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493400000,
+      "open": 330.0400085449219,
+      "high": 330.25,
+      "low": 330.0400085449219,
+      "close": 330.1700134277344,
+      "volume": 62544,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493460000,
+      "open": 330.1600036621094,
+      "high": 330.4800109863281,
+      "low": 330.1300048828125,
+      "close": 330.4599914550781,
+      "volume": 33559,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493520000,
+      "open": 330.4679870605469,
+      "high": 330.55999755859375,
+      "low": 330.4200134277344,
+      "close": 330.44500732421875,
+      "volume": 33442,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493580000,
+      "open": 330.44000244140625,
+      "high": 330.5,
+      "low": 330.40008544921875,
+      "close": 330.4599914550781,
+      "volume": 32589,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493640000,
+      "open": 330.4289855957031,
+      "high": 330.5199890136719,
+      "low": 330.3299865722656,
+      "close": 330.3301086425781,
+      "volume": 29400,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493700000,
+      "open": 330.32000732421875,
+      "high": 330.45001220703125,
+      "low": 330.32000732421875,
+      "close": 330.3500061035156,
+      "volume": 26127,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493760000,
+      "open": 330.3399963378906,
+      "high": 330.42999267578125,
+      "low": 330.18011474609375,
+      "close": 330.2127990722656,
+      "volume": 23326,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493820000,
+      "open": 330.2200012207031,
+      "high": 330.42999267578125,
+      "low": 330.2200012207031,
+      "close": 330.4200134277344,
+      "volume": 21246,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493880000,
+      "open": 330.44000244140625,
+      "high": 330.4750061035156,
+      "low": 330.35101318359375,
+      "close": 330.4750061035156,
+      "volume": 22776,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493940000,
+      "open": 330.4750061035156,
+      "high": 330.4849853515625,
+      "low": 330.3800048828125,
+      "close": 330.4700012207031,
+      "volume": 40234,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494000000,
+      "open": 330.45001220703125,
+      "high": 330.489990234375,
+      "low": 330.30999755859375,
+      "close": 330.4200134277344,
+      "volume": 19037,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494060000,
+      "open": 330.44000244140625,
+      "high": 330.4800109863281,
+      "low": 330.2825927734375,
+      "close": 330.29998779296875,
+      "volume": 19432,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494120000,
+      "open": 330.3299865722656,
+      "high": 330.3399963378906,
+      "low": 330.1820068359375,
+      "close": 330.2300109863281,
+      "volume": 17614,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494180000,
+      "open": 330.243408203125,
+      "high": 330.4200134277344,
+      "low": 330.2200012207031,
+      "close": 330.4100036621094,
+      "volume": 23462,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494240000,
+      "open": 330.4150085449219,
+      "high": 330.57501220703125,
+      "low": 330.4100036621094,
+      "close": 330.5199890136719,
+      "volume": 37267,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494300000,
+      "open": 330.5199890136719,
+      "high": 330.6050109863281,
+      "low": 330.4800109863281,
+      "close": 330.6050109863281,
+      "volume": 40672,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494360000,
+      "open": 330.6050109863281,
+      "high": 330.7799987792969,
+      "low": 330.5299987792969,
+      "close": 330.54998779296875,
+      "volume": 73973,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494420000,
+      "open": 330.57000732421875,
+      "high": 330.6099853515625,
+      "low": 330.3599853515625,
+      "close": 330.3800964355469,
+      "volume": 24758,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494480000,
+      "open": 330.385009765625,
+      "high": 330.4100036621094,
+      "low": 330.3301086425781,
+      "close": 330.3301086425781,
+      "volume": 21665,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494540000,
+      "open": 330.3500061035156,
+      "high": 330.3599853515625,
+      "low": 330.2344970703125,
+      "close": 330.2799987792969,
+      "volume": 23764,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494600000,
+      "open": 330.2900085449219,
+      "high": 330.3699951171875,
+      "low": 330.260009765625,
+      "close": 330.2699890136719,
+      "volume": 18082,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494660000,
+      "open": 330.2900085449219,
+      "high": 330.43499755859375,
+      "low": 330.25,
+      "close": 330.43499755859375,
+      "volume": 37714,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494720000,
+      "open": 330.44000244140625,
+      "high": 330.5299987792969,
+      "low": 330.3900146484375,
+      "close": 330.4100036621094,
+      "volume": 24014,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494780000,
+      "open": 330.4150085449219,
+      "high": 330.4200134277344,
+      "low": 330.29010009765625,
+      "close": 330.3550109863281,
+      "volume": 17860,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494840000,
+      "open": 330.3599853515625,
+      "high": 330.55999755859375,
+      "low": 330.3500061035156,
+      "close": 330.55999755859375,
+      "volume": 28224,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494900000,
+      "open": 330.56988525390625,
+      "high": 330.56988525390625,
+      "low": 330.44000244140625,
+      "close": 330.49200439453125,
+      "volume": 26974,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494960000,
+      "open": 330.489990234375,
+      "high": 330.489990234375,
+      "low": 330.32000732421875,
+      "close": 330.4100036621094,
+      "volume": 29284,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495020000,
+      "open": 330.4100036621094,
+      "high": 330.5150146484375,
+      "low": 330.3999938964844,
+      "close": 330.4750061035156,
+      "volume": 25931,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495080000,
+      "open": 330.4700012207031,
+      "high": 330.5,
+      "low": 330.42999267578125,
+      "close": 330.4800109863281,
+      "volume": 22692,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495140000,
+      "open": 330.48919677734375,
+      "high": 330.5299987792969,
+      "low": 330.4200134277344,
+      "close": 330.4200134277344,
+      "volume": 21088,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495200000,
+      "open": 330.4200134277344,
+      "high": 330.5299987792969,
+      "low": 330.32501220703125,
+      "close": 330.3500061035156,
+      "volume": 24959,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495260000,
+      "open": 330.3450012207031,
+      "high": 330.42999267578125,
+      "low": 330.3349914550781,
+      "close": 330.4299011230469,
+      "volume": 39852,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495320000,
+      "open": 330.4100036621094,
+      "high": 330.6400146484375,
+      "low": 330.3900146484375,
+      "close": 330.6300048828125,
+      "volume": 35000,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495380000,
+      "open": 330.635009765625,
+      "high": 330.67498779296875,
+      "low": 330.518798828125,
+      "close": 330.6650085449219,
+      "volume": 32336,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495440000,
+      "open": 330.6650085449219,
+      "high": 330.70001220703125,
+      "low": 330.5400085449219,
+      "close": 330.6199951171875,
+      "volume": 35353,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495500000,
+      "open": 330.6000061035156,
+      "high": 330.6499938964844,
+      "low": 330.5400085449219,
+      "close": 330.54998779296875,
+      "volume": 27347,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495560000,
+      "open": 330.54998779296875,
+      "high": 330.7900085449219,
+      "low": 330.54998779296875,
+      "close": 330.7699890136719,
+      "volume": 35948,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495620000,
+      "open": 330.7701110839844,
+      "high": 330.8299865722656,
+      "low": 330.7149963378906,
+      "close": 330.7200012207031,
+      "volume": 34341,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495680000,
+      "open": 330.7200012207031,
+      "high": 330.7298889160156,
+      "low": 330.614990234375,
+      "close": 330.6400146484375,
+      "volume": 23959,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495740000,
+      "open": 330.6400146484375,
+      "high": 330.7049865722656,
+      "low": 330.61749267578125,
+      "close": 330.6300048828125,
+      "volume": 26148,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495800000,
+      "open": 330.6300048828125,
+      "high": 330.80999755859375,
+      "low": 330.6199951171875,
+      "close": 330.79998779296875,
+      "volume": 37540,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495860000,
+      "open": 330.7950134277344,
+      "high": 330.79998779296875,
+      "low": 330.68499755859375,
+      "close": 330.69500732421875,
+      "volume": 30379,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495920000,
+      "open": 330.7099914550781,
+      "high": 330.7900085449219,
+      "low": 330.67999267578125,
+      "close": 330.70989990234375,
+      "volume": 20221,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495980000,
+      "open": 330.69989013671875,
+      "high": 330.75408935546875,
+      "low": 330.6300048828125,
+      "close": 330.70001220703125,
+      "volume": 28357,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496040000,
+      "open": 330.7099914550781,
+      "high": 330.7200012207031,
+      "low": 330.6499938964844,
+      "close": 330.67498779296875,
+      "volume": 16505,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496100000,
+      "open": 330.67498779296875,
+      "high": 330.7049865722656,
+      "low": 330.6199951171875,
+      "close": 330.6700134277344,
+      "volume": 28894,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496160000,
+      "open": 330.6549987792969,
+      "high": 330.739990234375,
+      "low": 330.6099853515625,
+      "close": 330.67999267578125,
+      "volume": 32242,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496220000,
+      "open": 330.6700134277344,
+      "high": 330.7300109863281,
+      "low": 330.5400085449219,
+      "close": 330.57000732421875,
+      "volume": 30978,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496280000,
+      "open": 330.5799865722656,
+      "high": 330.6300048828125,
+      "low": 330.510009765625,
+      "close": 330.6199951171875,
+      "volume": 23420,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496340000,
+      "open": 330.6099853515625,
+      "high": 330.6199951171875,
+      "low": 330.510009765625,
+      "close": 330.5350036621094,
+      "volume": 22561,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496400000,
+      "open": 330.5299987792969,
+      "high": 330.5899963378906,
+      "low": 330.3804931640625,
+      "close": 330.4200134277344,
+      "volume": 32403,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496460000,
+      "open": 330.43499755859375,
+      "high": 330.5400085449219,
+      "low": 330.3900146484375,
+      "close": 330.4961853027344,
+      "volume": 22987,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496520000,
+      "open": 330.489990234375,
+      "high": 330.5050048828125,
+      "low": 330.3699951171875,
+      "close": 330.375,
+      "volume": 19855,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496580000,
+      "open": 330.3800048828125,
+      "high": 330.3900146484375,
+      "low": 330.2749938964844,
+      "close": 330.29998779296875,
+      "volume": 21474,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496640000,
+      "open": 330.29998779296875,
+      "high": 330.3985900878906,
+      "low": 330.239990234375,
+      "close": 330.2799987792969,
+      "volume": 26442,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496700000,
+      "open": 330.2799987792969,
+      "high": 330.3699951171875,
+      "low": 330.2500915527344,
+      "close": 330.3595886230469,
+      "volume": 24358,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496760000,
+      "open": 330.3500061035156,
+      "high": 330.3599853515625,
+      "low": 330.1499938964844,
+      "close": 330.2699890136719,
+      "volume": 47905,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496820000,
+      "open": 330.260009765625,
+      "high": 330.2950134277344,
+      "low": 330.20001220703125,
+      "close": 330.2200012207031,
+      "volume": 27022,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496880000,
+      "open": 330.25,
+      "high": 330.4200134277344,
+      "low": 330.2449951171875,
+      "close": 330.4200134277344,
+      "volume": 25368,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496940000,
+      "open": 330.4200134277344,
+      "high": 330.4800109863281,
+      "low": 330.3804016113281,
+      "close": 330.4100036621094,
+      "volume": 21903,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497000000,
+      "open": 330.3999938964844,
+      "high": 330.4100036621094,
+      "low": 330.24468994140625,
+      "close": 330.2749938964844,
+      "volume": 29257,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497060000,
+      "open": 330.2799987792969,
+      "high": 330.30499267578125,
+      "low": 330.15008544921875,
+      "close": 330.1700134277344,
+      "volume": 31806,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497120000,
+      "open": 330.1700134277344,
+      "high": 330.19000244140625,
+      "low": 330.0899963378906,
+      "close": 330.1300048828125,
+      "volume": 22192,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497180000,
+      "open": 330.1199951171875,
+      "high": 330.1700134277344,
+      "low": 330.10369873046875,
+      "close": 330.1050109863281,
+      "volume": 26308,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497240000,
+      "open": 330.1000061035156,
+      "high": 330.17498779296875,
+      "low": 330.1000061035156,
+      "close": 330.17498779296875,
+      "volume": 31912,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497300000,
+      "open": 330.17999267578125,
+      "high": 330.2300109863281,
+      "low": 330.1499938964844,
+      "close": 330.1700134277344,
+      "volume": 25841,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497360000,
+      "open": 330.1600036621094,
+      "high": 330.239990234375,
+      "low": 330.1300048828125,
+      "close": 330.2200012207031,
+      "volume": 26560,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497420000,
+      "open": 330.2099914550781,
+      "high": 330.2699890136719,
+      "low": 330.20001220703125,
+      "close": 330.25,
+      "volume": 27731,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497480000,
+      "open": 330.239990234375,
+      "high": 330.5,
+      "low": 330.239990234375,
+      "close": 330.4150085449219,
+      "volume": 50472,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497540000,
+      "open": 330.4200134277344,
+      "high": 330.4549865722656,
+      "low": 330.30999755859375,
+      "close": 330.31500244140625,
+      "volume": 35331,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497600000,
+      "open": 330.32000732421875,
+      "high": 330.3599853515625,
+      "low": 330.2300109863281,
+      "close": 330.2449951171875,
+      "volume": 29423,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497660000,
+      "open": 330.239990234375,
+      "high": 330.4200134277344,
+      "low": 330.1400146484375,
+      "close": 330.2799987792969,
+      "volume": 59015,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497720000,
+      "open": 330.2720031738281,
+      "high": 330.29998779296875,
+      "low": 330.17999267578125,
+      "close": 330.2401123046875,
+      "volume": 19409,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497780000,
+      "open": 330.239990234375,
+      "high": 330.25,
+      "low": 330.1300048828125,
+      "close": 330.2300109863281,
+      "volume": 25912,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497840000,
+      "open": 330.2300109863281,
+      "high": 330.2900085449219,
+      "low": 330.20001220703125,
+      "close": 330.2799987792969,
+      "volume": 27777,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497943000,
+      "open": 330.2349853515625,
+      "high": 330.2349853515625,
+      "low": 330.2349853515625,
+      "close": 330.2349853515625,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    }
+  ],
+  "dividends": [],
+  "splits": [],
+  "problems": [
+    {
+      "kind": "field_dropped",
+      "detail": "1 of 317 bars dropped: a null in timestamp/open/high/low/close/volume is Yahoo’s gap marker and is never zero-filled",
+      "path": "/chart/result/0/indicators/quote/0"
+    }
+  ]
+}

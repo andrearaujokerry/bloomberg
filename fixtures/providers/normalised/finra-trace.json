@@ -1,0 +1,24 @@
+{
+  "updates": [],
+  "rows": {
+    "rows": [
+      {
+        "symbolCode": "A",
+        "issueName": "Agilent Technologies Inc.",
+        "marketClassCode": "NYSE",
+        "settlementDate": "2020-04-15",
+        "shortQty": 4851353,
+        "prevShortQty": 4767556,
+        "avgDailyVolume": 2012318,
+        "daysToCover": 2.41,
+        "changePct": 1.76,
+        "revision": false,
+        "stockSplitFlag": null,
+        "accountingYearMonth": "20200415"
+      }
+    ],
+    "maxSettlementDate": "2020-04-15"
+  },
+  "sourceTs": "2020-04-15T00:00:00.000Z",
+  "problems": []
+}

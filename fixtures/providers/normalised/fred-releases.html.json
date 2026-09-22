@@ -1,0 +1,416 @@
+{
+  "capture": "fred-releases.html",
+  "providerId": "fred.calendar",
+  "requestKey": "0310ba903822f2e978261ebd0d377faa8082ac1cac3115d053cfa7942f3d3718",
+  "adapterVersion": "fred/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "advertisedTotal": 332,
+    "pageFirst": 1,
+    "pageLast": 50,
+    "releases": [
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "489",
+        "name": "AD&Co US Mortgage High Yield Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=489",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "194",
+        "name": "ADP National Employment Report",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=194",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "435",
+        "name": "Advance Economic Indicators",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=435",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "9",
+        "name": "Advance Monthly Sales for Retail and Food Services",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=9",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "433",
+        "name": "Age-Adjusted Premature Death Rate",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=433",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "353",
+        "name": "Alternative Measures of Labor Underutilization for States",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=353",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "389",
+        "name": "A Millennium of Macroeconomic Data for the UK",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=389",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "354",
+        "name": "An Arbitrage-Free Three-Factor Term Structure Model and the Recent Behavior of Long-Term Yields and Distant-Horizon Forward Rates",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=354",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "119",
+        "name": "Annual Estimates of the Population for Counties",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=119",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "118",
+        "name": "Annual Estimates of the Population for the U.S. and States, and for Puerto Rico",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=118",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "111",
+        "name": "Annual Estimates of the Population of Metropolitan and Micropolitan Statistical Areas",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=111",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "868",
+        "name": "Annual Integrated Economic Survey (AIES)",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=868",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "143",
+        "name": "Annual Survey of State Government Tax Collections",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=143",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "366",
+        "name": "Asia and Pacific Regional Economic Outlook",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=366",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "165",
+        "name": "Australian Foreign Exchange Transactions",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=165",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "454",
+        "name": "Average Price Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=454",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "388",
+        "name": "Banking and Monetary Statistics, 1914-1941",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=388",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "266",
+        "name": "Bank of Japan Accounts",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=266",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "741",
+        "name": "Bankrate Consumer Polls",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=741",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "742",
+        "name": "Bankrate Monitor (BRM) National Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=742",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "270",
+        "name": "Bankstats (Monetary & Financial Statistics)",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=270",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "138",
+        "name": "BEA Regions Employment and Unemployment",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=138",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "153",
+        "name": "BEA Regions Health Insurance Coverage",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=153",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "173",
+        "name": "BEA Regions Housing Units Authorized By Building Permits",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=173",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "319",
+        "name": "BIS Effective Exchange Rate Indices",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=319",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "488",
+        "name": "Brave-Butters-Kelley Indexes",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=488",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "99",
+        "name": "Budget and Economic Outlook",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=99",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "413",
+        "name": "Burdened Households",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=413",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "443",
+        "name": "Business Formation Statistics",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=443",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "322",
+        "name": "Business Leaders Survey",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=322",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "280",
+        "name": "Cass Freight Index Report",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=280",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "200",
+        "name": "CBOE Market Statistics",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=200",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "384",
+        "name": "Characteristics of Minimum Wage Workers",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=384",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "231",
+        "name": "Charge-Off and Delinquency Rates on Loans and Leases at Commercial Banks",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=231",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "494",
+        "name": "Chicago Fed Advance Retail Trade Summary",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=494",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "333",
+        "name": "Chicago Fed Midwest Economy Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=333",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "292",
+        "name": "Chicago Fed Midwest Manufacturing Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=292",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "219",
+        "name": "Chicago Fed National Activity Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=219",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "221",
+        "name": "Chicago Fed National Financial Conditions Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=221",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "372",
+        "name": "Chicago Fed Survey of Economic Conditions",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=372",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "302",
+        "name": "Cleveland Financial Stress Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=302",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "441",
+        "name": "Coinbase Cryptocurrencies",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=441",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "440",
+        "name": "Coinbase Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=440",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "86",
+        "name": "Commercial Paper",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=86",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "505",
+        "name": "Community Bank Sentiment Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=505",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "229",
+        "name": "Construction Spending",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=229",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "479",
+        "name": "Consumer Expenditure Surveys",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=479",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "10",
+        "name": "Consumer Price Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=10",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "402",
+        "name": "Corporate Bond Yield Curve",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=402",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "458",
+        "name": "Cotton Production in New England",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=458",
+        "importance": 2
+      }
+    ]
+  }
+}

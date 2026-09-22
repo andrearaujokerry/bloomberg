@@ -1,0 +1,595 @@
+{
+  "capture": "fred-cal",
+  "providerId": "fred.calendar",
+  "requestKey": "44128469a66963c71691fbfb23ea6483ec226e34488f543a851e4f5d5eadb5e5",
+  "adapterVersion": "fred/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "advertisedCount": 34,
+    "parsedCount": 34,
+    "releases": [
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "502",
+        "name": "Euro Short Term Rate",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=502",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "483",
+        "name": "SOFR Averages and Index Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=483",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "445",
+        "name": "Secured Overnight Financing Rate Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=445",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "321",
+        "name": "Empire State Manufacturing Survey",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=321",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "375",
+        "name": "Overnight Bank Funding Rate Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=375",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "378",
+        "name": "Federal Funds Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=378",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "2",
+        "name": "Risk-On Risk-Off Index",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=2",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "183",
+        "name": "Gasoline and Diesel Fuel Update",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=183",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "427",
+        "name": "Moody's Daily Corporate Bond Yield Averages",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=427",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "86",
+        "name": "Commercial Paper",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=86",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "4",
+        "name": "Kansas City Fed Policy Rate Skew",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=4",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "18",
+        "name": "H.15 Selected Interest Rates",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=18",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "185",
+        "name": "Interest Rate on Reserve Balances",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=185",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "441",
+        "name": "Coinbase Cryptocurrencies",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=441",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "476",
+        "name": "Job Postings on Indeed",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=476",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "279",
+        "name": "Economic Policy Uncertainty",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=279",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "379",
+        "name": "Temporary Open Market Operations",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=379",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "504",
+        "name": "Historical Overnight AMERIBOR Unsecured Interest Rate",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=504",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "101",
+        "name": "FOMC Press Release",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=101",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "492",
+        "name": "SONIA Interest Rate Benchmark",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=492",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "484",
+        "name": "Key ECB Interest Rates",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=484",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "1105",
+        "name": "Tri-Party General Collateral Rate Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=1105",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "271",
+        "name": "Weekly Financial Statements of the Eurosystem",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=271",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "739",
+        "name": "Kansas City Fed Policy Rate Uncertainty",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=739",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "209",
+        "name": "ICE BofA Indices",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=209",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "328",
+        "name": "Nasdaq Daily Index Data",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=328",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "249",
+        "name": "Income and Poverty in the United States",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=249",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "304",
+        "name": "Interest Rate Spreads",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=304",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "200",
+        "name": "CBOE Market Statistics",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=200",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "242",
+        "name": "Recession Indicators Series",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=242",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "473",
+        "name": "Optimal Blue Mortgage Market Indices",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=473",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "72",
+        "name": "Daily Treasury Inflation-Indexed Securities",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=72",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "197",
+        "name": "Dow Jones Averages",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=197",
+        "importance": 2
+      },
+      {
+        "sourceId": "fred.calendar",
+        "providerReleaseId": "189",
+        "name": "Standard & Poors",
+        "country": "US",
+        "url": "https://fred.stlouisfed.org/release?rid=189",
+        "importance": 2
+      }
+    ],
+    "events": [
+      {
+        "providerReleaseId": "502",
+        "scheduledAt": "2026-09-15T05:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "483",
+        "scheduledAt": "2026-09-15T11:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "445",
+        "scheduledAt": "2026-09-15T11:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "321",
+        "scheduledAt": "2026-09-15T11:30:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "375",
+        "scheduledAt": "2026-09-15T12:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "378",
+        "scheduledAt": "2026-09-15T12:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "2",
+        "scheduledAt": "2026-09-15T13:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "183",
+        "scheduledAt": "2026-09-15T14:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "427",
+        "scheduledAt": "2026-09-15T14:15:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "86",
+        "scheduledAt": "2026-09-15T16:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "4",
+        "scheduledAt": "2026-09-15T16:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "18",
+        "scheduledAt": "2026-09-15T19:15:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "185",
+        "scheduledAt": "2026-09-15T19:30:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "441",
+        "scheduledAt": "2026-09-15T23:00:00.000Z",
+        "timeKnown": true,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "476",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "279",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "379",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "504",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "101",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "492",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "484",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "1105",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "271",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "739",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "209",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "328",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "249",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "304",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "200",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "242",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "473",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "72",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "197",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      },
+      {
+        "providerReleaseId": "189",
+        "scheduledAt": "2026-09-15T12:30:00.000Z",
+        "timeKnown": false,
+        "periodLabel": "",
+        "status": "scheduled",
+        "consensus": null,
+        "consensusUnavailableReason": "NO_SOURCE: no consensus provider is reachable keyless (BRIEF §2)"
+      }
+    ]
+  }
+}

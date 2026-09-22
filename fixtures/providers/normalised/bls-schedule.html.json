@@ -1,0 +1,265 @@
+{
+  "updates": [],
+  "rows": {
+    "year": 2026,
+    "month": 9,
+    "title": "Schedule of Selected Releases for September 2026",
+    "releases": [
+      {
+        "providerReleaseId": "cpi",
+        "name": "Consumer Price Index",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/cpi.htm"
+      },
+      {
+        "providerReleaseId": "ecec",
+        "name": "Employer Costs for Employee Compensation",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/ecec.htm"
+      },
+      {
+        "providerReleaseId": "employeeBenefitsInTheUnitedStates",
+        "name": "Employee Benefits in the United States",
+        "country": "US",
+        "url": null
+      },
+      {
+        "providerReleaseId": "employeeTenure",
+        "name": "Employee Tenure",
+        "country": "US",
+        "url": null
+      },
+      {
+        "providerReleaseId": "empsit",
+        "name": "Employment Situation",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/empsit.htm"
+      },
+      {
+        "providerReleaseId": "jobFlexibilitiesAndWorkSchedules",
+        "name": "Job Flexibilities and Work Schedules",
+        "country": "US",
+        "url": null
+      },
+      {
+        "providerReleaseId": "jolts",
+        "name": "Job Openings and Labor Turnover Survey",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/jolts.htm"
+      },
+      {
+        "providerReleaseId": "laus",
+        "name": "State Employment and Unemployment (Monthly)",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/laus.htm"
+      },
+      {
+        "providerReleaseId": "metro",
+        "name": "Metropolitan Area Employment and Unemployment (Monthly)",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/metro.htm"
+      },
+      {
+        "providerReleaseId": "ppi",
+        "name": "Producer Price Index",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/ppi.htm"
+      },
+      {
+        "providerReleaseId": "prod2",
+        "name": "Productivity and Costs (R)",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/prod2.htm"
+      },
+      {
+        "providerReleaseId": "realer",
+        "name": "Real Earnings",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/realer.htm"
+      },
+      {
+        "providerReleaseId": "ximpim",
+        "name": "U.S. Import and Export Price Indexes",
+        "country": "US",
+        "url": "https://www.bls.gov/schedule/news_release/ximpim.htm"
+      }
+    ],
+    "events": [
+      {
+        "providerReleaseId": "jolts",
+        "name": "Job Openings and Labor Turnover Survey",
+        "scheduledAt": "2026-09-01T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "July 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-01",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "metro",
+        "name": "Metropolitan Area Employment and Unemployment (Monthly)",
+        "scheduledAt": "2026-09-02T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "July 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-02",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "prod2",
+        "name": "Productivity and Costs (R)",
+        "scheduledAt": "2026-09-03T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "Second Quarter 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-03",
+        "localTime": "08:30"
+      },
+      {
+        "providerReleaseId": "empsit",
+        "name": "Employment Situation",
+        "scheduledAt": "2026-09-04T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-04",
+        "localTime": "08:30"
+      },
+      {
+        "providerReleaseId": "ecec",
+        "name": "Employer Costs for Employee Compensation",
+        "scheduledAt": "2026-09-09T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "June 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-09",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "ppi",
+        "name": "Producer Price Index",
+        "scheduledAt": "2026-09-10T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-10",
+        "localTime": "08:30"
+      },
+      {
+        "providerReleaseId": "cpi",
+        "name": "Consumer Price Index",
+        "scheduledAt": "2026-09-11T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-11",
+        "localTime": "08:30"
+      },
+      {
+        "providerReleaseId": "realer",
+        "name": "Real Earnings",
+        "scheduledAt": "2026-09-11T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-11",
+        "localTime": "08:30"
+      },
+      {
+        "providerReleaseId": "ximpim",
+        "name": "U.S. Import and Export Price Indexes",
+        "scheduledAt": "2026-09-16T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-16",
+        "localTime": "08:30"
+      },
+      {
+        "providerReleaseId": "laus",
+        "name": "State Employment and Unemployment (Monthly)",
+        "scheduledAt": "2026-09-18T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-18",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "employeeTenure",
+        "name": "Employee Tenure",
+        "scheduledAt": "2026-09-24T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "Biennial 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-24",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "jobFlexibilitiesAndWorkSchedules",
+        "name": "Job Flexibilities and Work Schedules",
+        "scheduledAt": "2026-09-24T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "2024-2025",
+        "status": "scheduled",
+        "localDate": "2026-09-24",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "employeeBenefitsInTheUnitedStates",
+        "name": "Employee Benefits in the United States",
+        "scheduledAt": "2026-09-25T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "March 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-25",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "jolts",
+        "name": "Job Openings and Labor Turnover Survey",
+        "scheduledAt": "2026-09-29T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-29",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "metro",
+        "name": "Metropolitan Area Employment and Unemployment (Monthly)",
+        "scheduledAt": "2026-09-30T14:00:00Z",
+        "timeKnown": true,
+        "periodLabel": "August 2026",
+        "status": "scheduled",
+        "localDate": "2026-09-30",
+        "localTime": "10:00"
+      },
+      {
+        "providerReleaseId": "empsit",
+        "name": "Employment Situation",
+        "scheduledAt": "2026-10-02T12:30:00Z",
+        "timeKnown": true,
+        "periodLabel": "September 2026",
+        "status": "scheduled",
+        "localDate": "2026-10-02",
+        "localTime": "08:30"
+      }
+    ]
+  },
+  "sourceTs": null,
+  "problems": [
+    {
+      "kind": "field_dropped",
+      "detail": "bls release 'Employee Tenure' is not in the page's release index; provider_release_id 'employeeTenure' is derived from the name"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "bls release 'Job Flexibilities and Work Schedules' is not in the page's release index; provider_release_id 'jobFlexibilitiesAndWorkSchedules' is derived from the name"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "bls release 'Employee Benefits in the United States' is not in the page's release index; provider_release_id 'employeeBenefitsInTheUnitedStates' is derived from the name"
+    }
+  ]
+}

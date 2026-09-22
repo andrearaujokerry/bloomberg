@@ -1,0 +1,26 @@
+{
+  "ok": true,
+  "requestedIds": [
+    "bitcoin",
+    "ethereum"
+  ],
+  "quotes": [
+    {
+      "id": "bitcoin",
+      "usd": 75828,
+      "change24hPct": -4.217368765220806,
+      "impliedPrevClose": 79166.75395368178,
+      "impliedPrevCloseIsRolling": true
+    },
+    {
+      "id": "ethereum",
+      "usd": 2386.91,
+      "change24hPct": -6.001270999715535,
+      "impliedPrevClose": 2539.300292020732,
+      "impliedPrevCloseIsRolling": true
+    }
+  ],
+  "unknownIds": [],
+  "sourceTsMs": null,
+  "problems": []
+}

@@ -1,0 +1,163 @@
+{
+  "capture": "sec-companyfacts-AAPL.json",
+  "providerId": "sec.companyfacts",
+  "requestKey": "f0887b1428782313750c2a73b34fd4181950bd4b28192ef75ee6abad0004c846",
+  "adapterVersion": "sec/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [
+    {
+      "kind": "field_dropped",
+      "detail": "unit 'Year' is not modelled; 4 us-gaap/EmployeeServiceShareBasedCompensationNonvestedAwardsTotalCompensationCostNotYetRecognizedPeriodForRecognition facts skipped",
+      "path": "/facts/us-gaap/EmployeeServiceShareBasedCompensationNonvestedAwardsTotalCompensationCostNotYetRecognizedPeriodForRecognition/units/Year"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "unit 'Year' is not modelled; 1 us-gaap/FiniteLivedIntangibleAssetsUsefulLifeMaximum facts skipped",
+      "path": "/facts/us-gaap/FiniteLivedIntangibleAssetsUsefulLifeMaximum/units/Year"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "unit 'Year' is not modelled; 1 us-gaap/FiniteLivedIntangibleAssetsUsefulLifeMinimum facts skipped",
+      "path": "/facts/us-gaap/FiniteLivedIntangibleAssetsUsefulLifeMinimum/units/Year"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "unit 'Store' is not modelled; 6 us-gaap/NumberOfStores facts skipped",
+      "path": "/facts/us-gaap/NumberOfStores/units/Store"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "unit 'Year' is not modelled; 4 us-gaap/ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableWeightedAverageRemainingContractualTerm facts skipped",
+      "path": "/facts/us-gaap/ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableWeightedAverageRemainingContractualTerm/units/Year"
+    },
+    {
+      "kind": "field_dropped",
+      "detail": "unit 'Year' is not modelled; 3 us-gaap/SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsOutstandingWeightedAverageRemainingContractualTerm1 facts skipped",
+      "path": "/facts/us-gaap/SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsOutstandingWeightedAverageRemainingContractualTerm1/units/Year"
+    }
+  ],
+  "rows": {
+    "cik": "0000320193",
+    "entityName": "Apple Inc.",
+    "facts": {
+      "$digest": {
+        "count": 25116,
+        "sha256": "7e6571b143e98971e98dbc664ca427bb9c642a7b85d75509efb073b54d875712",
+        "first": [
+          {
+            "cik": "0000320193",
+            "taxonomy": "dei",
+            "concept": "EntityCommonStockSharesOutstanding",
+            "unit": "shares",
+            "periodStart": null,
+            "periodEnd": "2009-06-27",
+            "fy": 2009,
+            "fp": "Q3",
+            "form": "10-Q",
+            "accessionNo": "0001193125-09-153165",
+            "filedAt": "2009-07-22",
+            "frame": "CY2009Q2I",
+            "value": "895816758",
+            "durationClass": "instant",
+            "restatement": false
+          },
+          {
+            "cik": "0000320193",
+            "taxonomy": "dei",
+            "concept": "EntityCommonStockSharesOutstanding",
+            "unit": "shares",
+            "periodStart": null,
+            "periodEnd": "2009-10-16",
+            "fy": 2009,
+            "fp": "FY",
+            "form": "10-K",
+            "accessionNo": "0001193125-09-214859",
+            "filedAt": "2009-10-27",
+            "frame": null,
+            "value": "900678473",
+            "durationClass": "instant",
+            "restatement": false
+          },
+          {
+            "cik": "0000320193",
+            "taxonomy": "dei",
+            "concept": "EntityCommonStockSharesOutstanding",
+            "unit": "shares",
+            "periodStart": null,
+            "periodEnd": "2009-10-16",
+            "fy": 2009,
+            "fp": "FY",
+            "form": "10-K/A",
+            "accessionNo": "0001193125-10-012091",
+            "filedAt": "2010-01-25",
+            "frame": "CY2009Q3I",
+            "value": "900678473",
+            "durationClass": "instant",
+            "restatement": false
+          }
+        ],
+        "last": [
+          {
+            "cik": "0000320193",
+            "taxonomy": "us-gaap",
+            "concept": "SellingAndMarketingExpense",
+            "unit": "USD",
+            "periodStart": "2025-12-28",
+            "periodEnd": "2026-03-28",
+            "fy": 2026,
+            "fp": "Q2",
+            "form": "10-Q",
+            "accessionNo": "0000320193-26-000013",
+            "filedAt": "2026-05-01",
+            "frame": "CY2026Q1",
+            "value": "5201000000",
+            "durationClass": "quarter",
+            "restatement": false
+          },
+          {
+            "cik": "0000320193",
+            "taxonomy": "us-gaap",
+            "concept": "SellingAndMarketingExpense",
+            "unit": "USD",
+            "periodStart": "2025-09-28",
+            "periodEnd": "2026-06-27",
+            "fy": 2026,
+            "fp": "Q3",
+            "form": "10-Q",
+            "accessionNo": "0000320193-26-000020",
+            "filedAt": "2026-07-31",
+            "frame": null,
+            "value": "15632000000",
+            "durationClass": "nine_month",
+            "restatement": false
+          },
+          {
+            "cik": "0000320193",
+            "taxonomy": "us-gaap",
+            "concept": "SellingAndMarketingExpense",
+            "unit": "USD",
+            "periodStart": "2026-03-29",
+            "periodEnd": "2026-06-27",
+            "fy": 2026,
+            "fp": "Q3",
+            "form": "10-Q",
+            "accessionNo": "0000320193-26-000020",
+            "filedAt": "2026-07-31",
+            "frame": "CY2026Q2",
+            "value": "5034000000",
+            "durationClass": "quarter",
+            "restatement": false
+          }
+        ]
+      }
+    },
+    "conceptCount": 503,
+    "droppedUnits": {
+      "Year": 13,
+      "Store": 6
+    },
+    "filedFrom": "2009-07-22",
+    "filedTo": "2026-07-31"
+  }
+}

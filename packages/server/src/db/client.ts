@@ -60,6 +60,19 @@ interface PoolBundle {
 let appBundle: PoolBundle | undefined;
 let maintBundle: PoolBundle | undefined;
 
+/**
+ * The database name a libpq connection string addresses — the path segment, without a query
+ * string. Returns `''` for a string that names none, which never compares equal by accident
+ * because the caller compares two of them and reports both.
+ */
+function databaseNameOf(connectionString: string): string {
+  try {
+    return decodeURIComponent(new URL(connectionString).pathname.replace(/^\//, ''));
+  } catch {
+    return connectionString.split('/').pop()?.split('?')[0] ?? '';
+  }
+}
+
 function createBundle(connectionString: string, max: number, label: string): PoolBundle {
   const pool = new Pool({
     connectionString,
@@ -192,12 +205,28 @@ export async function withTx<T>(ctx: RequestCtx | null, fn: (tx: Tx) => Promise<
  */
 export async function withMaintTx<T>(fn: (tx: Tx) => Promise<T>): Promise<T> {
   if (maintBundle === undefined) {
-    const url = getConfig().DATABASE_URL_MAINT;
+    const config = getConfig();
+    const url = config.DATABASE_URL_MAINT;
     if (url === undefined) {
       throw new Error(
         'DATABASE_URL_MAINT is not set: partition maintenance needs the terminal_maint role ' +
           'that owns bars_daily, bars_intraday, quote_ticks, option_quotes, access_log and ' +
           'usage_events (DATA_MODEL §15.d.1).',
+      );
+    }
+    // Interlock. The maintenance pool issues `CREATE TABLE … PARTITION OF` and `DROP TABLE
+    // <partition>`, which commit and cannot be rolled back by a test harness. It must therefore
+    // address the SAME database as the application pool: a `DATABASE_URL` forced to
+    // `bloomberg_test` beside a `DATABASE_URL_MAINT` left pointing at `bloomberg_dev` — the exact
+    // shape a checked-in `.env` produces — would have a test suite creating and dropping
+    // partitions in the development database.
+    const appDb = databaseNameOf(config.DATABASE_URL);
+    const maintDb = databaseNameOf(url);
+    if (appDb !== maintDb) {
+      throw new Error(
+        `DATABASE_URL_MAINT addresses "${maintDb}" while DATABASE_URL addresses "${appDb}": ` +
+          'partition maintenance commits DDL, so the two must be the same database ' +
+          '(DATA_MODEL §15.d.1).',
       );
     }
     maintBundle = createBundle(url, 1, 'maint');

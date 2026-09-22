@@ -1,0 +1,155 @@
+{
+  "ok": true,
+  "base": "USD",
+  "amount": 1,
+  "date": "2026-09-15",
+  "sourceTsMs": 1789481700000,
+  "rates": [
+    {
+      "currency": "AUD",
+      "quotePerUsd": 1.4034,
+      "usdPerQuote": 0.71255522
+    },
+    {
+      "currency": "BRL",
+      "quotePerUsd": 5.1512,
+      "usdPerQuote": 0.19412952
+    },
+    {
+      "currency": "CAD",
+      "quotePerUsd": 1.392,
+      "usdPerQuote": 0.7183908
+    },
+    {
+      "currency": "CHF",
+      "quotePerUsd": 0.81818,
+      "usdPerQuote": 1.22222494
+    },
+    {
+      "currency": "CNY",
+      "quotePerUsd": 6.7115,
+      "usdPerQuote": 0.14899799
+    },
+    {
+      "currency": "CZK",
+      "quotePerUsd": 21.052,
+      "usdPerQuote": 0.04750143
+    },
+    {
+      "currency": "DKK",
+      "quotePerUsd": 6.4782,
+      "usdPerQuote": 0.15436387
+    },
+    {
+      "currency": "EUR",
+      "quotePerUsd": 0.86663,
+      "usdPerQuote": 1.15389497
+    },
+    {
+      "currency": "GBP",
+      "quotePerUsd": 0.74166,
+      "usdPerQuote": 1.34832673
+    },
+    {
+      "currency": "HKD",
+      "quotePerUsd": 7.8445,
+      "usdPerQuote": 0.12747785
+    },
+    {
+      "currency": "HUF",
+      "quotePerUsd": 317.21,
+      "usdPerQuote": 0.00315249
+    },
+    {
+      "currency": "IDR",
+      "quotePerUsd": 17697,
+      "usdPerQuote": 0.00005651
+    },
+    {
+      "currency": "ILS",
+      "quotePerUsd": 3.0413,
+      "usdPerQuote": 0.32880676
+    },
+    {
+      "currency": "INR",
+      "quotePerUsd": 95.96,
+      "usdPerQuote": 0.01042101
+    },
+    {
+      "currency": "ISK",
+      "quotePerUsd": 121.33,
+      "usdPerQuote": 0.00824198
+    },
+    {
+      "currency": "JPY",
+      "quotePerUsd": 155,
+      "usdPerQuote": 0.00645161
+    },
+    {
+      "currency": "KRW",
+      "quotePerUsd": 1359.15,
+      "usdPerQuote": 0.00073575
+    },
+    {
+      "currency": "MXN",
+      "quotePerUsd": 17.1568,
+      "usdPerQuote": 0.05828593
+    },
+    {
+      "currency": "MYR",
+      "quotePerUsd": 4.087,
+      "usdPerQuote": 0.24467825
+    },
+    {
+      "currency": "NOK",
+      "quotePerUsd": 9.3466,
+      "usdPerQuote": 0.10699078
+    },
+    {
+      "currency": "NZD",
+      "quotePerUsd": 1.7369,
+      "usdPerQuote": 0.57573838
+    },
+    {
+      "currency": "PHP",
+      "quotePerUsd": 62.802,
+      "usdPerQuote": 0.01592306
+    },
+    {
+      "currency": "PLN",
+      "quotePerUsd": 3.7612,
+      "usdPerQuote": 0.26587259
+    },
+    {
+      "currency": "RON",
+      "quotePerUsd": 4.5608,
+      "usdPerQuote": 0.21925978
+    },
+    {
+      "currency": "SEK",
+      "quotePerUsd": 9.7703,
+      "usdPerQuote": 0.102351
+    },
+    {
+      "currency": "SGD",
+      "quotePerUsd": 1.2725,
+      "usdPerQuote": 0.78585462
+    },
+    {
+      "currency": "THB",
+      "quotePerUsd": 33.295,
+      "usdPerQuote": 0.03003454
+    },
+    {
+      "currency": "TRY",
+      "quotePerUsd": 48.64,
+      "usdPerQuote": 0.02055921
+    },
+    {
+      "currency": "ZAR",
+      "quotePerUsd": 16.2732,
+      "usdPerQuote": 0.06145073
+    }
+  ],
+  "problems": []
+}

@@ -1,0 +1,922 @@
+{
+  "capture": "fed-h15.csv",
+  "providerId": "fed.h15",
+  "requestKey": "f28d848a08ed7d2fdc6d10d8a86c7495130bc960f2949b6259dad57243b82428",
+  "adapterVersion": "fedH15/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "series": [
+      {
+        "providerCode": "RIFLGFCM01_N.B",
+        "name": "Market yield on U.S. Treasury securities at 1-month constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCM01_N.B",
+        "tenor": "1M",
+        "tenorDays": 30
+      },
+      {
+        "providerCode": "RIFLGFCM03_N.B",
+        "name": "Market yield on U.S. Treasury securities at 3-month constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCM03_N.B",
+        "tenor": "3M",
+        "tenorDays": 91
+      },
+      {
+        "providerCode": "RIFLGFCM06_N.B",
+        "name": "Market yield on U.S. Treasury securities at 6-month constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCM06_N.B",
+        "tenor": "6M",
+        "tenorDays": 182
+      },
+      {
+        "providerCode": "RIFLGFCY01_N.B",
+        "name": "Market yield on U.S. Treasury securities at 1-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY01_N.B",
+        "tenor": "1Y",
+        "tenorDays": 365
+      },
+      {
+        "providerCode": "RIFLGFCY02_N.B",
+        "name": "Market yield on U.S. Treasury securities at 2-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY02_N.B",
+        "tenor": "2Y",
+        "tenorDays": 730
+      },
+      {
+        "providerCode": "RIFLGFCY03_N.B",
+        "name": "Market yield on U.S. Treasury securities at 3-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY03_N.B",
+        "tenor": "3Y",
+        "tenorDays": 1095
+      },
+      {
+        "providerCode": "RIFLGFCY05_N.B",
+        "name": "Market yield on U.S. Treasury securities at 5-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY05_N.B",
+        "tenor": "5Y",
+        "tenorDays": 1826
+      },
+      {
+        "providerCode": "RIFLGFCY07_N.B",
+        "name": "Market yield on U.S. Treasury securities at 7-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY07_N.B",
+        "tenor": "7Y",
+        "tenorDays": 2556
+      },
+      {
+        "providerCode": "RIFLGFCY10_N.B",
+        "name": "Market yield on U.S. Treasury securities at 10-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY10_N.B",
+        "tenor": "10Y",
+        "tenorDays": 3653
+      },
+      {
+        "providerCode": "RIFLGFCY20_N.B",
+        "name": "Market yield on U.S. Treasury securities at 20-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY20_N.B",
+        "tenor": "20Y",
+        "tenorDays": 7305
+      },
+      {
+        "providerCode": "RIFLGFCY30_N.B",
+        "name": "Market yield on U.S. Treasury securities at 30-year constant maturity, quoted on investment basis",
+        "units": "Percent",
+        "uniqueIdentifier": "H15/H15/RIFLGFCY30_N.B",
+        "tenor": "30Y",
+        "tenorDays": 10958
+      }
+    ],
+    "observations": [
+      {
+        "providerCode": "RIFLGFCM01_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCM03_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCM06_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY01_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY02_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY03_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY05_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY07_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY10_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY20_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCY30_N.B",
+        "obsDate": "2026-09-07",
+        "value": null,
+        "status": "missing"
+      },
+      {
+        "providerCode": "RIFLGFCM01_N.B",
+        "obsDate": "2026-09-08",
+        "value": 3.81,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM03_N.B",
+        "obsDate": "2026-09-08",
+        "value": 3.94,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM06_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY01_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4.15,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY02_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4.39,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY03_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4.44,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY05_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4.57,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY07_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4.68,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY10_N.B",
+        "obsDate": "2026-09-08",
+        "value": 4.8,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY20_N.B",
+        "obsDate": "2026-09-08",
+        "value": 5.26,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY30_N.B",
+        "obsDate": "2026-09-08",
+        "value": 5.25,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM01_N.B",
+        "obsDate": "2026-09-09",
+        "value": 3.81,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM03_N.B",
+        "obsDate": "2026-09-09",
+        "value": 3.95,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM06_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.01,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY01_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.17,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY02_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.43,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY03_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.49,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY05_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.61,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY07_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.71,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY10_N.B",
+        "obsDate": "2026-09-09",
+        "value": 4.83,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY20_N.B",
+        "obsDate": "2026-09-09",
+        "value": 5.28,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY30_N.B",
+        "obsDate": "2026-09-09",
+        "value": 5.28,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM01_N.B",
+        "obsDate": "2026-09-10",
+        "value": 3.91,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM03_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM06_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.07,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY01_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.28,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY02_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.56,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY03_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.63,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY05_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.75,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY07_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.84,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY10_N.B",
+        "obsDate": "2026-09-10",
+        "value": 4.95,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY20_N.B",
+        "obsDate": "2026-09-10",
+        "value": 5.39,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY30_N.B",
+        "obsDate": "2026-09-10",
+        "value": 5.37,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM01_N.B",
+        "obsDate": "2026-09-11",
+        "value": 3.93,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM03_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.07,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCM06_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.12,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY01_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.35,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY02_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.63,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY03_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.69,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY05_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.78,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY07_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.87,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY10_N.B",
+        "obsDate": "2026-09-11",
+        "value": 4.96,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY20_N.B",
+        "obsDate": "2026-09-11",
+        "value": 5.38,
+        "status": "final"
+      },
+      {
+        "providerCode": "RIFLGFCY30_N.B",
+        "obsDate": "2026-09-11",
+        "value": 5.35,
+        "status": "final"
+      }
+    ],
+    "curvePoints": [
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "1M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 30,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "3M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 91,
+        "value": 3.94,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "6M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 182,
+        "value": 4,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "1Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 365,
+        "value": 4.15,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "2Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 730,
+        "value": 4.39,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "3Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1095,
+        "value": 4.44,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "5Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1826,
+        "value": 4.57,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "7Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 2556,
+        "value": 4.68,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "10Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 3653,
+        "value": 4.8,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "20Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 7305,
+        "value": 5.26,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-08",
+        "tenor": "30Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 10958,
+        "value": 5.25,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "1M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 30,
+        "value": 3.81,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "3M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 91,
+        "value": 3.95,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "6M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 182,
+        "value": 4.01,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "1Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 365,
+        "value": 4.17,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "2Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 730,
+        "value": 4.43,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "3Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1095,
+        "value": 4.49,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "5Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1826,
+        "value": 4.61,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "7Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 2556,
+        "value": 4.71,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "10Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 3653,
+        "value": 4.83,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "20Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 7305,
+        "value": 5.28,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-09",
+        "tenor": "30Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 10958,
+        "value": 5.28,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "1M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 30,
+        "value": 3.91,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "3M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 91,
+        "value": 4,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "6M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 182,
+        "value": 4.07,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "1Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 365,
+        "value": 4.28,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "2Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 730,
+        "value": 4.56,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "3Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1095,
+        "value": 4.63,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "5Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1826,
+        "value": 4.75,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "7Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 2556,
+        "value": 4.84,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "10Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 3653,
+        "value": 4.95,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "20Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 7305,
+        "value": 5.39,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-10",
+        "tenor": "30Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 10958,
+        "value": 5.37,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "1M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 30,
+        "value": 3.93,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "3M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 91,
+        "value": 4.07,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "6M",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 182,
+        "value": 4.12,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "1Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 365,
+        "value": 4.35,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "2Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 730,
+        "value": 4.63,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "3Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1095,
+        "value": 4.69,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "5Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 1826,
+        "value": 4.78,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "7Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 2556,
+        "value": 4.87,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "10Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 3653,
+        "value": 4.96,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "20Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 7305,
+        "value": 5.38,
+        "instrumentId": null,
+        "maturityDate": null
+      },
+      {
+        "curveId": "UST_CMT",
+        "curveDate": "2026-09-11",
+        "tenor": "30Y",
+        "quoteType": "cmt_yield",
+        "vintageAt": "2026-09-15T18:44:55.000Z",
+        "tenorDays": 10958,
+        "value": 5.35,
+        "instrumentId": null,
+        "maturityDate": null
+      }
+    ],
+    "allMissingDates": [
+      "2026-09-07"
+    ]
+  }
+}

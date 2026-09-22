@@ -7,25 +7,61 @@
 // Add a module by adding the file and re-running the generator. Hand edits are
 // overwritten and fail CI, which re-runs the generator and diffs the result.
 
+import * as cboeEuIndices from './cboeEuIndices.js';
+import * as cboeOptions from './cboeOptions.js';
+import * as cboeQuotes from './cboeQuotes.js';
+import * as crypto from './crypto.js';
+import * as dqMonitors from './dqMonitors.js';
+import * as fxEod from './fxEod.js';
+import * as fxIntraday from './fxIntraday.js';
+import * as partitionMaintenance from './partitionMaintenance.js';
+import * as reconcile from './reconcile.js';
+import * as retentionPurge from './retentionPurge.js';
 import * as secNport from './secNport.js';
 import * as shortInterest from './shortInterest.js';
 import * as ssgaHoldings from './ssgaHoldings.js';
 import * as symbologyRefresh from './symbologyRefresh.js';
 import * as universeSymbolBook from './universeSymbolBook.js';
+import * as yahooDaily from './yahooDaily.js';
+import * as yahooIntraday from './yahooIntraday.js';
 
 export {
+  cboeEuIndices,
+  cboeOptions,
+  cboeQuotes,
+  crypto,
+  dqMonitors,
+  fxEod,
+  fxIntraday,
+  partitionMaintenance,
+  reconcile,
+  retentionPurge,
   secNport,
   shortInterest,
   ssgaHoldings,
   symbologyRefresh,
   universeSymbolBook,
+  yahooDaily,
+  yahooIntraday,
 };
 
 /** Every module the glob matched, keyed by its file (or directory) name. */
 export const ingestJobModules = {
+  cboeEuIndices,
+  cboeOptions,
+  cboeQuotes,
+  crypto,
+  dqMonitors,
+  fxEod,
+  fxIntraday,
+  partitionMaintenance,
+  reconcile,
+  retentionPurge,
   secNport,
   shortInterest,
   ssgaHoldings,
   symbologyRefresh,
   universeSymbolBook,
+  yahooDaily,
+  yahooIntraday,
 } as const;

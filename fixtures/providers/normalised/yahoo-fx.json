@@ -1,0 +1,2456 @@
+{
+  "ok": true,
+  "symbol": "EURUSD=X",
+  "meta": {
+    "symbol": "EURUSD=X",
+    "currency": "USD",
+    "instrumentType": "CURRENCY",
+    "exchangeName": "CCY",
+    "fullExchangeName": "CCY",
+    "exchangeTimezoneName": "Europe/London",
+    "timezoneAbbr": "BST",
+    "gmtOffsetSec": 3600,
+    "firstTradeDateMs": 1070236800000,
+    "priceHint": 4,
+    "dataGranularity": "5m",
+    "range": "1d",
+    "regularMarketTimeMs": 1789497658000,
+    "regularMarketPrice": 1.1543,
+    "regularMarketDayHigh": 1.1555,
+    "regularMarketDayLow": 1.153,
+    "regularMarketVolume": 0,
+    "previousClose": 1.1557,
+    "chartPreviousClose": 1.1557,
+    "fiftyTwoWeekHigh": 1.2024,
+    "fiftyTwoWeekLow": 1.1325,
+    "hasPrePostMarketData": false,
+    "longName": "EUR/USD",
+    "shortName": "EUR/USD",
+    "currentTradingPeriod": {
+      "pre": {
+        "start": 1789426800,
+        "end": 1789426800,
+        "gmtOffsetSec": 3600,
+        "timezone": "BST"
+      },
+      "regular": {
+        "start": 1789426800,
+        "end": 1789513140,
+        "gmtOffsetSec": 3600,
+        "timezone": "BST"
+      },
+      "post": {
+        "start": 1789513140,
+        "end": 1789513140,
+        "gmtOffsetSec": 3600,
+        "timezone": "BST"
+      }
+    },
+    "regularPeriods": [
+      {
+        "start": 1789426800,
+        "end": 1789513140,
+        "gmtOffsetSec": 3600,
+        "timezone": "BST"
+      }
+    ]
+  },
+  "quote": {
+    "fields": {
+      "PX_LAST": 1.1543,
+      "PX_HIGH": 1.1555,
+      "PX_LOW": 1.153,
+      "PX_CLOSE_1D": 1.1557
+    },
+    "sourceTsMs": 1789497658000,
+    "session": "open",
+    "fiftyTwoWeekHigh": 1.2024,
+    "fiftyTwoWeekLow": 1.1325
+  },
+  "granularity": "5m",
+  "requestedInterval": "5m",
+  "granularityMatchesRequest": true,
+  "barKind": "intraday",
+  "barsWritable": true,
+  "bars": [
+    {
+      "barTs": 1789426800000,
+      "open": 1.1555349826812744,
+      "high": 1.1555349826812744,
+      "low": 1.1555349826812744,
+      "close": 1.1555349826812744,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789427100000,
+      "open": 1.1555349826812744,
+      "high": 1.1555349826812744,
+      "low": 1.1555349826812744,
+      "close": 1.1555349826812744,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789427400000,
+      "open": 1.1555349826812744,
+      "high": 1.1555349826812744,
+      "low": 1.1555349826812744,
+      "close": 1.1555349826812744,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789427700000,
+      "open": 1.1555349826812744,
+      "high": 1.1555349826812744,
+      "low": 1.155401587486267,
+      "close": 1.155401587486267,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789428000000,
+      "open": 1.155401587486267,
+      "high": 1.155401587486267,
+      "low": 1.1552680730819702,
+      "close": 1.155401587486267,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789428300000,
+      "open": 1.155401587486267,
+      "high": 1.155401587486267,
+      "low": 1.155401587486267,
+      "close": 1.155401587486267,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789428600000,
+      "open": 1.155401587486267,
+      "high": 1.155401587486267,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789428900000,
+      "open": 1.1552680730819702,
+      "high": 1.1552680730819702,
+      "low": 1.1551345586776733,
+      "close": 1.1552680730819702,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789429200000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789429500000,
+      "open": 1.1552680730819702,
+      "high": 1.1552680730819702,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789429800000,
+      "open": 1.1552680730819702,
+      "high": 1.1552680730819702,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789430100000,
+      "open": 1.155001163482666,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789430400000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789430700000,
+      "open": 1.155001163482666,
+      "high": 1.155001163482666,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789431000000,
+      "open": 1.155001163482666,
+      "high": 1.155001163482666,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789431300000,
+      "open": 1.155001163482666,
+      "high": 1.155001163482666,
+      "low": 1.1548677682876587,
+      "close": 1.1548677682876587,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789431600000,
+      "open": 1.1548677682876587,
+      "high": 1.155001163482666,
+      "low": 1.1548677682876587,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789431900000,
+      "open": 1.1548677682876587,
+      "high": 1.1548677682876587,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789432200000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789432500000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1546010971069336,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789432800000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789433100000,
+      "open": 1.1548677682876587,
+      "high": 1.1548677682876587,
+      "low": 1.1548677682876587,
+      "close": 1.1548677682876587,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789433400000,
+      "open": 1.1548677682876587,
+      "high": 1.1548677682876587,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789433700000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789434000000,
+      "open": 1.1546010971069336,
+      "high": 1.1547343730926514,
+      "low": 1.1546010971069336,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789434300000,
+      "open": 1.1546010971069336,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789434600000,
+      "open": 1.1544678211212158,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789434900000,
+      "open": 1.1546010971069336,
+      "high": 1.1547343730926514,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789435200000,
+      "open": 1.1544678211212158,
+      "high": 1.1546010971069336,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789435500000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789435800000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789436100000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789436400000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789436700000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789437000000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789437300000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789437600000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789437900000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789438200000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789438500000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789438800000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789439100000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789439400000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789439700000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789440000000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789440300000,
+      "open": 1.154068112373352,
+      "high": 1.154334545135498,
+      "low": 1.154068112373352,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789440600000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789440900000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789441200000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789441500000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789441800000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789442100000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789442400000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789442700000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789443000000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789443300000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789443600000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789443900000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789444200000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789444500000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789444800000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789445100000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789445400000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789445700000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789446000000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789446300000,
+      "open": 1.1538017988204956,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789446600000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789446900000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789447200000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789447500000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789447800000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789448100000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789448400000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789448700000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789449000000,
+      "open": 1.1538017988204956,
+      "high": 1.154068112373352,
+      "low": 1.1538017988204956,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789449300000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789449600000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789449900000,
+      "open": 1.1538017988204956,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789450200000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1536686420440674,
+      "close": 1.1536686420440674,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789450500000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789450800000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789451100000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789451400000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789451700000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789452000000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1536686420440674,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789452300000,
+      "open": 1.1536686420440674,
+      "high": 1.1536686420440674,
+      "low": 1.1535356044769287,
+      "close": 1.1535356044769287,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789452600000,
+      "open": 1.1535356044769287,
+      "high": 1.1538017988204956,
+      "low": 1.1535356044769287,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789452900000,
+      "open": 1.1535356044769287,
+      "high": 1.1536686420440674,
+      "low": 1.15340256690979,
+      "close": 1.15340256690979,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789453200000,
+      "open": 1.1532695293426514,
+      "high": 1.1532695293426514,
+      "low": 1.1531364917755127,
+      "close": 1.1531364917755127,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789453500000,
+      "open": 1.1531364917755127,
+      "high": 1.1532695293426514,
+      "low": 1.1531364917755127,
+      "close": 1.1532695293426514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789453800000,
+      "open": 1.1531364917755127,
+      "high": 1.1532695293426514,
+      "low": 1.1531364917755127,
+      "close": 1.1532695293426514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789454100000,
+      "open": 1.1532695293426514,
+      "high": 1.1532695293426514,
+      "low": 1.1532695293426514,
+      "close": 1.1532695293426514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789454400000,
+      "open": 1.1532695293426514,
+      "high": 1.15340256690979,
+      "low": 1.1531364917755127,
+      "close": 1.1531364917755127,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789454700000,
+      "open": 1.1531364917755127,
+      "high": 1.1531364917755127,
+      "low": 1.1530035734176636,
+      "close": 1.1531364917755127,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789455000000,
+      "open": 1.1532695293426514,
+      "high": 1.15340256690979,
+      "low": 1.1532695293426514,
+      "close": 1.15340256690979,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789455300000,
+      "open": 1.15340256690979,
+      "high": 1.1538017988204956,
+      "low": 1.15340256690979,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789455600000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1536686420440674,
+      "close": 1.1536686420440674,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789455900000,
+      "open": 1.1536686420440674,
+      "high": 1.1539349555969238,
+      "low": 1.1536686420440674,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789456200000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789456500000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789456800000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789457100000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789457400000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789457700000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789458000000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.1539349555969238,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789458300000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789458600000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789458900000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789459200000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789459500000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789459800000,
+      "open": 1.1539349555969238,
+      "high": 1.1542012691497803,
+      "low": 1.1539349555969238,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789460100000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789460400000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789460700000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789461000000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789461300000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789461600000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789461900000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789462200000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1536686420440674,
+      "close": 1.1536686420440674,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789462500000,
+      "open": 1.1536686420440674,
+      "high": 1.1538017988204956,
+      "low": 1.1536686420440674,
+      "close": 1.1536686420440674,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789462800000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789463100000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789463400000,
+      "open": 1.1538017988204956,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789463700000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1535356044769287,
+      "close": 1.1535356044769287,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789464000000,
+      "open": 1.1536686420440674,
+      "high": 1.1536686420440674,
+      "low": 1.1535356044769287,
+      "close": 1.1535356044769287,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789464300000,
+      "open": 1.1536686420440674,
+      "high": 1.1539349555969238,
+      "low": 1.1536686420440674,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789464600000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789464900000,
+      "open": 1.1538017988204956,
+      "high": 1.1538017988204956,
+      "low": 1.1536686420440674,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789465200000,
+      "open": 1.1538017988204956,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789465500000,
+      "open": 1.1538017988204956,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789465800000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789466100000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789466400000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789466700000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789467000000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789467300000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789467600000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789467900000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789468200000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789468500000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789468800000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789469100000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789469400000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.1539349555969238,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789469700000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789470000000,
+      "open": 1.1538017988204956,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1538017988204956,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789470300000,
+      "open": 1.1539349555969238,
+      "high": 1.1539349555969238,
+      "low": 1.1538017988204956,
+      "close": 1.1539349555969238,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789470600000,
+      "open": 1.1539349555969238,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789470900000,
+      "open": 1.1542012691497803,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789471200000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789471500000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789471800000,
+      "open": 1.1544678211212158,
+      "high": 1.1546010971069336,
+      "low": 1.154334545135498,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789472100000,
+      "open": 1.1546010971069336,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789472400000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789472700000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789473000000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789473300000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789473600000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789473900000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789474200000,
+      "open": 1.1542012691497803,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789474500000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789474800000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789475100000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789475400000,
+      "open": 1.1544678211212158,
+      "high": 1.1547343730926514,
+      "low": 1.1544678211212158,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789475700000,
+      "open": 1.1548677682876587,
+      "high": 1.155001163482666,
+      "low": 1.1548677682876587,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789476000000,
+      "open": 1.1548677682876587,
+      "high": 1.155001163482666,
+      "low": 1.1548677682876587,
+      "close": 1.1548677682876587,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789476300000,
+      "open": 1.155001163482666,
+      "high": 1.1552680730819702,
+      "low": 1.1548677682876587,
+      "close": 1.1552680730819702,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789476600000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789476900000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789477200000,
+      "open": 1.155001163482666,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789477500000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789477800000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789478100000,
+      "open": 1.155001163482666,
+      "high": 1.155001163482666,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789478400000,
+      "open": 1.1547343730926514,
+      "high": 1.1548677682876587,
+      "low": 1.1546010971069336,
+      "close": 1.1548677682876587,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789478700000,
+      "open": 1.1548677682876587,
+      "high": 1.1548677682876587,
+      "low": 1.1547343730926514,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479000000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479300000,
+      "open": 1.1546010971069336,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479600000,
+      "open": 1.1544678211212158,
+      "high": 1.1547343730926514,
+      "low": 1.1544678211212158,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789479900000,
+      "open": 1.1547343730926514,
+      "high": 1.155001163482666,
+      "low": 1.1547343730926514,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480200000,
+      "open": 1.1551345586776733,
+      "high": 1.155401587486267,
+      "low": 1.1551345586776733,
+      "close": 1.155401587486267,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480500000,
+      "open": 1.155401587486267,
+      "high": 1.155401587486267,
+      "low": 1.1552680730819702,
+      "close": 1.1552680730819702,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789480800000,
+      "open": 1.1552680730819702,
+      "high": 1.1552680730819702,
+      "low": 1.155001163482666,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481100000,
+      "open": 1.155001163482666,
+      "high": 1.1551345586776733,
+      "low": 1.155001163482666,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481400000,
+      "open": 1.1551345586776733,
+      "high": 1.1551345586776733,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789481700000,
+      "open": 1.1552680730819702,
+      "high": 1.1552680730819702,
+      "low": 1.1548677682876587,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482000000,
+      "open": 1.1551345586776733,
+      "high": 1.1552680730819702,
+      "low": 1.155001163482666,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482300000,
+      "open": 1.1552680730819702,
+      "high": 1.1552680730819702,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482600000,
+      "open": 1.1552680730819702,
+      "high": 1.155401587486267,
+      "low": 1.1551345586776733,
+      "close": 1.1551345586776733,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789482900000,
+      "open": 1.155001163482666,
+      "high": 1.155001163482666,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483200000,
+      "open": 1.1544678211212158,
+      "high": 1.1547343730926514,
+      "low": 1.1544678211212158,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483500000,
+      "open": 1.1547343730926514,
+      "high": 1.1548677682876587,
+      "low": 1.1546010971069336,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789483800000,
+      "open": 1.1547343730926514,
+      "high": 1.155001163482666,
+      "low": 1.1547343730926514,
+      "close": 1.155001163482666,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484100000,
+      "open": 1.155001163482666,
+      "high": 1.155001163482666,
+      "low": 1.1546010971069336,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484400000,
+      "open": 1.1546010971069336,
+      "high": 1.1547343730926514,
+      "low": 1.1544678211212158,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789484700000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1546010971069336,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485000000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485300000,
+      "open": 1.154334545135498,
+      "high": 1.1547343730926514,
+      "low": 1.154334545135498,
+      "close": 1.1547343730926514,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485600000,
+      "open": 1.1546010971069336,
+      "high": 1.1548677682876587,
+      "low": 1.1546010971069336,
+      "close": 1.1548677682876587,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789485900000,
+      "open": 1.1548677682876587,
+      "high": 1.1548677682876587,
+      "low": 1.1548677682876587,
+      "close": 1.1548677682876587,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486200000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1546010971069336,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486500000,
+      "open": 1.1546010971069336,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789486800000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487100000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487400000,
+      "open": 1.1542012691497803,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789487700000,
+      "open": 1.154334545135498,
+      "high": 1.1546010971069336,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488000000,
+      "open": 1.1544678211212158,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488300000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488600000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789488900000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489200000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489500000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789489800000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490100000,
+      "open": 1.1544678211212158,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490400000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789490700000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491000000,
+      "open": 1.1544678211212158,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491300000,
+      "open": 1.1546010971069336,
+      "high": 1.1546010971069336,
+      "low": 1.1544678211212158,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491600000,
+      "open": 1.1547343730926514,
+      "high": 1.1547343730926514,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789491900000,
+      "open": 1.1546010971069336,
+      "high": 1.1546010971069336,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492200000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492500000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789492800000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493100000,
+      "open": 1.1542012691497803,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493400000,
+      "open": 1.154068112373352,
+      "high": 1.154334545135498,
+      "low": 1.154068112373352,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789493700000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494000000,
+      "open": 1.1542012691497803,
+      "high": 1.154334545135498,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494300000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494600000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789494900000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.154068112373352,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495200000,
+      "open": 1.154068112373352,
+      "high": 1.154068112373352,
+      "low": 1.1539349555969238,
+      "close": 1.154068112373352,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495500000,
+      "open": 1.154068112373352,
+      "high": 1.1542012691497803,
+      "low": 1.154068112373352,
+      "close": 1.1542012691497803,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789495800000,
+      "open": 1.1542012691497803,
+      "high": 1.1544678211212158,
+      "low": 1.1542012691497803,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496100000,
+      "open": 1.154334545135498,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496400000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.1544678211212158,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789496700000,
+      "open": 1.1546010971069336,
+      "high": 1.1547343730926514,
+      "low": 1.1546010971069336,
+      "close": 1.1546010971069336,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497000000,
+      "open": 1.1544678211212158,
+      "high": 1.1544678211212158,
+      "low": 1.154334545135498,
+      "close": 1.1544678211212158,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497300000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    },
+    {
+      "barTs": 1789497658000,
+      "open": 1.154334545135498,
+      "high": 1.154334545135498,
+      "low": 1.154334545135498,
+      "close": 1.154334545135498,
+      "volume": 0,
+      "adjClose": null,
+      "session": "regular"
+    }
+  ],
+  "dividends": [],
+  "splits": [],
+  "problems": [
+    {
+      "kind": "field_dropped",
+      "detail": "1 of 238 bars dropped: a null in timestamp/open/high/low/close/volume is Yahoo’s gap marker and is never zero-filled",
+      "path": "/chart/result/0/indicators/quote/0"
+    }
+  ]
+}

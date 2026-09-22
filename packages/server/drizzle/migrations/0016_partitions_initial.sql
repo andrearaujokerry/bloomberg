@@ -28,28 +28,47 @@ CREATE TABLE bars_daily_y2024 PARTITION OF bars_daily FOR VALUES FROM ('2024-01-
 CREATE TABLE bars_daily_y2025 PARTITION OF bars_daily FOR VALUES FROM ('2025-01-01') TO ('2026-01-01');
 CREATE TABLE bars_daily_y2026 PARTITION OF bars_daily FOR VALUES FROM ('2026-01-01') TO ('2027-01-01');
 CREATE TABLE bars_daily_y2027 PARTITION OF bars_daily FOR VALUES FROM ('2027-01-01') TO ('2028-01-01');
-CREATE TABLE bars_intraday_m2026_08 PARTITION OF bars_intraday FOR VALUES FROM ('2026-08-01') TO ('2026-09-01');
-CREATE TABLE bars_intraday_m2026_09 PARTITION OF bars_intraday FOR VALUES FROM ('2026-09-01') TO ('2026-10-01');
-CREATE TABLE bars_intraday_m2026_10 PARTITION OF bars_intraday FOR VALUES FROM ('2026-10-01') TO ('2026-11-01');
-CREATE TABLE bars_intraday_m2026_11 PARTITION OF bars_intraday FOR VALUES FROM ('2026-11-01') TO ('2026-12-01');
-CREATE TABLE quote_ticks_d2026_09_14 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-14') TO ('2026-09-15');
-CREATE TABLE quote_ticks_d2026_09_15 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-15') TO ('2026-09-16');
-CREATE TABLE quote_ticks_d2026_09_16 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-16') TO ('2026-09-17');
-CREATE TABLE quote_ticks_d2026_09_17 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-17') TO ('2026-09-18');
-CREATE TABLE quote_ticks_d2026_09_18 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-18') TO ('2026-09-19');
-CREATE TABLE quote_ticks_d2026_09_19 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-19') TO ('2026-09-20');
-CREATE TABLE quote_ticks_d2026_09_20 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-20') TO ('2026-09-21');
-CREATE TABLE quote_ticks_d2026_09_21 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-21') TO ('2026-09-22');
-CREATE TABLE option_quotes_d2026_09_15 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-15') TO ('2026-09-16');
-CREATE TABLE option_quotes_d2026_09_16 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-16') TO ('2026-09-17');
-CREATE TABLE option_quotes_d2026_09_17 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-17') TO ('2026-09-18');
-CREATE TABLE option_quotes_d2026_09_18 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-18') TO ('2026-09-19');
-CREATE TABLE option_quotes_d2026_09_19 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-19') TO ('2026-09-20');
-CREATE TABLE option_quotes_d2026_09_20 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-20') TO ('2026-09-21');
-CREATE TABLE option_quotes_d2026_09_21 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-21') TO ('2026-09-22');
-CREATE TABLE access_log_m2026_09 PARTITION OF access_log FOR VALUES FROM ('2026-09-01') TO ('2026-10-01');
-CREATE TABLE access_log_m2026_10 PARTITION OF access_log FOR VALUES FROM ('2026-10-01') TO ('2026-11-01');
-CREATE TABLE access_log_m2026_11 PARTITION OF access_log FOR VALUES FROM ('2026-11-01') TO ('2026-12-01');
-CREATE TABLE usage_events_m2026_09 PARTITION OF usage_events FOR VALUES FROM ('2026-09-01') TO ('2026-10-01');
-CREATE TABLE usage_events_m2026_10 PARTITION OF usage_events FOR VALUES FROM ('2026-10-01') TO ('2026-11-01');
-CREATE TABLE usage_events_m2026_11 PARTITION OF usage_events FOR VALUES FROM ('2026-11-01') TO ('2026-12-01');
+CREATE TABLE bars_intraday_m2026_08 PARTITION OF bars_intraday FOR VALUES FROM ('2026-08-01 00:00:00+00') TO ('2026-09-01 00:00:00+00');
+CREATE TABLE bars_intraday_m2026_09 PARTITION OF bars_intraday FOR VALUES FROM ('2026-09-01 00:00:00+00') TO ('2026-10-01 00:00:00+00');
+CREATE TABLE bars_intraday_m2026_10 PARTITION OF bars_intraday FOR VALUES FROM ('2026-10-01 00:00:00+00') TO ('2026-11-01 00:00:00+00');
+CREATE TABLE bars_intraday_m2026_11 PARTITION OF bars_intraday FOR VALUES FROM ('2026-11-01 00:00:00+00') TO ('2026-12-01 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_14 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-14 00:00:00+00') TO ('2026-09-15 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_15 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-15 00:00:00+00') TO ('2026-09-16 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_16 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-16 00:00:00+00') TO ('2026-09-17 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_17 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-17 00:00:00+00') TO ('2026-09-18 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_18 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-18 00:00:00+00') TO ('2026-09-19 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_19 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-19 00:00:00+00') TO ('2026-09-20 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_20 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-20 00:00:00+00') TO ('2026-09-21 00:00:00+00');
+CREATE TABLE quote_ticks_d2026_09_21 PARTITION OF quote_ticks FOR VALUES FROM ('2026-09-21 00:00:00+00') TO ('2026-09-22 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_15 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-15 00:00:00+00') TO ('2026-09-16 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_16 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-16 00:00:00+00') TO ('2026-09-17 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_17 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-17 00:00:00+00') TO ('2026-09-18 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_18 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-18 00:00:00+00') TO ('2026-09-19 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_19 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-19 00:00:00+00') TO ('2026-09-20 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_20 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-20 00:00:00+00') TO ('2026-09-21 00:00:00+00');
+CREATE TABLE option_quotes_d2026_09_21 PARTITION OF option_quotes FOR VALUES FROM ('2026-09-21 00:00:00+00') TO ('2026-09-22 00:00:00+00');
+CREATE TABLE access_log_m2026_09 PARTITION OF access_log FOR VALUES FROM ('2026-09-01 00:00:00+00') TO ('2026-10-01 00:00:00+00');
+CREATE TABLE access_log_m2026_10 PARTITION OF access_log FOR VALUES FROM ('2026-10-01 00:00:00+00') TO ('2026-11-01 00:00:00+00');
+CREATE TABLE access_log_m2026_11 PARTITION OF access_log FOR VALUES FROM ('2026-11-01 00:00:00+00') TO ('2026-12-01 00:00:00+00');
+CREATE TABLE usage_events_m2026_09 PARTITION OF usage_events FOR VALUES FROM ('2026-09-01 00:00:00+00') TO ('2026-10-01 00:00:00+00');
+CREATE TABLE usage_events_m2026_10 PARTITION OF usage_events FOR VALUES FROM ('2026-10-01 00:00:00+00') TO ('2026-11-01 00:00:00+00');
+CREATE TABLE usage_events_m2026_11 PARTITION OF usage_events FOR VALUES FROM ('2026-11-01 00:00:00+00') TO ('2026-12-01 00:00:00+00');
+
+-- Ownership. `CREATE TABLE … PARTITION OF` gives the new child to its CREATOR, not to the parent's
+-- owner, so every partition above belongs to the role that ran this migration (a superuser, locally)
+-- rather than to `terminal_maint`. 0015's re-owning loop ran BEFORE this file and matched nothing.
+-- Without this block `dropExpired()` fails as `terminal_maint` with 42501 'must be owner of table
+-- <partition>' on all 54 of them, and STOR-07's licence-mandated deletion silently never happens.
+DO $$
+DECLARE p record;
+BEGIN
+  FOR p IN SELECT c.relname FROM pg_class c
+           JOIN pg_inherits i ON i.inhrelid = c.oid
+           JOIN pg_class parent ON parent.oid = i.inhparent
+           WHERE parent.relname IN ('bars_daily','bars_intraday','quote_ticks','option_quotes','access_log','usage_events')
+             AND c.relowner <> (SELECT oid FROM pg_roles WHERE rolname = 'terminal_maint')
+  LOOP EXECUTE format('ALTER TABLE public.%I OWNER TO terminal_maint', p.relname); END LOOP;
+END $$;
+-- The default partitions created with the parents in 0007/0011/0014 are children too, so the loop
+-- above covers them as well: `dropExpired` never drops a default, but `ensurePartitions` moves rows
+-- out of one, which needs DELETE and is granted separately in 0015.

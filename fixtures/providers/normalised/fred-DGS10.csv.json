@@ -1,0 +1,65 @@
+{
+  "capture": "fred-DGS10.csv",
+  "providerId": "fred.csv",
+  "requestKey": "03a89aed6ee2d69ea054847cda8226a596066ebf79b4ec36d0e5c792eb998299",
+  "adapterVersion": "fred/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "series": {
+      "providerCode": "DGS10",
+      "requestedCode": "DGS10",
+      "firstObsDate": "1962-01-02",
+      "lastObsDate": "2026-09-11",
+      "observationCount": 16879,
+      "missingCount": 720
+    },
+    "observations": {
+      "$digest": {
+        "count": 16879,
+        "sha256": "2f531ef8b2ddf145b6706811f3b1a10a6ce2ed2e43bab62b6fbde1a007232308",
+        "first": [
+          {
+            "providerCode": "DGS10",
+            "obsDate": "1962-01-02",
+            "value": 4.06,
+            "status": "final"
+          },
+          {
+            "providerCode": "DGS10",
+            "obsDate": "1962-01-03",
+            "value": 4.03,
+            "status": "final"
+          },
+          {
+            "providerCode": "DGS10",
+            "obsDate": "1962-01-04",
+            "value": 3.99,
+            "status": "final"
+          }
+        ],
+        "last": [
+          {
+            "providerCode": "DGS10",
+            "obsDate": "2026-09-09",
+            "value": 4.83,
+            "status": "final"
+          },
+          {
+            "providerCode": "DGS10",
+            "obsDate": "2026-09-10",
+            "value": 4.95,
+            "status": "final"
+          },
+          {
+            "providerCode": "DGS10",
+            "obsDate": "2026-09-11",
+            "value": 4.96,
+            "status": "final"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "capture": "sec-company-tickers.json",
+  "providerId": "sec.tickers",
+  "requestKey": "093164db7b6ddc51d4162dd2e3e6e72d0eb11e2b297b4d983a7557f26d59ff50",
+  "adapterVersion": "sec/1.0.0",
+  "sourceTs": null,
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "issuers": {
+      "$digest": {
+        "count": 8022,
+        "sha256": "125e61113b7d1e161b7788e93c1bc6eb439ddeaab4a1c545292f9bddc79a9084",
+        "first": [
+          {
+            "cik": "0001045810",
+            "name": "NVIDIA CORP",
+            "entityType": "company",
+            "tickers": [
+              "NVDA"
+            ]
+          },
+          {
+            "cik": "0000320193",
+            "name": "Apple Inc.",
+            "entityType": "company",
+            "tickers": [
+              "AAPL"
+            ]
+          },
+          {
+            "cik": "0001652044",
+            "name": "Alphabet Inc.",
+            "entityType": "company",
+            "tickers": [
+              "GOOGL",
+              "GOOG",
+              "GOOGM",
+              "GOOGN"
+            ]
+          }
+        ],
+        "last": [
+          {
+            "cik": "0002075349",
+            "name": "Top End Energy Ltd/ADR",
+            "entityType": "company",
+            "tickers": [
+              "TNDEF"
+            ]
+          },
+          {
+            "cik": "0002150886",
+            "name": "Fresnillo Plc/ADR",
+            "entityType": "company",
+            "tickers": [
+              "FNLPF"
+            ]
+          },
+          {
+            "cik": "0002106126",
+            "name": "Eurobank SA/ADR",
+            "entityType": "company",
+            "tickers": [
+              "EURBF"
+            ]
+          }
+        ]
+      }
+    },
+    "conflicts": [],
+    "entryCount": 10422,
+    "issuerCount": 8022,
+    "belowMinimum": false
+  }
+}

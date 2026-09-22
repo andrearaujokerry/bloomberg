@@ -1,0 +1,190 @@
+{
+  "capture": "sec-submissions-AAPL.json",
+  "providerId": "sec.submissions",
+  "requestKey": "d389df15f2c2f89850b24c1c7c6e481c40a9b18c0d7ca6d2bc7afde9c35ec591",
+  "adapterVersion": "sec/1.0.0",
+  "sourceTs": "2026-09-10T22:30:31.000Z",
+  "updateCount": 0,
+  "problems": [],
+  "rows": {
+    "issuer": {
+      "cik": "0000320193",
+      "name": "Apple Inc.",
+      "sic": "3571",
+      "sicDescription": "Electronic Computers",
+      "fiscalYearEnd": "0926",
+      "stateOfInc": "CA",
+      "filerCategory": "Large accelerated filer",
+      "entityType": "operating",
+      "website": null,
+      "formerNames": [
+        {
+          "name": "APPLE INC",
+          "from": "2007-01-10T05:00:00Z",
+          "to": "2019-08-05T04:00:00Z"
+        },
+        {
+          "name": "APPLE COMPUTER INC",
+          "from": "1994-01-26T05:00:00Z",
+          "to": "2007-01-04T05:00:00Z"
+        },
+        {
+          "name": "APPLE COMPUTER INC/ FA",
+          "from": "1997-07-28T04:00:00Z",
+          "to": "1997-07-28T04:00:00Z"
+        }
+      ]
+    },
+    "identifiers": [
+      {
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "US"
+      }
+    ],
+    "aliases": [
+      {
+        "alias": "APPLE INC",
+        "kind": "former_name",
+        "from": "2007-01-10T05:00:00Z",
+        "to": "2019-08-05T04:00:00Z"
+      },
+      {
+        "alias": "APPLE COMPUTER INC",
+        "kind": "former_name",
+        "from": "1994-01-26T05:00:00Z",
+        "to": "2007-01-04T05:00:00Z"
+      },
+      {
+        "alias": "APPLE COMPUTER INC/ FA",
+        "kind": "former_name",
+        "from": "1997-07-28T04:00:00Z",
+        "to": "1997-07-28T04:00:00Z"
+      }
+    ],
+    "classifications": [
+      {
+        "scheme": "SIC",
+        "code": "3571"
+      }
+    ],
+    "listings": [
+      {
+        "ticker": "AAPL",
+        "exchange": "Nasdaq",
+        "mic": "XNAS"
+      }
+    ],
+    "filings": {
+      "$digest": {
+        "count": 1000,
+        "sha256": "58ff483b09b89cc50c26c370e9ed435345b7f1795b969ef67516c59cab32ceaf",
+        "first": [
+          {
+            "accessionNo": "0001140361-26-036226",
+            "cik": "0000320193",
+            "form": "4",
+            "filedDate": "2026-09-10",
+            "acceptedAt": "2026-09-10T22:30:31Z",
+            "reportDate": "2026-09-08",
+            "items": [],
+            "primaryDoc": "xslF345X06/form4.xml",
+            "primaryDocDesc": "FORM 4",
+            "isXbrl": false,
+            "isInlineXbrl": false,
+            "sizeBytes": 4681,
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126036226/form4.xml"
+          },
+          {
+            "accessionNo": "0001140361-26-035636",
+            "cik": "0000320193",
+            "form": "4",
+            "filedDate": "2026-09-03",
+            "acceptedAt": "2026-09-03T22:30:44Z",
+            "reportDate": "2026-09-01",
+            "items": [],
+            "primaryDoc": "xslF345X06/form4.xml",
+            "primaryDocDesc": "FORM 4",
+            "isXbrl": false,
+            "isInlineXbrl": false,
+            "sizeBytes": 4681,
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126035636/form4.xml"
+          },
+          {
+            "accessionNo": "0001140361-26-035362",
+            "cik": "0000320193",
+            "form": "4",
+            "filedDate": "2026-09-01",
+            "acceptedAt": "2026-09-01T22:32:04Z",
+            "reportDate": "2026-09-01",
+            "items": [],
+            "primaryDoc": "xslF345X06/form4.xml",
+            "primaryDocDesc": "FORM 4",
+            "isXbrl": false,
+            "isInlineXbrl": false,
+            "sizeBytes": 5615,
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126035362/form4.xml"
+          }
+        ],
+        "last": [
+          {
+            "accessionNo": "0001193125-15-264078",
+            "cik": "0000320193",
+            "form": "424B2",
+            "filedDate": "2015-07-27",
+            "acceptedAt": "2015-07-27T20:24:13Z",
+            "reportDate": null,
+            "items": [],
+            "primaryDoc": "d12679d424b2.htm",
+            "primaryDocDesc": "FILED PURSUANT TO RULE 424B2",
+            "isXbrl": false,
+            "isInlineXbrl": false,
+            "sizeBytes": 453963,
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000119312515264078/d12679d424b2.htm"
+          },
+          {
+            "accessionNo": "0001193125-15-262731",
+            "cik": "0000320193",
+            "form": "FWP",
+            "filedDate": "2015-07-24",
+            "acceptedAt": "2015-07-24T20:06:02Z",
+            "reportDate": null,
+            "items": [],
+            "primaryDoc": "d95725dfwp.htm",
+            "primaryDocDesc": "FREE WRITING PROSPECTUS",
+            "isXbrl": false,
+            "isInlineXbrl": false,
+            "sizeBytes": 21025,
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000119312515262731/d95725dfwp.htm"
+          },
+          {
+            "accessionNo": "0001193125-15-261843",
+            "cik": "0000320193",
+            "form": "424B2",
+            "filedDate": "2015-07-24",
+            "acceptedAt": "2015-07-24T10:11:28Z",
+            "reportDate": null,
+            "items": [],
+            "primaryDoc": "d12679d424b2.htm",
+            "primaryDocDesc": "FILED PURSUANT TO RULE 424B2",
+            "isXbrl": false,
+            "isInlineXbrl": false,
+            "sizeBytes": 445254,
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000119312515261843/d12679d424b2.htm"
+          }
+        ]
+      }
+    },
+    "overflowFiles": [
+      {
+        "name": "CIK0000320193-submissions-001.json",
+        "filingCount": 1247,
+        "filingFrom": "1994-01-26",
+        "filingTo": "2015-07-22"
+      }
+    ],
+    "newestFilingDate": "2026-09-10",
+    "acceptedBeforeFiledDate": 49,
+    "acceptedAfterFiledDate": 7
+  }
+}

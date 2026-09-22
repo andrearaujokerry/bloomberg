@@ -1,0 +1,310 @@
+{
+  "updates": [],
+  "rows": {
+    "status": "REQUEST_SUCCEEDED",
+    "messages": [],
+    "series": [
+      {
+        "providerCode": "CUUR0000SA0",
+        "frequency": "M",
+        "observationCount": 32,
+        "firstObsDate": "2024-01-01",
+        "lastObsDate": "2026-08-01",
+        "latestValue": 334.98,
+        "latestObsDate": "2026-08-01"
+      }
+    ],
+    "observations": [
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-01-01",
+        "period": "M01",
+        "periodName": "January",
+        "value": 308.417,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-02-01",
+        "period": "M02",
+        "periodName": "February",
+        "value": 310.326,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-03-01",
+        "period": "M03",
+        "periodName": "March",
+        "value": 312.332,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-04-01",
+        "period": "M04",
+        "periodName": "April",
+        "value": 313.548,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-05-01",
+        "period": "M05",
+        "periodName": "May",
+        "value": 314.069,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-06-01",
+        "period": "M06",
+        "periodName": "June",
+        "value": 314.175,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-07-01",
+        "period": "M07",
+        "periodName": "July",
+        "value": 314.54,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-08-01",
+        "period": "M08",
+        "periodName": "August",
+        "value": 314.796,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-09-01",
+        "period": "M09",
+        "periodName": "September",
+        "value": 315.301,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-10-01",
+        "period": "M10",
+        "periodName": "October",
+        "value": 315.664,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-11-01",
+        "period": "M11",
+        "periodName": "November",
+        "value": 315.493,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2024-12-01",
+        "period": "M12",
+        "periodName": "December",
+        "value": 315.605,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-01-01",
+        "period": "M01",
+        "periodName": "January",
+        "value": 317.671,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-02-01",
+        "period": "M02",
+        "periodName": "February",
+        "value": 319.082,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-03-01",
+        "period": "M03",
+        "periodName": "March",
+        "value": 319.799,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-04-01",
+        "period": "M04",
+        "periodName": "April",
+        "value": 320.795,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-05-01",
+        "period": "M05",
+        "periodName": "May",
+        "value": 321.465,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-06-01",
+        "period": "M06",
+        "periodName": "June",
+        "value": 322.561,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-07-01",
+        "period": "M07",
+        "periodName": "July",
+        "value": 323.048,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-08-01",
+        "period": "M08",
+        "periodName": "August",
+        "value": 323.976,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-09-01",
+        "period": "M09",
+        "periodName": "September",
+        "value": 324.8,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-10-01",
+        "period": "M10",
+        "periodName": "October",
+        "value": null,
+        "status": "missing",
+        "footnote": "Data unavailable due to the 2025 lapse in appropriations"
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-11-01",
+        "period": "M11",
+        "periodName": "November",
+        "value": 324.122,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2025-12-01",
+        "period": "M12",
+        "periodName": "December",
+        "value": 324.054,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-01-01",
+        "period": "M01",
+        "periodName": "January",
+        "value": 325.252,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-02-01",
+        "period": "M02",
+        "periodName": "February",
+        "value": 326.785,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-03-01",
+        "period": "M03",
+        "periodName": "March",
+        "value": 330.213,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-04-01",
+        "period": "M04",
+        "periodName": "April",
+        "value": 333.02,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-05-01",
+        "period": "M05",
+        "periodName": "May",
+        "value": 335.123,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-06-01",
+        "period": "M06",
+        "periodName": "June",
+        "value": 333.952,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-07-01",
+        "period": "M07",
+        "periodName": "July",
+        "value": 333.918,
+        "status": "final",
+        "footnote": null
+      },
+      {
+        "providerCode": "CUUR0000SA0",
+        "obsDate": "2026-08-01",
+        "period": "M08",
+        "periodName": "August",
+        "value": 334.98,
+        "status": "final",
+        "footnote": null
+      }
+    ]
+  },
+  "sourceTs": null,
+  "problems": []
+}

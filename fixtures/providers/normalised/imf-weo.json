@@ -1,0 +1,1067 @@
+{
+  "updates": [],
+  "rows": {
+    "kind": "catalogue",
+    "indicators": [
+      {
+        "providerCode": "AI_PI",
+        "name": "AI Preparedness Index",
+        "units": "Index",
+        "dataset": "AIPI",
+        "source": "AI Preparedness Index - April 2024",
+        "lastUpdatedAt": "2024-06-04T09:25:49Z"
+      },
+      {
+        "providerCode": "BCA",
+        "name": "Current account balance U.S. dollars",
+        "units": "Billions of U.S. dollars",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:40Z"
+      },
+      {
+        "providerCode": "BCA_GDP",
+        "name": "External Current Account, Incl.Grants (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:51Z"
+      },
+      {
+        "providerCode": "BCA_NGDPD",
+        "name": "Current account balance, percent of GDP",
+        "units": "Percent of GDP",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:41Z"
+      },
+      {
+        "providerCode": "BFD_GDP",
+        "name": "Net Foreign Direct Investment (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:52Z"
+      },
+      {
+        "providerCode": "BM_GDP",
+        "name": "Imports of Goods and Services (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:50Z"
+      },
+      {
+        "providerCode": "BRASS_MI",
+        "name": "Reserves (Months of Imports)",
+        "units": "Months of imports of goods and services",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:54Z"
+      },
+      {
+        "providerCode": "BT_GDP",
+        "name": "Trade Balance (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:51Z"
+      },
+      {
+        "providerCode": "BX_GDP",
+        "name": "Exports of Goods and Services (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:50Z"
+      },
+      {
+        "providerCode": "CG_DEBT_GDP",
+        "name": "Central Government Debt",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:29Z"
+      },
+      {
+        "providerCode": "DEBT1",
+        "name": "DEBT",
+        "units": "% of GDP",
+        "dataset": "DEBT",
+        "source": "Fiscal Affairs Departmental Data",
+        "lastUpdatedAt": "2017-11-13T10:40:35Z"
+      },
+      {
+        "providerCode": "DG_GDP",
+        "name": "External Debt, Official Debt, Debtor Based (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:53Z"
+      },
+      {
+        "providerCode": "DI",
+        "name": "Digital Infrastructure",
+        "units": "Index",
+        "dataset": "AIPI",
+        "source": "AI Preparedness Index - April 2024",
+        "lastUpdatedAt": "2024-06-04T11:15:09Z"
+      },
+      {
+        "providerCode": "DebtA",
+        "name": "Debt Securities Assets",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:38Z"
+      },
+      {
+        "providerCode": "DebtForg",
+        "name": "Debt Forgiveness",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:46Z"
+      },
+      {
+        "providerCode": "DebtL",
+        "name": "Debt Securities Liabilities",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:40Z"
+      },
+      {
+        "providerCode": "Deriv",
+        "name": "Financial Derivatives",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:48Z"
+      },
+      {
+        "providerCode": "DirectAbroad",
+        "name": "Direct Investment Abroad",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:22Z"
+      },
+      {
+        "providerCode": "DirectIn",
+        "name": "Direct Investment In Country",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:24Z"
+      },
+      {
+        "providerCode": "ENEER",
+        "name": "Nominal Effective Exchange Rates (2010=100)",
+        "units": "Annual Average Index, 2010 = 100",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:56Z"
+      },
+      {
+        "providerCode": "EREER",
+        "name": "Real Effective Exchange Rates (2010=100)",
+        "units": "Annual Average Index, 2010 = 100",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:56Z"
+      },
+      {
+        "providerCode": "EquityA",
+        "name": "Equity Securities Assets",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:35Z"
+      },
+      {
+        "providerCode": "EquityL",
+        "name": "Equity Securities Liabilities",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:36Z"
+      },
+      {
+        "providerCode": "FC_dummy",
+        "name": "Fiscal Council Indicator",
+        "units": "Index",
+        "dataset": "FR_FC",
+        "source": "Alonso, Arroyo, Aydin, Balasundharam, Davoodi, Hegab, Lam, Nguyen, Salazar Ferro, Sher, Solovyeva, and Tchelishvili (2025)",
+        "lastUpdatedAt": "2025-09-24T12:13:36Z"
+      },
+      {
+        "providerCode": "FDSAOP_GDP",
+        "name": "Claims on Nonfinancial Private Sector (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:55Z"
+      },
+      {
+        "providerCode": "FDSAOP_PCH",
+        "name": "Claims on Nonfinancial Private Sector (%)",
+        "units": "Annual percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:55Z"
+      },
+      {
+        "providerCode": "FMB_GDP",
+        "name": "Broad Money (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:49Z"
+      },
+      {
+        "providerCode": "FMB_PCH",
+        "name": "Broad Money Growth",
+        "units": "Annual percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:49Z"
+      },
+      {
+        "providerCode": "FM_ka",
+        "name": "Financial Market Openness Index (equity, bond, money market, collective investment, derivates) 1=fully liberalized",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:00Z"
+      },
+      {
+        "providerCode": "FR_ind",
+        "name": "Fiscal Rule Indicator",
+        "units": "Index",
+        "dataset": "FR_FC",
+        "source": "Alonso, Arroyo, Aydin, Balasundharam, Davoodi, Hegab, Lam, Nguyen, Salazar Ferro, Sher, Solovyeva, and Tchelishvili (2025)",
+        "lastUpdatedAt": "2025-09-24T12:13:36Z"
+      },
+      {
+        "providerCode": "GDI_TC",
+        "name": "Gender Development Index (GDI) Time Consistent",
+        "units": "Index",
+        "dataset": "GD",
+        "source": "Stotsky, Shibuya, Kolovich, and Kebhaj (2016)",
+        "lastUpdatedAt": "2017-11-03T10:02:21Z"
+      },
+      {
+        "providerCode": "GDP",
+        "name": "Nominal GDP",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:50Z"
+      },
+      {
+        "providerCode": "GGCBP_G01_PGDP_PT",
+        "name": "Cyclically adjusted primary balance",
+        "units": "% of Potential GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:26Z"
+      },
+      {
+        "providerCode": "GGCB_G01_PGDP_PT",
+        "name": "Cyclically adjusted balance",
+        "units": "% of Potential GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:26Z"
+      },
+      {
+        "providerCode": "GGRXG_GDP",
+        "name": "Government Revenue, Excluding Grants (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:47Z"
+      },
+      {
+        "providerCode": "GGR_G01_GDP_PT",
+        "name": "Revenue",
+        "units": "% of GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:26Z"
+      },
+      {
+        "providerCode": "GGXCNLXG_GDP",
+        "name": "Overall Fiscal Balance, Excluding Grants (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:47Z"
+      },
+      {
+        "providerCode": "GGXCNL_G01_GDP_PT",
+        "name": "Net lending/borrowing (also referred as overall balance)",
+        "units": "% of GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:25Z"
+      },
+      {
+        "providerCode": "GGXCNL_GDP",
+        "name": "Overall Fiscal Balance, Including Grants (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:46Z"
+      },
+      {
+        "providerCode": "GGXCNL_NGDP",
+        "name": "General government net lending/borrowing",
+        "units": "Percent of GDP",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:43Z"
+      },
+      {
+        "providerCode": "GGXONLB_G01_GDP_PT",
+        "name": "Primary net lending/borrowing (also referred as primary balance)",
+        "units": "% of GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:25Z"
+      },
+      {
+        "providerCode": "GGXWDG_GDP",
+        "name": "Government Debt (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:48Z"
+      },
+      {
+        "providerCode": "GGXWDG_NGDP",
+        "name": "General government gross debt",
+        "units": "Percent of GDP",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:44Z"
+      },
+      {
+        "providerCode": "GGXWDN_G01_GDP_PT",
+        "name": "Net debt",
+        "units": "% of GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:28Z"
+      },
+      {
+        "providerCode": "GGX_GDP",
+        "name": "Government Expenditure (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:48Z"
+      },
+      {
+        "providerCode": "GG_DEBT_GDP",
+        "name": "General Government Debt",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:29Z"
+      },
+      {
+        "providerCode": "GII_TC",
+        "name": "Gender Inequality Index (GII) Time Consistent",
+        "units": "Index",
+        "dataset": "GD",
+        "source": "Stotsky, Shibuya, Kolovich, and Kebhaj (2016)",
+        "lastUpdatedAt": "2017-11-03T10:02:21Z"
+      },
+      {
+        "providerCode": "GRB_dummy",
+        "name": "Gender Budgeting Indicator",
+        "units": "Index",
+        "dataset": "GD",
+        "source": "Stotsky (2016)",
+        "lastUpdatedAt": "2017-11-03T10:02:21Z"
+      },
+      {
+        "providerCode": "G_XWDG_G01_GDP_PT",
+        "name": "Gross debt position",
+        "units": "% of GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:27Z"
+      },
+      {
+        "providerCode": "G_X_G01_GDP_PT",
+        "name": "Expenditure",
+        "units": "% of GDP",
+        "dataset": "FM",
+        "source": "Fiscal Monitor (April 2026)",
+        "lastUpdatedAt": "2026-04-15T00:15:27Z"
+      },
+      {
+        "providerCode": "HCLMP",
+        "name": "Human Capital and Labor Market Policies",
+        "units": "Index",
+        "dataset": "AIPI",
+        "source": "AI Preparedness Index - April 2024",
+        "lastUpdatedAt": "2024-06-11T16:04:32Z"
+      },
+      {
+        "providerCode": "HH_ALL",
+        "name": "Household debt, all instruments",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:27Z"
+      },
+      {
+        "providerCode": "HH_LS",
+        "name": "Household debt, loans and debt securities",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:28Z"
+      },
+      {
+        "providerCode": "IEI",
+        "name": "Innovation and Economic Integration",
+        "units": "Index",
+        "dataset": "AIPI",
+        "source": "AI Preparedness Index - April 2024",
+        "lastUpdatedAt": "2024-06-04T11:15:52Z"
+      },
+      {
+        "providerCode": "Ka_bo",
+        "name": "Bond openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:06Z"
+      },
+      {
+        "providerCode": "Ka_cc",
+        "name": "Commercial credit openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:13Z"
+      },
+      {
+        "providerCode": "Ka_ci",
+        "name": "Collective investment openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:09Z"
+      },
+      {
+        "providerCode": "Ka_di",
+        "name": "Direct investment openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:18Z"
+      },
+      {
+        "providerCode": "Ka_dr",
+        "name": "Derivative investment openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:11Z"
+      },
+      {
+        "providerCode": "Ka_eq",
+        "name": "Equity openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:04Z"
+      },
+      {
+        "providerCode": "Ka_fc",
+        "name": "Financial credit openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:14Z"
+      },
+      {
+        "providerCode": "Ka_gu",
+        "name": "Guarantee openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:16Z"
+      },
+      {
+        "providerCode": "Ka_mm",
+        "name": "Money market openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:08Z"
+      },
+      {
+        "providerCode": "LP",
+        "name": "Population",
+        "units": "Millions of people",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:41Z"
+      },
+      {
+        "providerCode": "LUR",
+        "name": "Unemployment rate",
+        "units": "Percent",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:42Z"
+      },
+      {
+        "providerCode": "NFC_ALL",
+        "name": "Nonfinancial corporate debt, all instruments",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:27Z"
+      },
+      {
+        "providerCode": "NFC_LS",
+        "name": "Nonfinancial corporate debt, loans and debt securities",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:28Z"
+      },
+      {
+        "providerCode": "NFPS_DEBT_GDP",
+        "name": "Nonfinancial Public Sector Debt",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:28Z"
+      },
+      {
+        "providerCode": "NGDPD",
+        "name": "GDP, current prices",
+        "units": "Billions of U.S. dollars",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:35Z"
+      },
+      {
+        "providerCode": "NGDPDPC",
+        "name": "GDP per capita, current prices",
+        "units": "U.S. dollars per capita",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:36Z"
+      },
+      {
+        "providerCode": "NGDPRPC_PCH",
+        "name": "Real Per Capita GDP Growth",
+        "units": "Annual percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:44Z"
+      },
+      {
+        "providerCode": "NGDPXO_RPCH",
+        "name": "Real Non-Oil GDP Growth",
+        "units": "Annual percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:43Z"
+      },
+      {
+        "providerCode": "NGDP_RPCH",
+        "name": "Real GDP growth",
+        "units": "Annual percent change",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:34Z"
+      },
+      {
+        "providerCode": "NGDP_R_PCH",
+        "name": "Real GDP Growth",
+        "units": "Annual percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:43Z"
+      },
+      {
+        "providerCode": "NGS_GDP",
+        "name": "Gross National Savings (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:46Z"
+      },
+      {
+        "providerCode": "NI_GDP",
+        "name": "Total Investment (% of GDP)",
+        "units": "Percent of GDP",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:45Z"
+      },
+      {
+        "providerCode": "Nonres_ka",
+        "name": "Nonresident Openness Index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:01Z"
+      },
+      {
+        "providerCode": "OtherA",
+        "name": "Other Investment Assets",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:43Z"
+      },
+      {
+        "providerCode": "OtherGov",
+        "name": "Proxy for Official Other Investment Liabilities",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:41Z"
+      },
+      {
+        "providerCode": "OtherL",
+        "name": "Other Investment Liabilities",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:44Z"
+      },
+      {
+        "providerCode": "PCPIEPCH",
+        "name": "Inflation rate, end of period consumer prices",
+        "units": "Annual percent change",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:39Z"
+      },
+      {
+        "providerCode": "PCPIE_PCH",
+        "name": "Consumer Prices, End of Period (Annual % Change)",
+        "units": "Annual average percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:45Z"
+      },
+      {
+        "providerCode": "PCPIPCH",
+        "name": "Inflation rate, average consumer prices",
+        "units": "Annual percent change",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:39Z"
+      },
+      {
+        "providerCode": "PCPI_PCH",
+        "name": "Consumer Prices, Average (Annual % Change)",
+        "units": "Annual average percent change",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:44Z"
+      },
+      {
+        "providerCode": "PPPEX",
+        "name": "Implied PPP conversion rate",
+        "units": "National currency per international dollar",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:38Z"
+      },
+      {
+        "providerCode": "PPPGDP",
+        "name": "GDP, current prices",
+        "units": "Purchasing power parity; billions of international dollars",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:36Z"
+      },
+      {
+        "providerCode": "PPPPC",
+        "name": "GDP per capita, current prices",
+        "units": "Purchasing power parity; international dollars per capita",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:37Z"
+      },
+      {
+        "providerCode": "PPPSH",
+        "name": "GDP based on PPP, share of world",
+        "units": "Percent of World",
+        "dataset": "WEO",
+        "source": "World Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-08T16:07:38Z"
+      },
+      {
+        "providerCode": "PS_DEBT_GDP",
+        "name": "Public Sector Debt",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:28Z"
+      },
+      {
+        "providerCode": "PVD_LS",
+        "name": "Private debt, loans and debt securities",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:28Z"
+      },
+      {
+        "providerCode": "Portfa",
+        "name": "Portfolio Investment Assets",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:31Z"
+      },
+      {
+        "providerCode": "Portfl",
+        "name": "Portfolio Investment Liabilities",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:33Z"
+      },
+      {
+        "providerCode": "PrivInexDI",
+        "name": "Private Inflows excluding Direct Investment",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T23:18:30Z"
+      },
+      {
+        "providerCode": "PrivInexDIGDP",
+        "name": "Private Inflows excluding Direct Investment (% of GDP)",
+        "units": "Percent",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T23:18:15Z"
+      },
+      {
+        "providerCode": "PrivOutexDI",
+        "name": "Private Outflows excluding Direct Investment",
+        "units": "Millions of US Dollars",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:28Z"
+      },
+      {
+        "providerCode": "PrivOutexDIGDP",
+        "name": "Private Outflows excluding Direct Investment (% of GDP)",
+        "units": "Percent",
+        "dataset": "CF",
+        "source": "Capital Flows in Developing Economies",
+        "lastUpdatedAt": "2016-04-28T22:53:30Z"
+      },
+      {
+        "providerCode": "Privatedebt_all",
+        "name": "Private debt, all instruments",
+        "units": "Percent of GDP",
+        "dataset": "GDD",
+        "source": "Global Debt Database (Sep 2025)",
+        "lastUpdatedAt": "2025-09-16T01:34:27Z"
+      },
+      {
+        "providerCode": "RE",
+        "name": "Human Capital and Labor Market Policies",
+        "units": "Index",
+        "dataset": "AIPI",
+        "source": "AI Preparedness Index - April 2024",
+        "lastUpdatedAt": "2024-06-11T16:04:32Z"
+      },
+      {
+        "providerCode": "Res_ka",
+        "name": "Resident Openness Index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:03Z"
+      },
+      {
+        "providerCode": "Reserves_ARA",
+        "name": "Ratio of reserve/ARA metric",
+        "units": "Unit",
+        "dataset": "ARA",
+        "source": "Assessing Reserve Adequacy - ARA",
+        "lastUpdatedAt": "2026-05-18T13:09:45Z"
+      },
+      {
+        "providerCode": "Reserves_M",
+        "name": "Reserve/(Import/12)",
+        "units": "Unit",
+        "dataset": "ARA",
+        "source": "Assessing Reserve Adequacy - ARA",
+        "lastUpdatedAt": "2026-05-18T13:09:46Z"
+      },
+      {
+        "providerCode": "Reserves_M2",
+        "name": "Reserves/Broad Money",
+        "units": "Unit",
+        "dataset": "ARA",
+        "source": "Assessing Reserve Adequacy - ARA",
+        "lastUpdatedAt": "2026-05-18T13:09:45Z"
+      },
+      {
+        "providerCode": "Reserves_STD",
+        "name": "Reserves/Short-term Debt (STD)",
+        "units": "Unit",
+        "dataset": "ARA",
+        "source": "Assessing Reserve Adequacy - ARA",
+        "lastUpdatedAt": "2026-05-18T13:09:45Z"
+      },
+      {
+        "providerCode": "SITC1_0",
+        "name": "Food and live animals",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:20Z"
+      },
+      {
+        "providerCode": "SITC1_1",
+        "name": "Beverages and tobacco",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:20Z"
+      },
+      {
+        "providerCode": "SITC1_2",
+        "name": "Crude materials, inedible, except fuels",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:21Z"
+      },
+      {
+        "providerCode": "SITC1_3",
+        "name": "Mineral fuels, lubricants and related materials",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:21Z"
+      },
+      {
+        "providerCode": "SITC1_4",
+        "name": "Animal and vegetable oils and fats",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:21Z"
+      },
+      {
+        "providerCode": "SITC1_5",
+        "name": "Chemicals",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:21Z"
+      },
+      {
+        "providerCode": "SITC1_6",
+        "name": "Manufact goods classified chiefly by material",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:22Z"
+      },
+      {
+        "providerCode": "SITC1_7",
+        "name": "Machinery and transport equipment",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:22Z"
+      },
+      {
+        "providerCode": "SITC1_8",
+        "name": "Miscellaneous manufactured articles",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:22Z"
+      },
+      {
+        "providerCode": "SITC1_9",
+        "name": "Commodity & transactions not classified accord to kind",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:22Z"
+      },
+      {
+        "providerCode": "SITC1_total",
+        "name": "Export Quality Index",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:23Z"
+      },
+      {
+        "providerCode": "TTT",
+        "name": "Terms of Trade (Index, 2010 = 100)",
+        "units": "Index, 2010 = 100",
+        "dataset": "AFRREO",
+        "source": "AFR Regional Economic Outlook (April 2026)",
+        "lastUpdatedAt": "2026-04-15T17:15:53Z"
+      },
+      {
+        "providerCode": "d",
+        "name": "Gross public debt, percent of GDP",
+        "units": "% of GDP",
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:48Z"
+      },
+      {
+        "providerCode": "exp",
+        "name": "Government expenditure, percent of GDP",
+        "units": "% of GDP",
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:47Z"
+      },
+      {
+        "providerCode": "extensive",
+        "name": "Extensive Margin",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:19Z"
+      },
+      {
+        "providerCode": "ie",
+        "name": "Interest paid on public debt, percent of GDP",
+        "units": "% of GDP",
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:48Z"
+      },
+      {
+        "providerCode": "intensive",
+        "name": "Intensive Margin",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:19Z"
+      },
+      {
+        "providerCode": "ka_in",
+        "name": "Openness of Capital Inflows Index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:55:57Z"
+      },
+      {
+        "providerCode": "ka_ldi",
+        "name": "Direct investment liquidation openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:19Z"
+      },
+      {
+        "providerCode": "ka_new",
+        "name": "Overall Openness Index (all asset categories)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:55:56Z"
+      },
+      {
+        "providerCode": "ka_out",
+        "name": "Openness of Capital Outflows Index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:55:58Z"
+      },
+      {
+        "providerCode": "ka_pct",
+        "name": "Personal capital transaction openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:23Z"
+      },
+      {
+        "providerCode": "ka_ret",
+        "name": "Real estate capital transaction openness index (1=fully liberalized)",
+        "units": "Units",
+        "dataset": "CL",
+        "source": "Wang-Jahan Index",
+        "lastUpdatedAt": "2016-04-28T22:56:21Z"
+      },
+      {
+        "providerCode": "pb",
+        "name": "Government primary balance, percent of GDP",
+        "units": "% of GDP",
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:48Z"
+      },
+      {
+        "providerCode": "prim_exp",
+        "name": "Government primary expenditure, percent of GDP",
+        "units": "% of GDP",
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:47Z"
+      },
+      {
+        "providerCode": "rev",
+        "name": "Government revenue, percent of GDP",
+        "units": "% of GDP",
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:47Z"
+      },
+      {
+        "providerCode": "rgc",
+        "name": "Real GDP growth rate, percent",
+        "units": null,
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:48Z"
+      },
+      {
+        "providerCode": "rltir",
+        "name": "Real long term government bond yield, percent",
+        "units": null,
+        "dataset": "FPP",
+        "source": "Public Finances in Modern History Database (Dec 2025)",
+        "lastUpdatedAt": "2025-12-12T12:23:48Z"
+      },
+      {
+        "providerCode": "total_theil",
+        "name": "Export Diversification Index",
+        "units": "Index",
+        "dataset": "SPRLU",
+        "source": "IMF Board Policy Paper \"Sustaining Long-Run Growth and Macroeconomic Stability in Low-Income Countries—The Role of Structural Transformation and Diversification\", March 2014.",
+        "lastUpdatedAt": "2020-09-22T14:44:20Z"
+      }
+    ],
+    "observations": []
+  },
+  "sourceTs": "2026-05-18T13:09:46.000Z",
+  "problems": []
+}

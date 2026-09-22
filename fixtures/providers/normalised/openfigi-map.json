@@ -1,0 +1,7558 @@
+{
+  "updates": [],
+  "rows": {
+    "answers": [
+      {
+        "index": 0,
+        "job": {
+          "idType": "TICKER",
+          "idValue": "AAPL",
+          "exchCode": "US"
+        },
+        "outcome": "data",
+        "text": null,
+        "recordCount": 1
+      },
+      {
+        "index": 1,
+        "job": {
+          "idType": "TICKER",
+          "idValue": "AAPL"
+        },
+        "outcome": "data",
+        "text": null,
+        "recordCount": 275
+      }
+    ],
+    "composites": [
+      {
+        "compositeFigi": "BBG000B9XRY4",
+        "ticker": "AAPL",
+        "compositeExchCode": "US",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000DGZJ27",
+        "ticker": "APC",
+        "compositeExchCode": "GR",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000KWV421",
+        "ticker": "AAPL*",
+        "compositeExchCode": "MM",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000LF8110",
+        "ticker": "AAPL",
+        "compositeExchCode": "SW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000N88V36",
+        "ticker": "AAPL",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000N898C6",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000NH0568",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000NJV2R4",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000NP33F2",
+        "ticker": "AAPLGBX",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000P092T6",
+        "ticker": "AAPLCHF",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000P0J6X1",
+        "ticker": "AAPLCHF",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000P85RM5",
+        "ticker": "AAPLGBP",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000QFTCC6",
+        "ticker": "4AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG000RYL8W9",
+        "ticker": "APC",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG001BCVZQ8",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG001BHSV71",
+        "ticker": "AAPLCO",
+        "compositeExchCode": "CB",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG002W8W0G9",
+        "ticker": "AAPL",
+        "compositeExchCode": "RO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0032FLQC3",
+        "ticker": "AAPL",
+        "compositeExchCode": "CI",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0077H2WN1",
+        "ticker": "APC",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG009CHNPJ8",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": "SW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG009S1W8C1",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00DGYS838",
+        "ticker": "AAPLUSD",
+        "compositeExchCode": "SW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00FGWYHQ5",
+        "ticker": "APC",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00GQ6RZG8",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00J7BK3N2",
+        "ticker": "1AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00JPR0LW9",
+        "ticker": "0R2V",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00JPY8TV0",
+        "ticker": "0R2VL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00JPY8XP8",
+        "ticker": "0R2VL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00JPY90Z8",
+        "ticker": "0R2VL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00JZ3XMD4",
+        "ticker": "AAPLRUB",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00JZ3XN88",
+        "ticker": "AAPLRUB",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00KXBTYS8",
+        "ticker": "AAPL1GBP",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC160",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC188",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC1B4",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC1D2",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC1G9",
+        "ticker": "AAPLRON",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC1J6",
+        "ticker": "AAPLRON",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC1L3",
+        "ticker": "AAPLRON",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC2D0",
+        "ticker": "AAPLRON",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC2G7",
+        "ticker": "AAPLCHF",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PPYC2J4",
+        "ticker": "AAPLCHF",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PVKFJD3",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00PH228Y4",
+        "ticker": "AAPLBGN",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": null,
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00R0YSZZ9",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00R0YTZM2",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00R0YVCH6",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00Y7B5HV6",
+        "ticker": "0R2VL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00Y7BDC39",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00YFSB7R0",
+        "ticker": "AAPLCL",
+        "compositeExchCode": "CI",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00YJ5VRW4",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG00YJ6HW11",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG013QF8P24",
+        "ticker": "AAPL_KZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG014K9CWV0",
+        "ticker": "AAPLHUF",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG014K9CYM6",
+        "ticker": "AAPLHUF",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG018Z8WZ57",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG018Z9PT39",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01FRZFGR7",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01FRZGN00",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01FSR1897",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01FSR1986",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01JWTPDY5",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01JWTPHJ3",
+        "ticker": "APCD",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01K1CD957",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01K1CDBM3",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01K1CDT99",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01K1CDVQ5",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01NX6JHM6",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01NYDFYM7",
+        "ticker": "AAPLPLN",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01NYDFZV4",
+        "ticker": "AAPLPLN",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01P7GQJF4",
+        "ticker": "APC",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01QDBQCP0",
+        "ticker": "AAPLMXN",
+        "compositeExchCode": "EO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG01QDBQFX4",
+        "ticker": "AAPLMXN",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG022QS1724",
+        "ticker": "AAPLN",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023NB6TX5",
+        "ticker": "AAPLV",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023NB6W59",
+        "ticker": "AAPLV",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023NB6XM8",
+        "ticker": "AAPLV",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023NB6Z70",
+        "ticker": "AAPLV",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023S1CKR1",
+        "ticker": "AAPLZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023S1CNB2",
+        "ticker": "AAPLZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023S1CR41",
+        "ticker": "AAPLZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023S1CV06",
+        "ticker": "AAPLZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG023ZB6TV4",
+        "ticker": "AAPLZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024DKH1B7",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024DKHFS8",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024DKHWJ1",
+        "ticker": "1AAPLM",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024XZL591",
+        "ticker": "AAPLCHF",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024Y0GKV5",
+        "ticker": "AAPLHUF",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024Y0T0R0",
+        "ticker": "AAPLGBP",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024Y10PJ3",
+        "ticker": "AAPLEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG024YSR108",
+        "ticker": "AAPLDEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0250750L1",
+        "ticker": "AAPLVEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0250F63P2",
+        "ticker": "AAPL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0250FC6G8",
+        "ticker": "AAPLMEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0250JLKG9",
+        "ticker": "AAPLMXN",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0252YV5T2",
+        "ticker": "AAPLL",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0253BBKK9",
+        "ticker": "AAPLZEUR",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      },
+      {
+        "compositeFigi": "BBG0253BD646",
+        "ticker": "AAPLZ",
+        "compositeExchCode": null,
+        "name": "APPLE INC",
+        "securityType": "Common Stock",
+        "securityType2": "Common Stock",
+        "marketSector": "Equity",
+        "shareClassFigi": "BBG001S5N8V8",
+        "assetClass": "equity"
+      }
+    ],
+    "listings": [
+      {
+        "figi": "BBG000B9XSK7",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9XT70",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UC",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9XVV8",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UN",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9XWM6",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UP",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9XXW3",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UB",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9XYZ8",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UM",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9XZT2",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9Y2J5",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UD",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9Y5X2",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9Y6P9",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "UF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9Y7F8",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VY",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9Y7W9",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000B9Y8J2",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VK",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0KP5",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0L82",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GD",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0LL7",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GY",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0LW5",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GS",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0MF2",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GM",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0NM2",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GI",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000DH0P83",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "GH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000KWV4C0",
+        "compositeFigi": "BBG000KWV421",
+        "localTicker": "AAPL*",
+        "exchCode": "MF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N88X32",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N88Y03",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XC",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N88Y58",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N88Z91",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N890G9",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N890P9",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N89140",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N891K2",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N895L2",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N896W8",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N897T0",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000N898Y2",
+        "compositeFigi": "BBG000N898C6",
+        "localTicker": "AAPL",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NH05F8",
+        "compositeFigi": "BBG000NH0568",
+        "localTicker": "AAPLEUR",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJV409",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJV631",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJV6B2",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJV6Q6",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJV846",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJWGL8",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJWH90",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NJWJ32",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP36L8",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP3718",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XC",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP37M5",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP38Y0",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP39Q7",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP4D41",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP5GW2",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP5K80",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP5L24",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000NP5MR5",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000P09C78",
+        "compositeFigi": "BBG000P092T6",
+        "localTicker": "AAPLCHF",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000P0BHG4",
+        "compositeFigi": "BBG000P092T6",
+        "localTicker": "AAPLCHF",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000P0BJY0",
+        "compositeFigi": "BBG000P092T6",
+        "localTicker": "AAPLCHF",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000P0J812",
+        "compositeFigi": "BBG000P0J6X1",
+        "localTicker": "AAPLCHF",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000P862P6",
+        "compositeFigi": "BBG000P85RM5",
+        "localTicker": "AAPLGBP",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000P864K7",
+        "compositeFigi": "BBG000P85RM5",
+        "localTicker": "AAPLGBP",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000QFTD07",
+        "compositeFigi": "BBG000QFTCC6",
+        "localTicker": "4AAPL",
+        "exchCode": "TE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG000RYL9F6",
+        "compositeFigi": "BBG000RYL8W9",
+        "localTicker": "APC",
+        "exchCode": "TH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG001BCVZR7",
+        "compositeFigi": "BBG001BCVZQ8",
+        "localTicker": "APCD",
+        "exchCode": "IX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG001BHSV80",
+        "compositeFigi": "BBG001BHSV71",
+        "localTicker": "AAPLCO",
+        "exchCode": "CX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG002G55RD7",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG002JV1HL4",
+        "compositeFigi": "BBG000LF8110",
+        "localTicker": "AAPL",
+        "exchCode": "SE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG002W8W0H8",
+        "compositeFigi": "BBG002W8W0G9",
+        "localTicker": "AAPL",
+        "exchCode": "RE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0032FLQD2",
+        "compositeFigi": "BBG0032FLQC3",
+        "localTicker": "AAPL",
+        "exchCode": "CC",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0032FLQF0",
+        "compositeFigi": "BBG0032FLQC3",
+        "localTicker": "AAPL",
+        "exchCode": "CE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00591FL58",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00591R2Q4",
+        "compositeFigi": "BBG000P092T6",
+        "localTicker": "AAPLCHF",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00591RRB5",
+        "compositeFigi": "BBG000P85RM5",
+        "localTicker": "AAPLGBP",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG006M6ZN36",
+        "compositeFigi": "BBG000LF8110",
+        "localTicker": "AAPL",
+        "exchCode": "BW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0077H2WP9",
+        "compositeFigi": "BBG0077H2WN1",
+        "localTicker": "APC",
+        "exchCode": "QT",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG009CHNPL5",
+        "compositeFigi": "BBG009CHNPJ8",
+        "localTicker": "AAPLEUR",
+        "exchCode": "SE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG009S1W8D0",
+        "compositeFigi": "BBG009S1W8C1",
+        "localTicker": "AAPL",
+        "exchCode": "PE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00DGYS856",
+        "compositeFigi": "BBG00DGYS838",
+        "localTicker": "AAPLUSD",
+        "exchCode": "SE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00DJCT4Z6",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00FGWYHR4",
+        "compositeFigi": "BBG00FGWYHQ5",
+        "localTicker": "APC",
+        "exchCode": "GZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00GQ6RZH7",
+        "compositeFigi": "BBG00GQ6RZG8",
+        "localTicker": "AAPL",
+        "exchCode": "AV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00J7BK3P0",
+        "compositeFigi": "BBG00J7BK3N2",
+        "localTicker": "1AAPL",
+        "exchCode": "IM",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00J7BK3R8",
+        "compositeFigi": "BBG00J7BK3N2",
+        "localTicker": "1AAPL",
+        "exchCode": "IF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JN7C744",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JN7KZ34",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JN7L441",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JN7NQR5",
+        "compositeFigi": "BBG000P092T6",
+        "localTicker": "AAPLCHF",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JN7PDD7",
+        "compositeFigi": "BBG000P85RM5",
+        "localTicker": "AAPLGBP",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JPR0LX8",
+        "compositeFigi": "BBG00JPR0LW9",
+        "localTicker": "0R2V",
+        "exchCode": "LN",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JPY8TW9",
+        "compositeFigi": "BBG00JPY8TV0",
+        "localTicker": "0R2VL",
+        "exchCode": "L3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JPY8XQ7",
+        "compositeFigi": "BBG00JPY8XP8",
+        "localTicker": "0R2VL",
+        "exchCode": "B3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JPY9104",
+        "compositeFigi": "BBG00JPY90Z8",
+        "localTicker": "0R2VL",
+        "exchCode": "PO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JX0P539",
+        "compositeFigi": "BBG000KWV421",
+        "localTicker": "AAPL*",
+        "exchCode": "MU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMH0",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMK6",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMM4",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMN3",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMP1",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMQ0",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMR9",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMX2",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XMY1",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN06",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN15",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN24",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN51",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN60",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN79",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "XZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00JZ3XN97",
+        "compositeFigi": "BBG00JZ3XN88",
+        "localTicker": "AAPLRUB",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00KXBTYT7",
+        "compositeFigi": "BBG00KXBTYS8",
+        "localTicker": "AAPL1GBP",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC179",
+        "compositeFigi": "BBG00PPYC160",
+        "localTicker": "AAPLEUR",
+        "exchCode": "EP",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC197",
+        "compositeFigi": "BBG00PPYC188",
+        "localTicker": "AAPLEUR",
+        "exchCode": "EZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1C3",
+        "compositeFigi": "BBG00PPYC1B4",
+        "localTicker": "AAPL",
+        "exchCode": "EP",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1F0",
+        "compositeFigi": "BBG00PPYC1D2",
+        "localTicker": "AAPL",
+        "exchCode": "EZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1H8",
+        "compositeFigi": "BBG00PPYC1G9",
+        "localTicker": "AAPLRON",
+        "exchCode": "EP",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1K4",
+        "compositeFigi": "BBG00PPYC1J6",
+        "localTicker": "AAPLRON",
+        "exchCode": "EZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1P9",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1R7",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1S6",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XD",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1T5",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1V2",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1W1",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1X0",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1Y9",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC1Z8",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XN",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC222",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC231",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC259",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC268",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC277",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC295",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC2B2",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC2C1",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC2F8",
+        "compositeFigi": "BBG00PPYC2D0",
+        "localTicker": "AAPLRON",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC2H6",
+        "compositeFigi": "BBG00PPYC2G7",
+        "localTicker": "AAPLCHF",
+        "exchCode": "EP",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PPYC2K2",
+        "compositeFigi": "BBG00PPYC2J4",
+        "localTicker": "AAPLCHF",
+        "exchCode": "EZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00PVKFJF1",
+        "compositeFigi": "BBG00PVKFJD3",
+        "localTicker": "AAPL",
+        "exchCode": "UZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00Q5MLT65",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "X2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00Q6R8784",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "X2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00Q6SMVJ1",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "X2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00Q6V6R38",
+        "compositeFigi": "BBG00PPYC1L3",
+        "localTicker": "AAPLRON",
+        "exchCode": "XY",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QFY5XM9",
+        "compositeFigi": "BBG000N88V36",
+        "localTicker": "AAPL",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QFYDNX0",
+        "compositeFigi": "BBG000NJV2R4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QFYDTY6",
+        "compositeFigi": "BBG000NP33F2",
+        "localTicker": "AAPLGBX",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QFYHG70",
+        "compositeFigi": "BBG000P092T6",
+        "localTicker": "AAPLCHF",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QFYJ3W9",
+        "compositeFigi": "BBG000P85RM5",
+        "localTicker": "AAPLGBP",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QFZTGD7",
+        "compositeFigi": "BBG00JZ3XMD4",
+        "localTicker": "AAPLRUB",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00QG07VK6",
+        "compositeFigi": "BBG00PH228Y4",
+        "localTicker": "AAPLBGN",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00R0YT003",
+        "compositeFigi": "BBG00R0YSZZ9",
+        "localTicker": "APCD",
+        "exchCode": "PO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00R0YTZN1",
+        "compositeFigi": "BBG00R0YTZM2",
+        "localTicker": "APCD",
+        "exchCode": "L3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00R0YVCJ4",
+        "compositeFigi": "BBG00R0YVCH6",
+        "localTicker": "APCD",
+        "exchCode": "B3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00THD0WF2",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00X1L4PD5",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00X1PKZF4",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VP",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00Y7B5HW5",
+        "compositeFigi": "BBG00Y7B5HV6",
+        "localTicker": "0R2VL",
+        "exchCode": "L1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00Y7BDC48",
+        "compositeFigi": "BBG00Y7BDC39",
+        "localTicker": "APCD",
+        "exchCode": "L1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00YFSB7S9",
+        "compositeFigi": "BBG00YFSB7R0",
+        "localTicker": "AAPLCL",
+        "exchCode": "CC",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00YJ5VRX3",
+        "compositeFigi": "BBG00YJ5VRW4",
+        "localTicker": "AAPLEUR",
+        "exchCode": "X9",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG00YJ6HW20",
+        "compositeFigi": "BBG00YJ6HW11",
+        "localTicker": "AAPL",
+        "exchCode": "X9",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG013QF8P33",
+        "compositeFigi": "BBG013QF8P24",
+        "localTicker": "AAPL_KZ",
+        "exchCode": "KZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CWW9",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "X2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CWY7",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CX02",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CX20",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CX39",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CX48",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CX57",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CX66",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXB0",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXC9",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXF6",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXH4",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXK0",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXN7",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXP5",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXQ4",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "XZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CXT1",
+        "compositeFigi": "BBG014K9CWV0",
+        "localTicker": "AAPLHUF",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG014K9CYN5",
+        "compositeFigi": "BBG014K9CYM6",
+        "localTicker": "AAPLHUF",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG018H7JMZ0",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "LA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG018J15QG8",
+        "compositeFigi": "BBG000DGZJ27",
+        "localTicker": "APC",
+        "exchCode": "LU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG018Z8WZ66",
+        "compositeFigi": "BBG018Z8WZ57",
+        "localTicker": "1AAPLM",
+        "exchCode": "BQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG018Z9PT48",
+        "compositeFigi": "BBG018Z9PT39",
+        "localTicker": "APCD",
+        "exchCode": "BQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01FRZFGS6",
+        "compositeFigi": "BBG01FRZFGR7",
+        "localTicker": "APCD",
+        "exchCode": "EB",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01FRZGN19",
+        "compositeFigi": "BBG01FRZGN00",
+        "localTicker": "APCD",
+        "exchCode": "I2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01FSR18B4",
+        "compositeFigi": "BBG01FSR1897",
+        "localTicker": "APCD",
+        "exchCode": "S1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01FSR19B2",
+        "compositeFigi": "BBG01FSR1986",
+        "localTicker": "APCD",
+        "exchCode": "S4",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01JWTPDZ4",
+        "compositeFigi": "BBG01JWTPDY5",
+        "localTicker": "APCD",
+        "exchCode": "QX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01JWTPHK1",
+        "compositeFigi": "BBG01JWTPHJ3",
+        "localTicker": "APCD",
+        "exchCode": "QE",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01K1CD966",
+        "compositeFigi": "BBG01K1CD957",
+        "localTicker": "1AAPLM",
+        "exchCode": "PO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01K1CDBN2",
+        "compositeFigi": "BBG01K1CDBM3",
+        "localTicker": "1AAPLM",
+        "exchCode": "B3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01K1CDTB6",
+        "compositeFigi": "BBG01K1CDT99",
+        "localTicker": "1AAPLM",
+        "exchCode": "L3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01K1CDVR4",
+        "compositeFigi": "BBG01K1CDVQ5",
+        "localTicker": "1AAPLM",
+        "exchCode": "L1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NX6JHN5",
+        "compositeFigi": "BBG01NX6JHM6",
+        "localTicker": "AAPL",
+        "exchCode": "PW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYN6",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "X2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYQ3",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYS1",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYW6",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYX5",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYY4",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFYZ3",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZ35",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZ44",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZ62",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZ71",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZ80",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XY",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZ99",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZC5",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZD4",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZG1",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "XZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZJ8",
+        "compositeFigi": "BBG01NYDFYM7",
+        "localTicker": "AAPLPLN",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01NYDFZW3",
+        "compositeFigi": "BBG01NYDFZV4",
+        "localTicker": "AAPLPLN",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01P7GQJG3",
+        "compositeFigi": "BBG01P7GQJF4",
+        "localTicker": "APC",
+        "exchCode": "BU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQCR8",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "X2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQCT6",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XH",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQCW2",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XF",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQCZ9",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XJ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQD05",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XL",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQD14",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XG",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQD23",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQD78",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XA",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQD87",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "E1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDC2",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XW",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDD1",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDF9",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XY",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDG8",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XV",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDK3",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDL2",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDM1",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "XZ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQDP8",
+        "compositeFigi": "BBG01QDBQCP0",
+        "localTicker": "AAPLMXN",
+        "exchCode": "X1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01QDBQFY3",
+        "compositeFigi": "BBG01QDBQFX4",
+        "localTicker": "AAPLMXN",
+        "exchCode": "EU",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01V7VYB11",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "OC",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG01X4J7994",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "OD",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG021C07FG3",
+        "compositeFigi": "BBG000B9XRY4",
+        "localTicker": "AAPL",
+        "exchCode": "VT",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG022QS1733",
+        "compositeFigi": "BBG022QS1724",
+        "localTicker": "AAPLN",
+        "exchCode": "BQ",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023NB6TZ3",
+        "compositeFigi": "BBG023NB6TX5",
+        "localTicker": "AAPLV",
+        "exchCode": "PO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023NB6W77",
+        "compositeFigi": "BBG023NB6W59",
+        "localTicker": "AAPLV",
+        "exchCode": "L1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023NB6XN7",
+        "compositeFigi": "BBG023NB6XM8",
+        "localTicker": "AAPLV",
+        "exchCode": "L3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023NB6Z89",
+        "compositeFigi": "BBG023NB6Z70",
+        "localTicker": "AAPLV",
+        "exchCode": "B3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023S1CKT9",
+        "compositeFigi": "BBG023S1CKR1",
+        "localTicker": "AAPLZ",
+        "exchCode": "PO",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023S1CNC1",
+        "compositeFigi": "BBG023S1CNB2",
+        "localTicker": "AAPLZ",
+        "exchCode": "L1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023S1CR50",
+        "compositeFigi": "BBG023S1CR41",
+        "localTicker": "AAPLZ",
+        "exchCode": "L3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023S1CV15",
+        "compositeFigi": "BBG023S1CV06",
+        "localTicker": "AAPLZ",
+        "exchCode": "B3",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG023ZB6TW3",
+        "compositeFigi": "BBG023ZB6TV4",
+        "localTicker": "AAPLZ",
+        "exchCode": "S1",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024DKH1C6",
+        "compositeFigi": "BBG024DKH1B7",
+        "localTicker": "1AAPLM",
+        "exchCode": "EB",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024DKHFV4",
+        "compositeFigi": "BBG024DKHFS8",
+        "localTicker": "1AAPLM",
+        "exchCode": "I2",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024DKHWK9",
+        "compositeFigi": "BBG024DKHWJ1",
+        "localTicker": "1AAPLM",
+        "exchCode": "IX",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024XZL5B8",
+        "compositeFigi": "BBG024XZL591",
+        "localTicker": "AAPLCHF",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024Y0GKW4",
+        "compositeFigi": "BBG024Y0GKV5",
+        "localTicker": "AAPLHUF",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024Y0T0T8",
+        "compositeFigi": "BBG024Y0T0R0",
+        "localTicker": "AAPLGBP",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024Y10PK1",
+        "compositeFigi": "BBG024Y10PJ3",
+        "localTicker": "AAPLEUR",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG024YSR126",
+        "compositeFigi": "BBG024YSR108",
+        "localTicker": "AAPLDEUR",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0250750M0",
+        "compositeFigi": "BBG0250750L1",
+        "localTicker": "AAPLVEUR",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0250F63Q1",
+        "compositeFigi": "BBG0250F63P2",
+        "localTicker": "AAPL",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0250FC6H7",
+        "compositeFigi": "BBG0250FC6G8",
+        "localTicker": "AAPLMEUR",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0250JLKH8",
+        "compositeFigi": "BBG0250JLKG9",
+        "localTicker": "AAPLMXN",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0252YV5V9",
+        "compositeFigi": "BBG0252YV5T2",
+        "localTicker": "AAPLL",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0253BBKM7",
+        "compositeFigi": "BBG0253BBKK9",
+        "localTicker": "AAPLZEUR",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      },
+      {
+        "figi": "BBG0253BD673",
+        "compositeFigi": "BBG0253BD646",
+        "localTicker": "AAPLZ",
+        "exchCode": "ER",
+        "name": "APPLE INC",
+        "securityType": "Common Stock"
+      }
+    ],
+    "identifiers": [
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000B9XRY4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "issue",
+        "scheme": "SHARE_CLASS_FIGI",
+        "value": "BBG001S5N8V8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "US",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XSK7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UC",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XT70",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UN",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XVV8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UP",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XWM6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UB",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XXW3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UM",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XYZ8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9XZT2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UD",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9Y2J5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9Y5X2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9Y6P9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VY",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9Y7F8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9Y7W9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VK",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000B9Y8J2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000DGZJ27",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GR",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0KP5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GD",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0L82",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GY",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0LL7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GS",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0LW5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GM",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0MF2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GI",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0NM2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000DH0P83",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000KWV421",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL*",
+        "qualifier": "MM",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL*",
+        "qualifier": "MF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000KWV4C0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000LF8110",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "SW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000N88V36",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N88X32",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XC",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N88Y03",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N88Y58",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N88Z91",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N890G9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N890P9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N89140",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N891K2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N895L2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N896W8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N897T0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000N898C6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000N898Y2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000NH0568",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NH05F8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000NJV2R4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJV409",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJV631",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJV6B2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJV6Q6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJV846",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJWGL8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJWH90",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NJWJ32",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000NP33F2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP36L8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XC",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP3718",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP37M5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP38Y0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP39Q7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP4D41",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP5GW2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP5K80",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP5L24",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000NP5MR5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000P092T6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000P09C78",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000P0BHG4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000P0BJY0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000P0J6X1",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000P0J812",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000P85RM5",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000P862P6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000P864K7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000QFTCC6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "4AAPL",
+        "qualifier": "TE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000QFTD07",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG000RYL8W9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "TH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG000RYL9F6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG001BCVZQ8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "IX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG001BCVZR7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG001BHSV71",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCO",
+        "qualifier": "CB",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCO",
+        "qualifier": "CX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG001BHSV80",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG002G55RD7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "SE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG002JV1HL4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG002W8W0G9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "RO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "RE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG002W8W0H8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0032FLQC3",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "CI",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "CC",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0032FLQD2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "CE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0032FLQF0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00591FL58",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00591R2Q4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00591RRB5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "BW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG006M6ZN36",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0077H2WN1",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "QT",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0077H2WP9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG009CHNPJ8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "SW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "SE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG009CHNPL5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG009S1W8C1",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "PE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG009S1W8D0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00DGYS838",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLUSD",
+        "qualifier": "SW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLUSD",
+        "qualifier": "SE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00DGYS856",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00DJCT4Z6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00FGWYHQ5",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "GZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00FGWYHR4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00GQ6RZG8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "AV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00GQ6RZH7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00J7BK3N2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPL",
+        "qualifier": "IM",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00J7BK3P0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPL",
+        "qualifier": "IF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00J7BK3R8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JN7C744",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JN7KZ34",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JN7L441",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JN7NQR5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JN7PDD7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00JPR0LW9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "0R2V",
+        "qualifier": "LN",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JPR0LX8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00JPY8TV0",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "0R2VL",
+        "qualifier": "L3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JPY8TW9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00JPY8XP8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "0R2VL",
+        "qualifier": "B3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JPY8XQ7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00JPY90Z8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "0R2VL",
+        "qualifier": "PO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JPY9104",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL*",
+        "qualifier": "MU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JX0P539",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00JZ3XMD4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMH0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMK6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMM4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMN3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMP1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMQ0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMR9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMX2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XMY1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN06",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN15",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN24",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN51",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN60",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "XZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN79",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00JZ3XN88",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00JZ3XN97",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00KXBTYS8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL1GBP",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00KXBTYT7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC160",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "EP",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC179",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC188",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "EZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC197",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC1B4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "EP",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1C3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC1D2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "EZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1F0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC1G9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "EP",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1H8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC1J6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "EZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1K4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC1L3",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1P9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1R7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XD",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1S6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1T5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1V2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1W1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1X0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1Y9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XN",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC1Z8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC222",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC231",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC259",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC268",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC277",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC295",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC2B2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC2C1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC2D0",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC2F8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC2G7",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "EP",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC2H6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PPYC2J4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "EZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PPYC2K2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PVKFJD3",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "UZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00PVKFJF1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "X2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00Q5MLT65",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "X2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00Q6R8784",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "X2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00Q6SMVJ1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRON",
+        "qualifier": "XY",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00Q6V6R38",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QFY5XM9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QFYDNX0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBX",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QFYDTY6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QFYHG70",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QFYJ3W9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLRUB",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QFZTGD7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00PH228Y4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLBGN",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00QG07VK6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00R0YSZZ9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "PO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00R0YT003",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00R0YTZM2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "L3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00R0YTZN1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00R0YVCH6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "B3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00R0YVCJ4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00THD0WF2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00X1L4PD5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VP",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00X1PKZF4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00Y7B5HV6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "0R2VL",
+        "qualifier": "L1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00Y7B5HW5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00Y7BDC39",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "L1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00Y7BDC48",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00YFSB7R0",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCL",
+        "qualifier": "CI",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCL",
+        "qualifier": "CC",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00YFSB7S9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00YJ5VRW4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "X9",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00YJ5VRX3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG00YJ6HW11",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "X9",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG00YJ6HW20",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG013QF8P24",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL_KZ",
+        "qualifier": "KZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG013QF8P33",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG014K9CWV0",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "X2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CWW9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CWY7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CX02",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CX20",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CX39",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CX48",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CX57",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CX66",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXB0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXC9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXF6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXH4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXK0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXN7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXP5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "XZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXQ4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CXT1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG014K9CYM6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG014K9CYN5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "LA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG018H7JMZ0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "LU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG018J15QG8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG018Z8WZ57",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "BQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG018Z8WZ66",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG018Z9PT39",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "BQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG018Z9PT48",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01FRZFGR7",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "EB",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01FRZFGS6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01FRZGN00",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "I2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01FRZGN19",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01FSR1897",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "S1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01FSR18B4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01FSR1986",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "S4",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01FSR19B2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01JWTPDY5",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "QX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01JWTPDZ4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01JWTPHJ3",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APCD",
+        "qualifier": "QE",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01JWTPHK1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01K1CD957",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "PO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01K1CD966",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01K1CDBM3",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "B3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01K1CDBN2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01K1CDT99",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "L3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01K1CDTB6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01K1CDVQ5",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "L1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01K1CDVR4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01NX6JHM6",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "PW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NX6JHN5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01NYDFYM7",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "X2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYN6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYQ3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYS1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYW6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYX5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYY4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFYZ3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZ35",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZ44",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZ62",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZ71",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XY",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZ80",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZ99",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZC5",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZD4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "XZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZG1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZJ8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01NYDFZV4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLPLN",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01NYDFZW3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01P7GQJF4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "APC",
+        "qualifier": "BU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01P7GQJG3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01QDBQCP0",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "EO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "X2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQCR8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XH",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQCT6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XF",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQCW2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XJ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQCZ9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XL",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQD05",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XG",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQD14",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQD23",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XA",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQD78",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "E1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQD87",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XW",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDC2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDD1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XY",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDF9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XV",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDG8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDK3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDL2",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "XZ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDM1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "X1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQDP8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG01QDBQFX4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "EU",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01QDBQFY3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "OC",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01V7VYB11",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "OD",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG01X4J7994",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "VT",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG021C07FG3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG022QS1724",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLN",
+        "qualifier": "BQ",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG022QS1733",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023NB6TX5",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLV",
+        "qualifier": "PO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023NB6TZ3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023NB6W59",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLV",
+        "qualifier": "L1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023NB6W77",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023NB6XM8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLV",
+        "qualifier": "L3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023NB6XN7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023NB6Z70",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLV",
+        "qualifier": "B3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023NB6Z89",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023S1CKR1",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZ",
+        "qualifier": "PO",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023S1CKT9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023S1CNB2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZ",
+        "qualifier": "L1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023S1CNC1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023S1CR41",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZ",
+        "qualifier": "L3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023S1CR50",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023S1CV06",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZ",
+        "qualifier": "B3",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023S1CV15",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG023ZB6TV4",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZ",
+        "qualifier": "S1",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG023ZB6TW3",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024DKH1B7",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "EB",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024DKH1C6",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024DKHFS8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "I2",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024DKHFV4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024DKHWJ1",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "1AAPLM",
+        "qualifier": "IX",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024DKHWK9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024XZL591",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLCHF",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024XZL5B8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024Y0GKV5",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLHUF",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024Y0GKW4",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024Y0T0R0",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLGBP",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024Y0T0T8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024Y10PJ3",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLEUR",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024Y10PK1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG024YSR108",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLDEUR",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG024YSR126",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0250750L1",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLVEUR",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0250750M0",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0250F63P2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPL",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0250F63Q1",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0250FC6G8",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMEUR",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0250FC6H7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0250JLKG9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLMXN",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0250JLKH8",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0252YV5T2",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLL",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0252YV5V9",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0253BBKK9",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZEUR",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0253BBKM7",
+        "qualifier": "",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "instrument",
+        "scheme": "COMPOSITE_FIGI",
+        "value": "BBG0253BD646",
+        "qualifier": "",
+        "isPrimary": true
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "TICKER_EXCH",
+        "value": "AAPLZ",
+        "qualifier": "ER",
+        "isPrimary": false
+      },
+      {
+        "entityKind": "listing",
+        "scheme": "FIGI",
+        "value": "BBG0253BD673",
+        "qualifier": "",
+        "isPrimary": false
+      }
+    ],
+    "exceptions": []
+  },
+  "sourceTs": null,
+  "problems": []
+}
