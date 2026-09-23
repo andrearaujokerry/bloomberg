@@ -1,0 +1,1243 @@
+{
+  "variant": "index",
+  "index": {
+    "instrumentId": "<INDEX>",
+    "key": "<SPXM> US Index",
+    "name": "S&P 500",
+    "code": "<CODE>",
+    "provider": "S&P Dow Jones",
+    "methodology": "float_cap_weighted",
+    "calcCurrency": "USD",
+    "constituentCount": 503
+  },
+  "membership": {
+    "asOfDate": "2026-06-30",
+    "sourceId": "ssga.holdings",
+    "via": {
+      "kind": "proxy_fund",
+      "instrumentId": "<SPY>",
+      "key": "<SPYM> US Index"
+    },
+    "count": 503,
+    "weightSum": 1.000000000200001,
+    "availableDates": [
+      "2026-06-30",
+      "2026-03-31"
+    ],
+    "provIdx": 0
+  },
+  "members": [
+    {
+      "instrumentId": "<M001>",
+      "key": "<M001> US Equity",
+      "name": "Member 1 Holdings",
+      "cusip": "100000001",
+      "isin": "US0100000001",
+      "ticker": "<M001>",
+      "gicsSector": "Information Technology",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0059464699,
+      "shares": 1000017,
+      "marketValue": 50000991,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M001>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M001>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M001>"
+    },
+    {
+      "instrumentId": "<M002>",
+      "key": "<M002> US Equity",
+      "name": "Member 2 Holdings",
+      "cusip": "100000002",
+      "isin": "US0100000002",
+      "ticker": "<M002>",
+      "gicsSector": "Health Care",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0059228494,
+      "shares": 1000034,
+      "marketValue": 50001982,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M002>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M002>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M002>"
+    },
+    {
+      "instrumentId": "<M003>",
+      "key": "<M003> US Equity",
+      "name": "Member 3 Holdings",
+      "cusip": "100000003",
+      "isin": "US0100000003",
+      "ticker": "<M003>",
+      "gicsSector": "Financials",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0058992759,
+      "shares": 1000051,
+      "marketValue": 50002973,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M003>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M003>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M003>"
+    },
+    {
+      "instrumentId": "<M004>",
+      "key": "<M004> US Equity",
+      "name": "Member 4 Holdings",
+      "cusip": "100000004",
+      "isin": "US0100000004",
+      "ticker": "<M004>",
+      "gicsSector": "Information Technology",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0058757494,
+      "shares": 1000068,
+      "marketValue": 50003964,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M004>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M004>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M004>"
+    },
+    {
+      "instrumentId": "<M005>",
+      "key": "<M005> US Equity",
+      "name": "Member 5 Holdings",
+      "cusip": "100000005",
+      "isin": "US0100000005",
+      "ticker": "<M005>",
+      "gicsSector": "Health Care",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0058522699,
+      "shares": 1000085,
+      "marketValue": 50004955,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M005>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M005>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M005>"
+    },
+    {
+      "instrumentId": "<M006>",
+      "key": "<M006> US Equity",
+      "name": "Member 6 Holdings",
+      "cusip": "100000006",
+      "isin": "US0100000006",
+      "ticker": "<M006>",
+      "gicsSector": "Financials",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0058288374,
+      "shares": 1000102,
+      "marketValue": 50005946,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M006>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M006>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M006>"
+    },
+    {
+      "instrumentId": "<M007>",
+      "key": "<M007> US Equity",
+      "name": "Member 7 Holdings",
+      "cusip": "100000007",
+      "isin": "US0100000007",
+      "ticker": "<M007>",
+      "gicsSector": "Information Technology",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.005805452,
+      "shares": 1000119,
+      "marketValue": 50006937,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M007>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M007>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M007>"
+    },
+    {
+      "instrumentId": "<M008>",
+      "key": "<M008> US Equity",
+      "name": "Member 8 Holdings",
+      "cusip": "100000008",
+      "isin": "US0100000008",
+      "ticker": "<M008>",
+      "gicsSector": "Health Care",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0057821135,
+      "shares": 1000136,
+      "marketValue": 50007928,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M008>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M008>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M008>"
+    },
+    {
+      "instrumentId": "<M009>",
+      "key": "<M009> US Equity",
+      "name": "Member 9 Holdings",
+      "cusip": "100000009",
+      "isin": "US0100000009",
+      "ticker": "<M009>",
+      "gicsSector": "Financials",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.005758822,
+      "shares": 1000153,
+      "marketValue": 50008919,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M009>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M009>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M009>"
+    },
+    {
+      "instrumentId": "<M010>",
+      "key": "<M010> US Equity",
+      "name": "Member 10 Holdings",
+      "cusip": "100000010",
+      "isin": "US0100000010",
+      "ticker": "<M010>",
+      "gicsSector": "Information Technology",
+      "country": "US",
+      "assetCat": "EC",
+      "weight": 0.0057355775,
+      "shares": 1000170,
+      "marketValue": 50009910,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M010>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<M010>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "contribPct": null,
+      "subject": "q:<M010>"
+    }
+  ],
+  "groups": [
+    {
+      "key": "Information Technology",
+      "label": "Information Technology",
+      "weight": 0.3315413706,
+      "count": 167,
+      "chgPctWeighted": null
+    },
+    {
+      "key": "Health Care",
+      "label": "Health Care",
+      "weight": 0.3295135795999999,
+      "count": 166,
+      "chgPctWeighted": null
+    },
+    {
+      "key": "Financials",
+      "label": "Financials",
+      "weight": 0.3275504677000003,
+      "count": 167,
+      "chgPctWeighted": null
+    },
+    {
+      "key": "Unclassified",
+      "label": "Unclassified",
+      "weight": 0.011394582299999999,
+      "count": 3,
+      "chgPctWeighted": null
+    }
+  ],
+  "changes": {
+    "compareDate": "2026-03-31",
+    "compareSourceId": "sec.archives",
+    "adds": [
+      {
+        "instrumentId": "<M504>",
+        "key": "<M504> US Equity",
+        "name": "Member 504 Holdings",
+        "weight": 9.4e-8
+      },
+      {
+        "instrumentId": "<M505>",
+        "key": "<M505> US Equity",
+        "name": "Member 505 Holdings",
+        "weight": 2.35e-8
+      }
+    ],
+    "drops": [
+      {
+        "instrumentId": "<M502>",
+        "key": "<M502> US Equity",
+        "name": "Member 502 Holdings",
+        "weight": 0.0000157783
+      },
+      {
+        "instrumentId": "<M503>",
+        "key": "<M503> US Equity",
+        "name": "Member 503 Holdings",
+        "weight": 0.0000078892
+      }
+    ],
+    "weightMoves": [
+      {
+        "instrumentId": "<M001>",
+        "key": "<M001> US Equity",
+        "name": "Member 1 Holdings",
+        "weightFrom": 0.003968254,
+        "weightTo": 0.0059464699,
+        "deltaBp": 19.8
+      },
+      {
+        "instrumentId": "<M002>",
+        "key": "<M002> US Equity",
+        "name": "Member 2 Holdings",
+        "weightFrom": 0.0039603648,
+        "weightTo": 0.0059228494,
+        "deltaBp": 19.6
+      },
+      {
+        "instrumentId": "<M003>",
+        "key": "<M003> US Equity",
+        "name": "Member 3 Holdings",
+        "weightFrom": 0.0039524756,
+        "weightTo": 0.0058992759,
+        "deltaBp": 19.5
+      },
+      {
+        "instrumentId": "<M004>",
+        "key": "<M004> US Equity",
+        "name": "Member 4 Holdings",
+        "weightFrom": 0.0039445864,
+        "weightTo": 0.0058757494,
+        "deltaBp": 19.3
+      },
+      {
+        "instrumentId": "<M005>",
+        "key": "<M005> US Equity",
+        "name": "Member 5 Holdings",
+        "weightFrom": 0.0039366973,
+        "weightTo": 0.0058522699,
+        "deltaBp": 19.2
+      },
+      {
+        "instrumentId": "<M006>",
+        "key": "<M006> US Equity",
+        "name": "Member 6 Holdings",
+        "weightFrom": 0.0039288081,
+        "weightTo": 0.0058288374,
+        "deltaBp": 19
+      },
+      {
+        "instrumentId": "<M007>",
+        "key": "<M007> US Equity",
+        "name": "Member 7 Holdings",
+        "weightFrom": 0.0039209189,
+        "weightTo": 0.005805452,
+        "deltaBp": 18.8
+      },
+      {
+        "instrumentId": "<M008>",
+        "key": "<M008> US Equity",
+        "name": "Member 8 Holdings",
+        "weightFrom": 0.0039130298,
+        "weightTo": 0.0057821135,
+        "deltaBp": 18.7
+      },
+      {
+        "instrumentId": "<M009>",
+        "key": "<M009> US Equity",
+        "name": "Member 9 Holdings",
+        "weightFrom": 0.0039051406,
+        "weightTo": 0.005758822,
+        "deltaBp": 18.5
+      },
+      {
+        "instrumentId": "<M010>",
+        "key": "<M010> US Equity",
+        "name": "Member 10 Holdings",
+        "weightFrom": 0.0038972514,
+        "weightTo": 0.0057355775,
+        "deltaBp": 18.4
+      },
+      {
+        "instrumentId": "<M011>",
+        "key": "<M011> US Equity",
+        "name": "Member 11 Holdings",
+        "weightFrom": 0.0038893622,
+        "weightTo": 0.0057123801,
+        "deltaBp": 18.2
+      },
+      {
+        "instrumentId": "<M012>",
+        "key": "<M012> US Equity",
+        "name": "Member 12 Holdings",
+        "weightFrom": 0.0038814731,
+        "weightTo": 0.0056892296,
+        "deltaBp": 18.1
+      },
+      {
+        "instrumentId": "<M013>",
+        "key": "<M013> US Equity",
+        "name": "Member 13 Holdings",
+        "weightFrom": 0.0038735839,
+        "weightTo": 0.0056661262,
+        "deltaBp": 17.9
+      },
+      {
+        "instrumentId": "<M014>",
+        "key": "<M014> US Equity",
+        "name": "Member 14 Holdings",
+        "weightFrom": 0.0038656947,
+        "weightTo": 0.0056430698,
+        "deltaBp": 17.8
+      },
+      {
+        "instrumentId": "<M015>",
+        "key": "<M015> US Equity",
+        "name": "Member 15 Holdings",
+        "weightFrom": 0.0038578055,
+        "weightTo": 0.0056200603,
+        "deltaBp": 17.6
+      },
+      {
+        "instrumentId": "<M016>",
+        "key": "<M016> US Equity",
+        "name": "Member 16 Holdings",
+        "weightFrom": 0.0038499164,
+        "weightTo": 0.0055970979,
+        "deltaBp": 17.5
+      },
+      {
+        "instrumentId": "<M017>",
+        "key": "<M017> US Equity",
+        "name": "Member 17 Holdings",
+        "weightFrom": 0.0038420272,
+        "weightTo": 0.0055741825,
+        "deltaBp": 17.3
+      },
+      {
+        "instrumentId": "<M018>",
+        "key": "<M018> US Equity",
+        "name": "Member 18 Holdings",
+        "weightFrom": 0.003834138,
+        "weightTo": 0.005551314,
+        "deltaBp": 17.2
+      },
+      {
+        "instrumentId": "<M019>",
+        "key": "<M019> US Equity",
+        "name": "Member 19 Holdings",
+        "weightFrom": 0.0038262489,
+        "weightTo": 0.0055284926,
+        "deltaBp": 17
+      },
+      {
+        "instrumentId": "<M020>",
+        "key": "<M020> US Equity",
+        "name": "Member 20 Holdings",
+        "weightFrom": 0.0038183597,
+        "weightTo": 0.0055057182,
+        "deltaBp": 16.9
+      },
+      {
+        "instrumentId": "<M021>",
+        "key": "<M021> US Equity",
+        "name": "Member 21 Holdings",
+        "weightFrom": 0.0038104705,
+        "weightTo": 0.0054829908,
+        "deltaBp": 16.7
+      },
+      {
+        "instrumentId": "<M022>",
+        "key": "<M022> US Equity",
+        "name": "Member 22 Holdings",
+        "weightFrom": 0.0038025813,
+        "weightTo": 0.0054603104,
+        "deltaBp": 16.6
+      },
+      {
+        "instrumentId": "<M023>",
+        "key": "<M023> US Equity",
+        "name": "Member 23 Holdings",
+        "weightFrom": 0.0037946922,
+        "weightTo": 0.0054376771,
+        "deltaBp": 16.4
+      },
+      {
+        "instrumentId": "<M024>",
+        "key": "<M024> US Equity",
+        "name": "Member 24 Holdings",
+        "weightFrom": 0.003786803,
+        "weightTo": 0.0054150907,
+        "deltaBp": 16.3
+      },
+      {
+        "instrumentId": "<M025>",
+        "key": "<M025> US Equity",
+        "name": "Member 25 Holdings",
+        "weightFrom": 0.0037789138,
+        "weightTo": 0.0053925513,
+        "deltaBp": 16.1
+      },
+      {
+        "instrumentId": "<M026>",
+        "key": "<M026> US Equity",
+        "name": "Member 26 Holdings",
+        "weightFrom": 0.0037710246,
+        "weightTo": 0.0053700589,
+        "deltaBp": 16
+      },
+      {
+        "instrumentId": "<M027>",
+        "key": "<M027> US Equity",
+        "name": "Member 27 Holdings",
+        "weightFrom": 0.0037631355,
+        "weightTo": 0.0053476136,
+        "deltaBp": 15.8
+      },
+      {
+        "instrumentId": "<M028>",
+        "key": "<M028> US Equity",
+        "name": "Member 28 Holdings",
+        "weightFrom": 0.0037552463,
+        "weightTo": 0.0053252152,
+        "deltaBp": 15.7
+      },
+      {
+        "instrumentId": "<M029>",
+        "key": "<M029> US Equity",
+        "name": "Member 29 Holdings",
+        "weightFrom": 0.0037473571,
+        "weightTo": 0.0053028639,
+        "deltaBp": 15.6
+      },
+      {
+        "instrumentId": "<M030>",
+        "key": "<M030> US Equity",
+        "name": "Member 30 Holdings",
+        "weightFrom": 0.003739468,
+        "weightTo": 0.0052805595,
+        "deltaBp": 15.4
+      },
+      {
+        "instrumentId": "<M031>",
+        "key": "<M031> US Equity",
+        "name": "Member 31 Holdings",
+        "weightFrom": 0.0037315788,
+        "weightTo": 0.0052583022,
+        "deltaBp": 15.3
+      },
+      {
+        "instrumentId": "<M032>",
+        "key": "<M032> US Equity",
+        "name": "Member 32 Holdings",
+        "weightFrom": 0.0037236896,
+        "weightTo": 0.0052360918,
+        "deltaBp": 15.1
+      },
+      {
+        "instrumentId": "<M033>",
+        "key": "<M033> US Equity",
+        "name": "Member 33 Holdings",
+        "weightFrom": 0.0037158004,
+        "weightTo": 0.0052139285,
+        "deltaBp": 15
+      },
+      {
+        "instrumentId": "<M034>",
+        "key": "<M034> US Equity",
+        "name": "Member 34 Holdings",
+        "weightFrom": 0.0037079113,
+        "weightTo": 0.0051918122,
+        "deltaBp": 14.8
+      },
+      {
+        "instrumentId": "<M035>",
+        "key": "<M035> US Equity",
+        "name": "Member 35 Holdings",
+        "weightFrom": 0.0037000221,
+        "weightTo": 0.0051697429,
+        "deltaBp": 14.7
+      },
+      {
+        "instrumentId": "<M036>",
+        "key": "<M036> US Equity",
+        "name": "Member 36 Holdings",
+        "weightFrom": 0.0036921329,
+        "weightTo": 0.0051477206,
+        "deltaBp": 14.6
+      },
+      {
+        "instrumentId": "<M037>",
+        "key": "<M037> US Equity",
+        "name": "Member 37 Holdings",
+        "weightFrom": 0.0036842437,
+        "weightTo": 0.0051257453,
+        "deltaBp": 14.4
+      },
+      {
+        "instrumentId": "<M038>",
+        "key": "<M038> US Equity",
+        "name": "Member 38 Holdings",
+        "weightFrom": 0.0036763546,
+        "weightTo": 0.005103817,
+        "deltaBp": 14.3
+      },
+      {
+        "instrumentId": "<M039>",
+        "key": "<M039> US Equity",
+        "name": "Member 39 Holdings",
+        "weightFrom": 0.0036684654,
+        "weightTo": 0.0050819357,
+        "deltaBp": 14.1
+      },
+      {
+        "instrumentId": "<M040>",
+        "key": "<M040> US Equity",
+        "name": "Member 40 Holdings",
+        "weightFrom": 0.0036605762,
+        "weightTo": 0.0050601014,
+        "deltaBp": 14
+      },
+      {
+        "instrumentId": "<M041>",
+        "key": "<M041> US Equity",
+        "name": "Member 41 Holdings",
+        "weightFrom": 0.0036526871,
+        "weightTo": 0.0050383141,
+        "deltaBp": 13.9
+      },
+      {
+        "instrumentId": "<M042>",
+        "key": "<M042> US Equity",
+        "name": "Member 42 Holdings",
+        "weightFrom": 0.0036447979,
+        "weightTo": 0.0050165738,
+        "deltaBp": 13.7
+      },
+      {
+        "instrumentId": "<M043>",
+        "key": "<M043> US Equity",
+        "name": "Member 43 Holdings",
+        "weightFrom": 0.0036369087,
+        "weightTo": 0.0049948806,
+        "deltaBp": 13.6
+      },
+      {
+        "instrumentId": "<M044>",
+        "key": "<M044> US Equity",
+        "name": "Member 44 Holdings",
+        "weightFrom": 0.0036290195,
+        "weightTo": 0.0049732343,
+        "deltaBp": 13.4
+      },
+      {
+        "instrumentId": "<M045>",
+        "key": "<M045> US Equity",
+        "name": "Member 45 Holdings",
+        "weightFrom": 0.0036211304,
+        "weightTo": 0.0049516351,
+        "deltaBp": 13.3
+      },
+      {
+        "instrumentId": "<M046>",
+        "key": "<M046> US Equity",
+        "name": "Member 46 Holdings",
+        "weightFrom": 0.0036132412,
+        "weightTo": 0.0049300828,
+        "deltaBp": 13.2
+      },
+      {
+        "instrumentId": "<M047>",
+        "key": "<M047> US Equity",
+        "name": "Member 47 Holdings",
+        "weightFrom": 0.003605352,
+        "weightTo": 0.0049085776,
+        "deltaBp": 13
+      },
+      {
+        "instrumentId": "<M048>",
+        "key": "<M048> US Equity",
+        "name": "Member 48 Holdings",
+        "weightFrom": 0.0035974628,
+        "weightTo": 0.0048871193,
+        "deltaBp": 12.9
+      },
+      {
+        "instrumentId": "<M049>",
+        "key": "<M049> US Equity",
+        "name": "Member 49 Holdings",
+        "weightFrom": 0.0035895737,
+        "weightTo": 0.0048657081,
+        "deltaBp": 12.8
+      },
+      {
+        "instrumentId": "<M050>",
+        "key": "<M050> US Equity",
+        "name": "Member 50 Holdings",
+        "weightFrom": 0.0035816845,
+        "weightTo": 0.0048443439,
+        "deltaBp": 12.6
+      },
+      {
+        "instrumentId": "<M051>",
+        "key": "<M051> US Equity",
+        "name": "Member 51 Holdings",
+        "weightFrom": 0.0035737953,
+        "weightTo": 0.0048230267,
+        "deltaBp": 12.5
+      },
+      {
+        "instrumentId": "<M052>",
+        "key": "<M052> US Equity",
+        "name": "Member 52 Holdings",
+        "weightFrom": 0.0035659062,
+        "weightTo": 0.0048017564,
+        "deltaBp": 12.4
+      },
+      {
+        "instrumentId": "<M053>",
+        "key": "<M053> US Equity",
+        "name": "Member 53 Holdings",
+        "weightFrom": 0.003558017,
+        "weightTo": 0.0047805332,
+        "deltaBp": 12.2
+      },
+      {
+        "instrumentId": "<M054>",
+        "key": "<M054> US Equity",
+        "name": "Member 54 Holdings",
+        "weightFrom": 0.0035501278,
+        "weightTo": 0.004759357,
+        "deltaBp": 12.1
+      },
+      {
+        "instrumentId": "<M055>",
+        "key": "<M055> US Equity",
+        "name": "Member 55 Holdings",
+        "weightFrom": 0.0035422386,
+        "weightTo": 0.0047382278,
+        "deltaBp": 12
+      },
+      {
+        "instrumentId": "<M056>",
+        "key": "<M056> US Equity",
+        "name": "Member 56 Holdings",
+        "weightFrom": 0.0035343495,
+        "weightTo": 0.0047171457,
+        "deltaBp": 11.8
+      },
+      {
+        "instrumentId": "<M057>",
+        "key": "<M057> US Equity",
+        "name": "Member 57 Holdings",
+        "weightFrom": 0.0035264603,
+        "weightTo": 0.0046961105,
+        "deltaBp": 11.7
+      },
+      {
+        "instrumentId": "<M058>",
+        "key": "<M058> US Equity",
+        "name": "Member 58 Holdings",
+        "weightFrom": 0.0035185711,
+        "weightTo": 0.0046751223,
+        "deltaBp": 11.6
+      },
+      {
+        "instrumentId": "<M059>",
+        "key": "<M059> US Equity",
+        "name": "Member 59 Holdings",
+        "weightFrom": 0.0035106819,
+        "weightTo": 0.0046541811,
+        "deltaBp": 11.4
+      },
+      {
+        "instrumentId": "<M060>",
+        "key": "<M060> US Equity",
+        "name": "Member 60 Holdings",
+        "weightFrom": 0.0035027928,
+        "weightTo": 0.004633287,
+        "deltaBp": 11.3
+      },
+      {
+        "instrumentId": "<M061>",
+        "key": "<M061> US Equity",
+        "name": "Member 61 Holdings",
+        "weightFrom": 0.0034949036,
+        "weightTo": 0.0046124398,
+        "deltaBp": 11.2
+      },
+      {
+        "instrumentId": "<M062>",
+        "key": "<M062> US Equity",
+        "name": "Member 62 Holdings",
+        "weightFrom": 0.0034870144,
+        "weightTo": 0.0045916396,
+        "deltaBp": 11
+      },
+      {
+        "instrumentId": "<M063>",
+        "key": "<M063> US Equity",
+        "name": "Member 63 Holdings",
+        "weightFrom": 0.0034791252,
+        "weightTo": 0.0045708865,
+        "deltaBp": 10.9
+      },
+      {
+        "instrumentId": "<M064>",
+        "key": "<M064> US Equity",
+        "name": "Member 64 Holdings",
+        "weightFrom": 0.0034712361,
+        "weightTo": 0.0045501804,
+        "deltaBp": 10.8
+      },
+      {
+        "instrumentId": "<M065>",
+        "key": "<M065> US Equity",
+        "name": "Member 65 Holdings",
+        "weightFrom": 0.0034633469,
+        "weightTo": 0.0045295212,
+        "deltaBp": 10.7
+      },
+      {
+        "instrumentId": "<M066>",
+        "key": "<M066> US Equity",
+        "name": "Member 66 Holdings",
+        "weightFrom": 0.0034554577,
+        "weightTo": 0.0045089091,
+        "deltaBp": 10.5
+      },
+      {
+        "instrumentId": "<M067>",
+        "key": "<M067> US Equity",
+        "name": "Member 67 Holdings",
+        "weightFrom": 0.0034475686,
+        "weightTo": 0.004488344,
+        "deltaBp": 10.4
+      },
+      {
+        "instrumentId": "<M068>",
+        "key": "<M068> US Equity",
+        "name": "Member 68 Holdings",
+        "weightFrom": 0.0034396794,
+        "weightTo": 0.0044678259,
+        "deltaBp": 10.3
+      },
+      {
+        "instrumentId": "<M069>",
+        "key": "<M069> US Equity",
+        "name": "Member 69 Holdings",
+        "weightFrom": 0.0034317902,
+        "weightTo": 0.0044473547,
+        "deltaBp": 10.2
+      },
+      {
+        "instrumentId": "<M070>",
+        "key": "<M070> US Equity",
+        "name": "Member 70 Holdings",
+        "weightFrom": 0.003423901,
+        "weightTo": 0.0044269306,
+        "deltaBp": 10
+      },
+      {
+        "instrumentId": "<M071>",
+        "key": "<M071> US Equity",
+        "name": "Member 71 Holdings",
+        "weightFrom": 0.0034160119,
+        "weightTo": 0.0044065535,
+        "deltaBp": 9.9
+      },
+      {
+        "instrumentId": "<M072>",
+        "key": "<M072> US Equity",
+        "name": "Member 72 Holdings",
+        "weightFrom": 0.0034081227,
+        "weightTo": 0.0043862234,
+        "deltaBp": 9.8
+      },
+      {
+        "instrumentId": "<M073>",
+        "key": "<M073> US Equity",
+        "name": "Member 73 Holdings",
+        "weightFrom": 0.0034002335,
+        "weightTo": 0.0043659404,
+        "deltaBp": 9.7
+      },
+      {
+        "instrumentId": "<M074>",
+        "key": "<M074> US Equity",
+        "name": "Member 74 Holdings",
+        "weightFrom": 0.0033923443,
+        "weightTo": 0.0043457043,
+        "deltaBp": 9.5
+      },
+      {
+        "instrumentId": "<M075>",
+        "key": "<M075> US Equity",
+        "name": "Member 75 Holdings",
+        "weightFrom": 0.0033844552,
+        "weightTo": 0.0043255152,
+        "deltaBp": 9.4
+      },
+      {
+        "instrumentId": "<M076>",
+        "key": "<M076> US Equity",
+        "name": "Member 76 Holdings",
+        "weightFrom": 0.003376566,
+        "weightTo": 0.0043053731,
+        "deltaBp": 9.3
+      },
+      {
+        "instrumentId": "<M077>",
+        "key": "<M077> US Equity",
+        "name": "Member 77 Holdings",
+        "weightFrom": 0.0033686768,
+        "weightTo": 0.0042852781,
+        "deltaBp": 9.2
+      },
+      {
+        "instrumentId": "<M078>",
+        "key": "<M078> US Equity",
+        "name": "Member 78 Holdings",
+        "weightFrom": 0.0033607877,
+        "weightTo": 0.00426523,
+        "deltaBp": 9
+      },
+      {
+        "instrumentId": "<M079>",
+        "key": "<M079> US Equity",
+        "name": "Member 79 Holdings",
+        "weightFrom": 0.0033528985,
+        "weightTo": 0.004245229,
+        "deltaBp": 8.9
+      },
+      {
+        "instrumentId": "<M080>",
+        "key": "<M080> US Equity",
+        "name": "Member 80 Holdings",
+        "weightFrom": 0.0033450093,
+        "weightTo": 0.0042252749,
+        "deltaBp": 8.8
+      },
+      {
+        "instrumentId": "<M081>",
+        "key": "<M081> US Equity",
+        "name": "Member 81 Holdings",
+        "weightFrom": 0.0033371201,
+        "weightTo": 0.0042053679,
+        "deltaBp": 8.7
+      },
+      {
+        "instrumentId": "<M082>",
+        "key": "<M082> US Equity",
+        "name": "Member 82 Holdings",
+        "weightFrom": 0.003329231,
+        "weightTo": 0.0041855078,
+        "deltaBp": 8.6
+      },
+      {
+        "instrumentId": "<M083>",
+        "key": "<M083> US Equity",
+        "name": "Member 83 Holdings",
+        "weightFrom": 0.0033213418,
+        "weightTo": 0.0041656948,
+        "deltaBp": 8.4
+      },
+      {
+        "instrumentId": "<M084>",
+        "key": "<M084> US Equity",
+        "name": "Member 84 Holdings",
+        "weightFrom": 0.0033134526,
+        "weightTo": 0.0041459288,
+        "deltaBp": 8.3
+      },
+      {
+        "instrumentId": "<M085>",
+        "key": "<M085> US Equity",
+        "name": "Member 85 Holdings",
+        "weightFrom": 0.0033055634,
+        "weightTo": 0.0041262098,
+        "deltaBp": 8.2
+      },
+      {
+        "instrumentId": "<M086>",
+        "key": "<M086> US Equity",
+        "name": "Member 86 Holdings",
+        "weightFrom": 0.0032976743,
+        "weightTo": 0.0041065378,
+        "deltaBp": 8.1
+      },
+      {
+        "instrumentId": "<M087>",
+        "key": "<M087> US Equity",
+        "name": "Member 87 Holdings",
+        "weightFrom": 0.0032897851,
+        "weightTo": 0.0040869128,
+        "deltaBp": 8
+      },
+      {
+        "instrumentId": "<M088>",
+        "key": "<M088> US Equity",
+        "name": "Member 88 Holdings",
+        "weightFrom": 0.0032818959,
+        "weightTo": 0.0040673348,
+        "deltaBp": 7.9
+      },
+      {
+        "instrumentId": "<M089>",
+        "key": "<M089> US Equity",
+        "name": "Member 89 Holdings",
+        "weightFrom": 0.0032740068,
+        "weightTo": 0.0040478038,
+        "deltaBp": 7.7
+      },
+      {
+        "instrumentId": "<M090>",
+        "key": "<M090> US Equity",
+        "name": "Member 90 Holdings",
+        "weightFrom": 0.0032661176,
+        "weightTo": 0.0040283198,
+        "deltaBp": 7.6
+      },
+      {
+        "instrumentId": "<M091>",
+        "key": "<M091> US Equity",
+        "name": "Member 91 Holdings",
+        "weightFrom": 0.0032582284,
+        "weightTo": 0.0040088828,
+        "deltaBp": 7.5
+      },
+      {
+        "instrumentId": "<M092>",
+        "key": "<M092> US Equity",
+        "name": "Member 92 Holdings",
+        "weightFrom": 0.0032503392,
+        "weightTo": 0.0039894928,
+        "deltaBp": 7.4
+      },
+      {
+        "instrumentId": "<M093>",
+        "key": "<M093> US Equity",
+        "name": "Member 93 Holdings",
+        "weightFrom": 0.0032424501,
+        "weightTo": 0.0039701499,
+        "deltaBp": 7.3
+      },
+      {
+        "instrumentId": "<M094>",
+        "key": "<M094> US Equity",
+        "name": "Member 94 Holdings",
+        "weightFrom": 0.0032345609,
+        "weightTo": 0.0039508539,
+        "deltaBp": 7.2
+      },
+      {
+        "instrumentId": "<M095>",
+        "key": "<M095> US Equity",
+        "name": "Member 95 Holdings",
+        "weightFrom": 0.0032266717,
+        "weightTo": 0.003931605,
+        "deltaBp": 7
+      },
+      {
+        "instrumentId": "<M096>",
+        "key": "<M096> US Equity",
+        "name": "Member 96 Holdings",
+        "weightFrom": 0.0032187825,
+        "weightTo": 0.003912403,
+        "deltaBp": 6.9
+      },
+      {
+        "instrumentId": "<M097>",
+        "key": "<M097> US Equity",
+        "name": "Member 97 Holdings",
+        "weightFrom": 0.0032108934,
+        "weightTo": 0.0038932481,
+        "deltaBp": 6.8
+      },
+      {
+        "instrumentId": "<M098>",
+        "key": "<M098> US Equity",
+        "name": "Member 98 Holdings",
+        "weightFrom": 0.0032030042,
+        "weightTo": 0.0038741401,
+        "deltaBp": 6.7
+      },
+      {
+        "instrumentId": "<M319>",
+        "key": "<M319> US Equity",
+        "name": "Member 319 Holdings",
+        "weightFrom": 0.001459497,
+        "weightTo": 0.0008043901,
+        "deltaBp": -6.6
+      },
+      {
+        "instrumentId": "<M320>",
+        "key": "<M320> US Equity",
+        "name": "Member 320 Holdings",
+        "weightFrom": 0.0014516078,
+        "weightTo": 0.0007957175,
+        "deltaBp": -6.6
+      }
+    ],
+    "provIdx": 2
+  },
+  "unresolved": {
+    "count": 0,
+    "reason": null
+  },
+  "notes": [
+    "MEMBERSHIP_VIA_PROXY_FUND"
+  ]
+}

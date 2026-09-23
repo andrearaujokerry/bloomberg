@@ -37,7 +37,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import { FunctionRegistry, toCsv } from '@terminal/core';
 import type { AssetClass, MarketSector, NormalisedUpdate, QuoteFields } from '@terminal/core';
@@ -916,6 +916,13 @@ describe('GP — goldens', () => {
  * Sequence-allocated ids become tokens: the goldens record the shape and the numbers, not which
  * row of `instruments` this run happened to draw.
  */
+/**
+ * The keys of a GP payload that hold a sequence-allocated id: the instrument block's, and the
+ * resolved ref's bare `id` (§GP `GpRef`). `annotationId`, `ownerUserId` and `mdLineIds` are ids
+ * too and are flattened by their own branches below; `calendarId` (`'XNAS'`) is a name.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['instrumentId', 'id']);
+
 function normalise(payload: GpPayload): unknown {
   const ids = new Map<number, string>(
     Object.entries(env.ids).map(([name, seeded]) => [seeded.instrumentId, `<${name}>`]),
@@ -925,11 +932,13 @@ function normalise(payload: GpPayload): unknown {
       if (key === 'mdLineIds' && Array.isArray(value)) return `<${String(value.length)} md line(s)>`;
       if (key === 'annotationId') return '<annotationId>';
       if (key === 'ownerUserId') return '<ownerUserId>';
-      if (typeof value === 'number' && ids.has(value)) return ids.get(value);
       // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
       // made the golden a function of the sequence values this run drew.
       if (typeof value === 'string') return subjectToken(value, ids);
-      return value;
+      // And only an id-bearing key carries one as a number. A chart payload is bars and overlay
+      // series — opens, highs, lows, closes, volumes, moving averages, the y-axis bounds — and
+      // the old value-based rule renamed whichever of them a seeded instrument id collided with.
+      return idToken(key, value, ID_KEYS, ids);
     }),
   );
 }

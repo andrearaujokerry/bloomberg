@@ -30,7 +30,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import type { NormalisedUpdate, QuoteFields } from '@terminal/core';
 import { FunctionRegistry } from '@terminal/core';
@@ -449,16 +449,24 @@ function rowOf(payload: WeiPayload, code: string): WeiRow {
   return row!;
 }
 
+/**
+ * The one key in a WEI payload that holds a sequence-allocated id: each row's `instrumentId`.
+ * `calendarId` (`'XCBO'`) and a column's `id`/`fieldId` (`'PX_LAST'`) are names.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['instrumentId']);
+
 function normalise(payload: WeiPayload): unknown {
   const tokens = new Map<number, string>(
     Object.values(env.ids).map((i) => [i.instrumentId, `<${i.code}>`]),
   );
-  const json = JSON.stringify(payload, (_key, value: unknown) => {
-    if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
+  const json = JSON.stringify(payload, (key, value: unknown) => {
     // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
     // made the golden a function of the sequence values this run drew.
     if (typeof value === 'string') return subjectToken(value, tokens);
-    return value;
+    // A number is an id because of the key it sits under. Index levels are four- and five-figure
+    // whole-ish numbers (`SPX` near 6,600, `NKY` near 40,000) in exactly the range the instrument
+    // sequence now reaches, so the value-based rule was a live collision, not a theoretical one.
+    return idToken(key, value, ID_KEYS, tokens);
   });
   return JSON.parse(json);
 }

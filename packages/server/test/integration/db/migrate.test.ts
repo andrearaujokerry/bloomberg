@@ -415,10 +415,10 @@ async function names(sql: string, params: readonly unknown[] = []): Promise<stri
 }
 
 describe('migrations apply to an empty database', () => {
-  it('applies the eighteen migration files in name order', () => {
-    expect(applied).toHaveLength(18);
+  it('applies the nineteen migration files in name order', () => {
+    expect(applied).toHaveLength(19);
     expect(applied[0]).toBe('0001_extensions_enums.sql');
-    expect(applied.at(-1)).toBe('0018_chain_anchor_immutable.sql');
+    expect(applied.at(-1)).toBe('0019_data_exceptions_tenant.sql');
     expect([...applied].sort()).toEqual(applied);
   });
 
@@ -596,7 +596,7 @@ describe('objects the Drizzle mirror cannot model', () => {
     }
   });
 
-  it('enables row-level security on the nineteen tenant-scoped tables', async () => {
+  it('enables row-level security on the twenty tenant-scoped tables', async () => {
     const secured = await names(`
       SELECT c.relname AS name
         FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace

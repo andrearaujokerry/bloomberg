@@ -1,0 +1,508 @@
+{
+  "variant": "fund",
+  "fund": {
+    "instrumentId": "<FUNDA>",
+    "key": "HAZQTH US Equity",
+    "name": "Fund A ZQTH Trust",
+    "fundType": "etf",
+    "sponsor": "Terminal Asset Management",
+    "cik": "0009900002",
+    "expenseRatio": 0.000945,
+    "trackedIndex": {
+      "instrumentId": "<INDEX>",
+      "key": "HXZQTH Index"
+    }
+  },
+  "nav": {
+    "px": {
+      "v": 561.44,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<FUNDA>",
+        "field": "PX_LAST"
+      }
+    },
+    "chgPct": {
+      "v": 0.5025,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<FUNDA>",
+        "field": "CHG_PCT_1D"
+      }
+    }
+  },
+  "file": {
+    "asOfDate": "2026-06-30",
+    "sourceId": "ssga.holdings",
+    "count": 13,
+    "netAssets": null,
+    "provIdx": 1
+  },
+  "holdings": [
+    {
+      "lineNo": 2,
+      "holdingInstrumentId": "<C01>",
+      "key": "HCZQTH01 US Equity",
+      "name": "Constituent ZQTH 01",
+      "cusip": "100000000",
+      "isin": "US100000000 ",
+      "ticker": "HCZQTH01",
+      "shares": 1000000,
+      "marketValue": 500000000,
+      "weight": 0.09,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "US",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C01>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C01>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C01>"
+    },
+    {
+      "lineNo": 3,
+      "holdingInstrumentId": "<C02>",
+      "key": "HCZQTH02 US Equity",
+      "name": "Constituent ZQTH 02",
+      "cusip": "100000001",
+      "isin": "US100000001 ",
+      "ticker": "HCZQTH02",
+      "shares": 1013000,
+      "marketValue": 493000000,
+      "weight": 0.086,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C02>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C02>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C02>"
+    },
+    {
+      "lineNo": 4,
+      "holdingInstrumentId": "<C03>",
+      "key": "HCZQTH03 US Equity",
+      "name": "Constituent ZQTH 03",
+      "cusip": "100000002",
+      "isin": "US100000002 ",
+      "ticker": "HCZQTH03",
+      "shares": 1026000,
+      "marketValue": 486000000,
+      "weight": 0.082,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C03>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C03>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C03>"
+    },
+    {
+      "lineNo": 5,
+      "holdingInstrumentId": "<C04>",
+      "key": "HCZQTH04 US Equity",
+      "name": "Constituent ZQTH 04",
+      "cusip": "100000003",
+      "isin": "US100000003 ",
+      "ticker": "HCZQTH04",
+      "shares": 1039000,
+      "marketValue": 479000000,
+      "weight": 0.078,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "US",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C04>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C04>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C04>"
+    },
+    {
+      "lineNo": 6,
+      "holdingInstrumentId": "<C05>",
+      "key": "HCZQTH05 US Equity",
+      "name": "Constituent ZQTH 05",
+      "cusip": "100000004",
+      "isin": "US100000004 ",
+      "ticker": "HCZQTH05",
+      "shares": 1052000,
+      "marketValue": 472000000,
+      "weight": 0.074,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C05>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C05>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C05>"
+    },
+    {
+      "lineNo": 1,
+      "holdingInstrumentId": "<SUBJECT>",
+      "key": "HSZQTH US Equity",
+      "name": "Subject ZQTH Inc",
+      "cusip": "037833100",
+      "isin": "US0378331005",
+      "ticker": "HSZQTH",
+      "shares": 183546100,
+      "marketValue": 42233481900,
+      "weight": 0.0712,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "US",
+      "px": {
+        "v": 230.09,
+        "st": "live",
+        "ts": 1789496788000,
+        "provIdx": 0,
+        "live": {
+          "subject": "q:<SUBJECT>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": 0.5025,
+        "st": "live",
+        "ts": 1789496788000,
+        "provIdx": 0,
+        "live": {
+          "subject": "q:<SUBJECT>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<SUBJECT>"
+    },
+    {
+      "lineNo": 7,
+      "holdingInstrumentId": "<C06>",
+      "key": "HCZQTH06 US Equity",
+      "name": "Constituent ZQTH 06",
+      "cusip": "100000005",
+      "isin": "US100000005 ",
+      "ticker": "HCZQTH06",
+      "shares": 1065000,
+      "marketValue": 465000000,
+      "weight": 0.07,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C06>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C06>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C06>"
+    },
+    {
+      "lineNo": 8,
+      "holdingInstrumentId": "<C07>",
+      "key": "HCZQTH07 US Equity",
+      "name": "Constituent ZQTH 07",
+      "cusip": "100000006",
+      "isin": "US100000006 ",
+      "ticker": "HCZQTH07",
+      "shares": 1078000,
+      "marketValue": 458000000,
+      "weight": 0.066,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "US",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C07>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C07>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C07>"
+    },
+    {
+      "lineNo": 9,
+      "holdingInstrumentId": "<C08>",
+      "key": "HCZQTH08 US Equity",
+      "name": "Constituent ZQTH 08",
+      "cusip": "100000007",
+      "isin": "US100000007 ",
+      "ticker": "HCZQTH08",
+      "shares": 1091000,
+      "marketValue": 451000000,
+      "weight": 0.062,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C08>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C08>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C08>"
+    },
+    {
+      "lineNo": 10,
+      "holdingInstrumentId": "<C09>",
+      "key": "HCZQTH09 US Equity",
+      "name": "Constituent ZQTH 09",
+      "cusip": "100000008",
+      "isin": "US100000008 ",
+      "ticker": "HCZQTH09",
+      "shares": 1104000,
+      "marketValue": 444000000,
+      "weight": 0.058,
+      "assetCat": "EC",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C09>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C09>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C09>"
+    },
+    {
+      "lineNo": 11,
+      "holdingInstrumentId": "<C10>",
+      "key": "HCZQTH10 US Equity",
+      "name": "Constituent ZQTH 10",
+      "cusip": "100000009",
+      "isin": "US100000009 ",
+      "ticker": "HCZQTH10",
+      "shares": 1117000,
+      "marketValue": 437000000,
+      "weight": 0.054,
+      "assetCat": "DBT",
+      "issuerCat": "CORP",
+      "country": "US",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C10>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C10>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C10>"
+    },
+    {
+      "lineNo": 12,
+      "holdingInstrumentId": "<C11>",
+      "key": "HCZQTH11 US Equity",
+      "name": "Constituent ZQTH 11",
+      "cusip": "100000001",
+      "isin": "US1000000010",
+      "ticker": "HCZQTH11",
+      "shares": 1130000,
+      "marketValue": 430000000,
+      "weight": 0.05,
+      "assetCat": "DBT",
+      "issuerCat": "CORP",
+      "country": "IE",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C11>",
+          "field": "PX_LAST"
+        }
+      },
+      "chgPct": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<C11>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "subject": "q:<C11>"
+    },
+    {
+      "lineNo": 13,
+      "holdingInstrumentId": null,
+      "key": null,
+      "name": "Unresolved ZQTH Holding",
+      "cusip": "999999999",
+      "isin": null,
+      "ticker": null,
+      "shares": 120000,
+      "marketValue": 4000000,
+      "weight": 0.0008,
+      "assetCat": "STIV",
+      "issuerCat": "CORP",
+      "country": "US",
+      "px": {
+        "v": null,
+        "st": "na",
+        "provIdx": 1
+      },
+      "chgPct": {
+        "v": null,
+        "st": "na",
+        "provIdx": 1
+      },
+      "subject": null
+    }
+  ],
+  "byAssetCat": [
+    {
+      "assetCat": "EC",
+      "weight": 0.7372000000000001,
+      "count": 10
+    },
+    {
+      "assetCat": "DBT",
+      "weight": 0.10400000000000001,
+      "count": 2
+    },
+    {
+      "assetCat": "STIV",
+      "weight": 0.0008,
+      "count": 1
+    }
+  ],
+  "unresolved": {
+    "count": 1,
+    "reason": "UNRESOLVED_IDENTIFIER"
+  },
+  "notes": [
+    "UNRESOLVED_CONSTITUENTS",
+    "PROXY_FILE_LAGS_SESSION"
+  ]
+}

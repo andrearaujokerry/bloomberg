@@ -1,0 +1,152 @@
+{
+  "variant": "issuer",
+  "security": {
+    "instrumentId": "<AAPL>",
+    "key": "<KEY>",
+    "name": "Apple Inc"
+  },
+  "issuer": {
+    "issuerId": "<ISSUER>",
+    "name": "Apple Inc",
+    "cik": "<CIK>"
+  },
+  "window": {
+    "from": "2026-08-16T18:41:28.000Z",
+    "to": "2026-09-15T18:41:28.000Z",
+    "label": "1M"
+  },
+  "rows": [
+    {
+      "newsId": "<NEWS:buyback>",
+      "headline": "Apple Shares Rise on Capital Return Plan",
+      "summary": "The board approved a larger buyback.",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": "<CIK>",
+      "items8k": null,
+      "publishedAt": "2026-09-15T12:04:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/apple-capital-return",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "issuer",
+          "entityId": "<ISSUER>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "name_exact"
+        },
+        {
+          "entityKind": "instrument",
+          "entityId": "<AAPL>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "ticker_exact"
+        }
+      ],
+      "provIdx": 0
+    },
+    {
+      "newsId": "<NEWS:supplier>",
+      "headline": "Apple Supplier Signals Strong iPhone Demand",
+      "summary": "A component maker raised its outlook.",
+      "sourceId": "bbg.rss",
+      "feed": "technology",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": "<CIK>",
+      "items8k": null,
+      "publishedAt": "2026-09-14T08:15:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-14/apple-supplier",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "issuer",
+          "entityId": "<ISSUER>",
+          "display": "Apple Inc",
+          "confidence": 0.95,
+          "method": "name_alias"
+        }
+      ],
+      "provIdx": 0
+    },
+    {
+      "newsId": "<NEWS:eightk>",
+      "headline": "8-K · Apple Inc · Item 2.02 Results of Operations",
+      "summary": null,
+      "sourceId": "sec.atom",
+      "feed": "8-K",
+      "kind": "filing",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": [
+        "2.02",
+        "9.01"
+      ],
+      "publishedAt": "2026-09-05T20:31:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/0000320193-26-000020-index.htm",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "issuer",
+          "entityId": "<ISSUER>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "cik"
+        }
+      ],
+      "provIdx": 2
+    },
+    {
+      "newsId": null,
+      "accessionNo": "0000320193-26-000031",
+      "headline": "10-Q — Quarterly report",
+      "summary": "Quarterly report",
+      "sourceId": "sec.submissions",
+      "feed": "edgar",
+      "kind": "filing",
+      "author": null,
+      "category": "10-Q",
+      "cik": "<CIK>",
+      "items8k": null,
+      "publishedAt": "2026-09-02T13:00:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/aapl-10q.htm",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "issuer",
+          "entityId": "<ISSUER>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "cik"
+        }
+      ],
+      "provIdx": 3
+    }
+  ],
+  "counts": {
+    "story": 2,
+    "video": 0,
+    "filing": 2,
+    "press_release": 0,
+    "fed_release": 0
+  },
+  "total": 4,
+  "liveSubject": "n:inst:<AAPL>",
+  "notes": [
+    "PRECISION_FIRST_LINKING",
+    "BODY_NOT_STORED_LINK_OUT"
+  ]
+}

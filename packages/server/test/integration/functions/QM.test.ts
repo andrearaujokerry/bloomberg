@@ -26,7 +26,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import type { NormalisedUpdate } from '@terminal/core';
 import { FunctionRegistry } from '@terminal/core';
@@ -300,6 +300,13 @@ async function runQM(params: Record<string, unknown> = {}): Promise<QmPayload> {
   return res.json<{ data: QmPayload }>().data;
 }
 
+/**
+ * The keys of a QM payload that hold a sequence-allocated id: each row's `instrumentId`, and the
+ * source block's bare `id` — the watchlist's (§QM `QmSource`). A column's `id` is a field name
+ * (`'PX_LAST'`) and a string, so the key alone is not the test: `idToken` rewrites numbers only.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['id', 'instrumentId']);
+
 function normalise(payload: QmPayload): unknown {
   const tokens = new Map<number, string>([
     [env.aapl, '<AAPL>'],
@@ -308,14 +315,16 @@ function normalise(payload: QmPayload): unknown {
     [env.indexInstrumentId, '<SPX>'],
     [env.watchlistId, '<WATCHLIST>'],
   ]);
-  const json = JSON.stringify(payload, (_key, value: unknown) => {
-    if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
+  const json = JSON.stringify(payload, (key, value: unknown) => {
     if (typeof value === 'string') {
       // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
       // made the golden a function of the sequence values this run drew.
       return subjectToken(value, tokens);
     }
-    return value;
+    // And a number is an id only under a key that names one. The grid is bids, asks, sizes,
+    // volumes and highs; `BID_SIZE: 400` and a watchlist id of 400 are the same number and not
+    // the same thing.
+    return idToken(key, value, ID_KEYS, tokens);
   });
   return JSON.parse(json);
 }

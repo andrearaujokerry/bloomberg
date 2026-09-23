@@ -1,0 +1,1336 @@
+{
+  "variant": "default",
+  "section": "ALL",
+  "policy": {
+    "targetFrom": {
+      "v": 3.5,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 0
+    },
+    "targetTo": {
+      "v": 3.75,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 0
+    },
+    "targetMid": {
+      "v": 3.625,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 0
+    },
+    "effectiveDate": "2026-09-14",
+    "lastMeeting": {
+      "meetingDate": "2026-07-29",
+      "statementAt": "2026-07-29T18:00:00.000Z",
+      "hasSep": false,
+      "decisionBp": -25,
+      "provIdx": 1
+    },
+    "nextMeeting": {
+      "meetingDate": "2026-09-16",
+      "statementAt": "2026-09-16T18:00:00.000Z",
+      "hasSep": true,
+      "decisionBp": null,
+      "daysAway": 1,
+      "provIdx": 1
+    },
+    "iorb": {
+      "v": null,
+      "r": "NO_IORB_SOURCE"
+    },
+    "discountWindow": {
+      "v": null,
+      "r": "NO_DISCOUNT_WINDOW_SOURCE"
+    }
+  },
+  "overnight": [
+    {
+      "rateCode": "SOFR",
+      "label": "Secured Overnight Financing Rate",
+      "publisher": "NY Fed",
+      "effectiveDate": "2026-09-14",
+      "vintageAt": "2026-09-15T10:00:00.000Z",
+      "isLatest": true,
+      "subject": "r:SOFR",
+      "rate": {
+        "v": 3.62,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.57,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p25": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p75": {
+        "v": 3.67,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p99": {
+        "v": 3.7,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "volumeBn": {
+        "v": 2861,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "avg30d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg90d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg180d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "indexValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chg1dBp": {
+        "v": -2,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "revisionIndicator": "",
+      "provIdx": 0
+    },
+    {
+      "rateCode": "EFFR",
+      "label": "Effective Federal Funds Rate",
+      "publisher": "NY Fed",
+      "effectiveDate": "2026-09-14",
+      "vintageAt": "2026-09-15T10:00:00.000Z",
+      "isLatest": true,
+      "subject": "r:EFFR",
+      "rate": {
+        "v": 3.63,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p25": {
+        "v": 3.62,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p75": {
+        "v": 3.63,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p99": {
+        "v": 3.64,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "volumeBn": {
+        "v": 91,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "avg30d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg90d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg180d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "indexValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chg1dBp": {
+        "v": 6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "revisionIndicator": "",
+      "provIdx": 0
+    },
+    {
+      "rateCode": "OBFR",
+      "label": "Overnight Bank Funding Rate",
+      "publisher": "NY Fed",
+      "effectiveDate": "2026-09-14",
+      "vintageAt": "2026-09-15T10:00:00.000Z",
+      "isLatest": true,
+      "subject": "r:OBFR",
+      "rate": {
+        "v": 3.63,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.53,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p25": {
+        "v": 3.62,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p75": {
+        "v": 3.63,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p99": {
+        "v": 3.7,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "volumeBn": {
+        "v": 226,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "avg30d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg90d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg180d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "indexValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chg1dBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "revisionIndicator": "",
+      "provIdx": 0
+    },
+    {
+      "rateCode": "TGCR",
+      "label": "Tri-Party General Collateral Rate",
+      "publisher": "NY Fed",
+      "effectiveDate": "2026-09-14",
+      "vintageAt": "2026-09-15T10:00:00.000Z",
+      "isLatest": true,
+      "subject": "r:TGCR",
+      "rate": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.53,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p25": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p75": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p99": {
+        "v": 3.63,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "volumeBn": {
+        "v": 1155,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "avg30d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg90d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg180d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "indexValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chg1dBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "revisionIndicator": "",
+      "provIdx": 0
+    },
+    {
+      "rateCode": "BGCR",
+      "label": "Broad General Collateral Rate",
+      "publisher": "NY Fed",
+      "effectiveDate": "2026-09-14",
+      "vintageAt": "2026-09-15T10:00:00.000Z",
+      "isLatest": true,
+      "subject": "r:BGCR",
+      "rate": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.53,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p25": {
+        "v": 3.6,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p75": {
+        "v": 3.61,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "p99": {
+        "v": 3.66,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "volumeBn": {
+        "v": 1183,
+        "st": "closed",
+        "ts": 1789387200000,
+        "provIdx": 0
+      },
+      "avg30d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg90d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg180d": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "indexValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chg1dBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "revisionIndicator": "",
+      "provIdx": 0
+    },
+    {
+      "rateCode": "SOFRAI",
+      "label": "SOFR Averages and Index",
+      "publisher": "NY Fed",
+      "effectiveDate": "2026-09-15",
+      "vintageAt": "2026-09-15T10:00:00.000Z",
+      "isLatest": true,
+      "subject": "r:SOFRAI",
+      "rate": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "p1": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "p25": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "p75": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "p99": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "volumeBn": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "avg30d": {
+        "v": 3.6485,
+        "st": "closed",
+        "ts": 1789473600000,
+        "provIdx": 0
+      },
+      "avg90d": {
+        "v": 3.64603,
+        "st": "closed",
+        "ts": 1789473600000,
+        "provIdx": 0
+      },
+      "avg180d": {
+        "v": 3.65767,
+        "st": "closed",
+        "ts": 1789473600000,
+        "provIdx": 0
+      },
+      "indexValue": {
+        "v": 1.25884091,
+        "st": "closed",
+        "ts": 1789473600000,
+        "provIdx": 0
+      },
+      "chg1dBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "revisionIndicator": "",
+      "provIdx": 0
+    }
+  ],
+  "bills": {
+    "curveDate": "2026-09-11",
+    "compareDate": null,
+    "points": [
+      {
+        "curveId": "UST_BILL",
+        "tenor": "4WK",
+        "tenorDays": 28,
+        "quoteType": "discount_rate",
+        "value": {
+          "v": 3.95,
+          "st": "closed",
+          "provIdx": 4
+        },
+        "compareValue": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgBp": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "instrumentId": "<BILL>",
+        "cusip": "912797VE4",
+        "maturityDate": "2026-09-29",
+        "onTheRun": true,
+        "fieldId": null,
+        "provIdx": 4
+      },
+      {
+        "curveId": "UST_BILL",
+        "tenor": "4WK",
+        "tenorDays": 28,
+        "quoteType": "investment_yield",
+        "value": {
+          "v": 4.02,
+          "st": "closed",
+          "provIdx": 4
+        },
+        "compareValue": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgBp": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "instrumentId": "<BILL>",
+        "cusip": "912797VE4",
+        "maturityDate": "2026-09-29",
+        "onTheRun": true,
+        "fieldId": null,
+        "provIdx": 4
+      },
+      {
+        "curveId": "UST_BILL",
+        "tenor": "13WK",
+        "tenorDays": 91,
+        "quoteType": "discount_rate",
+        "value": {
+          "v": 3.9,
+          "st": "closed",
+          "provIdx": 4
+        },
+        "compareValue": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgBp": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": null,
+        "provIdx": 4
+      },
+      {
+        "curveId": "UST_BILL",
+        "tenor": "13WK",
+        "tenorDays": 91,
+        "quoteType": "investment_yield",
+        "value": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 4
+        },
+        "compareValue": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgBp": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": null,
+        "provIdx": 4
+      },
+      {
+        "curveId": "UST_BILL",
+        "tenor": "52WK",
+        "tenorDays": 364,
+        "quoteType": "discount_rate",
+        "value": {
+          "v": 3.7,
+          "st": "closed",
+          "provIdx": 4
+        },
+        "compareValue": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgBp": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": null,
+        "provIdx": 4
+      },
+      {
+        "curveId": "UST_BILL",
+        "tenor": "52WK",
+        "tenorDays": 364,
+        "quoteType": "investment_yield",
+        "value": {
+          "v": 3.85,
+          "st": "closed",
+          "provIdx": 4
+        },
+        "compareValue": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgBp": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": null,
+        "provIdx": 4
+      }
+    ]
+  },
+  "curve": {
+    "curveId": "UST_PAR",
+    "curveDate": "2026-09-11",
+    "compareDate": "2026-09-10",
+    "points": [
+      {
+        "curveId": "UST_PAR",
+        "tenor": "1M",
+        "tenorDays": 30,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 4.02,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 2,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_1M",
+        "provIdx": 2
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "1.5M",
+        "tenorDays": 45,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 4.01,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 3.99,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 2,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": null,
+        "provIdx": 2
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "3M",
+        "tenorDays": 91,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 3.99,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 3.97,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 2,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_3M",
+        "provIdx": 2
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "2Y",
+        "tenorDays": 730,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 3.76,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 3.74,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 2,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_2Y",
+        "provIdx": 2
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "5Y",
+        "tenorDays": 1826,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 3.81,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 3.78,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 3,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_5Y",
+        "provIdx": 2
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "10Y",
+        "tenorDays": 3653,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 4.07,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 4.03,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_10Y",
+        "provIdx": 2
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "30Y",
+        "tenorDays": 10958,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 4.66,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "compareValue": {
+          "v": 4.62,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "chgBp": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_30Y",
+        "provIdx": 2
+      }
+    ],
+    "stale": false
+  },
+  "spreads": [
+    {
+      "id": "2s10s",
+      "label": "2s10s",
+      "definition": "10Y par yield − 2Y par yield",
+      "value": {
+        "v": 31,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "compareValue": {
+        "v": 29,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "chgBp": {
+        "v": 2,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 2
+    },
+    {
+      "id": "3m10y",
+      "label": "3m10y",
+      "definition": "10Y par yield − 3M par yield",
+      "value": {
+        "v": 8,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "compareValue": {
+        "v": 6,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "chgBp": {
+        "v": 2,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 2
+    },
+    {
+      "id": "5s30s",
+      "label": "5s30s",
+      "definition": "30Y par yield − 5Y par yield",
+      "value": {
+        "v": 85,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "compareValue": {
+        "v": 84,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "chgBp": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 2
+    },
+    {
+      "id": "sofr_effr",
+      "label": "SOFR − EFFR",
+      "definition": "SOFR fixing − EFFR fixing",
+      "value": {
+        "v": -1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "compareValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 0
+    },
+    {
+      "id": "bgcr_sofr",
+      "label": "BGCR − SOFR",
+      "definition": "BGCR fixing − SOFR fixing",
+      "value": {
+        "v": -2,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "compareValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 0
+    },
+    {
+      "id": "tgcr_bgcr",
+      "label": "TGCR − BGCR",
+      "definition": "TGCR fixing − BGCR fixing",
+      "value": {
+        "v": 0,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "compareValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 0
+    },
+    {
+      "id": "effr_target_mid",
+      "label": "EFFR − target mid",
+      "definition": "EFFR fixing − FOMC target range midpoint",
+      "value": {
+        "v": 0.5,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "compareValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 0
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 0
+    },
+    {
+      "id": "bill13wk_sofr",
+      "label": "13WK bill − SOFR",
+      "definition": "13WK bill investment yield − SOFR fixing",
+      "value": {
+        "v": 38,
+        "st": "closed",
+        "provIdx": 4
+      },
+      "compareValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 4
+      },
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 4
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 4
+    },
+    {
+      "id": "par10y_cmt10y",
+      "label": "10Y par − 10Y CMT",
+      "definition": "10Y Treasury par yield − 10Y H.15 constant-maturity yield",
+      "value": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "compareValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": 2
+      },
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 2
+      },
+      "unit": "bp",
+      "fieldId": null,
+      "provIdx": 2
+    }
+  ],
+  "context": {
+    "fx": [
+      {
+        "instrumentId": "<EURUSD>",
+        "key": "EURUSD Curncy",
+        "name": "Euro-US Dollar",
+        "assetClass": "fx",
+        "marketSector": "Curncy",
+        "exchCode": "FX",
+        "gicsSector": null,
+        "subject": "q:<EURUSD>",
+        "cells": {
+          "PX_LAST": {
+            "v": 1.1543,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<EURUSD>",
+              "field": "PX_LAST"
+            }
+          },
+          "CHG_NET_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<EURUSD>",
+              "field": "CHG_NET_1D"
+            }
+          },
+          "CHG_PCT_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<EURUSD>",
+              "field": "CHG_PCT_1D"
+            }
+          }
+        }
+      },
+      {
+        "instrumentId": "<USDJPY>",
+        "key": "USDJPY Curncy",
+        "name": "US Dollar-Japanese Yen",
+        "assetClass": "fx",
+        "marketSector": "Curncy",
+        "exchCode": "FX",
+        "gicsSector": null,
+        "subject": "q:<USDJPY>",
+        "cells": {
+          "PX_LAST": {
+            "v": 155,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<USDJPY>",
+              "field": "PX_LAST"
+            }
+          },
+          "CHG_NET_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<USDJPY>",
+              "field": "CHG_NET_1D"
+            }
+          },
+          "CHG_PCT_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<USDJPY>",
+              "field": "CHG_PCT_1D"
+            }
+          }
+        }
+      },
+      {
+        "instrumentId": "<GBPUSD>",
+        "key": "GBPUSD Curncy",
+        "name": "British Pound-US Dollar",
+        "assetClass": "fx",
+        "marketSector": "Curncy",
+        "exchCode": "FX",
+        "gicsSector": null,
+        "subject": "q:<GBPUSD>",
+        "cells": {
+          "PX_LAST": {
+            "v": null,
+            "st": "blank",
+            "provIdx": -1,
+            "live": {
+              "subject": "q:<GBPUSD>",
+              "field": "PX_LAST"
+            }
+          },
+          "CHG_NET_1D": {
+            "v": null,
+            "st": "blank",
+            "provIdx": -1,
+            "live": {
+              "subject": "q:<GBPUSD>",
+              "field": "CHG_NET_1D"
+            }
+          },
+          "CHG_PCT_1D": {
+            "v": null,
+            "st": "blank",
+            "provIdx": -1,
+            "live": {
+              "subject": "q:<GBPUSD>",
+              "field": "CHG_PCT_1D"
+            }
+          }
+        }
+      }
+    ],
+    "indices": [
+      {
+        "instrumentId": "<SPX>",
+        "key": "SPX Index",
+        "name": "S&P 500",
+        "assetClass": "index",
+        "marketSector": "Index",
+        "exchCode": "INDEX",
+        "gicsSector": null,
+        "subject": "q:<SPX>",
+        "cells": {
+          "PX_LAST": {
+            "v": 7585.75,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 6,
+            "live": {
+              "subject": "q:<SPX>",
+              "field": "PX_LAST"
+            }
+          },
+          "CHG_NET_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 6,
+            "live": {
+              "subject": "q:<SPX>",
+              "field": "CHG_NET_1D"
+            }
+          },
+          "CHG_PCT_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 6,
+            "live": {
+              "subject": "q:<SPX>",
+              "field": "CHG_PCT_1D"
+            }
+          }
+        }
+      },
+      {
+        "instrumentId": "<VIX>",
+        "key": "VIX Index",
+        "name": "Cboe Volatility Index",
+        "assetClass": "index",
+        "marketSector": "Index",
+        "exchCode": "INDEX",
+        "gicsSector": null,
+        "subject": "q:<VIX>",
+        "cells": {
+          "PX_LAST": {
+            "v": 17.5,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 6,
+            "live": {
+              "subject": "q:<VIX>",
+              "field": "PX_LAST"
+            }
+          },
+          "CHG_NET_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 6,
+            "live": {
+              "subject": "q:<VIX>",
+              "field": "CHG_NET_1D"
+            }
+          },
+          "CHG_PCT_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 6,
+            "live": {
+              "subject": "q:<VIX>",
+              "field": "CHG_PCT_1D"
+            }
+          }
+        }
+      },
+      {
+        "instrumentId": "<TNX>",
+        "key": "TNX Index",
+        "name": "Cboe 10-Year Treasury Note Yield Index",
+        "assetClass": "index",
+        "marketSector": "Index",
+        "exchCode": "INDEX",
+        "gicsSector": null,
+        "subject": "q:<TNX>",
+        "cells": {
+          "PX_LAST": {
+            "v": 4.99,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<TNX>",
+              "field": "PX_LAST"
+            }
+          },
+          "CHG_NET_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<TNX>",
+              "field": "CHG_NET_1D"
+            }
+          },
+          "CHG_PCT_1D": {
+            "v": null,
+            "st": "live",
+            "ts": null,
+            "provIdx": 5,
+            "live": {
+              "subject": "q:<TNX>",
+              "field": "CHG_PCT_1D"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "notes": [
+    "NO_IORB_SOURCE",
+    "NO_DISCOUNT_WINDOW_SOURCE",
+    "NO_FED_FUNDS_FUTURES"
+  ]
+}

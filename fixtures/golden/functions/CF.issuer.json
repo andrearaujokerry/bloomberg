@@ -1,0 +1,395 @@
+{
+  "variant": "issuer",
+  "security": {
+    "instrumentId": "<AAPL>",
+    "key": "AAPL US Equity",
+    "name": "Apple Inc",
+    "assetClass": "equity"
+  },
+  "issuer": {
+    "issuerId": "<ISSUER>",
+    "name": "Apple Inc",
+    "cik": "0000320193",
+    "sic": "3571",
+    "sicDescription": "Electronic Computers",
+    "filerCategory": "Large accelerated filer",
+    "fiscalYearEnd": "0926",
+    "entityType": "operating",
+    "formerNames": [
+      {
+        "name": "Apple Computer Inc",
+        "from": "1977-01-03",
+        "to": "2007-01-09"
+      }
+    ],
+    "website": "https://www.apple.com"
+  },
+  "filter": {
+    "forms": [],
+    "group": "ALL",
+    "items": [],
+    "xbrlOnly": false,
+    "from": "2023-09-15",
+    "to": "2026-09-15"
+  },
+  "filings": [
+    {
+      "accessionNo": "0000320193-26-000061",
+      "form": "8-K",
+      "formGroup": "CURRENT",
+      "filedDate": "2026-09-01",
+      "acceptedAt": "2026-09-01T20:31:00.000Z",
+      "reportDate": "2026-09-01",
+      "items": [
+        "8.01"
+      ],
+      "itemLabels": [
+        "Other Events"
+      ],
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "8-K filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 251004,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000061/0000320193-26-000061-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000055",
+      "form": "10-Q",
+      "formGroup": "PERIODIC",
+      "filedDate": "2026-08-01",
+      "acceptedAt": "2026-08-01T20:31:00.000Z",
+      "reportDate": "2026-06-27",
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "10-Q filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 4821004,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000055/0000320193-26-000055-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000053",
+      "form": "8-K/A",
+      "formGroup": "CURRENT",
+      "filedDate": "2026-07-31",
+      "acceptedAt": "2026-07-31T20:05:00.000Z",
+      "reportDate": "2026-07-30",
+      "items": [
+        "2.02",
+        "9.01"
+      ],
+      "itemLabels": [
+        "Results of Operations and Financial Condition",
+        "Financial Statements and Exhibits"
+      ],
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "8-K/A filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 190221,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000053/0000320193-26-000053-index.htm",
+      "isAmendment": true,
+      "amends": "0000320193-26-000052",
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000052",
+      "form": "8-K",
+      "formGroup": "CURRENT",
+      "filedDate": "2026-07-30",
+      "acceptedAt": "2026-07-30T20:31:00.000Z",
+      "reportDate": "2026-07-30",
+      "items": [
+        "2.02",
+        "9.01"
+      ],
+      "itemLabels": [
+        "Results of Operations and Financial Condition",
+        "Financial Statements and Exhibits"
+      ],
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "8-K filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 188004,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000052/0000320193-26-000052-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000044",
+      "form": "4",
+      "formGroup": "OWNERSHIP",
+      "filedDate": "2026-06-03",
+      "acceptedAt": "2026-06-03T22:10:00.000Z",
+      "reportDate": null,
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "4 filing",
+      "isXbrl": false,
+      "isInlineXbrl": false,
+      "sizeBytes": 6112,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000044/0000320193-26-000044-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000031",
+      "form": "10-Q",
+      "formGroup": "PERIODIC",
+      "filedDate": "2026-05-02",
+      "acceptedAt": "2026-05-02T20:31:00.000Z",
+      "reportDate": "2026-03-28",
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "10-Q filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 4612990,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000031/0000320193-26-000031-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000021",
+      "form": "DEF 14A",
+      "formGroup": "PROXY",
+      "filedDate": "2026-03-09",
+      "acceptedAt": "2026-03-09T16:02:00.000Z",
+      "reportDate": null,
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "DEF 14A filing",
+      "isXbrl": false,
+      "isInlineXbrl": false,
+      "sizeBytes": 2002114,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000021/0000320193-26-000021-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-26-000010",
+      "form": "10-Q",
+      "formGroup": "PERIODIC",
+      "filedDate": "2026-02-01",
+      "acceptedAt": "2026-02-01T21:00:00.000Z",
+      "reportDate": "2025-12-27",
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "10-Q filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 4521331,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000010/0000320193-26-000010-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-25-000101",
+      "form": "10-K",
+      "formGroup": "PERIODIC",
+      "filedDate": "2025-10-31",
+      "acceptedAt": "2025-10-31T20:31:00.000Z",
+      "reportDate": "2025-09-27",
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "10-K filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 9820441,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000101/0000320193-25-000101-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-25-000071",
+      "form": "8-K",
+      "formGroup": "CURRENT",
+      "filedDate": "2025-08-01",
+      "acceptedAt": "2025-08-01T20:31:00.000Z",
+      "reportDate": "2025-07-31",
+      "items": [
+        "2.02",
+        "9.01"
+      ],
+      "itemLabels": [
+        "Results of Operations and Financial Condition",
+        "Financial Statements and Exhibits"
+      ],
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "8-K filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 181204,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000071/0000320193-25-000071-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    {
+      "accessionNo": "0000320193-25-000008",
+      "form": "6-K",
+      "formGroup": "CURRENT",
+      "filedDate": "2025-01-31",
+      "acceptedAt": "2025-01-31T21:15:00.000Z",
+      "reportDate": null,
+      "items": [
+        "9.99"
+      ],
+      "itemLabels": [
+        "Item 9.99"
+      ],
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "6-K filing",
+      "isXbrl": false,
+      "isInlineXbrl": false,
+      "sizeBytes": 44010,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000008/0000320193-25-000008-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    }
+  ],
+  "formCounts": [
+    {
+      "form": "10-Q",
+      "formGroup": "PERIODIC",
+      "count": 3,
+      "newest": "2026-08-01"
+    },
+    {
+      "form": "8-K",
+      "formGroup": "CURRENT",
+      "count": 3,
+      "newest": "2026-09-01"
+    },
+    {
+      "form": "10-K",
+      "formGroup": "PERIODIC",
+      "count": 1,
+      "newest": "2025-10-31"
+    },
+    {
+      "form": "4",
+      "formGroup": "OWNERSHIP",
+      "count": 1,
+      "newest": "2026-06-03"
+    },
+    {
+      "form": "6-K",
+      "formGroup": "CURRENT",
+      "count": 1,
+      "newest": "2025-01-31"
+    },
+    {
+      "form": "8-K/A",
+      "formGroup": "CURRENT",
+      "count": 1,
+      "newest": "2026-07-31"
+    },
+    {
+      "form": "DEF 14A",
+      "formGroup": "PROXY",
+      "count": 1,
+      "newest": "2026-03-09"
+    }
+  ],
+  "latest": {
+    "annual": {
+      "accessionNo": "0000320193-25-000101",
+      "form": "10-K",
+      "formGroup": "PERIODIC",
+      "filedDate": "2025-10-31",
+      "acceptedAt": "2025-10-31T20:31:00.000Z",
+      "reportDate": "2025-09-27",
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "10-K filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 9820441,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000101/0000320193-25-000101-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    "quarterly": {
+      "accessionNo": "0000320193-26-000055",
+      "form": "10-Q",
+      "formGroup": "PERIODIC",
+      "filedDate": "2026-08-01",
+      "acceptedAt": "2026-08-01T20:31:00.000Z",
+      "reportDate": "2026-06-27",
+      "items": null,
+      "itemLabels": null,
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "10-Q filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 4821004,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000055/0000320193-26-000055-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    "current8k": {
+      "accessionNo": "0000320193-26-000061",
+      "form": "8-K",
+      "formGroup": "CURRENT",
+      "filedDate": "2026-09-01",
+      "acceptedAt": "2026-09-01T20:31:00.000Z",
+      "reportDate": "2026-09-01",
+      "items": [
+        "8.01"
+      ],
+      "itemLabels": [
+        "Other Events"
+      ],
+      "primaryDoc": "primary.htm",
+      "primaryDocDesc": "8-K filing",
+      "isXbrl": true,
+      "isInlineXbrl": true,
+      "sizeBytes": 251004,
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000061/0000320193-26-000061-index.htm",
+      "isAmendment": false,
+      "amends": null,
+      "provIdx": 0
+    },
+    "fundHoldings": null
+  },
+  "coverage": {
+    "from": "2025-01-31",
+    "to": "2026-09-01",
+    "sourceId": "sec.submissions",
+    "recentOnly": true,
+    "countInStore": 11
+  },
+  "total": 11,
+  "knownAt": "<KNOWN_AT>",
+  "notes": [
+    "FILING_FULLTEXT_UNAVAILABLE",
+    "DOCUMENT_NOT_STORED_LINK_OUT",
+    "HISTORY_LIMITED_RECENT_FILE",
+    "ITEM_LABEL_UNKNOWN"
+  ]
+}

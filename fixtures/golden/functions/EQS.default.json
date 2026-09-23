@@ -1,0 +1,434 @@
+{
+  "variant": "default",
+  "universe": {
+    "kind": "INDEX",
+    "label": "<CODE> Index members (2026-09-15)",
+    "indexInstrumentId": "<INDEX>",
+    "watchlistId": null,
+    "asOfDate": "2026-09-15",
+    "provIdx": 0,
+    "size": 12
+  },
+  "filters": {
+    "sector": null,
+    "exchange": null,
+    "country": null
+  },
+  "criteria": [
+    {
+      "factor": "BS_TOT_ASSET",
+      "op": "gt",
+      "value": 50000000000,
+      "value2": null,
+      "label": "Total assets > 50000000000",
+      "source": "frames",
+      "passed": 9,
+      "noData": 2,
+      "unavailableReason": null
+    }
+  ],
+  "columns": [
+    {
+      "id": "CUR_MKT_CAP",
+      "label": "Market capitalisation",
+      "fieldId": "CUR_MKT_CAP",
+      "fmt": "ccy",
+      "decimals": 0
+    },
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "fieldId": "PX_LAST",
+      "fmt": "px"
+    },
+    {
+      "id": "BS_TOT_ASSET",
+      "label": "Total assets",
+      "fieldId": "BS_TOT_ASSET",
+      "fmt": "ccy",
+      "decimals": 0
+    },
+    {
+      "id": "NET_MARGIN",
+      "label": "Net margin",
+      "fieldId": "NET_MARGIN",
+      "fmt": "pct",
+      "decimals": 2
+    }
+  ],
+  "rows": [
+    {
+      "instrumentId": "<GGG>",
+      "key": "<KEY>",
+      "name": "Granite Bank",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Financials",
+      "subject": "q:<GGG>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<GGG>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 3900000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "rank": 1,
+      "gicsSubIndustry": "Financials — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<HHH>",
+      "key": "<KEY>",
+      "name": "Harbour Trust",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Financials",
+      "subject": "q:<HHH>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<HHH>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 720000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "rank": 2,
+      "gicsSubIndustry": "Financials — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<BBB>",
+      "key": "<KEY>",
+      "name": "Beta Devices",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "subject": "q:<BBB>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<BBB>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 560000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.35714285714285715,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 3,
+      "gicsSubIndustry": "Information Technology — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<AAA>",
+      "key": "<KEY>",
+      "name": "Alpha Systems",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "subject": "q:<AAA>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<AAA>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 360000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.24390243902439024,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 4,
+      "gicsSubIndustry": "Information Technology — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<DDD>",
+      "key": "<KEY>",
+      "name": "Delta Health",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Health Care",
+      "subject": "q:<DDD>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<DDD>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 250000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.125,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 5,
+      "gicsSubIndustry": "Health Care — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<III>",
+      "key": "<KEY>",
+      "name": "Ironwood Capital",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Financials",
+      "subject": "q:<III>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<III>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 180000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.13333333333333333,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 6,
+      "gicsSubIndustry": "Financials — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<EEE>",
+      "key": "<KEY>",
+      "name": "Everest Pharma",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Health Care",
+      "subject": "q:<EEE>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<EEE>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 110000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.18,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 7,
+      "gicsSubIndustry": "Health Care — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<CCC>",
+      "key": "<KEY>",
+      "name": "Cobalt Software",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "subject": "q:<CCC>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<CCC>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 90000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.1,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 8,
+      "gicsSubIndustry": "Information Technology — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    },
+    {
+      "instrumentId": "<JJJ>",
+      "key": "<KEY>",
+      "name": "Juniper Insurance",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Financials",
+      "subject": "q:<JJJ>",
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<JJJ>",
+            "field": "PX_LAST"
+          }
+        },
+        "BS_TOT_ASSET": {
+          "v": 60000000000,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 0.05,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "rank": 9,
+      "gicsSubIndustry": "Financials — sub",
+      "issuerId": "<ISSUER>",
+      "cik": "<CIK>"
+    }
+  ],
+  "counts": {
+    "universe": 12,
+    "afterFilters": 12,
+    "afterCriteria": 9,
+    "returned": 9,
+    "excludedNoData": 2
+  },
+  "knownAt": "<KNOWN_AT>",
+  "frame": "CY2024Q4I",
+  "savedSearch": null,
+  "notes": [
+    "FUNDAMENTALS_NOT_INGESTED"
+  ]
+}

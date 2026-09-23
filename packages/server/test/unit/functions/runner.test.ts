@@ -1475,7 +1475,49 @@ describe('the payload and its meta must agree', () => {
     expect(String(err.message)).toContain('value');
   });
 
-  it('accepts a null a per-field DENIAL explains (§12.3 puts that reason in meta.entitlement)', async () => {
+  it('refuses a null that only an UNRELATED entry explains — rule 6 is per cell', async () => {
+    const h = harness();
+    h.setModule('FIX', {
+      resolve: (ctx: ResolveContext) => {
+        ctx.prov.add({
+          sourceId: SOURCE,
+          provenanceId: 901,
+          capturedAt: new Date(TEST_NOW),
+          sourceTs: null,
+          st: 'live',
+          tier: 'delayed',
+        });
+        // An entry about a different field. It used to license every null in the payload, because
+        // the guard asked only whether `meta.unavailable` was non-empty.
+        ctx.unavailable.add({ field: 'other', reason: 'NO_SOURCE', detail: 'unrelated' });
+        return Promise.resolve({ variant: 'equity', value: null });
+      },
+    } as AnyModule);
+    const err = await expectError(run(h, 'FIX', { security: SECURITY }), 'INTERNAL', 500);
+    expect(String(err.message)).toContain('value');
+  });
+
+  it('matches a dictionary field id to the payload key it names (PX_LAST ↔ pxLast)', async () => {
+    const h = harness();
+    h.setModule('FIX', {
+      resolve: (ctx: ResolveContext) => {
+        ctx.prov.add({
+          sourceId: SOURCE,
+          provenanceId: 901,
+          capturedAt: new Date(TEST_NOW),
+          sourceTs: null,
+          st: 'live',
+          tier: 'delayed',
+        });
+        ctx.unavailable.add({ field: 'PX_LAST', reason: 'NO_SOURCE', detail: 'no price source' });
+        return Promise.resolve({ variant: 'equity', pxLast: null });
+      },
+    } as AnyModule);
+    const out = await run(h, 'FIX', { security: SECURITY });
+    expect((out.data as { pxLast: null }).pxLast).toBeNull();
+  });
+
+  it('accepts a null the per-field DENIAL of THAT field explains (§12.3, meta.entitlement)', async () => {
     const h = harness();
     h.entitlements.policy = (req) => ({
       effectiveTier: 'delayed',
@@ -1497,11 +1539,14 @@ describe('the payload and its meta must agree', () => {
           st: 'live',
           tier: 'delayed',
         });
-        return Promise.resolve({ variant: 'equity', value: null });
+        // `fieldIds(equity)` is `[PX_LAST, PX_VOLUME]` and the policy above denies the second, so
+        // the denied field is the one the payload leaves null — which is what rule 6 asks for. A
+        // denial of some *other* field explains nothing about this cell.
+        return Promise.resolve({ variant: 'equity', PX_VOLUME: null });
       },
     } as AnyModule);
     const out = await run(h, 'FIX', { security: SECURITY });
-    expect((out.data as { value: null }).value).toBeNull();
+    expect((out.data as { PX_VOLUME: null }).PX_VOLUME).toBeNull();
     expect(out.meta.entitlement.some((e) => e.decision === 'deny')).toBe(true);
   });
 

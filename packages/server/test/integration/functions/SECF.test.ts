@@ -37,7 +37,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, idToken } from './golden.js';
 
 import { FunctionRegistry } from '@terminal/core';
 import { SECF } from '@terminal/core/functions/manifests/SECF';
@@ -888,17 +888,17 @@ describe('SECF — filters, facets, paging and the Yahoo fallback', () => {
  * is left is the shape, the ordering, the scores, the facet counts and the provenance indices —
  * which is what the golden is for.
  */
+/**
+ * The keys of a SECF payload that hold a sequence-allocated id (§SECF, `ResolvedRef`).
+ * `primaryListingId` is one too and is flattened to `<listing>` by its own branch below;
+ * `mdLineIds` is empty in every hit this fixture seeds.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['instrumentId']);
+
 function normalise(payload: SecfPayload): unknown {
   const ids = new Map<number, string>();
   for (const seeded of env.byTicker.values()) {
     ids.set(seeded.instrumentId, `<${seeded.ticker.replace(tag(), 'T:')}>`);
-  }
-  // `primaryListingId` is a bare sequence value with no fixture control over it, so the golden
-  // records *that there is one*, not which number this run drew.
-  const listingIds = new Set<number>();
-  for (const hit of payload.hits) {
-    const id = hit.instrument.primaryListingId;
-    if (typeof id === 'number') listingIds.add(id);
   }
   const strings: [string, string][] = [
     [BRAND, '<BRAND>'],
@@ -908,19 +908,23 @@ function normalise(payload: SecfPayload): unknown {
     [env.figi, '<FIGI>'],
   ];
   return JSON.parse(
-    JSON.stringify(payload, (_key: string, value: unknown) => {
-      if (typeof value === 'number') {
-        if (ids.has(value)) return ids.get(value);
-        if (listingIds.has(value)) return '<listing>';
-        return value;
-      }
+    JSON.stringify(payload, (key: string, value: unknown) => {
+      // `primaryListingId` is a bare sequence value with no fixture control over it, so the golden
+      // records *that there is one*, not which number this run drew.
+      if (key === 'primaryListingId' && typeof value === 'number') return '<listing>';
       if (typeof value === 'string') {
+        // The brand, the per-run ticker tag and the identifiers minted with them are fixture
+        // strings and are replaced wherever they appear. The ids are **not**: substituting a bare
+        // digit run anywhere in any string is what rewrote a CUSIP's check digit and a
+        // timestamp's minute field, and no SECF string carries an id in the first place — every
+        // one of them lands under `instrumentId` or `primaryListingId`.
         let out = value;
         for (const [from, to] of strings) out = out.split(from).join(to);
-        for (const [id, token] of ids) out = out.split(String(id)).join(token);
         return out;
       }
-      return value;
+      // A search result is scores, facet counts, ranks and provenance indices. An id is an id
+      // because of the key it sits under, never because a score or a count equals one.
+      return idToken(key, value, ID_KEYS, ids);
     }),
   );
 }

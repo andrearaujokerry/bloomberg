@@ -128,30 +128,46 @@ TARGET_TO TENORS TICK_DIR UNDL_PX VALUE VWAP
   .trim()
   .split(/\s+/);
 
-/** Every id the design names, from any of the four sources. */
+/**
+ * WP-10's portfolio fields (FUNCTIONS_TIER2 L1417-1428, `field_class 'portfolio'`). CONTRACTS §4.3
+ * declares none of this class — portfolio analytics arrive with the `PORT` function, which is
+ * the first thing in the system that computes them — so they are named here rather than
+ * harvested. Every one is sourced from `internal.user`: the firm's own positions never leave the
+ * tenant (PORT-07).
+ */
+const WP10_PORTFOLIO_FIELD_IDS: readonly string[] = `
+PORT_ACTIVE_WEIGHT PORT_BETA PORT_CONTRIB_TE PORT_MV PORT_PNL_1D PORT_UNREAL_PNL PORT_VAR
+PORT_WEIGHT
+`
+  .trim()
+  .split(/\s+/);
+
+/** Every id the design names, from any of the five sources. */
 const DESIGNED_FIELD_IDS: readonly string[] = [
   ...CONTRACTS_FIELD_IDS,
   ...WP02_ANALYTIC_FIELD_IDS,
   ...WP03_REFERENCE_FIELD_IDS,
   ...WP06_SUBJECT_FIELD_IDS,
+  ...WP10_PORTFOLIO_FIELD_IDS,
 ];
 
 /**
- * The dictionary's total size: CONTRACTS §4.3's 94, WP-02's 68 analytics, WP-03's 95 reference and
- * WP-06's 42 subject fields.
+ * The dictionary's total size: CONTRACTS §4.3's 94, WP-02's 68 analytics, WP-03's 95 reference,
+ * WP-06's 42 subject and WP-10's 8 portfolio fields.
  */
-const FIELD_COUNT = 299;
+const FIELD_COUNT = 307;
 
 // ---------------------------------------------------------------------------------------------
 // 1. Every field id in CONTRACTS §4.3 resolves
 // ---------------------------------------------------------------------------------------------
 
 describe('field dictionary — CONTRACTS §4.3 coverage', () => {
-  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics, 95 in WP-03 reference and 42 in WP-06 subjects', () => {
+  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics, 95 in WP-03 reference, 42 in WP-06 subjects and 8 in WP-10 portfolio', () => {
     expect(CONTRACTS_FIELD_IDS).toHaveLength(94);
     expect(WP02_ANALYTIC_FIELD_IDS).toHaveLength(68);
     expect(WP03_REFERENCE_FIELD_IDS).toHaveLength(95);
     expect(WP06_SUBJECT_FIELD_IDS).toHaveLength(42);
+    expect(WP10_PORTFOLIO_FIELD_IDS).toHaveLength(8);
     expect(new Set(DESIGNED_FIELD_IDS).size).toBe(FIELD_COUNT);
   });
 

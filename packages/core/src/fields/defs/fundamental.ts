@@ -12,7 +12,7 @@
 // They are separate ids because they are separate contracts: the first is a dictionary field with a
 // licence row, the second is a row key inside a statement.
 
-import type { FieldDef } from '../../types/fields.js';
+import type { FieldDef, FieldId } from '../../types/fields.js';
 
 type FieldSource = FieldDef['sources'][number];
 
@@ -289,3 +289,125 @@ export const fundamentalFields: readonly FieldDef[] = [
     since: SINCE,
   },
 ];
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// The `fin_statements` standard-item catalogue (DATA-06, PROVIDERS §7.3.1)
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+//
+// `xbrl_concept_map.standard_item` is a row key inside a statement, not a dictionary field: it has
+// no licence row, no `assetClasses` and no `example`, and only nine of the twenty-five happen to
+// have a dictionary field that means the same thing. What every one of them *does* have is a
+// column in `fin_statements`, a numeric scale that column rounds to, the unit its facts are read
+// in, and whether it is an instant (balance-sheet) or a duration (income/cash-flow) quantity.
+//
+// That is the table below. It lives here, beside the fundamental field defs, because it is the
+// other half of the same vocabulary: `ingest/jobs/secCompanyFacts.ts` writes `fin_statements`
+// through it and `functions/FA` reads the row back through it, so a scale or a unit is spelled
+// once. It adds **no `FieldDef`** — the dictionary is a closed set of designed ids
+// (`core/test/fields/dictionary.test.ts`) and a statement line is not one of them.
+//
+// Two of the twenty-five are computed rather than tagged (§7.3.1): `GROSS_PROFIT` falls back to
+// `REVENUE − COGS` and `FCF` is always `CFO − |CAPEX|`. Their `computed` string is what
+// `fin_statements.as_reported` records as the concept, so FA's "as reported" toggle can say that
+// the issuer never tagged the line rather than showing a number with no filing behind it.
+
+/** Which statement a standard item belongs to. Equals `fin_statements`'s `statement` CHECK. */
+export type StatementKind = 'IS' | 'BS' | 'CF';
+
+/** The unit an item's facts are read in — the `units` key of `facts.<tax>.<concept>.units`. */
+export type StatementUnit = 'USD' | 'USD/shares' | 'shares';
+
+/** One row of the standard-item catalogue. */
+export interface StatementLineDef {
+  /** `xbrl_concept_map.standard_item`. */
+  standardItem: string;
+  /** The `fin_statements` column, camel-cased exactly as the drizzle schema spells it. */
+  column: string;
+  statement: StatementKind;
+  /** Column header. */
+  label: string;
+  /** The numeric scale of the column: `numeric(28,2)` ⇒ 2, `numeric(20,0)` ⇒ 0. */
+  scale: number;
+  unit: StatementUnit;
+  /**
+   * `true` for a balance-sheet quantity, which is read from an **instant** fact (`period_start`
+   * NULL) at the period end rather than from the period's duration.
+   */
+  instant: boolean;
+  /** The dictionary field with the same meaning, where one exists. */
+  fieldId?: FieldId;
+  /** Set when the item is derived rather than tagged; the string `as_reported` records. */
+  computed?: string;
+}
+
+const line = (
+  standardItem: string,
+  column: string,
+  statement: StatementKind,
+  label: string,
+  scale: number,
+  unit: StatementUnit,
+  instant: boolean,
+  extra: { fieldId?: FieldId; computed?: string } = {},
+): StatementLineDef => {
+  const def: StatementLineDef = { standardItem, column, statement, label, scale, unit, instant };
+  // `exactOptionalPropertyTypes`: an explicit `undefined` is not the same as an absent key.
+  if (extra.fieldId !== undefined) def.fieldId = extra.fieldId;
+  if (extra.computed !== undefined) def.computed = extra.computed;
+  return def;
+};
+
+/** The twenty-five standard items, in statement order: IS, then BS, then CF. */
+export const statementLines: readonly StatementLineDef[] = [
+  line('REVENUE', 'revenue', 'IS', 'Revenue', 2, 'USD', false, { fieldId: 'SALES_REV_TURN' }),
+  line('COGS', 'cogs', 'IS', 'Cost of revenue', 2, 'USD', false),
+  line('GROSS_PROFIT', 'grossProfit', 'IS', 'Gross profit', 2, 'USD', false, {
+    computed: 'computed:REVENUE-COGS',
+  }),
+  line('RND', 'rnd', 'IS', 'Research and development', 2, 'USD', false),
+  line('OPEX', 'opex', 'IS', 'Operating expenses', 2, 'USD', false),
+  line('OPER_INC', 'operInc', 'IS', 'Operating income', 2, 'USD', false, {
+    fieldId: 'IS_OPER_INC',
+  }),
+  line('INT_EXP', 'intExp', 'IS', 'Interest expense', 2, 'USD', false),
+  line('PRETAX_INC', 'pretaxInc', 'IS', 'Pre-tax income', 2, 'USD', false),
+  line('TAX', 'tax', 'IS', 'Income tax expense', 2, 'USD', false),
+  line('NET_INC', 'netInc', 'IS', 'Net income', 2, 'USD', false, { fieldId: 'NET_INC' }),
+  line('EPS_BASIC', 'epsBasic', 'IS', 'Basic EPS', 4, 'USD/shares', false, {
+    fieldId: 'EPS_BASIC',
+  }),
+  line('EPS_DIL', 'epsDil', 'IS', 'Diluted EPS', 4, 'USD/shares', false, { fieldId: 'EPS_DIL' }),
+  line('SHARES_DIL', 'sharesDil', 'IS', 'Diluted shares', 0, 'shares', false),
+  line('TOT_ASSETS', 'totAssets', 'BS', 'Total assets', 2, 'USD', true, { fieldId: 'TOT_ASSETS' }),
+  line('TOT_LIAB', 'totLiab', 'BS', 'Total liabilities', 2, 'USD', true, { fieldId: 'TOT_LIAB' }),
+  line('EQUITY', 'equity', 'BS', "Shareholders' equity", 2, 'USD', true),
+  line('CASH', 'cash', 'BS', 'Cash and equivalents', 2, 'USD', true),
+  line('LT_DEBT', 'ltDebt', 'BS', 'Long-term debt', 2, 'USD', true),
+  line('CFO', 'cfo', 'CF', 'Cash from operations', 2, 'USD', false, {
+    fieldId: 'CF_CASH_FROM_OPER',
+  }),
+  line('CAPEX', 'capex', 'CF', 'Capital expenditure', 2, 'USD', false, {
+    fieldId: 'CF_CAP_EXPEND',
+  }),
+  line('FCF', 'fcf', 'CF', 'Free cash flow', 2, 'USD', false, {
+    computed: 'computed:CFO-ABS(CAPEX)',
+  }),
+  line('DIV_PAID', 'divPaid', 'CF', 'Dividends paid', 2, 'USD', false),
+  line('BUYBACK', 'buyback', 'CF', 'Share repurchases', 2, 'USD', false),
+  line('DPS', 'dps', 'CF', 'Dividends per share declared', 6, 'USD/shares', false),
+  line('DDA', 'dda', 'CF', 'Depreciation and amortisation', 2, 'USD', false),
+];
+
+const statementLineByItem: ReadonlyMap<string, StatementLineDef> = new Map(
+  statementLines.map((def) => [def.standardItem, def]),
+);
+
+/** `undefined` for an item the catalogue does not know — a caller decides whether that is a bug. */
+export function statementLine(standardItem: string): StatementLineDef | undefined {
+  return statementLineByItem.get(standardItem);
+}
+
+/** The catalogue restricted to one statement, in catalogue order. */
+export function statementLinesOf(statement: StatementKind): readonly StatementLineDef[] {
+  return statementLines.filter((def) => def.statement === statement);
+}

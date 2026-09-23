@@ -23,7 +23,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import { FunctionRegistry } from '@terminal/core';
 import { TOP } from '@terminal/core/functions/manifests/TOP';
@@ -359,6 +359,13 @@ async function runTop(params: Record<string, unknown> = {}, which = 'main'): Pro
 }
 
 /** Sequence values are tokenised; everything else in the golden is asserted literally. */
+/**
+ * The keys of a TOP payload that hold a sequence-allocated id (§TOP, `functions/shared/news.ts`).
+ * `resolved.id` is `string | null` — a scope name such as `'FED'` — and `sourceId` (`'sec.atom'`)
+ * is a name, so neither is ever a sequence value.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['newsId', 'entityId']);
+
 function normalise(payload: TopPayload): unknown {
   const tokens = new Map<number, string>([[env.aapl, '<AAPL>']]);
   let n = 0;
@@ -366,14 +373,16 @@ function normalise(payload: TopPayload): unknown {
   let k = 0;
   for (const id of env.topicIds.values()) tokens.set(id, `<TOPIC${String((k += 1))}>`);
   return JSON.parse(
-    JSON.stringify(payload, (_key, value: unknown) => {
-      if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
+    JSON.stringify(payload, (key, value: unknown) => {
       // Subjects only (`n:topic:12`), through `subjectToken`. Substituting a bare digit run
       // anywhere in any string let the ids the sequence happened to hand out decide what the golden
       // said: inside an EDGAR accession path, and — a boundary rule does not help — inside the
       // colon-separated fields of a timestamp.
       if (typeof value === 'string') return subjectToken(value, tokens);
-      return value;
+      // A number has the same failure and needs the same answer: the key it sits under, not the
+      // value it holds. TOP publishes `rank` and its four `rankParts` precisely so the order can
+      // be checked against the numbers — numbers the old value-based rule was free to rename.
+      return idToken(key, value, ID_KEYS, tokens);
     }),
   );
 }

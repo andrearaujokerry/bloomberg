@@ -1,0 +1,202 @@
+{
+  "variant": "equity",
+  "issuer": {
+    "issuerId": "<ISSUER>",
+    "name": "Apple Inc",
+    "cik": "0000320193",
+    "fiscalYearEnd": "0926"
+  },
+  "metric": "EPS_DIL",
+  "unit": "per_share",
+  "history": [
+    {
+      "periodEnd": "2026-06-27",
+      "fiscalYear": 2026,
+      "fiscalPeriod": "Q3",
+      "actual": 1.51,
+      "yoyPct": 0.06338028169014098,
+      "qoqPct": -0.0736196319018404,
+      "filedAt": "2026-08-01",
+      "accessionNo": "0000320193-26-000055",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000055/0000320193-26-000055-index.htm",
+      "reportTiming": "post",
+      "reportedAt": "2026-07-30T20:31:00.000Z",
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2026-03-28",
+      "fiscalYear": 2026,
+      "fiscalPeriod": "Q2",
+      "actual": 1.63,
+      "yoyPct": -0.012121212121212088,
+      "qoqPct": -0.3319672131147541,
+      "filedAt": "2026-05-02",
+      "accessionNo": "0000320193-26-000031",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000031/0000320193-26-000031-index.htm",
+      "reportTiming": "pre",
+      "reportedAt": "2026-04-30T12:05:00.000Z",
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2025-12-27",
+      "fiscalYear": 2026,
+      "fiscalPeriod": "Q1",
+      "actual": 2.44,
+      "yoyPct": 0.016666666666666607,
+      "qoqPct": 0.967741935483871,
+      "filedAt": "2026-02-01",
+      "accessionNo": "0000320193-26-000010",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000010/0000320193-26-000010-index.htm",
+      "reportTiming": "unknown",
+      "reportedAt": null,
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2025-09-27",
+      "fiscalYear": 2025,
+      "fiscalPeriod": "Q4",
+      "actual": 1.24,
+      "yoyPct": 0.27835051546391765,
+      "qoqPct": -0.12676056338028163,
+      "filedAt": "2025-10-31",
+      "accessionNo": "0000320193-25-000101",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000101/0000320193-25-000101-index.htm",
+      "reportTiming": "unknown",
+      "reportedAt": null,
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2025-06-28",
+      "fiscalYear": 2025,
+      "fiscalPeriod": "Q3",
+      "actual": 1.42,
+      "yoyPct": null,
+      "qoqPct": -0.1393939393939394,
+      "filedAt": "2025-08-01",
+      "accessionNo": "0000320193-25-000071",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000071/0000320193-25-000071-index.htm",
+      "reportTiming": "unknown",
+      "reportedAt": null,
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2025-03-29",
+      "fiscalYear": 2025,
+      "fiscalPeriod": "Q2",
+      "actual": 1.65,
+      "yoyPct": null,
+      "qoqPct": -0.3125,
+      "filedAt": "2025-05-02",
+      "accessionNo": "0000320193-25-000042",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000042/0000320193-25-000042-index.htm",
+      "reportTiming": "unknown",
+      "reportedAt": null,
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2024-12-28",
+      "fiscalYear": 2025,
+      "fiscalPeriod": "Q1",
+      "actual": 2.4,
+      "yoyPct": null,
+      "qoqPct": 1.4742268041237114,
+      "filedAt": "2025-01-31",
+      "accessionNo": "0000320193-25-000008",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000008/0000320193-25-000008-index.htm",
+      "reportTiming": "unknown",
+      "reportedAt": null,
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2024-09-28",
+      "fiscalYear": 2024,
+      "fiscalPeriod": "Q4",
+      "actual": 0.97,
+      "yoyPct": null,
+      "qoqPct": null,
+      "filedAt": "2024-11-01",
+      "accessionNo": "0000320193-24-000123",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019324000123/0000320193-24-000123-index.htm",
+      "reportTiming": "unknown",
+      "reportedAt": null,
+      "estimate": null,
+      "surprisePct": null,
+      "provIdx": 0
+    }
+  ],
+  "ttm": {
+    "value": 6.82,
+    "periodEnd": "2026-06-27"
+  },
+  "next": {
+    "expectedDate": "2026-10-31",
+    "window": [
+      "2026-10-24",
+      "2026-11-07"
+    ],
+    "method": "cadence",
+    "basis": "median gap of last 8 10-Q/10-K filings = 91 d",
+    "confidence": 0.6
+  },
+  "consensus": {
+    "value": null,
+    "reason": "NO_ESTIMATES_SOURCE"
+  },
+  "sparkline": [
+    {
+      "t": 1727481600000,
+      "v": 0.97
+    },
+    {
+      "t": 1735344000000,
+      "v": 2.4
+    },
+    {
+      "t": 1743206400000,
+      "v": 1.65
+    },
+    {
+      "t": 1751068800000,
+      "v": 1.42
+    },
+    {
+      "t": 1758931200000,
+      "v": 1.24
+    },
+    {
+      "t": 1766793600000,
+      "v": 2.44
+    },
+    {
+      "t": 1774656000000,
+      "v": 1.63
+    },
+    {
+      "t": 1782518400000,
+      "v": 1.51
+    }
+  ],
+  "knownAt": "<KNOWN_AT>"
+}

@@ -1,0 +1,913 @@
+{
+  "variant": "default",
+  "tenor": "10Y",
+  "chgWindow": "1D",
+  "spreadTo": "US",
+  "us": {
+    "curveDate": "2026-09-11",
+    "points": [
+      {
+        "curveId": "UST_PAR",
+        "tenor": "2Y",
+        "tenorDays": 730,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 3.76,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "compareValue": {
+          "v": 3.74,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgBp": {
+          "v": 2,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_2Y",
+        "provIdx": 0
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "10Y",
+        "tenorDays": 3653,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 4.07,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "compareValue": {
+          "v": 4.03,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgBp": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_10Y",
+        "provIdx": 0
+      },
+      {
+        "curveId": "UST_PAR",
+        "tenor": "30Y",
+        "tenorDays": 10958,
+        "quoteType": "par_yield",
+        "value": {
+          "v": 4.66,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "compareValue": {
+          "v": 4.62,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgBp": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "instrumentId": null,
+        "cusip": null,
+        "maturityDate": null,
+        "onTheRun": false,
+        "fieldId": "CRV_30Y",
+        "provIdx": 0
+      }
+    ],
+    "intraday": {
+      "instrumentId": "<TNX>",
+      "key": "TNX Index",
+      "name": "Cboe 10-Year Treasury Note Yield Index",
+      "assetClass": "index",
+      "marketSector": "Index",
+      "exchCode": "INDEX",
+      "gicsSector": null,
+      "subject": "q:<TNX>",
+      "cells": {
+        "PX_LAST": {
+          "v": 4.99,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<TNX>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<TNX>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<TNX>",
+            "field": "CHG_PCT_1D"
+          }
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "iso": "US",
+      "country": "United States",
+      "region": "AMERICAS",
+      "ccy": "USD",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": "treasury.yieldcurve",
+      "frequency": "D",
+      "yield": {
+        "v": 4.07,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "asOfDate": "2026-09-11",
+      "chgBp": {
+        "v": 4,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "spreadBp": {
+        "v": 0,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "curve": {
+        "t2y": {
+          "v": 3.76,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "t10y": {
+          "v": 4.07,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "t30y": {
+          "v": 4.66,
+          "st": "closed",
+          "provIdx": 0
+        }
+      },
+      "subject": "q:<TNX>",
+      "lagDays": 4,
+      "provIdx": 0,
+      "unavailableReason": null
+    },
+    {
+      "iso": "CA",
+      "country": "Canada",
+      "region": "AMERICAS",
+      "ccy": "CAD",
+      "tenor": "10Y",
+      "seriesCode": "<CA>",
+      "sourceId": "fred.csv",
+      "frequency": "M",
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": "e:<CA>",
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_RECORDED_FIXTURE"
+    },
+    {
+      "iso": "MX",
+      "country": "Mexico",
+      "region": "AMERICAS",
+      "ccy": "MXN",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "BR",
+      "country": "Brazil",
+      "region": "AMERICAS",
+      "ccy": "BRL",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "DE",
+      "country": "Germany",
+      "region": "EMEA",
+      "ccy": "EUR",
+      "tenor": "10Y",
+      "seriesCode": "<DE>",
+      "sourceId": "fred.csv",
+      "frequency": "M",
+      "yield": {
+        "v": 2.68,
+        "st": "closed",
+        "ts": 1785542400000,
+        "provIdx": 2
+      },
+      "asOfDate": "2026-08-01",
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 2
+      },
+      "spreadBp": {
+        "v": -139,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": "e:<DE>",
+      "lagDays": 45,
+      "provIdx": 2,
+      "unavailableReason": null
+    },
+    {
+      "iso": "FR",
+      "country": "France",
+      "region": "EMEA",
+      "ccy": "EUR",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "IT",
+      "country": "Italy",
+      "region": "EMEA",
+      "ccy": "EUR",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "ES",
+      "country": "Spain",
+      "region": "EMEA",
+      "ccy": "EUR",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "GB",
+      "country": "United Kingdom",
+      "region": "EMEA",
+      "ccy": "GBP",
+      "tenor": "10Y",
+      "seriesCode": "<GB>",
+      "sourceId": "fred.csv",
+      "frequency": "M",
+      "yield": {
+        "v": 4.31,
+        "st": "closed",
+        "ts": 1785542400000,
+        "provIdx": 2
+      },
+      "asOfDate": "2026-08-01",
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 2
+      },
+      "spreadBp": {
+        "v": 24,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": "e:<GB>",
+      "lagDays": 45,
+      "provIdx": 2,
+      "unavailableReason": null
+    },
+    {
+      "iso": "CH",
+      "country": "Switzerland",
+      "region": "EMEA",
+      "ccy": "CHF",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "SE",
+      "country": "Sweden",
+      "region": "EMEA",
+      "ccy": "SEK",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "NO",
+      "country": "Norway",
+      "region": "EMEA",
+      "ccy": "NOK",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "JP",
+      "country": "Japan",
+      "region": "APAC",
+      "ccy": "JPY",
+      "tenor": "10Y",
+      "seriesCode": "<JP>",
+      "sourceId": "fred.csv",
+      "frequency": "M",
+      "yield": {
+        "v": 1.42,
+        "st": "closed",
+        "ts": 1785542400000,
+        "provIdx": 2
+      },
+      "asOfDate": "2026-08-01",
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": 2
+      },
+      "spreadBp": {
+        "v": -265,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": "e:<JP>",
+      "lagDays": 45,
+      "provIdx": 2,
+      "unavailableReason": null
+    },
+    {
+      "iso": "AU",
+      "country": "Australia",
+      "region": "APAC",
+      "ccy": "AUD",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "NZ",
+      "country": "New Zealand",
+      "region": "APAC",
+      "ccy": "NZD",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    },
+    {
+      "iso": "KR",
+      "country": "Korea",
+      "region": "APAC",
+      "ccy": "KRW",
+      "tenor": "10Y",
+      "seriesCode": null,
+      "sourceId": null,
+      "frequency": null,
+      "yield": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "asOfDate": null,
+      "chgBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "spreadBp": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "curve": {
+        "t2y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t10y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "t30y": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "subject": null,
+      "lagDays": null,
+      "provIdx": -1,
+      "unavailableReason": "NO_SERIES_SEEDED"
+    }
+  ],
+  "regions": [
+    {
+      "region": "AMERICAS",
+      "count": 4,
+      "withData": 1
+    },
+    {
+      "region": "EMEA",
+      "count": 8,
+      "withData": 2
+    },
+    {
+      "region": "APAC",
+      "count": 4,
+      "withData": 1
+    }
+  ],
+  "notes": [
+    "OECD_MONTHLY_LAG",
+    "NO_NON_US_INTRADAY",
+    "NO_RECORDED_FIXTURE"
+  ]
+}

@@ -1,0 +1,3960 @@
+{
+  "variant": "default",
+  "quote": "live",
+  "rateDate": null,
+  "ccys": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "CHF",
+    "CAD",
+    "AUD",
+    "NZD",
+    "SEK",
+    "NOK"
+  ],
+  "matrix": [
+    [
+      {
+        "base": "USD",
+        "quote": "USD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "USD",
+        "quote": "EUR",
+        "kind": "inverse",
+        "rate": {
+          "v": 0.8663259118080221,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": "<EURUSD>",
+        "key": "EURUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / EURUSD",
+        "provIdx": 1,
+        "legProvIdx": [
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "GBP",
+        "kind": "inverse",
+        "rate": {
+          "v": 0.7417297136923304,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": "<GBPUSD>",
+        "key": "GBPUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / GBPUSD",
+        "provIdx": 2,
+        "legProvIdx": [
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "JPY",
+        "kind": "direct",
+        "rate": {
+          "v": 155,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 2,
+        "instrumentId": "<USDJPY>",
+        "key": "USDJPY Curncy",
+        "subject": "q:<USDJPY>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 6,
+        "legProvIdx": [
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "CHF",
+        "kind": "direct",
+        "rate": {
+          "v": 0.8182,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<USDCHF>",
+        "key": "USDCHF Curncy",
+        "subject": "q:<USDCHF>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 5,
+        "legProvIdx": [
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "CAD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.351,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<USDCAD>",
+        "key": "USDCAD Curncy",
+        "subject": "q:<USDCAD>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 4,
+        "legProvIdx": [
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "AUD",
+        "kind": "inverse",
+        "rate": {
+          "v": 1.4878738282993602,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<AUDUSD>",
+        "key": "AUDUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / AUDUSD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "NZD",
+        "kind": "inverse",
+        "rate": {
+          "v": 1.6633399866932803,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": "<NZDUSD>",
+        "key": "NZDUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / NZDUSD",
+        "provIdx": 3,
+        "legProvIdx": [
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "SEK",
+        "kind": "direct",
+        "rate": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<USDSEK>",
+        "key": "USDSEK Curncy",
+        "subject": "q:<USDSEK>",
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "NOK",
+        "kind": "direct",
+        "rate": {
+          "v": 10.15,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<USDNOK>",
+        "key": "USDNOK Curncy",
+        "subject": "q:<USDNOK>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 7,
+        "legProvIdx": [
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "EUR",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.1543,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<EURUSD>",
+        "key": "EURUSD Curncy",
+        "subject": "q:<EURUSD>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 1,
+        "legProvIdx": [
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "EUR",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "EUR",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.8561786085150571,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × 1 / GBPUSD",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 178.9165,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDJPY",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.9444482600000002,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDCHF",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.5594593,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDCAD",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.7174527600059517,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × 1 / AUDUSD",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.9199933466400536,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × 1 / NZDUSD",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDSEK",
+        "provIdx": 1,
+        "legProvIdx": [
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 11.716145000000001,
+          "st": "live",
+          "provIdx": 1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDNOK",
+        "provIdx": 1,
+        "legProvIdx": [
+          1,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "GBP",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.3482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<GBPUSD>",
+        "key": "GBPUSD Curncy",
+        "subject": "q:<GBPUSD>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 2,
+        "legProvIdx": [
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 1.1679805942995753,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × 1 / EURUSD",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "GBP",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "GBP",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 208.971,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDJPY",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 1.10309724,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDCHF",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.8214182,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDCAD",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 2.0059514953131976,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × 1 / AUDUSD",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 2.2425149700598808,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × 1 / NZDUSD",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDSEK",
+        "provIdx": 2,
+        "legProvIdx": [
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 13.684230000000001,
+          "st": "live",
+          "provIdx": 2
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 2
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDNOK",
+        "provIdx": 2,
+        "legProvIdx": [
+          2,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "JPY",
+        "quote": "USD",
+        "kind": "inverse",
+        "rate": {
+          "v": 0.0064516129032258064,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 2,
+        "instrumentId": "<USDJPY>",
+        "key": "USDJPY Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / USDJPY",
+        "provIdx": 6,
+        "legProvIdx": [
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.005589199431019497,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × 1 / EURUSD",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.004785352991563422,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × 1 / GBPUSD",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "JPY",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "JPY",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.005278709677419355,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × USDCHF",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.008716129032258064,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × USDCAD",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.00959918598902813,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × 1 / AUDUSD",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.010731225720601808,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × 1 / NZDUSD",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × USDSEK",
+        "provIdx": 6,
+        "legProvIdx": [
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 0.06548387096774194,
+          "st": "live",
+          "provIdx": 6
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 6
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDJPY × USDNOK",
+        "provIdx": 6,
+        "legProvIdx": [
+          6,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "CHF",
+        "quote": "USD",
+        "kind": "inverse",
+        "rate": {
+          "v": 1.2221950623319482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": "<USDCHF>",
+        "key": "USDCHF Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / USDCHF",
+        "provIdx": 5,
+        "legProvIdx": [
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 1.0588192517819874,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × 1 / EURUSD",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.9065383936596558,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × 1 / GBPUSD",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 189.44023466145197,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × USDJPY",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "CHF",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "CHF",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.651185529210462,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × USDCAD",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.818472046320411,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × 1 / AUDUSD",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 2.0329259187158155,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × 1 / NZDUSD",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × USDSEK",
+        "provIdx": 5,
+        "legProvIdx": [
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 12.405279882669275,
+          "st": "live",
+          "provIdx": 5
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 5
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCHF × USDNOK",
+        "provIdx": 5,
+        "legProvIdx": [
+          5,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "CAD",
+        "quote": "USD",
+        "kind": "inverse",
+        "rate": {
+          "v": 0.7401924500370096,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": "<USDCAD>",
+        "key": "USDCAD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / USDCAD",
+        "provIdx": 4,
+        "legProvIdx": [
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.6412478991917262,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × 1 / EURUSD",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5490227340431757,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × 1 / GBPUSD",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 114.72982975573649,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × USDJPY",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.6056254626202813,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × USDCHF",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "CAD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "CAD",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.1013129743148484,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × 1 / AUDUSD",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.231191699995026,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × 1 / NZDUSD",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × USDSEK",
+        "provIdx": 4,
+        "legProvIdx": [
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 7.512953367875648,
+          "st": "live",
+          "provIdx": 4
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 4
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDCAD × USDNOK",
+        "provIdx": 4,
+        "legProvIdx": [
+          4,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "AUD",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.6721,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<AUDUSD>",
+        "key": "AUDUSD Curncy",
+        "subject": "q:<AUDUSD>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5822576453261716,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × 1 / EURUSD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.4985165405726153,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × 1 / GBPUSD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 104.1755,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5499122200000001,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.9080071000000001,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "AUD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "AUD",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.1179308050565537,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × 1 / NZDUSD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 6.821815000000001,
+          "st": "live",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "NZD",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.6012,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "chgPct1d": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "decimals": 4,
+        "instrumentId": "<NZDUSD>",
+        "key": "NZDUSD Curncy",
+        "subject": "q:<NZDUSD>",
+        "via": null,
+        "derivation": null,
+        "provIdx": 3,
+        "legProvIdx": [
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5208351381789829,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × 1 / EURUSD",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.445927903871829,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × 1 / GBPUSD",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 93.18599999999999,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDJPY",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.49190184,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDCHF",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.8122212,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDCAD",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.8945097455735753,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × 1 / AUDUSD",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "NZD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "NZD",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDSEK",
+        "provIdx": 3,
+        "legProvIdx": [
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 6.10218,
+          "st": "live",
+          "provIdx": 3
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 3
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDNOK",
+        "provIdx": 3,
+        "legProvIdx": [
+          3,
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "SEK",
+        "quote": "USD",
+        "kind": "inverse",
+        "rate": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": "<USDSEK>",
+        "key": "USDSEK Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / USDSEK",
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × 1 / EURUSD",
+        "provIdx": -1,
+        "legProvIdx": [
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × 1 / GBPUSD",
+        "provIdx": -1,
+        "legProvIdx": [
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × USDJPY",
+        "provIdx": -1,
+        "legProvIdx": [
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × USDCHF",
+        "provIdx": -1,
+        "legProvIdx": [
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × USDCAD",
+        "provIdx": -1,
+        "legProvIdx": [
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × 1 / AUDUSD",
+        "provIdx": -1,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × 1 / NZDUSD",
+        "provIdx": -1,
+        "legProvIdx": [
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "SEK",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "SEK",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDSEK × USDNOK",
+        "provIdx": -1,
+        "legProvIdx": [
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "NOK",
+        "quote": "USD",
+        "kind": "inverse",
+        "rate": {
+          "v": 0.09852216748768472,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": "<USDNOK>",
+        "key": "USDNOK Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": "1 / USDNOK",
+        "provIdx": 7,
+        "legProvIdx": [
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.08535230658207113,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × 1 / EURUSD",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          1
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.07307681908298821,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × 1 / GBPUSD",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          2
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 15.270935960591132,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × USDJPY",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          6
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.08061083743842364,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × USDCHF",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          5
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.13310344827586204,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × USDCAD",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          4
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.14658855451225222,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × 1 / AUDUSD",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          0
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.16387586075795862,
+          "st": "live",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × 1 / NZDUSD",
+        "provIdx": 7,
+        "legProvIdx": [
+          7,
+          3
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 7
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "1 / USDNOK × USDSEK",
+        "provIdx": 7,
+        "legProvIdx": [
+          7
+        ],
+        "legSourceIds": [
+          "yahoo.chart",
+          "yahoo.chart"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "NOK",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      }
+    ]
+  ],
+  "pairs": [
+    {
+      "instrumentId": "<AUDUSD>",
+      "key": "AUDUSD Curncy",
+      "name": "AUD-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<AUDUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 0.6721,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 0.6721,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 0.6721,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 0.6721,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 0.6721,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AUDUSD>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<EURUSD>",
+      "key": "EURUSD Curncy",
+      "name": "EUR-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<EURUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 1.1543,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 1.1543,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 1.1543,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 1.1543,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 1.1543,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 1,
+          "live": {
+            "subject": "q:<EURUSD>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<GBPUSD>",
+      "key": "GBPUSD Curncy",
+      "name": "GBP-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<GBPUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 1.3482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 1.3482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 1.3482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 1.3482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 1.3482,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 2,
+          "live": {
+            "subject": "q:<GBPUSD>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<NZDUSD>",
+      "key": "NZDUSD Curncy",
+      "name": "NZD-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<NZDUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 0.6012,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 0.6012,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 0.6012,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 0.6012,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 0.6012,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 3,
+          "live": {
+            "subject": "q:<NZDUSD>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDCAD>",
+      "key": "USDCAD Curncy",
+      "name": "USD-CAD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDCAD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 1.351,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 1.351,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 1.351,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 1.351,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 1.351,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 4,
+          "live": {
+            "subject": "q:<USDCAD>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDCHF>",
+      "key": "USDCHF Curncy",
+      "name": "USD-CHF",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDCHF>",
+      "cells": {
+        "PX_LAST": {
+          "v": 0.8182,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 0.8182,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 0.8182,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 0.8182,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 0.8182,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 5,
+          "live": {
+            "subject": "q:<USDCHF>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDJPY>",
+      "key": "USDJPY Curncy",
+      "name": "USD-JPY",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDJPY>",
+      "cells": {
+        "PX_LAST": {
+          "v": 155,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 155,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 155,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 155,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 155,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 6,
+          "live": {
+            "subject": "q:<USDJPY>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDNOK>",
+      "key": "USDNOK Curncy",
+      "name": "USD-NOK",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDNOK>",
+      "cells": {
+        "PX_LAST": {
+          "v": 10.15,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": 0,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": 10.15,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 10.15,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 10.15,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 10.15,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 7,
+          "live": {
+            "subject": "q:<USDNOK>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDSEK>",
+      "key": "USDSEK Curncy",
+      "name": "USD-SEK",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDSEK>",
+      "cells": {
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<USDSEK>",
+            "field": "LAST_TRADE_TIME"
+          }
+        }
+      }
+    }
+  ],
+  "pairColumns": [
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "fieldId": "PX_LAST",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_NET_1D",
+      "label": "Net change",
+      "fieldId": "CHG_NET_1D",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_PCT_1D",
+      "label": "Percent change",
+      "fieldId": "CHG_PCT_1D",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "PX_OPEN",
+      "label": "Open",
+      "fieldId": "PX_OPEN",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_HIGH",
+      "label": "High",
+      "fieldId": "PX_HIGH",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_LOW",
+      "label": "Low",
+      "fieldId": "PX_LOW",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_CLOSE_1D",
+      "label": "Previous close",
+      "fieldId": "PX_CLOSE_1D",
+      "fmt": "px"
+    },
+    {
+      "id": "LAST_TRADE_TIME",
+      "label": "Last trade time",
+      "fieldId": "LAST_TRADE_TIME",
+      "fmt": "datetime"
+    }
+  ],
+  "ecbCompare": [
+    {
+      "base": "AUD",
+      "quote": "USD",
+      "live": 0.6721,
+      "ecb": 0.6725,
+      "diffPct": -0.05947955390334103
+    },
+    {
+      "base": "EUR",
+      "quote": "USD",
+      "live": 1.1543,
+      "ecb": 1.1539,
+      "diffPct": 0.03466504896438849
+    },
+    {
+      "base": "GBP",
+      "quote": "USD",
+      "live": 1.3482,
+      "ecb": 1.348,
+      "diffPct": 0.014836795252226587
+    },
+    {
+      "base": "NZD",
+      "quote": "USD",
+      "live": 0.6012,
+      "ecb": 0.6015,
+      "diffPct": -0.04987531172071513
+    },
+    {
+      "base": "USD",
+      "quote": "CAD",
+      "live": 1.351,
+      "ecb": 1.3505,
+      "diffPct": 0.03702332469455172
+    },
+    {
+      "base": "USD",
+      "quote": "CHF",
+      "live": 0.8182,
+      "ecb": 0.8185,
+      "diffPct": -0.036652412950510804
+    },
+    {
+      "base": "USD",
+      "quote": "JPY",
+      "live": 155,
+      "ecb": 154.92,
+      "diffPct": 0.05163955589981839
+    },
+    {
+      "base": "USD",
+      "quote": "NOK",
+      "live": 10.15,
+      "ecb": 10.155,
+      "diffPct": -0.0492368291481915
+    },
+    {
+      "base": "USD",
+      "quote": "SEK",
+      "live": null,
+      "ecb": 9.42,
+      "diffPct": null
+    }
+  ],
+  "missing": [],
+  "notes": [
+    "INDICATIVE_MID_ONLY",
+    "NO_FX_DEPTH_SOURCE",
+    "CROSSES_DERIVED_VIA_USD"
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

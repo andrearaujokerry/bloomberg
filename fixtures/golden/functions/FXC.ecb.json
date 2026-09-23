@@ -1,0 +1,3499 @@
+{
+  "variant": "default",
+  "quote": "ecb",
+  "rateDate": "2026-09-15",
+  "ccys": [
+    "USD",
+    "EUR",
+    "GBP",
+    "JPY",
+    "CHF",
+    "CAD",
+    "AUD",
+    "NZD",
+    "SEK",
+    "NOK"
+  ],
+  "matrix": [
+    [
+      {
+        "base": "USD",
+        "quote": "USD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "USD",
+        "quote": "EUR",
+        "kind": "direct",
+        "rate": {
+          "v": 0.86662622,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "GBP",
+        "kind": "direct",
+        "rate": {
+          "v": 0.74183976,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "JPY",
+        "kind": "direct",
+        "rate": {
+          "v": 154.92,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": "<USDJPY>",
+        "key": "USDJPY Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "CHF",
+        "kind": "direct",
+        "rate": {
+          "v": 0.8185,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<USDCHF>",
+        "key": "USDCHF Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "CAD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.3505,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<USDCAD>",
+        "key": "USDCAD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "AUD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.48698885,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "NZD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.66251039,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "SEK",
+        "kind": "direct",
+        "rate": {
+          "v": 9.42,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<USDSEK>",
+        "key": "USDSEK Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "USD",
+        "quote": "NOK",
+        "kind": "direct",
+        "rate": {
+          "v": 10.155,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<USDNOK>",
+        "key": "USDNOK Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "EUR",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.1539,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<EURUSD>",
+        "key": "EURUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "EUR",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "EUR",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.8560088990639999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 178.76218799999998,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.9444671499999999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.55834195,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.7158364340149999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.9183707390209999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 10.869738,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "EUR",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 11.717854499999998,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "EURUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "GBP",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.348,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<GBPUSD>",
+        "key": "GBPUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 1.16821214456,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "GBP",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "GBP",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 208.83216,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 1.1033380000000002,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.8204740000000001,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 2.0044609698,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 2.24106400572,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 12.698160000000001,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "GBP",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 13.68894,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "GBPUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "JPY",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.00645494,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.005594020252526801,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.0047885311404144,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "JPY",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "JPY",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.00528336839,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.008717396470000001,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.009598423807419,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.010731404816826601,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 0.0608055348,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "JPY",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 0.0655499157,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "JPYUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "CHF",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 1.2217471,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 1.058798071068962,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.9063405754446959,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 189.27306073199998,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "CHF",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "CHF",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.64996945855,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.816724315219835,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 2.031167247702369,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 11.508857682,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CHF",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 12.406841800499999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CHFUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "CAD",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.74046649,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.6417076752653678,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5493074832296424,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 114.71306863079998,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.606071822065,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "CAD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "CAD",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.1010654144286365,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.231033233071831,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 6.9751943357999995,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "CAD",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 7.519437205949999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "CADUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "AUD",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.6725,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<AUDUSD>",
+        "key": "AUDUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5828061329499999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.49888723859999995,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 104.18369999999999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.55044125,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.90821125,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "AUD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "AUD",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 1.118038237275,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 6.33495,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "AUD",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 6.8292375,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "AUDUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "NZD",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.6015,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": "<NZDUSD>",
+        "key": "NZDUSD Curncy",
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.5212756713300001,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.44621661564,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 93.18438,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.49232775,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.8123257500000001,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.894423793275,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "NZD",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "NZD",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 5.66613,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NZD",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 6.1082325,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NZDUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "SEK",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.10615711,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.0919985349654242,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.07875156500469359,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 16.4458594812,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.086889594535,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.14336517705500001,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.15785443891822348,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.1764872983473729,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "SEK",
+        "quote": "SEK",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      },
+      {
+        "base": "SEK",
+        "quote": "NOK",
+        "kind": "cross",
+        "rate": {
+          "v": 1.0780254520499999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "SEKUSD × USDNOK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      }
+    ],
+    [
+      {
+        "base": "NOK",
+        "quote": "USD",
+        "kind": "direct",
+        "rate": {
+          "v": 0.09847366,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": 0,
+        "legProvIdx": [
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "EUR",
+        "kind": "cross",
+        "rate": {
+          "v": 0.0853398557353652,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDEUR",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "GBP",
+        "kind": "cross",
+        "rate": {
+          "v": 0.0730516763007216,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDGBP",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "JPY",
+        "kind": "cross",
+        "rate": {
+          "v": 15.255539407199999,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 2,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDJPY",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "CHF",
+        "kind": "cross",
+        "rate": {
+          "v": 0.08060069071,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDCHF",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "CAD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.13298867783,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDCAD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "AUD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.146429234438691,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDAUD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "NZD",
+        "kind": "cross",
+        "rate": {
+          "v": 0.1637134828913274,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDNZD",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "SEK",
+        "kind": "cross",
+        "rate": {
+          "v": 0.9276218772,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": "USD",
+        "derivation": "NOKUSD × USDSEK",
+        "provIdx": 0,
+        "legProvIdx": [
+          0,
+          0
+        ],
+        "legSourceIds": [
+          "frankfurter",
+          "frankfurter"
+        ]
+      },
+      {
+        "base": "NOK",
+        "quote": "NOK",
+        "kind": "unity",
+        "rate": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "chgPct1d": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "decimals": 4,
+        "instrumentId": null,
+        "key": null,
+        "subject": null,
+        "via": null,
+        "derivation": null,
+        "provIdx": -1,
+        "legProvIdx": [],
+        "legSourceIds": []
+      }
+    ]
+  ],
+  "pairs": [
+    {
+      "instrumentId": "<AUDUSD>",
+      "key": "AUDUSD Curncy",
+      "name": "AUD-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<AUDUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 0.6725,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<EURUSD>",
+      "key": "EURUSD Curncy",
+      "name": "EUR-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<EURUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 1.1539,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<GBPUSD>",
+      "key": "GBPUSD Curncy",
+      "name": "GBP-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<GBPUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 1.348,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<NZDUSD>",
+      "key": "NZDUSD Curncy",
+      "name": "NZD-USD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<NZDUSD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 0.6015,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDCAD>",
+      "key": "USDCAD Curncy",
+      "name": "USD-CAD",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDCAD>",
+      "cells": {
+        "PX_LAST": {
+          "v": 1.3505,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDCHF>",
+      "key": "USDCHF Curncy",
+      "name": "USD-CHF",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDCHF>",
+      "cells": {
+        "PX_LAST": {
+          "v": 0.8185,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDJPY>",
+      "key": "USDJPY Curncy",
+      "name": "USD-JPY",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDJPY>",
+      "cells": {
+        "PX_LAST": {
+          "v": 154.92,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDNOK>",
+      "key": "USDNOK Curncy",
+      "name": "USD-NOK",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDNOK>",
+      "cells": {
+        "PX_LAST": {
+          "v": 10.155,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    },
+    {
+      "instrumentId": "<USDSEK>",
+      "key": "USDSEK Curncy",
+      "name": "USD-SEK",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "exchCode": "FX",
+      "gicsSector": null,
+      "subject": "q:<USDSEK>",
+      "cells": {
+        "PX_LAST": {
+          "v": 9.42,
+          "st": "closed",
+          "ts": 1789481700000,
+          "provIdx": 0
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_OPEN": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "provIdx": 0
+        }
+      }
+    }
+  ],
+  "pairColumns": [
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "fieldId": "PX_LAST",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_NET_1D",
+      "label": "Net change",
+      "fieldId": "CHG_NET_1D",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_PCT_1D",
+      "label": "Percent change",
+      "fieldId": "CHG_PCT_1D",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "PX_OPEN",
+      "label": "Open",
+      "fieldId": "PX_OPEN",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_HIGH",
+      "label": "High",
+      "fieldId": "PX_HIGH",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_LOW",
+      "label": "Low",
+      "fieldId": "PX_LOW",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_CLOSE_1D",
+      "label": "Previous close",
+      "fieldId": "PX_CLOSE_1D",
+      "fmt": "px"
+    },
+    {
+      "id": "LAST_TRADE_TIME",
+      "label": "Last trade time",
+      "fieldId": "LAST_TRADE_TIME",
+      "fmt": "datetime"
+    }
+  ],
+  "ecbCompare": null,
+  "missing": [],
+  "notes": [
+    "INDICATIVE_MID_ONLY",
+    "NO_FX_DEPTH_SOURCE",
+    "CROSSES_DERIVED_VIA_USD"
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

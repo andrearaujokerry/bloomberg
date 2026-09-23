@@ -407,7 +407,14 @@ function normalise(payload: MsgPayload): unknown {
           : '<VOLATILE>';
       }
       if (key === 'permittedCounterpartyFirms') return ['<PERMITTED>'];
-      if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
+      // A number is an id only under a key that names one. Tokenising *every* number that
+      // happens to equal a sequence-allocated id makes the golden a function of the database's
+      // sequence state rather than of the payload: the run on which `chat_rooms` reached 330
+      // rewrote the seeded IOI's `price: 330` as `<OTHERROOM>`. This is the number-valued twin
+      // of the subject-shape rule `golden.ts` documents for strings.
+      if (typeof value === 'number' && key.endsWith('Id') && tokens.has(value)) {
+        return tokens.get(value);
+      }
       if (typeof value === 'string') {
         let out = value;
         for (const [id, token] of tokens) out = out.split(String(id)).join(token);

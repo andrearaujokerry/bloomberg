@@ -70,6 +70,40 @@ export function subjectToken(value: string, tokens: ReadonlyMap<number, string>)
 }
 
 /**
+ * Replace a sequence-allocated id that sits under a **key which names one** (`instrumentId`,
+ * `newsId`, `watchlistId`, or an array of them like `mdLineIds`) and leave every other number
+ * exactly as it was served.
+ *
+ * This is the number-valued twin of `subjectToken`, and it exists for the same reason. Every
+ * golden test used to write `if (typeof value === 'number' && tokens.has(value)) -> token`, which
+ * rewrites a number because of what it *equals* rather than where it *sits*: any price, quantity,
+ * count, weight, basis-point move or epoch field that happens to collide with a live sequence
+ * value is silently renamed, and the golden becomes a function of the database's sequence state.
+ * It is not hypothetical — the run on which `chat_rooms` reached 330 rewrote MSG's seeded IOI
+ * `price: 330` as `<OTHERROOM>` — and the collision space grows with every run, because the
+ * instrument sequence climbs by thousands per suite.
+ *
+ * `idKeys` is therefore the payload's own list of id-bearing keys, per test, read off the payload
+ * type rather than guessed. A number under any other key is asserted literally; a number under an
+ * id key that is *not* a seeded id (a formula row's `instrumentId: 0`) is left alone too, because
+ * the token map is what says which ids this test controls.
+ */
+export function idToken(
+  key: string,
+  value: unknown,
+  idKeys: ReadonlySet<string>,
+  tokens: ReadonlyMap<number, string>,
+): unknown {
+  if (!idKeys.has(key)) return value;
+  if (typeof value === 'number') return tokens.get(value) ?? value;
+  if (Array.isArray(value)) {
+    const items: readonly unknown[] = value;
+    return items.map((item) => (typeof item === 'number' ? (tokens.get(item) ?? item) : item));
+  }
+  return value;
+}
+
+/**
  * Assert `actual` against the golden named `name` (`'Q.quote.json'`), or write it when
  * `UPDATE_GOLDENS` is set.
  *

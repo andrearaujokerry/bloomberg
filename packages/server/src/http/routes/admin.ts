@@ -1439,6 +1439,24 @@ export const adminRoutes: FastifyPluginAsync = async (app) => {
 
   // ═══ Data exceptions (REF-10) ══════════════════════════════════════════════════════════════
 
+  /**
+   * Which `data_exceptions` rows one caller may see at all (PORT-07, SEC-05).
+   *
+   * The queue was built for reference data, which belongs to no customer firm — those rows carry
+   * `firm_id IS NULL` and stay visible to every operator who may read the queue. WP-10's portfolio
+   * import then began filing rows over *tenant* data: an `unresolved_identifier` row carries the
+   * raw identifier out of an uploaded position file, the portfolio id, the as-of date and the
+   * uploader's user id. Without this predicate an `admin` — an ordinary customer firm admin, not an
+   * internal operator — reads another firm's book one identifier at a time, which is the exact
+   * confirmation the 404-not-403 rule denies on `/portfolios/:id`.
+   *
+   * Migration 0019 carries the same rule as an RLS policy; this is the half that also holds when
+   * the connection is the database owner, which bypasses RLS.
+   */
+  function exceptionScope(firmId: number): SQL {
+    return sql`(firm_id IS NULL OR firm_id = ${firmId})`;
+  }
+
   app.get(
     '/admin/exceptions',
     { preHandler: requireSession({ roles: ROLES_ADMIN_DATAOPS }) },
@@ -1447,7 +1465,7 @@ export const adminRoutes: FastifyPluginAsync = async (app) => {
       const query = parse(ExceptionQuery, coerceQuery(request.query, ['assignee']), 'query');
 
       return withTx(ctxOf(principal), async (tx) => {
-        const parts: SQL[] = [sql`true`];
+        const parts: SQL[] = [exceptionScope(principal.firmId)];
         if (query.status !== undefined) parts.push(sql`status = ${query.status}`);
         if (query.kind !== undefined) parts.push(sql`kind = ${query.kind}`);
         if (query.assignee !== undefined) parts.push(sql`assignee_user_id = ${query.assignee}`);
@@ -1474,7 +1492,8 @@ export const adminRoutes: FastifyPluginAsync = async (app) => {
       return withTx(ctxOf(principal), async (tx) => {
         const current = await rows<ExceptionSqlRow>(
           tx,
-          sql`SELECT ${EXCEPTION_COLUMNS} FROM data_exceptions WHERE exception_id = ${exceptionId}`,
+          sql`SELECT ${EXCEPTION_COLUMNS} FROM data_exceptions
+               WHERE exception_id = ${exceptionId} AND ${exceptionScope(principal.firmId)}`,
         );
         const row = current[0];
         if (row === undefined) throw new NotFoundError('No such exception.');
@@ -1492,7 +1511,7 @@ export const adminRoutes: FastifyPluginAsync = async (app) => {
                      resolved_by = ${principal.userId},
                      resolved_at = ${nowIso(clock)}::timestamptz,
                      resolution = ${JSON.stringify(resolution)}::jsonb
-               WHERE exception_id = ${exceptionId}
+               WHERE exception_id = ${exceptionId} AND ${exceptionScope(principal.firmId)}
            RETURNING ${EXCEPTION_COLUMNS}`,
         );
         const after = updated[0];

@@ -26,7 +26,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import { FunctionRegistry, toCsv } from '@terminal/core';
 import type { NormalisedUpdate, QuoteFields } from '@terminal/core';
@@ -610,17 +610,27 @@ describe('GIP — golden', () => {
   });
 });
 
-/** Sequence-allocated ids are replaced by tokens; everything else is compared as served. */
+/**
+ * Sequence-allocated ids are replaced by tokens; everything else is compared as served.
+ *
+ * The one key in a GIP payload that holds an instrument id (`mdLineId` and `mdLineIds` have their
+ * own branches below, and `calendarId` is `'XNAS'` — a name, not a sequence value).
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['instrumentId']);
+
 function normalise(payload: GipPayload): unknown {
   const id = env.equity.instrumentId;
   const mdLineId = env.equity.mdLineId;
+  const tokens = new Map([[id, '<AAPL>']]);
   return JSON.parse(
     JSON.stringify(payload, (key: string, value: unknown) => {
       if (key === 'mdLineIds' && Array.isArray(value)) return `<${String(value.length)} md line(s)>`;
       if (key === 'mdLineId' && value === mdLineId) return '<mdLine>';
-      if (typeof value === 'number' && value === id) return '<AAPL>';
-      if (typeof value === 'string') return subjectToken(value, new Map([[id, '<AAPL>']]));
-      return value;
+      if (typeof value === 'string') return subjectToken(value, tokens);
+      // An intraday payload is a series of bars: opens, highs, lows, closes, volumes and bar
+      // counts. An id is an id because of the key it sits under, never because a bar happens to
+      // print at the number the instrument sequence drew.
+      return idToken(key, value, ID_KEYS, tokens);
     }),
   );
 }

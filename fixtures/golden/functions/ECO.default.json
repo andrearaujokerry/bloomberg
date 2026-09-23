@@ -1,0 +1,248 @@
+{
+  "variant": "default",
+  "mode": "calendar",
+  "window": {
+    "from": "2026-09-14",
+    "to": "2026-09-20",
+    "tz": "America/New_York",
+    "label": "Week of 2026-09-14"
+  },
+  "country": "US",
+  "importance": 1,
+  "days": [
+    {
+      "date": "2026-09-14",
+      "isBusinessDay": true,
+      "events": []
+    },
+    {
+      "date": "2026-09-15",
+      "isBusinessDay": true,
+      "events": [
+        {
+          "eventId": "<CHAIN_EVENT>",
+          "releaseId": "<CHAIN_RELEASE>",
+          "releaseName": "Weekly Chain Store Index",
+          "sourceId": "fred.calendar",
+          "country": "US",
+          "url": null,
+          "importance": 3,
+          "scheduledAt": "2026-09-15T12:00:00.000Z",
+          "timeKnown": true,
+          "periodLabel": "Week of 12 September 2026",
+          "seriesCode": null,
+          "seriesName": null,
+          "units": null,
+          "decimals": null,
+          "actual": {
+            "v": 1.2,
+            "st": "closed",
+            "ts": 1789473600000,
+            "provIdx": 0
+          },
+          "prior": {
+            "v": 1.1,
+            "st": "closed",
+            "ts": 1789473600000,
+            "provIdx": 0
+          },
+          "revisedPrior": {
+            "v": null,
+            "st": "na",
+            "provIdx": 0
+          },
+          "consensus": {
+            "v": null,
+            "r": "NO_CONSENSUS_SOURCE"
+          },
+          "surprisePct": null,
+          "status": "released",
+          "subject": null,
+          "provIdx": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-09-16",
+      "isBusinessDay": true,
+      "events": [
+        {
+          "eventId": "<CPI_EVENT>",
+          "releaseId": "<CPI_RELEASE>",
+          "releaseName": "Consumer Price Index",
+          "sourceId": "fred.calendar",
+          "country": "US",
+          "url": "https://fred.stlouisfed.org/releases/calendar",
+          "importance": 2,
+          "scheduledAt": "2026-09-16T12:30:00.000Z",
+          "timeKnown": true,
+          "periodLabel": "August 2026",
+          "seriesCode": "<CPI_SERIES>",
+          "seriesName": "CPI for All Urban Consumers: All Items",
+          "units": "Index 1982-1984=100",
+          "decimals": 3,
+          "actual": {
+            "v": 324.112,
+            "st": "closed",
+            "ts": 1789561800000,
+            "provIdx": 0
+          },
+          "prior": {
+            "v": 323.048,
+            "st": "closed",
+            "ts": 1789561800000,
+            "provIdx": 0
+          },
+          "revisedPrior": {
+            "v": 323.05,
+            "st": "closed",
+            "ts": 1789561800000,
+            "provIdx": 0
+          },
+          "consensus": {
+            "v": null,
+            "r": "NO_CONSENSUS_SOURCE"
+          },
+          "surprisePct": null,
+          "status": "revised",
+          "subject": "e:<CPI_SERIES>",
+          "provIdx": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "isBusinessDay": true,
+      "events": [
+        {
+          "eventId": "<RETAIL_EVENT>",
+          "releaseId": "<RETAIL_RELEASE>",
+          "releaseName": "Advance Retail Sales",
+          "sourceId": "fred.calendar",
+          "country": "US",
+          "url": null,
+          "importance": 2,
+          "scheduledAt": "2026-09-17T12:30:00.000Z",
+          "timeKnown": false,
+          "periodLabel": "August 2026",
+          "seriesCode": null,
+          "seriesName": null,
+          "units": null,
+          "decimals": null,
+          "actual": {
+            "v": 0.4,
+            "st": "closed",
+            "ts": 1789648200000,
+            "provIdx": 0
+          },
+          "prior": {
+            "v": 0.6,
+            "st": "closed",
+            "ts": 1789648200000,
+            "provIdx": 0
+          },
+          "revisedPrior": {
+            "v": null,
+            "st": "na",
+            "provIdx": 0
+          },
+          "consensus": {
+            "v": null,
+            "r": "NO_CONSENSUS_SOURCE"
+          },
+          "surprisePct": null,
+          "status": "released",
+          "subject": null,
+          "provIdx": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "isBusinessDay": true,
+      "events": [
+        {
+          "eventId": "<EMPLOYMENT_EVENT>",
+          "releaseId": "<EMPLOYMENT_RELEASE>",
+          "releaseName": "Employment Situation",
+          "sourceId": "bls.schedule",
+          "country": "US",
+          "url": "https://www.bls.gov/schedule/news_release/empsit.htm",
+          "importance": 1,
+          "scheduledAt": "2026-09-18T12:30:00.000Z",
+          "timeKnown": true,
+          "periodLabel": "September 2026",
+          "seriesCode": null,
+          "seriesName": null,
+          "units": null,
+          "decimals": null,
+          "actual": {
+            "v": null,
+            "st": "blank",
+            "provIdx": 1
+          },
+          "prior": {
+            "v": 22000,
+            "st": "closed",
+            "ts": 1789734600000,
+            "provIdx": 1
+          },
+          "revisedPrior": {
+            "v": null,
+            "st": "na",
+            "provIdx": 1
+          },
+          "consensus": {
+            "v": null,
+            "r": "NO_CONSENSUS_SOURCE"
+          },
+          "surprisePct": null,
+          "status": "scheduled",
+          "subject": null,
+          "provIdx": 1
+        }
+      ]
+    },
+    {
+      "date": "2026-09-19",
+      "isBusinessDay": false,
+      "events": []
+    },
+    {
+      "date": "2026-09-20",
+      "isBusinessDay": false,
+      "events": []
+    }
+  ],
+  "fomc": [
+    {
+      "meetingDate": "2026-09-16",
+      "statementAt": "2026-09-16T18:00:00.000Z",
+      "hasSep": true,
+      "decisionBp": null,
+      "isNext": true,
+      "inWindow": true,
+      "provIdx": 2
+    },
+    {
+      "meetingDate": "2026-11-04",
+      "statementAt": "2026-11-04T19:00:00.000Z",
+      "hasSep": false,
+      "decisionBp": null,
+      "isNext": false,
+      "inWindow": false,
+      "provIdx": 2
+    }
+  ],
+  "release": null,
+  "consensus": {
+    "value": null,
+    "reason": "NO_CONSENSUS_SOURCE"
+  },
+  "knownAt": "<KNOWN_AT>",
+  "cursor": {
+    "prev": "eyJhbmNob3IiOiIyMDI2LTA5LTA3IiwicmFuZ2UiOiJXIn0",
+    "next": "eyJhbmNob3IiOiIyMDI2LTA5LTIxIiwicmFuZ2UiOiJXIn0"
+  },
+  "notes": []
+}

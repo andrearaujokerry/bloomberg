@@ -1,0 +1,575 @@
+{
+  "variant": "equity",
+  "target": {
+    "instrumentId": "<AAPL>",
+    "key": "AAPL US Equity",
+    "name": "Apple Inc",
+    "subject": "q:<AAPL>",
+    "issuerId": "<AAPL_ISSUER>",
+    "cik": "0000320193",
+    "exchCode": "US",
+    "gicsSector": null,
+    "gicsSubIndustry": "Technology Hardware, Storage & Peripherals",
+    "isTarget": true,
+    "cells": {
+      "CUR_MKT_CAP": {
+        "v": 4921023000000,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 1
+      },
+      "PE_RATIO": {
+        "v": 49.14732142857143,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "PX_TO_BOOK_RATIO": {
+        "v": 86.40953467954346,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "PX_TO_SALES_RATIO": {
+        "v": 11.824805784299826,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "EV_TO_EBITDA": {
+        "v": 35.689672011661806,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "NET_MARGIN": {
+        "v": 24.327123396954544,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "RETURN_COM_EQY": {
+        "v": 177.76997366110623,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "SALES_GROWTH_YOY": {
+        "v": 6.425511782832749,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 2
+      },
+      "DVD_YIELD": {
+        "v": 0.16047476307263756,
+        "st": "closed",
+        "ts": 1785456000000,
+        "provIdx": 3
+      }
+    },
+    "fundamentals": {
+      "periodEnd": "2026-06-27",
+      "periodType": "TTM",
+      "filedAt": "2026-07-31",
+      "accessionNo": "0000320193-26-000055",
+      "provIdx": 2
+    },
+    "dataState": "full",
+    "unavailableReason": null
+  },
+  "peerSet": {
+    "basis": "SUB_INDUSTRY",
+    "requestedBasis": "SUB_INDUSTRY",
+    "scheme": "GICS",
+    "code": "45202030",
+    "label": "Technology Hardware, Storage & Peripherals (GICS 45202030)",
+    "restrictedToIndex": "SPX",
+    "candidates": 4,
+    "returned": 4,
+    "provIdx": 0
+  },
+  "metrics": [
+    {
+      "id": "CUR_MKT_CAP",
+      "label": "Market capitalisation",
+      "fieldId": "CUR_MKT_CAP",
+      "fmt": "ccy",
+      "decimals": 0
+    },
+    {
+      "id": "PE_RATIO",
+      "label": "Price / earnings",
+      "fmt": "px",
+      "decimals": 2
+    },
+    {
+      "id": "PX_TO_BOOK_RATIO",
+      "label": "Price to book",
+      "fieldId": "PX_TO_BOOK_RATIO",
+      "fmt": "px",
+      "decimals": 2
+    },
+    {
+      "id": "PX_TO_SALES_RATIO",
+      "label": "Price to sales",
+      "fieldId": "PX_TO_SALES_RATIO",
+      "fmt": "px",
+      "decimals": 2
+    },
+    {
+      "id": "EV_TO_EBITDA",
+      "label": "EV / EBITDA",
+      "fmt": "px",
+      "decimals": 2
+    },
+    {
+      "id": "NET_MARGIN",
+      "label": "Net margin",
+      "fieldId": "NET_MARGIN",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "RETURN_COM_EQY",
+      "label": "Return on equity",
+      "fmt": "px",
+      "decimals": 2
+    },
+    {
+      "id": "SALES_GROWTH_YOY",
+      "label": "Revenue growth (YoY)",
+      "fieldId": "SALES_GROWTH_YOY",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "DVD_YIELD",
+      "label": "Dividend yield",
+      "fieldId": "DVD_YIELD",
+      "fmt": "pct",
+      "decimals": 2
+    }
+  ],
+  "peers": [
+    {
+      "instrumentId": "<DELL>",
+      "key": "DELL US Equity",
+      "name": "Dell Technologies Inc",
+      "subject": "q:<DELL>",
+      "issuerId": "<DELL_ISSUER>",
+      "cik": "0001571996",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "gicsSubIndustry": "Technology Hardware, Storage & Peripherals",
+      "isTarget": false,
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": 84350000000,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 1
+        },
+        "PE_RATIO": {
+          "v": 18.828125,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "PX_TO_BOOK_RATIO": {
+          "v": 40.166666666666664,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "PX_TO_SALES_RATIO": {
+          "v": 0.8823221757322176,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "EV_TO_EBITDA": {
+          "v": 12.427710843373495,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 4.707112970711297,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "RETURN_COM_EQY": {
+          "v": 214.28571428571428,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "SALES_GROWTH_YOY": {
+          "v": 8.14479638009049,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "DVD_YIELD": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "fundamentals": {
+        "periodEnd": "2026-06-27",
+        "periodType": "TTM",
+        "filedAt": "2026-07-31",
+        "accessionNo": "0001571996-26-000055",
+        "provIdx": 2
+      },
+      "dataState": "partial",
+      "unavailableReason": null
+    },
+    {
+      "instrumentId": "<HPQ>",
+      "key": "HPQ US Equity",
+      "name": "HP Inc",
+      "subject": "q:<HPQ>",
+      "issuerId": "<HPQ_ISSUER>",
+      "cik": "0000047217",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "gicsSubIndustry": "Technology Hardware, Storage & Peripherals",
+      "isTarget": false,
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": 31540000000.000004,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 1
+        },
+        "PE_RATIO": {
+          "v": 10.060606060606062,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "PX_TO_BOOK_RATIO": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_TO_SALES_RATIO": {
+          "v": 0.5873370577281193,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "EV_TO_EBITDA": {
+          "v": 7.276923076923077,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "NET_MARGIN": {
+          "v": 5.95903165735568,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "RETURN_COM_EQY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "SALES_GROWTH_YOY": {
+          "v": 3.0710172744721653,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "DVD_YIELD": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "fundamentals": {
+        "periodEnd": "2026-06-27",
+        "periodType": "TTM",
+        "filedAt": "2026-07-31",
+        "accessionNo": "0000047217-26-000055",
+        "provIdx": 2
+      },
+      "dataState": "partial",
+      "unavailableReason": null
+    },
+    {
+      "instrumentId": "<STX>",
+      "key": "STX US Equity",
+      "name": "Seagate Technology Holdings",
+      "subject": "q:<STX>",
+      "issuerId": "<STX_ISSUER>",
+      "cik": "0001137789",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "gicsSubIndustry": "Technology Hardware, Storage & Peripherals",
+      "isTarget": false,
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": 20664000000,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 1
+        },
+        "PE_RATIO": {
+          "v": 46.85714285714286,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "PX_TO_BOOK_RATIO": {
+          "v": 13.776,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "PX_TO_SALES_RATIO": {
+          "v": 2.3217977528089886,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "EV_TO_EBITDA": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "NET_MARGIN": {
+          "v": 7.191011235955057,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "RETURN_COM_EQY": {
+          "v": 42.66666666666667,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "SALES_GROWTH_YOY": {
+          "v": -7.2916666666666625,
+          "st": "closed",
+          "ts": 1785456000000,
+          "provIdx": 2
+        },
+        "DVD_YIELD": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "fundamentals": {
+        "periodEnd": "2026-06-27",
+        "periodType": "TTM",
+        "filedAt": "2026-07-31",
+        "accessionNo": "0001137789-26-000055",
+        "provIdx": 2
+      },
+      "dataState": "partial",
+      "unavailableReason": null
+    },
+    {
+      "instrumentId": "<WDC>",
+      "key": "WDC US Equity",
+      "name": "Western Digital Corp",
+      "subject": "q:<WDC>",
+      "issuerId": "<WDC_ISSUER>",
+      "cik": "0000106040",
+      "exchCode": "US",
+      "gicsSector": "Information Technology",
+      "gicsSubIndustry": "Technology Hardware, Storage & Peripherals",
+      "isTarget": false,
+      "cells": {
+        "CUR_MKT_CAP": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PE_RATIO": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_TO_BOOK_RATIO": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_TO_SALES_RATIO": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "EV_TO_EBITDA": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "NET_MARGIN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "RETURN_COM_EQY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "SALES_GROWTH_YOY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "DVD_YIELD": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        }
+      },
+      "fundamentals": null,
+      "dataState": "none",
+      "unavailableReason": "FUNDAMENTALS_NOT_INGESTED"
+    }
+  ],
+  "stats": [
+    {
+      "metric": "CUR_MKT_CAP",
+      "n": 3,
+      "min": 20664000000,
+      "p25": 26102000000,
+      "median": 31540000000.000004,
+      "p75": 57945000000,
+      "max": 84350000000,
+      "mean": 45518000000,
+      "target": 4921023000000,
+      "targetPercentile": 1,
+      "premiumToMedianPct": 155.0248256182625,
+      "reason": null
+    },
+    {
+      "metric": "PE_RATIO",
+      "n": 3,
+      "min": 10.060606060606062,
+      "p25": 14.444365530303031,
+      "median": 18.828125,
+      "p75": 32.84263392857143,
+      "max": 46.85714285714286,
+      "mean": 25.24862463924964,
+      "target": 49.14732142857143,
+      "targetPercentile": 1,
+      "premiumToMedianPct": 1.6103141671606402,
+      "reason": null
+    },
+    {
+      "metric": "PX_TO_BOOK_RATIO",
+      "n": 2,
+      "min": null,
+      "p25": null,
+      "median": null,
+      "p75": null,
+      "max": null,
+      "mean": null,
+      "target": 86.40953467954346,
+      "targetPercentile": null,
+      "premiumToMedianPct": null,
+      "reason": "INSUFFICIENT_PEERS"
+    },
+    {
+      "metric": "PX_TO_SALES_RATIO",
+      "n": 3,
+      "min": 0.5873370577281193,
+      "p25": 0.7348296167301684,
+      "median": 0.8823221757322176,
+      "p75": 1.602059964270603,
+      "max": 2.3217977528089886,
+      "mean": 1.2638189954231085,
+      "target": 11.824805784299826,
+      "targetPercentile": 1,
+      "premiumToMedianPct": 12.401913846817585,
+      "reason": null
+    },
+    {
+      "metric": "EV_TO_EBITDA",
+      "n": 2,
+      "min": null,
+      "p25": null,
+      "median": null,
+      "p75": null,
+      "max": null,
+      "mean": null,
+      "target": 35.689672011661806,
+      "targetPercentile": null,
+      "premiumToMedianPct": null,
+      "reason": "INSUFFICIENT_PEERS"
+    },
+    {
+      "metric": "NET_MARGIN",
+      "n": 3,
+      "min": 4.707112970711297,
+      "p25": 5.333072314033489,
+      "median": 5.95903165735568,
+      "p75": 6.575021446655368,
+      "max": 7.191011235955057,
+      "mean": 5.952385288007345,
+      "target": 24.327123396954544,
+      "targetPercentile": 1,
+      "premiumToMedianPct": 3.0823953950514342,
+      "reason": null
+    },
+    {
+      "metric": "RETURN_COM_EQY",
+      "n": 2,
+      "min": null,
+      "p25": null,
+      "median": null,
+      "p75": null,
+      "max": null,
+      "mean": null,
+      "target": 177.76997366110623,
+      "targetPercentile": null,
+      "premiumToMedianPct": null,
+      "reason": "INSUFFICIENT_PEERS"
+    },
+    {
+      "metric": "SALES_GROWTH_YOY",
+      "n": 3,
+      "min": -7.2916666666666625,
+      "p25": -2.1103246960972486,
+      "median": 3.0710172744721653,
+      "p75": 5.607906827281328,
+      "max": 8.14479638009049,
+      "mean": 1.308048995965331,
+      "target": 6.425511782832749,
+      "targetPercentile": 0.6666666666666666,
+      "premiumToMedianPct": 1.0923072742849165,
+      "reason": null
+    },
+    {
+      "metric": "DVD_YIELD",
+      "n": 0,
+      "min": null,
+      "p25": null,
+      "median": null,
+      "p75": null,
+      "max": null,
+      "mean": null,
+      "target": 0.16047476307263756,
+      "targetPercentile": null,
+      "premiumToMedianPct": null,
+      "reason": "INSUFFICIENT_PEERS"
+    }
+  ],
+  "periodType": "TTM",
+  "knownAt": "<KNOWN_AT>",
+  "notes": [
+    "FUNDAMENTALS_NOT_INGESTED"
+  ]
+}

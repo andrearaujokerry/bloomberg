@@ -16,7 +16,8 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-07 | Entitlements, auth, access log, quotas, compliance | merged |
 | WP-08 | Function runner, REST routes, export, search, observability | merged |
 | WP-09 | Tier 1 functions, news, messaging, alerts | merged, with open defects below |
-| WP-10 … WP-15 | Tier 2/3 screens, SDK client, web shell, seed and verification | not started |
+| WP-10 | Tier 2 functions, fundamentals ingest, portfolios | merged |
+| WP-11 … WP-15 | Tier 3 screens, SDK client, web shell, seed and verification | not started |
 
 3,643 tests across 176 files.
 
@@ -104,6 +105,31 @@ the guard proves.
 three hand-typed values contradict their capture outright. `HP.series`, `HELP.default` and
 `SECF.default` have no committed golden at all. `HP.price.json` asserts a session on Labor Day 2020,
 a day its own declared calendar says the exchange was shut.
+
+### The golden comparisons were non-deterministic, and are not any more
+
+Every golden payload test normalises database ids to stable tokens before diffing against the
+committed file. The substitution used to be **value-based**: any number equal to a sequence-allocated
+id was rewritten, whether or not it was an id. So the tests passed by luck of the draw, and the
+collision space grew every run.
+
+These were not hypothetical. Reproduced against the committed goldens: an instrument id colliding
+with a 52-week high (`WEI`), a market-data line id with a bid size (`Q`, four fields), an instrument
+id with a closing price (`HP`, **167 fields** — the whole price history, which would read as a
+catastrophic resolver regression). Worst is `ECO`: `eco_events.event_id` is a fresh sequence whose
+first values are literally 1, 2, 3, and every event carries an `importance` of 1, 2 or 3 — that
+collision is one `TRUNCATE … RESTART IDENTITY` away, not a long run away.
+
+Substitution is now **key-aware** across all 25 files: a number is rewritten because of the key it
+sits under, never because of what it equals. `golden.ts` gained `idToken(key, value, idKeys, tokens)`
+as the number-valued twin of the existing `subjectToken`. Proven equivalent rather than merely
+different: hash all 49 goldens, regenerate through the new rule, re-hash, diff empty.
+
+Two things worth keeping in mind. `HDS` and `PORT` carried a hand-written exception for one field
+(`key !== 'provIdx'`) — that carve-out was the defect admitting itself, someone had been bitten and
+patched the symptom. And one textual substitution survives deliberately, in `MSG`, because that
+payload quotes ids inside free text (`"W 41"`, `"portfolio #7"`) where a key rule cannot reach; it is
+the documented exception, not an oversight.
 
 ### `quote_ticks` has two writers (latent, not yet firing)
 

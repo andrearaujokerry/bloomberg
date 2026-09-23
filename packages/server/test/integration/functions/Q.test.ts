@@ -37,7 +37,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import type { NormalisedUpdate } from '@terminal/core';
 import { FunctionRegistry } from '@terminal/core';
@@ -349,18 +349,34 @@ async function runQ(params: Record<string, unknown> = {}): Promise<QPayload> {
  * replaced by stable tokens. Everything else in the payload — prices, timestamps, states,
  * provenance indices — is asserted verbatim.
  */
+/**
+ * The keys of a Q payload that hold a sequence-allocated id (§Q `QLine`, `ResolvedRef`).
+ * `mdLineIds` is an array of them, which `idToken` maps element-wise; `sourceId`
+ * (`'cboe.quotes'`) and `calendarId` (`'XNAS'`) are names, and `srcSeq`, `priority` and `provIdx`
+ * are the payload's own small integers.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set([
+  'instrumentId',
+  'primaryListingId',
+  'mdLineId',
+  'mdLineIds',
+]);
+
 function normalise(payload: QPayload): unknown {
   const tokens = new Map<number, string>([
     [env.instrumentId, '<AAPL>'],
     [env.cboeLineId, '<CBOE_LINE>'],
     [env.yahooLineId, '<YAHOO_LINE>'],
   ]);
-  const json = JSON.stringify(payload, (_key, value: unknown) => {
-    if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
+  const json = JSON.stringify(payload, (key, value: unknown) => {
     // The per-run provider-symbol suffix is stripped; the ids are substituted in subject strings
     // only (`subjectToken`), never in a timestamp that happens to contain their digits.
     if (typeof value === 'string') return subjectToken(value.split(SYMBOL_TAG).join(''), tokens);
-    return value;
+    // And in numbers only under a key that names an id. Every whole number Q publishes was a
+    // candidate under the old value-based rule — `srcSeq`, `priority`, `provIdx`,
+    // `intrinsicDelayMin`, `expectedIntervalMs`, a size, a volume, a round price — and a quote
+    // golden that renames a sequence number as `<CBOE_LINE>` has stopped pinning the quote.
+    return idToken(key, value, ID_KEYS, tokens);
   });
   return JSON.parse(json);
 }

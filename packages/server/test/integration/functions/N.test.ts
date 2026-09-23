@@ -24,7 +24,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import { FunctionRegistry } from '@terminal/core';
 import { N } from '@terminal/core/functions/manifests/N';
@@ -424,6 +424,12 @@ function decode(cursor: string): { publishedAt: string; newsId: number; index: n
   };
 }
 
+/**
+ * The keys of an N payload that hold a sequence-allocated id (§N, `functions/shared/news.ts`).
+ * `sourceId` (`'bbg.rss'`) is a name; the cursor embeds a news id and is tokenised whole below.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['newsId', 'entityId', 'instrumentId']);
+
 function normalise(payload: NPayload): unknown {
   const tokens = new Map<number, string>([[env.aapl, '<AAPL>']]);
   let n = 0;
@@ -434,11 +440,12 @@ function normalise(payload: NPayload): unknown {
     JSON.stringify(payload, (key, value: unknown) => {
       // The cursor embeds a news id, which is a sequence value: tokenised whole.
       if (key === 'nextCursor') return value === null ? null : '<CURSOR>';
-      if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
       // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
       // made the golden a function of the sequence values this run drew.
       if (typeof value === 'string') return subjectToken(value, tokens);
-      return value;
+      // The same rule for numbers, which used to be substituted by value: a row's `rank`,
+      // `confidence` and `total` are numbers, and so is every id the sequence hands out.
+      return idToken(key, value, ID_KEYS, tokens);
     }),
   );
 }

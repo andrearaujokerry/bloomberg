@@ -25,7 +25,7 @@ import {
 
 import { entityKindEnum } from './enums.js';
 import { rooms } from './messaging.js';
-import { users } from './users.js';
+import { firms, users } from './users.js';
 
 /** Backs `usage_events.event_id` (the table is partitioned, so it cannot use an identity column). */
 export const usageEventsIdSeq = pgSequence('usage_events_id_seq');
@@ -165,6 +165,12 @@ export const dataExceptions = pgTable(
     kind: text('kind').notNull(),
     entityKind: entityKindEnum('entity_kind'),
     entityId: bigint('entity_id', { mode: 'number' }),
+    /**
+     * Owning firm of an exception raised over tenant data (a portfolio import's unresolved
+     * identifier), `null` for the reference-data exceptions that belong to no customer firm.
+     * Migration 0019 carries the RLS policy that keeps a firm's rows inside it (PORT-07).
+     */
+    firmId: bigint('firm_id', { mode: 'number' }).references(() => firms.firmId),
     field: text('field'),
     /** `[{sourceId, provenanceId, value}]` */
     candidates: jsonb('candidates').notNull().default([]),
@@ -182,6 +188,7 @@ export const dataExceptions = pgTable(
     index('data_exceptions_open_idx')
       .on(t.slaDueAt)
       .where(sql`${t.status} = 'open'`),
+    index('data_exceptions_firm_idx').on(t.firmId, t.status, t.slaDueAt),
     check(
       'data_exceptions_kind_check',
       sql`${t.kind} IN ('source_conflict','missing_field','parse_error','manual_review','reported_error','unresolved_identifier','ca_review')`,

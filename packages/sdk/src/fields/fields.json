@@ -6422,6 +6422,310 @@
       "since": "2026.09.1"
     },
     {
+      "id": "PORT_ACTIVE_WEIGHT",
+      "label": "Active weight",
+      "definition": "A holding’s portfolio weight minus its weight in the portfolio’s benchmark, in percent. A name the benchmark does not hold carries a benchmark weight of zero, so its active weight is its whole position weight; a benchmark constituent the portfolio does not hold appears with a negative active weight. Null only when the portfolio has no benchmark at all.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "PORT_WEIGHT − benchmark weight (index_members.weight / etf_holdings.weight)",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 3.41,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_BETA",
+      "label": "Portfolio beta",
+      "definition": "Ordinary-least-squares slope of the portfolio’s daily returns on the benchmark’s daily returns over the risk window (252 sessions by default), on simple returns of split-adjusted closes. Null when fewer than 200 sessions overlap.",
+      "type": "number",
+      "unit": "ratio",
+      "decimals": 3,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "OLS slope of portfolio vs benchmark daily returns (core/analytics/stats#beta)",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.043,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_CONTRIB_TE",
+      "label": "Contribution to tracking error",
+      "definition": "On a position row, that position’s share of the portfolio’s ex-post tracking error, in percent; on the totals row, the tracking error itself — the standard deviation of the daily active (portfolio minus benchmark) return series, annualised by √252 and expressed in percent. The row contributions sum to the total.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "stdev(portfolio − benchmark daily returns) × √252 × 100 (core/analytics/portfolio/risk.ts#trackingError)",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 0.57,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_MV",
+      "label": "Market value",
+      "definition": "A holding’s market value in the portfolio’s base currency, signed — negative for a short. Quantity times last price times the FX rate from the quoted currency into the base currency; a cash line is its quantity converted at the same rate. Null when the holding carries no price or no FX pair, never zero.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "quantity × PX_LAST × FX_USD, in the portfolio base currency",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 294372,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_PNL_1D",
+      "label": "Day P&L",
+      "definition": "The holding’s profit or loss over the current session in the portfolio’s base currency: quantity times the session net change times the FX rate. Signed, and negative for a long position in a falling name.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "quantity × CHG_NET_1D × FX_USD, in the portfolio base currency",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": -1284.6,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_UNREAL_PNL",
+      "label": "Unrealised P&L",
+      "definition": "Mark-to-market gain or loss on the holding against its lot-weighted cost price, in the portfolio’s base currency. Null when the position carries no cost price — an unknown cost basis is absent, not zero.",
+      "type": "number",
+      "unit": "ccy",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "quantity × (PX_LAST − costPrice) × FX_USD",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 69465,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_VAR",
+      "label": "Value at Risk (1 day)",
+      "definition": "One-day value at risk of the portfolio at the requested confidence, as a positive percentage of portfolio value. The historical method takes the (100 − confidence)-th percentile of the realised daily return series; the parametric method takes z(confidence) times the daily standard deviation.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": false,
+      "derivation": "1-day VaR at varConfidence by varMethod (core/analytics/portfolio/risk.ts)",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 1.86,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "PORT_WEIGHT",
+      "label": "Portfolio weight",
+      "definition": "The holding’s share of gross market value, in percent: the absolute market value over the sum of absolute market values across the non-cash book, so a short contributes positively to the denominator and the column sums to 100.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 2,
+      "fieldClass": "portfolio",
+      "assetClasses": [
+        "equity",
+        "etf",
+        "index",
+        "fx",
+        "govt",
+        "option",
+        "future",
+        "crypto",
+        "rate",
+        "econ"
+      ],
+      "sources": [
+        {
+          "assetClass": "*",
+          "sourceId": "internal.user",
+          "endpoint": "positions",
+          "providerPath": "core/analytics/portfolio"
+        }
+      ],
+      "updateFreq": "tick",
+      "pit": false,
+      "derivation": "|PORT_MV| / totals.grossMv × 100",
+      "example": {
+        "ref": "AAPL US Equity",
+        "value": 9.12,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
       "id": "PREV",
       "label": "Previous",
       "definition": "The observation immediately before VALUE, as last published (revised where the publisher revised it).",

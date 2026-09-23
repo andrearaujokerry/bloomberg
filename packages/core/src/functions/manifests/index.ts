@@ -10,53 +10,95 @@
 import type { ParamsOf as ParamsOfManifest, PayloadOf as PayloadOfManifest } from '../manifest.js';
 import { FunctionRegistry } from '../registry.js';
 
+import { BTMM } from './BTMM.js';
+import { CACS } from './CACS.js';
+import { CF } from './CF.js';
+import { CN } from './CN.js';
 import { DES } from './DES.js';
+import { ECO } from './ECO.js';
+import { EE } from './EE.js';
+import { EQS } from './EQS.js';
+import { FA } from './FA.js';
+import { FXC } from './FXC.js';
 import { GIP } from './GIP.js';
 import { GP } from './GP.js';
+import { HDS } from './HDS.js';
 import { HELP } from './HELP.js';
 import { HP } from './HP.js';
+import { MEMB } from './MEMB.js';
 import { MSG } from './MSG.js';
 import { N } from './N.js';
 import { NI } from './NI.js';
+import { PORT } from './PORT.js';
 import { Q } from './Q.js';
 import { QM } from './QM.js';
+import { RV } from './RV.js';
 import { SECF } from './SECF.js';
 import { TOP } from './TOP.js';
 import { W } from './W.js';
+import { WB } from './WB.js';
 import { WEI } from './WEI.js';
 
 export {
+  BTMM,
+  CACS,
+  CF,
+  CN,
   DES,
+  ECO,
+  EE,
+  EQS,
+  FA,
+  FXC,
   GIP,
   GP,
+  HDS,
   HELP,
   HP,
+  MEMB,
   MSG,
   N,
   NI,
+  PORT,
   Q,
   QM,
+  RV,
   SECF,
   TOP,
   W,
+  WB,
   WEI,
 };
 
 /** Every module the glob matched, keyed by its file (or directory) name. */
 export const manifestModules = {
+  BTMM,
+  CACS,
+  CF,
+  CN,
   DES,
+  ECO,
+  EE,
+  EQS,
+  FA,
+  FXC,
   GIP,
   GP,
+  HDS,
   HELP,
   HP,
+  MEMB,
   MSG,
   N,
   NI,
+  PORT,
   Q,
   QM,
+  RV,
   SECF,
   TOP,
   W,
+  WB,
   WEI,
 } as const;
 

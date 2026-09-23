@@ -21,7 +21,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import { FunctionRegistry } from '@terminal/core';
 import { NI } from '@terminal/core/functions/manifests/NI';
@@ -363,6 +363,12 @@ async function runNi(params: Record<string, unknown> = {}, which = 'main'): Prom
   return res.json<Run>();
 }
 
+/**
+ * The keys of an NI payload that hold a sequence-allocated id (§NI, `functions/shared/news.ts`).
+ * `sourceId` (`'fed.rss'`) is a name, not a sequence value.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['newsId', 'entityId', 'topicId']);
+
 function normalise(payload: NiPayload): unknown {
   const tokens = new Map<number, string>();
   let n = 0;
@@ -370,12 +376,14 @@ function normalise(payload: NiPayload): unknown {
   let k = 0;
   for (const id of env.topicIds.values()) tokens.set(id, `<TOPIC${String((k += 1))}>`);
   return JSON.parse(
-    JSON.stringify(payload, (_key, value: unknown) => {
-      if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
+    JSON.stringify(payload, (key, value: unknown) => {
       // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
       // made the golden a function of the sequence values this run drew.
       if (typeof value === 'string') return subjectToken(value, tokens);
-      return value;
+      // The same rule for numbers: an id is one because of the key it sits under, not because it
+      // equals one. A topic's `count` and a row's `rank` are numbers on the same payload, and the
+      // news and topic sequences run through exactly the small integers a count takes.
+      return idToken(key, value, ID_KEYS, tokens);
     }),
   );
 }

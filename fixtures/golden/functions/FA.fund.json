@@ -1,0 +1,105 @@
+{
+  "variant": "fund",
+  "fund": {
+    "instrumentId": "<SPY>",
+    "key": "SPY US Equity",
+    "name": "SPDR S&P 500 ETF Trust",
+    "fundType": "etf",
+    "sponsor": "State Street Global Advisors",
+    "cik": "0000884394",
+    "expenseRatio": 0.000945,
+    "inceptionDate": "1993-01-22",
+    "distributionFreq": "quarterly",
+    "trackedIndex": null
+  },
+  "nav": {
+    "px": {
+      "v": 662.41,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<SPY>",
+        "field": "PX_LAST"
+      }
+    },
+    "chgPct": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<SPY>",
+        "field": "CHG_PCT_1D"
+      }
+    }
+  },
+  "holdings": {
+    "asOfDate": "2026-09-14",
+    "sourceId": "sec.archives",
+    "count": 4,
+    "netAssets": null,
+    "top10": [
+      {
+        "instrumentId": "<AAPL>",
+        "key": "AAPL US Equity",
+        "name": "APPLE INC",
+        "weight": 0.0712,
+        "marketValue": 41200000000
+      },
+      {
+        "instrumentId": "<MSFT>",
+        "key": "MSFT US Equity",
+        "name": "MICROSOFT CORP",
+        "weight": 0.0651,
+        "marketValue": 37650000000
+      },
+      {
+        "instrumentId": null,
+        "key": null,
+        "name": "NVIDIA CORP",
+        "weight": 0.0604,
+        "marketValue": 34940000000
+      },
+      {
+        "instrumentId": null,
+        "key": null,
+        "name": "US DOLLARS",
+        "weight": 0.0021,
+        "marketValue": 1210000000
+      }
+    ],
+    "byAssetCat": [
+      {
+        "assetCat": "EC",
+        "weight": 0.1967,
+        "count": 3
+      },
+      {
+        "assetCat": "STIV",
+        "weight": 0.0021,
+        "count": 1
+      }
+    ],
+    "provIdx": 1
+  },
+  "filings": [
+    {
+      "accessionNo": "0000884394-26-000012",
+      "form": "NPORT-P",
+      "filedAt": "2026-08-28",
+      "reportDate": "2026-06-30",
+      "url": "https://www.sec.gov/Archives/edgar/data/884394/000088439426000012/0000884394-26-000012-index.htm"
+    },
+    {
+      "accessionNo": "0000884394-26-000004",
+      "form": "N-CEN",
+      "filedAt": "2026-03-12",
+      "reportDate": "2025-12-31",
+      "url": "https://www.sec.gov/Archives/edgar/data/884394/000088439426000004/0000884394-26-000004-index.htm"
+    }
+  ],
+  "notes": [
+    "STATEMENTS_NOT_APPLICABLE_FUND"
+  ]
+}

@@ -18,6 +18,7 @@ import * as health from './health.js';
 import * as help from './help.js';
 import * as messages from './messages.js';
 import * as news from './news.js';
+import * as portfolios from './portfolios.js';
 import * as reference from './reference.js';
 import * as search from './search.js';
 import * as status from './status.js';
@@ -38,6 +39,7 @@ export {
   help,
   messages,
   news,
+  portfolios,
   reference,
   search,
   status,
@@ -60,6 +62,7 @@ export const routeModules = {
   help,
   messages,
   news,
+  portfolios,
   reference,
   search,
   status,

@@ -1,0 +1,457 @@
+{
+  "variant": "default",
+  "view": "holdings",
+  "portfolio": {
+    "portfolioId": "<PORTFOLIOID>",
+    "firmId": "<FIRMID>",
+    "name": "Demo Long",
+    "baseCurrency": "USD",
+    "benchmark": {
+      "instrumentId": "<INDEX>",
+      "key": "PI<T> US Index",
+      "name": "Index <T>",
+      "source": "portfolio"
+    },
+    "asOfDate": "2026-09-15",
+    "positionCount": 7,
+    "updatedAt": "<UPDATEDAT>"
+  },
+  "totals": {
+    "marketValue": {
+      "v": 894090.2237949999,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "costBasis": 727174,
+    "unrealisedPnl": {
+      "v": 137317.723795,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "dayPnl": {
+      "v": 2257.473753750014,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "cash": 50000,
+    "accrued": 0,
+    "longMv": 844090.2237949999,
+    "shortMv": 0,
+    "grossMv": 894090.2237949999,
+    "netMv": 894090.2237949999,
+    "pricedWeight": 0.973339291043277
+  },
+  "holdings": [
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": null,
+      "key": null,
+      "name": "NOPE XX Equity",
+      "rawIdentifier": "NOPE XX Equity",
+      "assetClass": null,
+      "marketSector": null,
+      "gicsSector": null,
+      "currency": "USD",
+      "isCash": false,
+      "lotCount": 1,
+      "quantity": 10,
+      "costPrice": 1,
+      "costCurrency": "USD",
+      "tradeDate": "2024-01-02",
+      "accrued": 0,
+      "px": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "fxRate": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "marketValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "weight": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "dayPnl": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "unrealisedPnl": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "benchWeight": 0,
+      "activeWeight": null,
+      "reconStatus": "unresolved",
+      "subject": null,
+      "provIdx": 0
+    },
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": "<ALPHA>",
+      "key": "PA<T> US Equity",
+      "name": "Alpha <T> Inc",
+      "rawIdentifier": "PA<T> US Equity",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "gicsSector": "Information Technology",
+      "currency": "USD",
+      "isCash": false,
+      "lotCount": 1,
+      "quantity": 1200,
+      "costPrice": 187.42,
+      "costCurrency": "USD",
+      "tradeDate": "2024-03-11",
+      "accrued": 0,
+      "px": {
+        "v": 245.31,
+        "st": "live",
+        "ts": 1789496788000,
+        "provIdx": 4,
+        "live": {
+          "subject": "q:<ALPHA>",
+          "field": "PX_LAST"
+        }
+      },
+      "fxRate": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "marketValue": {
+        "v": 294372,
+        "st": "closed",
+        "provIdx": 4
+      },
+      "weight": {
+        "v": 0.3292419402043419,
+        "st": "closed",
+        "provIdx": 4
+      },
+      "dayPnl": {
+        "v": 2232,
+        "st": "closed",
+        "provIdx": 4
+      },
+      "unrealisedPnl": {
+        "v": 69468.00000000001,
+        "st": "closed",
+        "provIdx": 4
+      },
+      "benchWeight": 0.4,
+      "activeWeight": -0.07075805979565813,
+      "reconStatus": "ok",
+      "subject": "q:<ALPHA>",
+      "provIdx": 0
+    },
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": "<BETA>",
+      "key": "PB<T> US Equity",
+      "name": "Beta <T> Inc",
+      "rawIdentifier": "PB<T> US Equity",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "gicsSector": "Information Technology",
+      "currency": "USD",
+      "isCash": false,
+      "lotCount": 1,
+      "quantity": 800,
+      "costPrice": 295.1,
+      "costCurrency": "USD",
+      "tradeDate": "2024-05-02",
+      "accrued": 0,
+      "px": {
+        "v": 361.64737,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "fxRate": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "marketValue": {
+        "v": 289317.896,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "weight": {
+        "v": 0.3235891505132214,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "dayPnl": {
+        "v": 54.01280000000952,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "unrealisedPnl": {
+        "v": 53237.896,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "benchWeight": 0.35,
+      "activeWeight": -0.026410849486778576,
+      "reconStatus": "ok",
+      "subject": "q:<BETA>",
+      "provIdx": 0
+    },
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": "<EURO>",
+      "key": "PE<T> US Equity",
+      "name": "Euro <T> SA",
+      "rawIdentifier": "PE<T> US Equity",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "gicsSector": "Health Care",
+      "currency": "EUR",
+      "isCash": false,
+      "lotCount": 1,
+      "quantity": 500,
+      "costPrice": 88.4,
+      "costCurrency": "EUR",
+      "tradeDate": "2024-06-03",
+      "accrued": 0,
+      "px": {
+        "v": 111.307628,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "fxRate": {
+        "v": 1.0925,
+        "st": "closed",
+        "provIdx": 3
+      },
+      "marketValue": {
+        "v": 60801.791795,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "weight": {
+        "v": 0.06800408971806501,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "dayPnl": {
+        "v": -78.8790462500011,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "unrealisedPnl": {
+        "v": 12513.291794999996,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "benchWeight": 0,
+      "activeWeight": 0.06800408971806501,
+      "reconStatus": "ok",
+      "subject": "q:<EURO>",
+      "provIdx": 0
+    },
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": "<GOVT>",
+      "key": "PG<T> GOVT Govt",
+      "name": "Treasury <T>",
+      "rawIdentifier": "PG<T> Govt",
+      "assetClass": "govt",
+      "marketSector": "Govt",
+      "gicsSector": null,
+      "currency": "USD",
+      "isCash": false,
+      "lotCount": 1,
+      "quantity": 2000,
+      "costPrice": 98.75,
+      "costCurrency": "USD",
+      "tradeDate": "2024-07-01",
+      "accrued": 0,
+      "px": {
+        "v": 99.799268,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "fxRate": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "marketValue": {
+        "v": 199598.536,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "weight": {
+        "v": 0.2232420517392489,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "dayPnl": {
+        "v": 50.3400000000056,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "unrealisedPnl": {
+        "v": 2098.5359999999955,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "benchWeight": 0,
+      "activeWeight": 0.2232420517392489,
+      "reconStatus": "ok",
+      "subject": "q:<GOVT>",
+      "provIdx": 0
+    },
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": "<STALE>",
+      "key": "PS<T> US Equity",
+      "name": "Stale <T> Inc",
+      "rawIdentifier": "PS<T> US Equity",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "gicsSector": null,
+      "currency": "USD",
+      "isCash": false,
+      "lotCount": 1,
+      "quantity": 400,
+      "costPrice": 61.2,
+      "costCurrency": "USD",
+      "tradeDate": "2024-08-15",
+      "accrued": 0,
+      "px": {
+        "v": null,
+        "st": "blank",
+        "provIdx": -1,
+        "live": {
+          "subject": "q:<STALE>",
+          "field": "PX_LAST"
+        }
+      },
+      "fxRate": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "marketValue": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "weight": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "dayPnl": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "unrealisedPnl": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "benchWeight": 0,
+      "activeWeight": null,
+      "reconStatus": "price_missing",
+      "subject": "q:<STALE>",
+      "provIdx": 0
+    },
+    {
+      "positionId": "<POSITIONID>",
+      "instrumentId": null,
+      "key": null,
+      "name": "USD",
+      "rawIdentifier": "USD",
+      "assetClass": null,
+      "marketSector": null,
+      "gicsSector": null,
+      "currency": "USD",
+      "isCash": true,
+      "lotCount": 1,
+      "quantity": 50000,
+      "costPrice": null,
+      "costCurrency": null,
+      "tradeDate": null,
+      "accrued": 0,
+      "px": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "fxRate": {
+        "v": 1,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "marketValue": {
+        "v": 50000,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "weight": {
+        "v": 0.055922767825122954,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "dayPnl": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "unrealisedPnl": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "benchWeight": 0,
+      "activeWeight": 0.055922767825122954,
+      "reconStatus": "ok",
+      "subject": null,
+      "provIdx": 0
+    }
+  ],
+  "exposure": null,
+  "attribution": null,
+  "risk": null,
+  "recon": {
+    "importId": "<IMPORTID>",
+    "channel": "upload",
+    "uploadedAt": "2026-09-15T18:41:28.000Z",
+    "status": "partial",
+    "rowsTotal": 7,
+    "rowsOk": 6,
+    "rowsError": 1,
+    "errors": [
+      {
+        "row": 7,
+        "identifier": "NOPE XX Equity",
+        "column": "identifier",
+        "reason": "SECURITY_NOT_FOUND: nothing resolves 'NOPE XX Equity'"
+      }
+    ],
+    "matched": 0,
+    "added": 7,
+    "removed": 0,
+    "quantityDiffs": []
+  },
+  "confidentiality": {
+    "firmOnly": true,
+    "note": "PORT-07: firm-isolated; never leaves the tenant"
+  },
+  "notes": [
+    "PRICE_MISSING"
+  ]
+}

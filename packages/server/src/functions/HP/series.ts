@@ -413,6 +413,21 @@ export async function resolveSeriesVariant(input: SeriesInput): Promise<HpSeries
     };
   });
 
+  // Rule 6 is per cell: a change that could not be computed is a `null` a user can hover over, so
+  // the column says once why some of its rows are blank. There are exactly three reasons and none
+  // of them is a missing source — the first row of the window has no predecessor, a published gap
+  // (`status:'missing'`) has no level to difference, and a zero previous level has no percentage.
+  // HP never interpolates across any of them (FUNCTIONS_TIER1 §HP).
+  const CHANGE_DETAIL =
+    'not computed on the first row of the window, across a published gap (status:"missing"), ' +
+    'or where the previous level is zero — a change is never interpolated';
+  if (rows.some((row) => row.chgAbs === null)) {
+    ctx.unavailable.add({ field: 'rows.chgAbs', reason: 'NOT_APPLICABLE', detail: CHANGE_DETAIL });
+  }
+  if (rows.some((row) => row.chgPct === null)) {
+    ctx.unavailable.add({ field: 'rows.chgPct', reason: 'NOT_APPLICABLE', detail: CHANGE_DETAIL });
+  }
+
   const levels = ordered
     .map((o) => ({ date: o.date, v: o.values[0] ?? null }))
     .filter((p): p is { date: string; v: number } => p.v !== null);

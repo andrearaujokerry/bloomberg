@@ -48,7 +48,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import { FunctionRegistry, toCsv } from '@terminal/core';
 import { XNAS } from '@terminal/core/calendars/nyse';
@@ -910,17 +910,21 @@ describe('HP — the series variant (FUNC-02)', () => {
   function normaliseSeries(payload: HpSeriesPayload): unknown {
     const id = env.econInstrumentId;
     const code = payload.series.code;
+    const tokens = new Map([[id, '<CPI>']]);
     return JSON.parse(
       JSON.stringify(payload, (key: string, value: unknown) => {
         if (key === 'knownAt') return '<knownAt>';
-        if (typeof value === 'number' && value === id) return '<CPI>';
-        // The series code is a fixture string and is replaced wherever it appears; the instrument
-        // id is a sequence value and is replaced in subject strings only (`subjectToken`), never in
-        // a timestamp that happens to contain its digits.
+        // The series code is a fixture string and `series.code` is the one place it is published;
+        // the instrument id is a sequence value and is replaced in subject strings only
+        // (`subjectToken`), never in a timestamp that happens to contain its digits.
         if (typeof value === 'string') {
-          return subjectToken(value.split(code).join('<SERIES_CODE>'), new Map([[id, '<CPI>']]));
+          const untagged = key === 'code' ? value.split(code).join('<SERIES_CODE>') : value;
+          return subjectToken(untagged, tokens);
         }
-        return value;
+        // An economic series is a column of observations — CPI levels, month-over-month and
+        // year-over-year changes. An id is an id because of the key it sits under, never because
+        // a print equals one.
+        return idToken(key, value, ID_KEYS, tokens);
       }),
     );
   }
@@ -941,6 +945,13 @@ describe('HP — golden', () => {
 });
 
 /**
+ * The one key in an HP payload that holds a sequence-allocated id (both variants). `calendarId`
+ * (`'XNAS'`), a column's `id` (`'PX_LAST'`) and `sourceId` (`'bls.timeseries'`) are names, and
+ * `mdLineIds` has its own branch.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set(['instrumentId']);
+
+/**
  * The golden cannot carry the fixture's instrument id (the id is whatever the sequence gave this
  * run), so every occurrence of it — the number and the string — becomes `<AAPL>` before the
  * comparison. Provenance indexes are positions in this run's `meta.provenance`, which is stable
@@ -948,14 +959,18 @@ describe('HP — golden', () => {
  */
 function normalise(payload: HpPricePayload): unknown {
   const id = env.instrumentId;
+  const tokens = new Map([[id, '<AAPL>']]);
   return JSON.parse(
     JSON.stringify(payload, (key: string, value: unknown) => {
       // `md_lines.md_line_id` is a bare sequence with no fixture control over it, so the golden
       // records that there is exactly one line rather than which number this run drew.
       if (key === 'mdLineIds' && Array.isArray(value)) return `<${String(value.length)} md line(s)>`;
-      if (typeof value === 'number' && value === id) return '<AAPL>';
-      if (typeof value === 'string') return subjectToken(value, new Map([[id, '<AAPL>']]));
-      return value;
+      if (typeof value === 'string') return subjectToken(value, tokens);
+      // A price history is nothing but bars — open, high, low, close, volume, adjustment factors
+      // and the summary's `first`, `last`, `high`, `low` and `bars`. Under the old value-based
+      // rule every whole-numbered one of them was a candidate: the run whose sequence reached the
+      // fixture's own close would have renamed the close as `<AAPL>`.
+      return idToken(key, value, ID_KEYS, tokens);
     }),
   );
 }

@@ -1,0 +1,162 @@
+{
+  "variant": "members",
+  "index": {
+    "instrumentId": "<SPX>",
+    "key": "<KEY>",
+    "name": "S&P 500",
+    "indexId": "<INDEX_ID>"
+  },
+  "membership": {
+    "asOfDate": "2026-09-15",
+    "sourceId": "ssga.holdings",
+    "shown": 3,
+    "total": 3,
+    "provIdx": 3
+  },
+  "window": {
+    "from": "2026-08-16T18:41:28.000Z",
+    "to": "2026-09-15T18:41:28.000Z",
+    "label": "1M"
+  },
+  "rows": [
+    {
+      "newsId": "<NEWS:msft>",
+      "headline": "Microsoft Lifts Cloud Guidance",
+      "summary": "Azure growth reaccelerated.",
+      "sourceId": "bbg.rss",
+      "feed": "technology",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": "<CIK>",
+      "items8k": null,
+      "publishedAt": "2026-09-15T14:00:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/microsoft-cloud",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "instrument",
+          "entityId": "<MSFT>",
+          "display": "Microsoft Corporation",
+          "confidence": 1,
+          "method": "name_exact"
+        }
+      ],
+      "provIdx": 0,
+      "members": [
+        {
+          "instrumentId": "<MSFT>",
+          "key": "<KEY>",
+          "weight": 0.06
+        }
+      ]
+    },
+    {
+      "newsId": "<NEWS:buyback>",
+      "headline": "Apple Shares Rise on Capital Return Plan",
+      "summary": "The board approved a larger buyback.",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": "<CIK>",
+      "items8k": null,
+      "publishedAt": "2026-09-15T12:04:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/apple-capital-return",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "issuer",
+          "entityId": "<ISSUER>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "name_exact"
+        },
+        {
+          "entityKind": "instrument",
+          "entityId": "<AAPL>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "ticker_exact"
+        }
+      ],
+      "provIdx": 0,
+      "members": [
+        {
+          "instrumentId": "<AAPL>",
+          "key": "<KEY>",
+          "weight": 0.07
+        }
+      ]
+    },
+    {
+      "newsId": "<NEWS:both>",
+      "headline": "Chip Demand Lifts Apple and NVIDIA",
+      "summary": "Two index heavyweights moved together.",
+      "sourceId": "bbg.rss",
+      "feed": "technology",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": "<CIK>",
+      "items8k": null,
+      "publishedAt": "2026-09-13T16:20:00.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-13/chip-demand",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "instrument",
+          "entityId": "<AAPL>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "name_exact"
+        },
+        {
+          "entityKind": "instrument",
+          "entityId": "<NVDA>",
+          "display": "NVIDIA Corporation",
+          "confidence": 1,
+          "method": "name_exact"
+        }
+      ],
+      "provIdx": 0,
+      "members": [
+        {
+          "instrumentId": "<AAPL>",
+          "key": "<KEY>",
+          "weight": 0.07
+        },
+        {
+          "instrumentId": "<NVDA>",
+          "key": "<KEY>",
+          "weight": 0.05
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "story": 3,
+    "video": 0,
+    "filing": 0,
+    "press_release": 0,
+    "fed_release": 0
+  },
+  "total": 3,
+  "liveSubjects": [
+    "n:inst:<AAPL>",
+    "n:inst:<MSFT>",
+    "n:inst:<NVDA>"
+  ],
+  "notes": [
+    "PRECISION_FIRST_LINKING",
+    "BODY_NOT_STORED_LINK_OUT",
+    "MEMBER_SUBSET"
+  ]
+}

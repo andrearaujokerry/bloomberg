@@ -18,7 +18,10 @@ import * as newsRss from './newsRss.js';
 import * as partitionMaintenance from './partitionMaintenance.js';
 import * as reconcile from './reconcile.js';
 import * as retentionPurge from './retentionPurge.js';
+import * as secCompanyFacts from './secCompanyFacts.js';
+import * as secFrames from './secFrames.js';
 import * as secNport from './secNport.js';
+import * as secSubmissions from './secSubmissions.js';
 import * as shortInterest from './shortInterest.js';
 import * as ssgaHoldings from './ssgaHoldings.js';
 import * as symbologyRefresh from './symbologyRefresh.js';
@@ -39,7 +42,10 @@ export {
   partitionMaintenance,
   reconcile,
   retentionPurge,
+  secCompanyFacts,
+  secFrames,
   secNport,
+  secSubmissions,
   shortInterest,
   ssgaHoldings,
   symbologyRefresh,
@@ -62,7 +68,10 @@ export const ingestJobModules = {
   partitionMaintenance,
   reconcile,
   retentionPurge,
+  secCompanyFacts,
+  secFrames,
   secNport,
+  secSubmissions,
   shortInterest,
   ssgaHoldings,
   symbologyRefresh,

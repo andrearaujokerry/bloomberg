@@ -1,0 +1,95 @@
+{
+  "variant": "equity",
+  "security": {
+    "instrumentId": "<SUBJECT>",
+    "key": "HSZQTH US Equity",
+    "name": "Subject ZQTH Inc",
+    "issuerId": "<ISSUERID>",
+    "cik": "0009900001"
+  },
+  "view": "HOLDERS",
+  "shareBase": {
+    "sharesOut": {
+      "v": 15000000000,
+      "st": "closed",
+      "provIdx": 1
+    },
+    "floatPct": {
+      "v": null,
+      "st": "na",
+      "provIdx": -1
+    },
+    "marketCap": {
+      "v": 3451350000000,
+      "st": "live",
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<SUBJECT>",
+        "field": "PX_LAST"
+      }
+    },
+    "px": {
+      "v": 230.09,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<SUBJECT>",
+        "field": "PX_LAST"
+      }
+    }
+  },
+  "summary": {
+    "holderCount": 2,
+    "sharesHeld": 208046100,
+    "marketValueHeld": 47833481900,
+    "pctSharesOutHeld": 0.01386974,
+    "asOfDate": "2026-06-30",
+    "sources": [
+      "sec.archives",
+      "ssga.holdings"
+    ],
+    "provIdx": 2
+  },
+  "holders": [
+    {
+      "holderName": "Fund A ZQTH Trust",
+      "holderKind": "etf",
+      "holderInstrumentId": "<FUNDA>",
+      "holderKey": "HAZQTH US Equity",
+      "shares": 183546100,
+      "marketValue": 42233481900,
+      "weightInHolder": 0.0712,
+      "pctSharesOut": 0.012236406666666666,
+      "asOfDate": "2026-06-30",
+      "sourceId": "ssga.holdings",
+      "provIdx": 2
+    },
+    {
+      "holderName": "Fund B ZQTH Trust",
+      "holderKind": "etf",
+      "holderInstrumentId": "<FUNDB>",
+      "holderKey": "HBZQTH US Equity",
+      "shares": 24500000,
+      "marketValue": 5600000000,
+      "weightInHolder": 0.0153,
+      "pctSharesOut": 0.0016333333333333334,
+      "asOfDate": "2026-06-30",
+      "sourceId": "sec.archives",
+      "provIdx": 3
+    }
+  ],
+  "insiders": {
+    "filings": [],
+    "shares": null,
+    "transactions": null,
+    "reason": "INSIDER_HOLDINGS_NOT_PARSED"
+  },
+  "institutional": {
+    "holders": null,
+    "reason": "13F_NOT_AVAILABLE"
+  },
+  "notes": [
+    "13F_NOT_AVAILABLE"
+  ]
+}

@@ -1,0 +1,278 @@
+{
+  "variant": "equity",
+  "issuer": {
+    "issuerId": "<ISSUER>",
+    "name": "Apple Inc",
+    "cik": "0000320193",
+    "fiscalYearEnd": "0926",
+    "currency": "USD"
+  },
+  "statement": "IS",
+  "periodType": "FY",
+  "scale": 1000000,
+  "columns": [
+    {
+      "periodEnd": "2025-09-27",
+      "fiscalYear": 2025,
+      "fiscalPeriod": "FY",
+      "filedAt": "2025-10-31",
+      "accessionNo": "0000320193-25-000101",
+      "form": "10-K",
+      "restated": false,
+      "derivedQ4": false,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2024-09-28",
+      "fiscalYear": 2024,
+      "fiscalPeriod": "FY",
+      "filedAt": "2024-11-01",
+      "accessionNo": "0000320193-24-000123",
+      "form": "10-K",
+      "restated": false,
+      "derivedQ4": false,
+      "provIdx": 0
+    },
+    {
+      "periodEnd": "2023-09-30",
+      "fiscalYear": 2023,
+      "fiscalPeriod": "FY",
+      "filedAt": "2023-11-03",
+      "accessionNo": "0000320193-23-000106",
+      "form": "10-K",
+      "restated": false,
+      "derivedQ4": false,
+      "provIdx": 0
+    }
+  ],
+  "rows": [
+    {
+      "item": "REVENUE",
+      "label": "Revenue",
+      "indent": 0,
+      "unit": "ccy",
+      "values": [
+        416161000000,
+        391035000000,
+        383285000000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": "SALES_REV_TURN"
+    },
+    {
+      "item": "COGS",
+      "label": "Cost of goods sold",
+      "indent": 1,
+      "unit": "ccy",
+      "values": [
+        228888550000,
+        215069250000,
+        210806750000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "GROSS_PROFIT",
+      "label": "Gross profit",
+      "indent": 0,
+      "unit": "ccy",
+      "values": [
+        187272450000,
+        175965750000,
+        172478250000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "OPEX",
+      "label": "Operating expenses",
+      "indent": 1,
+      "unit": "ccy",
+      "values": [
+        54100930000,
+        50834550000,
+        49827050000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "RND",
+      "label": "Research and development",
+      "indent": 2,
+      "unit": "ccy",
+      "values": [
+        33292880000,
+        31282800000,
+        30662800000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "OPER_INC",
+      "label": "Operating income",
+      "indent": 0,
+      "unit": "ccy",
+      "values": [
+        124848300000,
+        117310500000,
+        114985500000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": "IS_OPER_INC"
+    },
+    {
+      "item": "INT_EXP",
+      "label": "Interest expense",
+      "indent": 1,
+      "unit": "ccy",
+      "values": [
+        832322000,
+        782070000,
+        766570000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "PRETAX_INC",
+      "label": "Pre-tax income",
+      "indent": 0,
+      "unit": "ccy",
+      "values": [
+        129009910000,
+        121220850000,
+        118818350000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "TAX",
+      "label": "Income tax",
+      "indent": 1,
+      "unit": "ccy",
+      "values": [
+        18727245000,
+        17596575000,
+        17247825000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    },
+    {
+      "item": "NET_INC",
+      "label": "Net income",
+      "indent": 0,
+      "unit": "ccy",
+      "values": [
+        101240000000,
+        93736000000,
+        96995000000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": "NET_INCOME"
+    },
+    {
+      "item": "EPS_BASIC",
+      "label": "EPS, basic",
+      "indent": 1,
+      "unit": "per_share",
+      "values": [
+        6.74,
+        6.1,
+        6.15
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": "EPS_BASIC"
+    },
+    {
+      "item": "EPS_DIL",
+      "label": "EPS, diluted",
+      "indent": 1,
+      "unit": "per_share",
+      "values": [
+        6.72,
+        6.08,
+        6.13
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": "IS_EPS_DIL"
+    },
+    {
+      "item": "SHARES_DIL",
+      "label": "Diluted shares",
+      "indent": 1,
+      "unit": "shares",
+      "values": [
+        15200000000,
+        15200000000,
+        15200000000
+      ],
+      "asReported": [
+        null,
+        null,
+        null
+      ],
+      "fieldId": null
+    }
+  ],
+  "knownAt": "<KNOWN_AT>",
+  "mappingVersion": "std-map/2026.09",
+  "engine": {
+    "name": "fundamentals/std-map",
+    "version": "std-map/2026.09"
+  },
+  "notes": []
+}

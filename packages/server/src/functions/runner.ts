@@ -376,13 +376,45 @@ function applicableClasses(manifest: AnyFunctionManifest): readonly AssetClass[]
  * built from `decision.fields`, which is a superset of `downgrades` and is where a *denial* (as
  * opposed to a downgrade) is recorded at all.
  */
-/** The column ids the manifest's own CSV spec names, or an empty set when it computes them. */
-function csvColumnIds(manifest: AnyFunctionManifest): ReadonlySet<string> {
-  const columns = manifest.csv.columns;
-  // A function of `(params, payload)` computes its columns from the payload, so there is no
-  // static set to check against and the null rule does not apply to this manifest's keys.
-  if (typeof columns !== 'object' || columns === null) return new Set<string>();
-  return new Set(columns.map((c: CsvColumn) => c.id));
+/**
+ * The ids of the **numeric** columns the manifest's own CSV spec names for *this* payload.
+ *
+ * Two decisions live here.
+ *
+ * A `csv.columns` that is a function of `(params, payload)` is not a reason to check nothing: it is
+ * the same function `toCsv` calls on the export path (core/functions/csv.ts), over the same payload,
+ * so calling it here costs one evaluation and buys the cell rules the keys they are bounded to.
+ * Nine of WP-10's fourteen manifests compute their columns (FA, EQS, RV, CN, CACS, ECO, PORT, HDS,
+ * FXC) — exempting them left `PORT.weight`, `RV.median` and `FA.values[]` outside both the
+ * uncited-number rule and the null rule, which is two thirds of Tier 2 unguarded. It throws only if
+ * the manifest's own column function throws, and that is the export path's failure to report, not
+ * this guard's: the set is then empty and the rules degrade to `hasField` alone.
+ *
+ * Only `type: 'number'` columns count, because both rules bounded by this set are about a
+ * *measurement*: rule 1 is about a number with no source, and rule 3 is about a number that is
+ * missing. A null in a `string`/`date` column — `filings[].amends`, `actions[].note`,
+ * `holdings[].isin`, `rows[].mic` — is an attribute the record does not have rather than data that
+ * was unavailable, and demanding a `meta.unavailable` entry for each of those would bury the
+ * entries that mean something under hundreds that do not. Dictionary `FieldId` keys stay in scope
+ * whatever their type (see `isCell`): those name a field the dictionary itself defines.
+ */
+function csvNumericColumnIds(
+  manifest: AnyFunctionManifest,
+  params: unknown,
+  payload: unknown,
+): ReadonlySet<string> {
+  const spec = manifest.csv.columns;
+  let columns: readonly CsvColumn[];
+  if (typeof spec === 'function') {
+    try {
+      columns = (spec as (p: unknown, d: unknown) => readonly CsvColumn[])(params, payload);
+    } catch {
+      return new Set<string>();
+    }
+  } else {
+    columns = spec;
+  }
+  return new Set(columns.flatMap((c) => (c.type === 'number' ? [c.id] : [])));
 }
 
 export function entitlementNotes(decision: EntitlementDecision): PayloadEntitlementNote[] {
@@ -690,24 +722,29 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
    *     that is *pending* or *denied* and therefore has a null `v`: `-1` never accompanies a
    *     number. A cell citing an engine rather than a source still carries the idx of the input
    *     the engine ran on (§0.4 rule 4), so this rule holds for derived cells too.
-   *  3. **A null is explained.** §1.3 rule 6: unavailable data is `null` in the payload *and* a
-   *     `meta.unavailable[]` entry. The checkable form of that is weaker than the rule: a payload
-   *     carrying a null in a data cell must carry *some* explanation in `meta` — an `unavailable`
-   *     entry, or an entitlement denial, which is where §12.3 puts the reason for a blanked field.
-   *     The correspondence cannot be checked cell by cell, because `meta.unavailable[].field` is a
-   *     dictionary `FieldId` while a payload key is the manifest's own column id, and only the
-   *     manifest knows the mapping between them. What the runner *can* prove is that a payload
-   *     with gaps is never served with an empty `meta` — which is the case that reaches a user as
-   *     a blank cell with nothing to hover over.
+   *  3. **Each null is explained on its own.** §1.3 rule 6: unavailable data is `null` in the
+   *     payload *and* a `meta.unavailable[]` entry. This used to be checked as an aggregate — one
+   *     entry anywhere licensed every null in the payload — and that is the same mistake rule 2
+   *     names: a resolver that nulled a whole column by accident passed as long as it explained
+   *     one unrelated field. So each gap is matched against the explanations by name
+   *     ({@link explains}): an `unavailable[].field` or a denied `entitlement[].fieldId` explains a
+   *     null when it is the cell's path, a dotted prefix of it (`risk` covers `risk.volPct`,
+   *     `members.gicsSector` covers `members[7].gicsSector`), or the cell's own key. A cell that is
+   *     null *by design* — EE's `yoyPct` on the first period — is not exempt: it says so with a
+   *     `NOT_APPLICABLE` entry, which is what the rule asks for and what a screen needs to render a
+   *     dash the user can hover.
    *
    * Rules 1 and 3 are bounded to the keys that are certainly **data cells**: a dictionary
-   * `FieldId`, or a column the manifest's own CSV spec names. That boundary is the honest one. A
-   * generic walk cannot tell a quote from an echoed parameter, a row count or a page index — all
-   * numbers with no source and no business having one — so a rule over *every* number would fire
-   * on correct payloads, and a rule over every null would fire on a structural `nextCursor: null`.
-   * The keys a manifest itself declares as columns are the cells that reach a screen and a CSV,
-   * which is exactly the surface DATA-10 and rule 6 are about; anything else in the payload is the
-   * manifest's own business.
+   * `FieldId`, or a `type: 'number'` column the manifest's own CSV spec names — computed from this
+   * payload when the manifest computes its columns, so no manifest is exempt from its own numbers
+   * ({@link csvNumericColumnIds}). That boundary is the honest one. A generic walk cannot tell a
+   * quote from an echoed parameter, a row count or a page index — all numbers with no source and
+   * no business having one — so a rule over *every* number would fire on correct payloads, and a
+   * rule over every null would fire on a structural `nextCursor: null` or on a text column a record
+   * simply does not have (`filings[].amends`, `holdings[].isin`). The numeric columns a manifest
+   * itself declares are the measurements that reach a screen and a CSV, which is exactly the
+   * surface DATA-10 and rule 6 are about; anything else in the payload is the manifest's own
+   * business.
    *
    * Rule 2 needs no such boundary, and is the stronger check because of it: it recognises a cell by
    * its shape rather than by its key, so it reaches a cell nested in a row, a line or a block that
@@ -719,6 +756,44 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
    * must not be served), a production build reports it through `onWarning` and serves, because a
    * screen that is one unexplained null short is still better than no screen.
    */
+  /**
+   * One dotted path, in the one spelling the two sides of rule 3 can be compared in.
+   *
+   * A `meta.unavailable[].field` is usually a dictionary `FieldId` (`PX_LAST`) and the payload key
+   * it is about is the manifest's own column id (`pxLast`) — the same field in two house styles,
+   * which is why this correspondence used to be called uncheckable. Lower-casing and dropping the
+   * separators makes them one string (`pxlast`) without inventing a mapping: it equates two
+   * spellings of one name and nothing else. Array indices go too, because an entry is written about
+   * a column, never about row 7 of it.
+   */
+  function canonicalPath(value: string): string {
+    return value
+      .split('.')
+      .map((segment) => segment.replace(/\[\d+\]/g, '').replace(/[^0-9a-z]/gi, '').toLowerCase())
+      .filter((segment) => segment !== '')
+      .join('.');
+  }
+
+  /**
+   * Does `field` — a `meta.unavailable[].field` or a denied `meta.entitlement[].fieldId` — explain
+   * a null cell at `path` whose key is `key`?
+   *
+   * Resolvers write the entry at the depth that reads best in a footer: a whole block (`risk`), a
+   * column over repeated rows (`members.gicsSector` for every `members[i].gicsSector`), or the bare
+   * key of the cell. All three are accepted, and nothing else is — an entry about `history` does
+   * not explain a null `yoyPct`. Array indices are stripped from the path first, because an entry
+   * is written about the column, never about row 7 of it.
+   */
+  function explains(field: string, key: string, path: string): boolean {
+    const f = canonicalPath(field);
+    if (f === '') return false;
+    const p = canonicalPath(path);
+    const k = canonicalPath(key);
+    if (f === k || f === p) return true;
+    if (p.startsWith(`${f}.`)) return true;
+    return f.slice(f.lastIndexOf('.') + 1) === k;
+  }
+
   /**
    * Is this object a {@link ValueCell}?
    *
@@ -739,16 +814,21 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
     ctx: ResolveContext,
     data: unknown,
     meta: PayloadMeta,
+    params: unknown,
   ): void {
     const violations: string[] = [];
 
-    const cells = csvColumnIds(manifest);
+    const cells = csvNumericColumnIds(manifest, params, data);
     const isCell = (key: string | null): key is string =>
       key !== null && (cells.has(key) || hasField(key));
-    const explained =
-      meta.unavailable.length > 0 || meta.entitlement.some((e) => e.decision === 'deny');
+    // Rule 6 is a rule about *this* cell, so the explanation has to name it. `meta.unavailable`
+    // entries and denied entitlement notes are matched against the gap's own path.
+    const explanations = [
+      ...meta.unavailable.map((u) => u.field),
+      ...meta.entitlement.flatMap((e) => (e.decision === 'deny' ? [e.fieldId] : [])),
+    ];
     const uncited: string[] = [];
-    const gaps: string[] = [];
+    const gaps: { key: string; path: string }[] = [];
     const unciteableCells: string[] = [];
 
     const walk = (node: unknown, key: string | null, path: string): void => {
@@ -757,7 +837,7 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
         return;
       }
       if (node === null) {
-        if (isCell(key)) gaps.push(key);
+        if (isCell(key)) gaps.push({ key, path: path === '' ? key : path });
         return;
       }
       if (Array.isArray(node)) {
@@ -800,10 +880,17 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
           '(DATA-10; provIdx -1 is reserved for the pending cell, whose `v` is null)',
       );
     }
-    if (gaps.length > 0 && !explained) {
+    const unexplained = new Set(
+      gaps.flatMap((gap) =>
+        explanations.some((field) => explains(field, gap.key, gap.path)) ? [] : [gap.path],
+      ),
+    );
+    if (unexplained.size > 0) {
       violations.push(
         `null cells with nothing in meta.unavailable or meta.entitlement to explain them: ` +
-          `${[...new Set(gaps)].sort().join(', ')} (FUNCTIONS.md §1.3 rule 6)`,
+          `${[...unexplained].sort().slice(0, 12).join(', ')}` +
+          `${unexplained.size > 12 ? ` (+${String(unexplained.size - 12)} more)` : ''} ` +
+          '(FUNCTIONS.md §1.3 rule 6)',
       );
     }
     if (violations.length === 0) return;
@@ -1033,7 +1120,7 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
       ...volatileMeta(ctx, http),
       ...stableMeta(ctx, args.decision),
     };
-    assertPayloadMeta(manifest, ctx, data, meta);
+    assertPayloadMeta(manifest, ctx, data, meta, args.params);
     await assertProvenanceExists(manifest, meta);
 
     // step 9

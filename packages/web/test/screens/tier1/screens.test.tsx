@@ -445,7 +445,15 @@ function build(): Case[] {
 }
 
 const CASES = build();
-const CODES = Object.keys(manifests) as FunctionCode[];
+/**
+ * The Tier 1 codes, and only those. This was `Object.keys(manifests)` while Tier 1 was the whole
+ * registry; WP-10 registered fourteen Tier 2 manifests, and every assertion below — "covers all
+ * fourteen Tier 1 codes", the skeleton sweep, the entitlement sweep — is about the codes THIS file
+ * builds cases for. Tier 2's own cases live in `test/screens/tier2/screens.test.tsx`.
+ */
+const CODES = Object.entries(manifests)
+  .filter(([, m]) => m.tier === 1)
+  .map(([code]) => code as FunctionCode);
 
 describe('Tier 1 screens — every code produces a ScreenSpec from its committed golden', () => {
   it('uses a committed golden for every code that has one', () => {

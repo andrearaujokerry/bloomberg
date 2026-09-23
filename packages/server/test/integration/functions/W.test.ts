@@ -27,7 +27,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden, subjectToken } from './golden.js';
+import { expectGolden, idToken, subjectToken } from './golden.js';
 
 import type { NormalisedUpdate, QuoteFields } from '@terminal/core';
 import { FunctionRegistry } from '@terminal/core';
@@ -263,6 +263,19 @@ async function runW(params: Record<string, unknown> = {}): Promise<WPayload> {
   return res.json<{ data: WPayload }>().data;
 }
 
+/**
+ * The keys of a W payload that hold a sequence-allocated id (§W). `firmId`, `ownerUserId`,
+ * `updatedAt` and `addedAt` are ids or instants of *other* rows and are flattened to
+ * `<VOLATILE>` by their own branch below; a column's `id`/`fieldId` (`'PX_LAST'`) is a field name.
+ * `sharedUserIds` is an array of ids, which `idToken` maps element-wise.
+ */
+const ID_KEYS: ReadonlySet<string> = new Set([
+  'instrumentId',
+  'watchlistId',
+  'userId',
+  'sharedUserIds',
+]);
+
 function normalise(payload: WPayload): unknown {
   const tokens = new Map<number, string>([
     [env.aapl, '<AAPL>'],
@@ -279,11 +292,13 @@ function normalise(payload: WPayload): unknown {
     if (key === 'firmId' || key === 'ownerUserId' || key === 'updatedAt' || key === 'addedAt') {
       return typeof value === 'number' && tokens.has(value) ? tokens.get(value) : '<VOLATILE>';
     }
-    if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
     // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
     // made the golden a function of the sequence values this run drew.
     if (typeof value === 'string') return subjectToken(value, tokens);
-    return value;
+    // And only an id-bearing key carries one as a number. A formula row is `instrumentId: 0`,
+    // which is under an id key but is not a seeded id, so the token map — not the key — decides:
+    // `idToken` leaves it as 0. `position`, `pos` and the formula columns' values stay literal.
+    return idToken(key, value, ID_KEYS, tokens);
   });
   return JSON.parse(json);
 }
