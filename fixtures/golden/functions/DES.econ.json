@@ -1,0 +1,208 @@
+{
+  "variant": "econ",
+  "instrument": {
+    "instrumentId": "<CPI>",
+    "assetClass": "econ",
+    "marketSector": "Index",
+    "display": "CUUR0000SA0 Index",
+    "name": "CPI-U All items, NSA",
+    "currency": "USD",
+    "mdLineIds": [],
+    "ticker": "CUUR0000SA0",
+    "exchCode": "ECON",
+    "securityType": "Economic series",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 3
+  },
+  "series": {
+    "seriesId": "<SERIES>",
+    "code": "CUUR0000SA0",
+    "name": "CPI-U All items, NSA",
+    "sourceId": "bls.timeseries",
+    "providerCode": "CUUR0000SA0",
+    "units": "Index 1982-84=100",
+    "frequency": "M",
+    "seasonalAdj": "NSA",
+    "country": "US",
+    "releaseName": "Consumer Price Index",
+    "decimals": 3,
+    "firstObsDate": "2024-01-01",
+    "lastObsDate": "2026-08-01",
+    "provIdx": 3
+  },
+  "latest": {
+    "obsDate": "2026-08-01",
+    "value": {
+      "v": 325,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1785591000000
+    },
+    "status": "final",
+    "vintageAt": "2026-08-01T13:30:00.000Z"
+  },
+  "prior": {
+    "obsDate": "2026-07-01",
+    "value": 324.6,
+    "provIdx": 3
+  },
+  "change": {
+    "abs": 0.39999999999997726,
+    "pct": 0.12322858903264855,
+    "provIdx": 3
+  },
+  "nextRelease": {
+    "scheduledAt": "2026-10-13T12:30:00.000Z",
+    "timeKnown": true,
+    "periodLabel": "September 2026",
+    "releaseId": "<RELEASE>"
+  },
+  "history": [
+    {
+      "obsDate": "2024-08-01",
+      "value": 315.4,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2024-09-01",
+      "value": 315.8,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2024-10-01",
+      "value": 316.2,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2024-11-01",
+      "value": 316.6,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2024-12-01",
+      "value": 317,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-01-01",
+      "value": 317.4,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-02-01",
+      "value": 317.8,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-03-01",
+      "value": 318.2,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-04-01",
+      "value": 318.6,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-05-01",
+      "value": 319,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-06-01",
+      "value": 319.4,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-07-01",
+      "value": 319.8,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-08-01",
+      "value": 320.2,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-09-01",
+      "value": 320.6,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-10-01",
+      "value": 321,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-11-01",
+      "value": 321.4,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2025-12-01",
+      "value": 321.8,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-01-01",
+      "value": 322.2,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-02-01",
+      "value": 322.6,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-03-01",
+      "value": 323,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-04-01",
+      "value": 323.4,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-05-01",
+      "value": 323.8,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-06-01",
+      "value": 324.2,
+      "status": "final",
+      "provIdx": 3
+    },
+    {
+      "obsDate": "2026-07-01",
+      "value": 324.6,
+      "status": "final",
+      "provIdx": 3
+    }
+  ],
+  "knownAt": "<KNOWN_AT>"
+}

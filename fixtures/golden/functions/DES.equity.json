@@ -1,0 +1,498 @@
+{
+  "variant": "equity",
+  "instrument": {
+    "instrumentId": "<AAPL>",
+    "assetClass": "equity",
+    "marketSector": "Equity",
+    "display": "AAPL US Equity",
+    "name": "Apple Inc",
+    "currency": "USD",
+    "mdLineIds": [
+      "<AAPL_LINE>"
+    ],
+    "ticker": "AAPL",
+    "exchCode": "US",
+    "securityType": "Common Stock",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2,
+    "primaryListingId": "<AAPL_LISTING>"
+  },
+  "issuer": {
+    "issuerId": "<ISSUER>",
+    "name": "Apple Inc",
+    "legalName": "Apple Inc.",
+    "cik": "0000320193",
+    "lei": "HWUPKR0MPOU8FGXBT394",
+    "sicCode": "3571",
+    "sicDescription": "Electronic Computers",
+    "gicsSector": "Information Technology",
+    "gicsIndustryGroup": null,
+    "gicsSubIndustry": null,
+    "countryOfIncorp": "US",
+    "stateOfInc": "CA",
+    "fiscalYearEnd": "0926",
+    "filerCategory": "Large accelerated filer",
+    "entityType": "operating",
+    "formerNames": [
+      {
+        "name": "Apple Computer Inc",
+        "from": "1977-01-03",
+        "to": "2007-01-09"
+      }
+    ],
+    "website": "https://www.apple.com",
+    "provIdx": 1
+  },
+  "fund": null,
+  "quote": {
+    "px": {
+      "v": 330.27,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_LAST"
+      }
+    },
+    "chgNet": {
+      "v": -2.81,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_NET_1D"
+      }
+    },
+    "chgPct": {
+      "v": -0.8436,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_PCT_1D"
+      }
+    },
+    "open": {
+      "v": 330.24,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_OPEN"
+      }
+    },
+    "high": {
+      "v": 331.59,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_HIGH"
+      }
+    },
+    "low": {
+      "v": 328.35,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_LOW"
+      }
+    },
+    "prevClose": {
+      "v": 333.08,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_CLOSE_1D"
+      }
+    },
+    "volume": {
+      "v": 16591786,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_VOLUME"
+      }
+    },
+    "bid": {
+      "v": 330.25,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_BID"
+      }
+    },
+    "ask": {
+      "v": 330.28,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_ASK"
+      }
+    },
+    "bidSize": {
+      "v": 40,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "BID_SIZE"
+      }
+    },
+    "askSize": {
+      "v": 120,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "ASK_SIZE"
+      }
+    },
+    "lastTradeTime": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "LAST_TRADE_TIME"
+      }
+    },
+    "ivol30d": {
+      "v": 24.43,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "IVOL_30D"
+      }
+    },
+    "sessionState": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "SESSION_STATE"
+      }
+    }
+  },
+  "stats": {
+    "high52w": {
+      "v": 330,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "low52w": {
+      "v": 299.5,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "avgVolume30d": {
+      "v": 1043700,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "vol30d": {
+      "v": 0.4390802220980256,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "ret1d": {
+      "v": 0.1519756838905817,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "ret1w": {
+      "v": 0.7645259938837912,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "ret1m": {
+      "v": 3.4536891679748827,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "retYtd": {
+      "v": null,
+      "st": "na",
+      "provIdx": 4
+    },
+    "ret1y": {
+      "v": null,
+      "st": "na",
+      "provIdx": 4
+    },
+    "beta1y": {
+      "v": null,
+      "st": "na",
+      "provIdx": 4
+    },
+    "barsAsOf": "2026-09-15"
+  },
+  "fundamentals": {
+    "sharesOut": {
+      "v": 14900000000,
+      "st": "closed",
+      "provIdx": 5,
+      "ts": 1785542400000
+    },
+    "sharesOutAsOf": "2026-06-27",
+    "publicFloat": {
+      "v": 4700000000000,
+      "st": "closed",
+      "provIdx": 5,
+      "ts": 1777680000000
+    },
+    "mktCap": {
+      "v": 4921023000000,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789497628000
+    },
+    "epsTtmDil": {
+      "v": 6.55,
+      "st": "closed",
+      "provIdx": 5,
+      "ts": 1785542400000
+    },
+    "peTtm": {
+      "v": 50.422900763358776,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789497628000
+    },
+    "revenueTtm": {
+      "v": 416000000000,
+      "st": "closed",
+      "provIdx": 5,
+      "ts": 1785542400000
+    },
+    "netIncomeTtm": {
+      "v": 101000000000,
+      "st": "closed",
+      "provIdx": 5,
+      "ts": 1785542400000
+    },
+    "dvdSh12m": {
+      "v": 0.53,
+      "st": "closed",
+      "provIdx": 6
+    },
+    "dvdYield": {
+      "v": 0.16047476307263756,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789497628000
+    },
+    "lastDividend": {
+      "exDate": "2026-05-08",
+      "payDate": "2026-05-14",
+      "amount": 0.27,
+      "currency": "USD",
+      "status": "paid",
+      "provIdx": 6
+    },
+    "nextEarnings": {
+      "expectedDate": "2026-10-31",
+      "window": [
+        "2026-10-24",
+        "2026-11-07"
+      ],
+      "method": "cadence",
+      "estimated": true
+    },
+    "shortInterest": {
+      "settlementDate": "2026-08-31",
+      "shortQty": 101000000,
+      "daysToCover": 1.84,
+      "changePct": 3.06,
+      "provIdx": 7
+    },
+    "statementsAsOf": {
+      "periodEnd": "2026-06-27",
+      "filedAt": "2026-08-01",
+      "accessionNo": "0000320193-26-000055"
+    }
+  },
+  "membership": [
+    {
+      "indexCode": "SPX",
+      "indexInstrumentId": "<SPX>",
+      "indexKey": "SPX Index",
+      "weight": 0.0712,
+      "shares": 180000000,
+      "asOfDate": "2026-06-30",
+      "sourceId": "ssga.holdings",
+      "provIdx": 8
+    }
+  ],
+  "filings": [
+    {
+      "accessionNo": "0000320193-26-000061",
+      "form": "8-K",
+      "filedDate": "2026-09-01",
+      "reportDate": null,
+      "acceptedAt": "2026-09-01 21:00:00+00",
+      "items": [
+        "2.02",
+        "9.01"
+      ],
+      "primaryDocDesc": "8-K filing",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000061/0000320193-26-000061-index.htm",
+      "isXbrl": true,
+      "provIdx": 1
+    },
+    {
+      "accessionNo": "0000320193-26-000055",
+      "form": "10-Q",
+      "filedDate": "2026-08-01",
+      "reportDate": "2026-06-27",
+      "acceptedAt": "2026-08-01 21:00:00+00",
+      "items": [],
+      "primaryDocDesc": "10-Q filing",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000055/0000320193-26-000055-index.htm",
+      "isXbrl": true,
+      "provIdx": 1
+    },
+    {
+      "accessionNo": "0000320193-26-000031",
+      "form": "10-Q",
+      "filedDate": "2026-05-02",
+      "reportDate": "2026-03-28",
+      "acceptedAt": "2026-05-02 21:00:00+00",
+      "items": [],
+      "primaryDocDesc": "10-Q filing",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000031/0000320193-26-000031-index.htm",
+      "isXbrl": true,
+      "provIdx": 1
+    },
+    {
+      "accessionNo": "0000320193-26-000010",
+      "form": "10-Q",
+      "filedDate": "2026-02-01",
+      "reportDate": "2025-12-27",
+      "acceptedAt": "2026-02-01 21:00:00+00",
+      "items": [],
+      "primaryDocDesc": "10-Q filing",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000010/0000320193-26-000010-index.htm",
+      "isXbrl": true,
+      "provIdx": 1
+    },
+    {
+      "accessionNo": "0000320193-25-000101",
+      "form": "10-K",
+      "filedDate": "2025-11-01",
+      "reportDate": "2025-09-27",
+      "acceptedAt": "2025-11-01 21:00:00+00",
+      "items": [],
+      "primaryDocDesc": "10-K filing",
+      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000101/0000320193-25-000101-index.htm",
+      "isXbrl": true,
+      "provIdx": 1
+    }
+  ],
+  "news": [
+    {
+      "newsId": "<NEWS>",
+      "headline": "Apple lifts services guidance",
+      "summary": "Summary text",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "story",
+      "author": "Wire",
+      "category": "Markets",
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T18:41:28.000Z",
+      "capturedAt": "2026-09-15T18:41:28.000Z",
+      "url": "https://example.test/a",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "instrument",
+          "entityId": "<AAPL>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "ticker_exact"
+        }
+      ],
+      "provIdx": 9
+    }
+  ],
+  "identifiers": [
+    {
+      "scheme": "CUSIP",
+      "value": "037833100",
+      "qualifier": "",
+      "isPrimary": true,
+      "validFrom": "2020-01-01 00:00:00+00"
+    },
+    {
+      "scheme": "FIGI",
+      "value": "BBG000B9XRY4",
+      "qualifier": "",
+      "isPrimary": true,
+      "validFrom": "2020-01-01 00:00:00+00"
+    },
+    {
+      "scheme": "ISIN",
+      "value": "US0378331005",
+      "qualifier": "",
+      "isPrimary": true,
+      "validFrom": "2020-01-01 00:00:00+00"
+    }
+  ],
+  "listings": [
+    {
+      "listingId": "<AAPL_LISTING>",
+      "figi": null,
+      "mic": "XNAS",
+      "exchCode": "UW",
+      "localTicker": "AAPL",
+      "isPrimary": true,
+      "listingStatus": "active",
+      "mdLines": [
+        {
+          "mdLineId": "<AAPL_LINE>",
+          "sourceId": "cboe.quotes",
+          "providerSymbol": "AAPL",
+          "lineKind": "composite",
+          "intrinsicDelayMin": 15
+        }
+      ]
+    }
+  ],
+  "calendar": {
+    "calendarId": "XNAS",
+    "tz": "America/New_York"
+  }
+}

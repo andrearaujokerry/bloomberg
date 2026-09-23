@@ -24,9 +24,10 @@
 
 import { SystemClock } from '@terminal/core';
 
+import { attachAlertEngine } from './alerts/engine.js';
 import { buildApp, type AppDeps, type ServerState } from './app.js';
 import { ConfigError, getConfig } from './config.js';
-import { closeDb, connectDb, pendingMigrations } from './db/client.js';
+import { closeDb, connectDb, pendingMigrations, withTx } from './db/client.js';
 import { accessLog } from './entitlements/accessLog.js';
 import { evaluator } from './entitlements/evaluator.js';
 import { licenceRegistry } from './entitlements/licenceRegistry.js';
@@ -98,6 +99,19 @@ async function main(): Promise<void> {
     'licence registry loaded; entitlement evaluator wired',
   );
 
+  // ── NEWS-07. The alert engine is a sink on the plant's fan-out plus a calendar tick, and it is
+  //    constructed here because nowhere else has both the plant and the gateway. Without this the
+  //    engine existed only in tests and no alert ever fired in a running server.
+  const alerts = attachAlertEngine({
+    plant,
+    clock,
+    gateway: app.wsGateway,
+    withTx: (fn) => withTx(null, fn),
+    onError: (err, detail) => {
+      app.log.error({ err, detail }, 'alert engine');
+    },
+  });
+
   for (const { step, what, wp } of PENDING_STEPS) {
     app.log.warn({ step, wp }, `startup step ${step} skipped — ${what} (${wp})`);
   }
@@ -126,6 +140,7 @@ async function main(): Promise<void> {
     void (async (): Promise<void> => {
       try {
         // Scheduler stop and leader-lock release go here (WP-07), before sockets close.
+        await alerts.stop();
         await app.wsGateway.close();
         await plant.stop();
         await app.close();

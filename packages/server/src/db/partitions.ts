@@ -300,6 +300,12 @@ export interface EnsurePartitionsResult {
   readonly defaultRowsRemaining: number;
   /** The `dq_events.dq_id` raised for a non-empty default partition, when one was. */
   readonly dqId: number | null;
+  /**
+   * Deadlocks this call lost and retried. Normally zero. A number that climbs run after run means
+   * partition maintenance is scheduled against the write path rather than around it, which is a
+   * scheduling problem the retry hides rather than solves — so it is reported, not swallowed.
+   */
+  readonly deadlockRetries: number;
 }
 
 interface PgError {
@@ -329,6 +335,17 @@ function* causeChain(err: unknown): Generator<PgError> {
     current = link.cause;
   }
 }
+
+/** `deadlock_detected`. Postgres picks a victim arbitrarily; the victim's job is to try again. */
+const SQLSTATE_DEADLOCK = '40P01';
+
+/**
+ * How many extra attempts a single range gets after losing a deadlock.
+ *
+ * Two is enough for the case this exists for — one concurrent writer holding the parent — and
+ * small enough that a genuinely wedged table still fails in seconds rather than spinning.
+ */
+const DEADLOCK_RETRIES = 2;
 
 /** The SQLSTATE of the first link in the cause chain that carries one. */
 function pgErrorCode(err: unknown): string | undefined {
@@ -426,6 +443,8 @@ export async function ensurePartitions(
   const existing: string[] = [];
   const blocked: BlockedRange[] = [];
   let movedRows = 0;
+  /** Deadlocks survived while building this horizon — reported so contention stays visible. */
+  let deadlockRetries = 0;
 
   const defaultRowsRemaining = await withMaintTx(async (tx) => {
     // A wedged reader must not hold the parent's ACCESS EXCLUSIVE lock for the life of the job.
@@ -450,6 +469,17 @@ export async function ensurePartitions(
         });
         continue;
       }
+      // A deadlock here is expected rather than exceptional, so the range gets more than one go.
+      // Creating or attaching a partition takes a lock on the parent that ordinary writers also
+      // want, so this job and an ingest batch can each end up holding what the other needs;
+      // Postgres breaks the cycle by killing one of them, and which one it kills is arbitrary.
+      // The savepoint below means the victim rolls back to it rather than losing the whole
+      // horizon, so the right response is to attempt the same range again — the transaction that
+      // beat us has committed by then and the retry finds a clear path. Retrying immediately is
+      // deliberate: the blocker is already gone, and a backoff would only widen the window for
+      // the next writer to take the lock ahead of us.
+      let made = false;
+      for (let attempt = 0; attempt <= DEADLOCK_RETRIES && !made; attempt += 1) {
       try {
         // Nested `transaction()` is a SAVEPOINT: a range that is already covered by a partition
         // under another name rolls back on its own and the rest of the horizon still lands.
@@ -480,13 +510,28 @@ export async function ensurePartitions(
             ),
           );
         });
+        made = true;
       } catch (err) {
         if (meansAlreadyCovered(err)) {
           existing.push(name);
+          made = true;
+          break;
+        }
+        // Deadlock victim: try this same range again. On the last allowed attempt, fall through
+        // and throw, so a genuinely wedged parent is still a loud failure rather than a silent
+        // gap in the horizon.
+        if (pgErrorCode(err) === SQLSTATE_DEADLOCK && attempt < DEADLOCK_RETRIES) {
+          deadlockRetries += 1;
           continue;
         }
         throw err;
       }
+      }
+      // `made` is false only when the loop fell out without creating or adopting the partition,
+      // which the throw above already rules out; the guard keeps the accounting honest if that
+      // ever changes.
+      if (!made) continue;
+      if (existing[existing.length - 1] === name) continue;
       created.push(name);
       movedRows += overlapping;
     }
@@ -533,6 +578,7 @@ export async function ensurePartitions(
     blocked,
     defaultRowsRemaining,
     dqId,
+    deadlockRetries,
   };
 }
 

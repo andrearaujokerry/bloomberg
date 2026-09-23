@@ -457,3 +457,28 @@ export type {
   FormulaNaReason,
   FormulaSecurity,
 } from './formula/evaluator.js';
+
+// ── WP-09 ──────────────────────────────────────────────────────────────────────────────────────
+// The pieces every Tier 1 manifest, resolver and screen shares (FUNCTIONS_TIER1 §0.1, §0.2, §0.5).
+
+// The param schemas are namespaced rather than star-exported: `AssetClass`, `Tier`, `ValueState`,
+// `AdjustPolicy`, `Periodicity`, `FieldId` and `MarketSector` are already exported above as the
+// TypeScript types of the same names, and a zod value of the same name would be a duplicate export.
+// Manifests inside this package import `../schemas.js` directly; everything else says
+// `import { fnSchemas } from '@terminal/core'` or reaches the module by its subpath.
+export * as fnSchemas from './functions/schemas.js';
+export { SortSpec } from './functions/schemas.js';
+
+export { newsCsvColumns, newsCsvRow } from './functions/shared/news.js';
+export type {
+  NewsRow,
+  NewsLink,
+  NewsSourceId,
+  NewsKind,
+  NewsEntityKind,
+  NewsLinkMethod,
+  NewsCsvCell,
+} from './functions/shared/news.js';
+
+export { monitorColumn } from './functions/shared/monitor.js';
+export type { MonitorRow, MonitorColumn } from './functions/shared/monitor.js';

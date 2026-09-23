@@ -1,0 +1,583 @@
+{
+  "variant": "default",
+  "regions": [
+    {
+      "region": "Americas",
+      "label": "AMERICAS",
+      "rows": [
+        {
+          "instrumentId": "<SPX>",
+          "key": "SPX Index",
+          "name": "S&P 500",
+          "assetClass": "index",
+          "marketSector": "Index",
+          "exchCode": "INDEX",
+          "gicsSector": null,
+          "subject": "q:<SPX>",
+          "cells": {
+            "PX_LAST": {
+              "v": 7585.75,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<SPX>",
+                "field": "PX_LAST"
+              }
+            },
+            "CHG_NET_1D": {
+              "v": -34.23,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<SPX>",
+                "field": "CHG_NET_1D"
+              }
+            },
+            "CHG_PCT_1D": {
+              "v": -0.4492,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<SPX>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "SESSION_STATE": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<SPX>",
+                "field": "SESSION_STATE"
+              }
+            },
+            "RET_1W": {
+              "v": 0.2730748225013624,
+              "st": "closed",
+              "ts": 1789430400000,
+              "provIdx": 0
+            },
+            "RET_1M": {
+              "v": 1.2127894156560126,
+              "st": "closed",
+              "ts": 1789430400000,
+              "provIdx": 0
+            },
+            "RET_YTD": {
+              "v": 11.13801452784504,
+              "st": "closed",
+              "ts": 1789430400000,
+              "provIdx": 0
+            },
+            "RET_1Y": {
+              "v": 16.57142857142857,
+              "st": "closed",
+              "ts": 1789430400000,
+              "provIdx": 0
+            },
+            "PX_HIGH_52W": {
+              "v": 7349,
+              "st": "closed",
+              "ts": 1789430400000,
+              "provIdx": 0
+            },
+            "PX_LOW_52W": {
+              "v": 6295,
+              "st": "closed",
+              "ts": 1789430400000,
+              "provIdx": 0
+            }
+          },
+          "code": "SPX",
+          "region": "Americas",
+          "indexProvider": "S&P Dow Jones",
+          "methodology": "float_cap_weighted",
+          "calcCurrency": "USD",
+          "mic": "XCBO",
+          "calendarId": "XCBO",
+          "sessionState": "open",
+          "sessionSource": "calendar",
+          "localTime": "14:41 America/New_York",
+          "membershipAvailable": true,
+          "historySessions": 261
+        },
+        {
+          "instrumentId": "<VIX>",
+          "key": "VIX Index",
+          "name": "Cboe Volatility Index",
+          "assetClass": "index",
+          "marketSector": "Index",
+          "exchCode": "INDEX",
+          "gicsSector": null,
+          "subject": "q:<VIX>",
+          "cells": {
+            "PX_LAST": {
+              "v": 17.5,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<VIX>",
+                "field": "PX_LAST"
+              }
+            },
+            "CHG_NET_1D": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<VIX>",
+                "field": "CHG_NET_1D"
+              }
+            },
+            "CHG_PCT_1D": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<VIX>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "SESSION_STATE": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<VIX>",
+                "field": "SESSION_STATE"
+              }
+            },
+            "RET_1W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1M": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_YTD": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1Y": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_HIGH_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_LOW_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            }
+          },
+          "code": "VIX",
+          "region": "Americas",
+          "indexProvider": "Cboe",
+          "methodology": "volatility",
+          "calcCurrency": "USD",
+          "mic": "XCBO",
+          "calendarId": "XCBO",
+          "sessionState": "open",
+          "sessionSource": "calendar",
+          "localTime": "14:41 America/New_York",
+          "membershipAvailable": false,
+          "historySessions": 0
+        }
+      ]
+    },
+    {
+      "region": "EMEA",
+      "label": "EMEA",
+      "rows": [
+        {
+          "instrumentId": "<UKX>",
+          "key": "UKX Index",
+          "name": "FTSE 100",
+          "assetClass": "index",
+          "marketSector": "Index",
+          "exchCode": "INDEX",
+          "gicsSector": null,
+          "subject": "q:<UKX>",
+          "cells": {
+            "PX_LAST": {
+              "v": 10658.13,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 1,
+              "live": {
+                "subject": "q:<UKX>",
+                "field": "PX_LAST"
+              }
+            },
+            "CHG_NET_1D": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 1,
+              "live": {
+                "subject": "q:<UKX>",
+                "field": "CHG_NET_1D"
+              }
+            },
+            "CHG_PCT_1D": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 1,
+              "live": {
+                "subject": "q:<UKX>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "SESSION_STATE": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 1,
+              "live": {
+                "subject": "q:<UKX>",
+                "field": "SESSION_STATE"
+              }
+            },
+            "RET_1W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1M": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_YTD": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1Y": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_HIGH_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_LOW_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            }
+          },
+          "code": "UKX",
+          "region": "EMEA",
+          "indexProvider": "FTSE Russell",
+          "methodology": "float_cap_weighted",
+          "calcCurrency": "GBP",
+          "mic": "XLON",
+          "calendarId": "XLON",
+          "sessionState": "closed",
+          "sessionSource": "calendar",
+          "localTime": "19:41 Europe/London",
+          "membershipAvailable": false,
+          "historySessions": 0
+        },
+        {
+          "instrumentId": "<BUK100P>",
+          "key": "BUK100P Index",
+          "name": "Cboe UK 100",
+          "assetClass": "index",
+          "marketSector": "Index",
+          "exchCode": "INDEX",
+          "gicsSector": null,
+          "subject": "q:<BUK100P>",
+          "cells": {
+            "PX_LAST": {
+              "v": 1059.4557,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 2,
+              "live": {
+                "subject": "q:<BUK100P>",
+                "field": "PX_LAST"
+              }
+            },
+            "CHG_NET_1D": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 2,
+              "live": {
+                "subject": "q:<BUK100P>",
+                "field": "CHG_NET_1D"
+              }
+            },
+            "CHG_PCT_1D": {
+              "v": null,
+              "st": "live",
+              "ts": null,
+              "provIdx": 2,
+              "live": {
+                "subject": "q:<BUK100P>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "SESSION_STATE": {
+              "v": "closed",
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 2,
+              "live": {
+                "subject": "q:<BUK100P>",
+                "field": "SESSION_STATE"
+              }
+            },
+            "RET_1W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1M": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_YTD": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1Y": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_HIGH_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_LOW_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            }
+          },
+          "code": "BUK100P",
+          "region": "EMEA",
+          "indexProvider": "Cboe",
+          "methodology": "cap_weighted",
+          "calcCurrency": "GBP",
+          "mic": null,
+          "calendarId": null,
+          "sessionState": "closed",
+          "sessionSource": "provider",
+          "localTime": null,
+          "membershipAvailable": false,
+          "historySessions": 0
+        }
+      ]
+    },
+    {
+      "region": "APAC",
+      "label": "APAC",
+      "rows": [
+        {
+          "instrumentId": "<NKY>",
+          "key": "NKY Index",
+          "name": "Nikkei 225",
+          "assetClass": "index",
+          "marketSector": "Index",
+          "exchCode": "INDEX",
+          "gicsSector": null,
+          "subject": "q:<NKY>",
+          "cells": {
+            "PX_LAST": {
+              "v": null,
+              "st": "blank",
+              "provIdx": -1,
+              "live": {
+                "subject": "q:<NKY>",
+                "field": "PX_LAST"
+              }
+            },
+            "CHG_NET_1D": {
+              "v": null,
+              "st": "blank",
+              "provIdx": -1,
+              "live": {
+                "subject": "q:<NKY>",
+                "field": "CHG_NET_1D"
+              }
+            },
+            "CHG_PCT_1D": {
+              "v": null,
+              "st": "blank",
+              "provIdx": -1,
+              "live": {
+                "subject": "q:<NKY>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "SESSION_STATE": {
+              "v": null,
+              "st": "blank",
+              "provIdx": -1,
+              "live": {
+                "subject": "q:<NKY>",
+                "field": "SESSION_STATE"
+              }
+            },
+            "RET_1W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1M": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_YTD": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "RET_1Y": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_HIGH_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            },
+            "PX_LOW_52W": {
+              "v": null,
+              "st": "na",
+              "provIdx": -1
+            }
+          },
+          "code": "NKY",
+          "region": "APAC",
+          "indexProvider": "Nikkei",
+          "methodology": "price_weighted",
+          "calcCurrency": "JPY",
+          "mic": "XTKS",
+          "calendarId": null,
+          "sessionState": "unknown",
+          "sessionSource": "none",
+          "localTime": null,
+          "membershipAvailable": false,
+          "historySessions": 0
+        }
+      ]
+    }
+  ],
+  "columns": [
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "fieldId": "PX_LAST",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_NET_1D",
+      "label": "Net change",
+      "fieldId": "CHG_NET_1D",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_PCT_1D",
+      "label": "Percent change",
+      "fieldId": "CHG_PCT_1D",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "RET_1W",
+      "label": "1-week return",
+      "fieldId": "RET_1W",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "RET_1M",
+      "label": "1-month return",
+      "fieldId": "RET_1M",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "RET_YTD",
+      "label": "Year-to-date return",
+      "fieldId": "RET_YTD",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "RET_1Y",
+      "label": "1-year return",
+      "fieldId": "RET_1Y",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "PX_HIGH_52W",
+      "label": "52-week high",
+      "fieldId": "PX_HIGH_52W",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_LOW_52W",
+      "label": "52-week low",
+      "fieldId": "PX_LOW_52W",
+      "fmt": "px"
+    },
+    {
+      "id": "SESSION_STATE",
+      "label": "Session",
+      "fieldId": "SESSION_STATE",
+      "fmt": "text"
+    }
+  ],
+  "view": "returns",
+  "sort": null,
+  "conventions": {
+    "returns": "simple",
+    "priceBasis": "close",
+    "adjust": "price",
+    "annualisation": 252,
+    "volWindow": 30,
+    "betaBenchmark": "SPX Index",
+    "betaWindow": 252
+  },
+  "counts": {
+    "rows": 5,
+    "live": 16,
+    "pending": 1,
+    "stale": 0,
+    "blank": 0,
+    "na": 24
+  },
+  "skipped": [],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

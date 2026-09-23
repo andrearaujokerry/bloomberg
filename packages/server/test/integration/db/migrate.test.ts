@@ -220,6 +220,18 @@ const CONTRACT_FUNCTIONS: readonly string[] = [
   'messages_chain',
   'is_room_member',
   'room_has_firm',
+  // 0017 — the SECURITY DEFINER entry points MSG-02/03 and NEWS-07 need (§17.c, §17.e, §17.g,
+  // §17.h). Each is the smallest thing that does its job: RLS answers `app_user_id()`, and the
+  // three callers below are a fan-out, a writer that must not become a reader, and a policy test
+  // that cannot sub-select its own table.
+  'can_seat_room_member',
+  'record_surveillance_hit',
+  'anchor_room_chain',
+  'messages_anchor',
+  'armed_alerts',
+  'fire_alert',
+  'alert_fired_on',
+  'saved_search_query',
 ];
 
 // ── CONTRACTS §1.3 — the six `*_now` views ────────────────────────────────────────────────────
@@ -277,6 +289,10 @@ const CONTRACT_TRIGGERS: Readonly<Record<string, string>> = {
   usage_events_worm: 'worm_block',
   xbrl_facts_worm: 'worm_block',
   messages_chain_trg: 'messages_chain',
+  // MSG-02's chain anchor (0017 §17.g). It is a separate AFTER INSERT trigger because the BEFORE
+  // one runs ahead of `ON CONFLICT DO NOTHING`: anchoring there would advance `rooms.last_seq`
+  // for the losing half of an idempotent retry, a row that is then discarded.
+  messages_anchor_trg: 'messages_anchor',
 };
 
 /**
@@ -393,10 +409,10 @@ async function names(sql: string, params: readonly unknown[] = []): Promise<stri
 }
 
 describe('migrations apply to an empty database', () => {
-  it('applies the sixteen migration files in name order', () => {
-    expect(applied).toHaveLength(16);
+  it('applies the seventeen migration files in name order', () => {
+    expect(applied).toHaveLength(17);
     expect(applied[0]).toBe('0001_extensions_enums.sql');
-    expect(applied.at(-1)).toBe('0016_partitions_initial.sql');
+    expect(applied.at(-1)).toBe('0017_messaging_alerts_integrity.sql');
     expect([...applied].sort()).toEqual(applied);
   });
 
@@ -512,14 +528,14 @@ describe('CONTRACTS §1.3 — functions', () => {
 });
 
 describe('CONTRACTS §1.3 — triggers', () => {
-  it('creates exactly the forty-three named triggers', async () => {
+  it('creates exactly the forty-four named triggers', async () => {
     const found = await names(`
       SELECT DISTINCT t.tgname AS name
         FROM pg_trigger t
         JOIN pg_class c ON c.oid = t.tgrelid
         JOIN pg_namespace n ON n.oid = c.relnamespace
        WHERE n.nspname = 'public' AND NOT t.tgisinternal`);
-    expect(Object.keys(CONTRACT_TRIGGERS)).toHaveLength(43);
+    expect(Object.keys(CONTRACT_TRIGGERS)).toHaveLength(44);
     expect(found.sort()).toEqual(Object.keys(CONTRACT_TRIGGERS).sort());
   });
 

@@ -1,0 +1,147 @@
+{
+  "variant": "fx",
+  "primary": {
+    "ref": {
+      "id": "<fx>"
+    },
+    "instrument": {
+      "instrumentId": "<fx>",
+      "assetClass": "fx",
+      "marketSector": "Curncy",
+      "display": "EURUSD Curncy",
+      "name": "Euro / US Dollar",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "EURUSD",
+      "exchCode": "FX",
+      "securityType": "Curncy",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "EURUSD Curncy",
+    "label": "Euro / US Dollar",
+    "calendarId": "FX_USD",
+    "tz": "UTC",
+    "periodicity": "D",
+    "currency": "USD",
+    "unit": "price",
+    "t": [
+      1788220800000,
+      1788307200000,
+      1788393600000,
+      1788480000000,
+      1788739200000,
+      1788825600000,
+      1788912000000,
+      1788998400000,
+      1789084800000,
+      1789344000000,
+      1789430400000
+    ],
+    "o": [
+      0.08,
+      0.081,
+      0.082,
+      0.083,
+      0.084,
+      0.085,
+      0.086,
+      0.087,
+      0.088,
+      0.089,
+      0.09
+    ],
+    "h": [
+      3.08,
+      3.081,
+      3.082,
+      3.083,
+      3.084,
+      3.085,
+      3.086,
+      3.087,
+      3.088,
+      3.089,
+      3.09
+    ],
+    "l": [
+      -0.92,
+      -0.919,
+      -0.918,
+      -0.917,
+      -0.916,
+      -0.915,
+      -0.914,
+      -0.913,
+      -0.912,
+      -0.911,
+      -0.91
+    ],
+    "c": [
+      1.08,
+      1.081,
+      1.082,
+      1.083,
+      1.084,
+      1.085,
+      1.086,
+      1.087,
+      1.088,
+      1.089,
+      1.09
+    ],
+    "v": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<fx>",
+      "field": "PX_LAST",
+      "mode": "replace-last"
+    }
+  },
+  "overlays": [],
+  "events": [],
+  "annotations": [],
+  "window": {
+    "start": "2026-09-01",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "D",
+    "bars": 11
+  },
+  "last": {
+    "v": 1.0921,
+    "st": "live",
+    "ts": 1789496788000,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<fx>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [
+    {
+      "label": "prev close",
+      "v": 1.0915,
+      "provIdx": 0
+    }
+  ],
+  "adjustments": [],
+  "fx": []
+}

@@ -1,0 +1,106 @@
+{
+  "variant": "govt",
+  "instrument": {
+    "instrumentId": "<BILL>",
+    "assetClass": "govt",
+    "marketSector": "Govt",
+    "display": "912797VE4 Govt",
+    "name": "United States Treasury Bill 4WK 09/29/26",
+    "currency": "USD",
+    "mdLineIds": [],
+    "ticker": "912797VE4",
+    "exchCode": "GOVT",
+    "securityType": "US GOVERNMENT",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 4
+  },
+  "terms": {
+    "cusip": "912797VE4",
+    "securityType": "bill",
+    "termLabel": "4WK",
+    "issueDate": "2026-09-01",
+    "datedDate": "2026-09-01",
+    "maturityDate": "2026-09-29",
+    "couponType": "zero",
+    "couponRate": null,
+    "couponFreq": 0,
+    "dayCount": "ACT/360",
+    "firstCouponDate": null,
+    "businessDayConv": "following",
+    "calendarId": "SIFMA",
+    "settlementDays": 1,
+    "minDenomination": 100,
+    "amountOutstanding": 90000000000,
+    "onTheRun": true,
+    "issuer": "United States Department of the Treasury",
+    "provIdx": 1
+  },
+  "pricing": {
+    "settlementDate": "2026-09-16",
+    "daysToMaturity": 13,
+    "yieldSource": "bill_quote",
+    "curveId": "UST_BILL",
+    "curveDate": "2026-09-14",
+    "yield": {
+      "v": 3.7462418672878703,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "discountRate": {
+      "v": 3.6900000000000004,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "price": {
+      "v": 99.86675000000001,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "accrued": {
+      "v": 0,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "dirtyPrice": {
+      "v": 99.86675000000001,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "macDuration": {
+      "v": 0.03561643835616438,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "modDuration": {
+      "v": 0.0355689794520548,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "convexity": {
+      "v": 0.0012685306811784575,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "dv01": {
+      "v": 0.0003552158378693494,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": 1789423200000
+    },
+    "provIdx": 1
+  },
+  "identifiers": [],
+  "calendar": {
+    "calendarId": "SIFMA",
+    "tz": "America/New_York"
+  }
+}

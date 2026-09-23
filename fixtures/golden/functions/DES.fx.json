@@ -1,0 +1,188 @@
+{
+  "variant": "fx",
+  "instrument": {
+    "instrumentId": "<EURUSD>",
+    "assetClass": "fx",
+    "marketSector": "Curncy",
+    "display": "EURUSD Curncy",
+    "name": "Euro-US Dollar",
+    "currency": "USD",
+    "mdLineIds": [
+      "<EURUSD_LINE>"
+    ],
+    "ticker": "EURUSD",
+    "exchCode": "FX",
+    "securityType": "Spot",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 4
+  },
+  "terms": {
+    "baseCcy": "EUR",
+    "quoteCcy": "USD",
+    "spotLag": 2,
+    "calendarId": "FX_USD",
+    "pipSize": 0.0001,
+    "quoteConvention": "quote_per_base",
+    "provIdx": 0
+  },
+  "quote": {
+    "px": {
+      "v": 1.1539,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "PX_LAST"
+      }
+    },
+    "chgNet": {
+      "v": 0.0012,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "CHG_NET_1D"
+      }
+    },
+    "chgPct": {
+      "v": 0.1041,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "CHG_PCT_1D"
+      }
+    },
+    "open": {
+      "v": 1.1527,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "PX_OPEN"
+      }
+    },
+    "high": {
+      "v": 1.1544,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "PX_HIGH"
+      }
+    },
+    "low": {
+      "v": 1.1521,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "PX_LOW"
+      }
+    },
+    "prevClose": {
+      "v": 1.1527,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "PX_CLOSE_1D"
+      }
+    },
+    "sessionState": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<EURUSD>",
+        "field": "SESSION_STATE"
+      }
+    }
+  },
+  "inverse": {
+    "v": 0.8666262241095416,
+    "st": "closed",
+    "provIdx": 3,
+    "ts": 1789497628000
+  },
+  "stats": {
+    "high52w": {
+      "v": 1.13,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "low52w": {
+      "v": 1.0995,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "avgVolume30d": {
+      "v": 1043700,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "vol30d": {
+      "v": 0.1281722930604587,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "ret1d": {
+      "v": 0.04428697962799433,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "ret1w": {
+      "v": 0.22182786157940448,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "ret1m": {
+      "v": 0.9834599910594433,
+      "st": "closed",
+      "provIdx": 3,
+      "ts": 1789430400000
+    },
+    "retYtd": {
+      "v": null,
+      "st": "na",
+      "provIdx": 3
+    },
+    "ret1y": {
+      "v": null,
+      "st": "na",
+      "provIdx": 3
+    },
+    "beta1y": {
+      "v": null,
+      "st": "na",
+      "provIdx": 3
+    },
+    "barsAsOf": "2026-09-15"
+  },
+  "ecb": {
+    "rateDate": "2026-09-14",
+    "baseCcyPerUsd": 0.86663,
+    "quoteCcyPerUsd": 1,
+    "crossRate": 1.1538949724796048,
+    "provIdx": 4
+  },
+  "calendar": {
+    "calendarId": "FX_USD",
+    "tz": "America/New_York"
+  }
+}

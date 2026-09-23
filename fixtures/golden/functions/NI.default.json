@@ -1,0 +1,330 @@
+{
+  "variant": "default",
+  "topics": [
+    {
+      "topicId": "<TOPIC13>",
+      "code": "AI",
+      "name": "Artificial intelligence",
+      "kind": "theme",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "keyword"
+      ],
+      "count24h": 1,
+      "count7d": 1,
+      "lastPublishedAt": "2026-09-15T15:04:08.000Z",
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC10>",
+      "code": "CA",
+      "name": "Corporate actions",
+      "kind": "event",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": "TOPIC_NO_SOURCE"
+    },
+    {
+      "topicId": "<TOPIC9>",
+      "code": "EARNINGS",
+      "name": "Earnings",
+      "kind": "event",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": "TOPIC_NO_SOURCE"
+    },
+    {
+      "topicId": "<TOPIC2>",
+      "code": "ECO",
+      "name": "Economics",
+      "kind": "feed",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 1,
+      "count7d": 1,
+      "lastPublishedAt": "2026-09-15T11:02:00.000Z",
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC7>",
+      "code": "FED",
+      "name": "Federal Reserve",
+      "kind": "release",
+      "parentCode": null,
+      "childCodes": [
+        "FOMC"
+      ],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 1,
+      "count7d": 1,
+      "lastPublishedAt": "2026-09-15T13:55:00.000Z",
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC8>",
+      "code": "FILINGS",
+      "name": "Filings",
+      "kind": "release",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 1,
+      "count7d": 1,
+      "lastPublishedAt": "2026-09-15T18:21:20.000Z",
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC12>",
+      "code": "FX",
+      "name": "Foreign exchange",
+      "kind": "theme",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "keyword"
+      ],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC6>",
+      "code": "INDUSTRIES",
+      "name": "Industries",
+      "kind": "feed",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC1>",
+      "code": "MARKETS",
+      "name": "Markets",
+      "kind": "feed",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 2,
+      "count7d": 2,
+      "lastPublishedAt": "2026-09-15T15:04:08.000Z",
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC3>",
+      "code": "POLITICS",
+      "name": "Politics",
+      "kind": "feed",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC11>",
+      "code": "RATES",
+      "name": "Rates",
+      "kind": "theme",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "keyword"
+      ],
+      "count24h": 1,
+      "count7d": 1,
+      "lastPublishedAt": "2026-09-15T11:02:00.000Z",
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC4>",
+      "code": "TECH",
+      "name": "Technology",
+      "kind": "feed",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC5>",
+      "code": "WEALTH",
+      "name": "Wealth",
+      "kind": "feed",
+      "parentCode": null,
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 0,
+      "count7d": 0,
+      "lastPublishedAt": null,
+      "reason": null
+    },
+    {
+      "topicId": "<TOPIC14>",
+      "code": "FOMC",
+      "name": "FOMC",
+      "kind": "event",
+      "parentCode": "FED",
+      "childCodes": [],
+      "linkMethods": [
+        "feed_topic"
+      ],
+      "count24h": 1,
+      "count7d": 1,
+      "lastPublishedAt": "2026-09-15T11:30:00.000Z",
+      "reason": null
+    }
+  ],
+  "selected": {
+    "topicId": "<TOPIC7>",
+    "code": "FED",
+    "name": "Federal Reserve",
+    "kind": "release",
+    "parentCode": null,
+    "childCodes": [
+      "FOMC"
+    ],
+    "linkMethods": [
+      "feed_topic"
+    ],
+    "count24h": 1,
+    "count7d": 1,
+    "lastPublishedAt": "2026-09-15T13:55:00.000Z",
+    "reason": null
+  },
+  "rolledCodes": [
+    "FED",
+    "FOMC"
+  ],
+  "rows": [
+    {
+      "newsId": "<NEWS3>",
+      "headline": "Federal Reserve Board announces termination of enforcement action",
+      "summary": "The Board announced the termination of an enforcement action.",
+      "sourceId": "fed.rss",
+      "feed": "press_all",
+      "kind": "fed_release",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T13:55:00.000Z",
+      "capturedAt": "2026-09-15T18:39:40.000Z",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260915a.htm",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC7>",
+          "display": "Federal Reserve",
+          "confidence": 1,
+          "method": "feed_topic"
+        }
+      ],
+      "provIdx": 1
+    },
+    {
+      "newsId": "<NEWS6>",
+      "headline": "Minutes of the Federal Open Market Committee, August 2026",
+      "summary": "The Committee reviewed the outlook.",
+      "sourceId": "fed.rss",
+      "feed": "press_all",
+      "kind": "press_release",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T11:30:00.000Z",
+      "capturedAt": "2026-09-15T18:39:40.000Z",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260826.htm",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC14>",
+          "display": "FOMC",
+          "confidence": 1,
+          "method": "feed_topic"
+        }
+      ],
+      "provIdx": 1
+    }
+  ],
+  "liveSubject": "n:topic:FED",
+  "feedHealth": [
+    {
+      "sourceId": "bbg.rss",
+      "feed": "economics",
+      "lastCapturedAt": "2026-09-15T18:40:06.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 0
+    },
+    {
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "lastCapturedAt": "2026-09-15T18:40:06.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 0
+    },
+    {
+      "sourceId": "fed.rss",
+      "feed": "press_all",
+      "lastCapturedAt": "2026-09-15T18:39:40.000Z",
+      "expectedIntervalMs": 300000,
+      "st": "live",
+      "provIdx": 1
+    },
+    {
+      "sourceId": "sec.atom",
+      "feed": "8-K",
+      "lastCapturedAt": "2026-09-15T18:41:00.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 2
+    }
+  ],
+  "suppressed": {
+    "entitlement": 0,
+    "kindFilter": 0
+  },
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

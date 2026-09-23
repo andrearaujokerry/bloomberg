@@ -64,7 +64,7 @@ import { recordAction } from '../../../src/refdata/corporateActions.js';
 import { seedLicences } from '../../../src/seed/licences.js';
 import { createTestApp, type TestApp } from '../../../src/test/app.js';
 import { testClock } from '../../../src/test/clock.js';
-import { withTxDb, type TestDb } from '../../../src/test/db.js';
+import { ensureShared, withTxDb, type TestDb } from '../../../src/test/db.js';
 
 /**
  * This fixture's security, named uniquely per run.
@@ -176,7 +176,12 @@ describe('WP-08 reference / fields / universe routes', () => {
       },
       opts,
     );
-    await t.client.query(
+    // Shared across four forks: a read first means the common case takes no write lock at all,
+    // which is what stops two transactions holding speculative-insert locks on the same primary
+    // key and deadlocking (40P01). `test/globalSetup.ts` commits the row once.
+    await ensureShared(
+      t,
+      `SELECT 1 FROM classification_schemes WHERE scheme = 'GICS'`,
       `INSERT INTO classification_schemes (scheme, name, source_id, levels)
        VALUES ('GICS', 'GICS', 'wiki.sp500', 4) ON CONFLICT DO NOTHING`,
     );

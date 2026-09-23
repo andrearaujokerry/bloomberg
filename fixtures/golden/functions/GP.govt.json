@@ -1,0 +1,94 @@
+{
+  "variant": "govt",
+  "primary": {
+    "ref": {
+      "id": "<govt>"
+    },
+    "instrument": {
+      "instrumentId": "<govt>",
+      "assetClass": "govt",
+      "marketSector": "Govt",
+      "display": "912797VE4 Govt",
+      "name": "US Treasury Bill 4WK",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "912797VE4",
+      "exchCode": "GOVT",
+      "securityType": "Govt",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "912797VE4 Govt",
+    "label": "US Treasury Bill 4WK",
+    "calendarId": "",
+    "tz": "UTC",
+    "periodicity": "D",
+    "currency": "USD",
+    "unit": "yield",
+    "t": [
+      1788220800000,
+      1788307200000,
+      1788393600000,
+      1788480000000,
+      1788739200000,
+      1788825600000,
+      1788912000000,
+      1788998400000,
+      1789084800000,
+      1789344000000,
+      1789430400000
+    ],
+    "o": null,
+    "h": null,
+    "l": null,
+    "c": [
+      4.2,
+      4.21,
+      4.22,
+      4.23,
+      4.24,
+      4.25,
+      4.26,
+      4.27,
+      4.28,
+      4.29,
+      4.3
+    ],
+    "v": null,
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 0,
+    "live": null
+  },
+  "overlays": [],
+  "events": [],
+  "annotations": [],
+  "window": {
+    "start": "2026-09-01",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "D",
+    "bars": 11
+  },
+  "last": {
+    "v": null,
+    "st": "blank",
+    "provIdx": -1,
+    "live": {
+      "subject": "q:<govt>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [
+    {
+      "label": "last yield",
+      "v": 4.3,
+      "provIdx": 0
+    }
+  ],
+  "adjustments": [],
+  "fx": []
+}

@@ -526,10 +526,11 @@ export const analyticFields: readonly FieldDef[] = [
   },
   {
     id: 'RET_1D',
-    label: 'Total return (1 day)',
+    label: '1-day return',
     definition:
-      'Total return over the last completed session, in percent, on the dividend-reinvested series ' +
-      '— not the tape’s raw change, so an ex-dividend date does not show as a loss.',
+      'Price return over the last completed session, in percent, on the split-adjusted close ' +
+      'series (adjustment policy `price`). Cash dividends are not reinvested, so an ex-dividend ' +
+      'date does show as a drop — the dividend-reinvested figure is a separate field.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -538,15 +539,17 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/index.ts#simpleReturn'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 1 session) − 1, ×100',
+    derivation: 'close(t) / close(t − 1 session) − 1, ×100, on the price-adjusted series',
     example: { ref: 'AAPL US Equity', value: 0.41, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
     id: 'RET_1W',
-    label: 'Total return (1 week)',
+    label: '1-week return',
     definition:
-      'Total return over the trailing five sessions, in percent, on the dividend-reinvested series.',
+      'Price return over the trailing week, in percent, on the split-adjusted close series. The ' +
+      'window is a calendar offset resolved to a session: t₋ is the last session on or before ' +
+      't − 7 calendar days, so a holiday-shortened week is still a week.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -555,15 +558,18 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/index.ts#simpleReturn'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 5 sessions) − 1, ×100',
+    derivation:
+      'close(t) / close(t₋) − 1, ×100, t₋ = last session ≤ t − 7 calendar days (FUNCTIONS_TIER1 §0.3)',
     example: { ref: 'AAPL US Equity', value: 1.87, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
     id: 'RET_1M',
-    label: 'Total return (1 month)',
+    label: '1-month return',
     definition:
-      'Total return over the trailing 21 sessions, in percent, on the dividend-reinvested series.',
+      'Price return over the trailing month, in percent, on the split-adjusted close series. t₋ is ' +
+      'the last session on or before the same day of the previous month, clamped to that month’s ' +
+      'length.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -572,16 +578,17 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/index.ts#simpleReturn'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 21 sessions) − 1, ×100',
+    derivation:
+      'close(t) / close(t₋) − 1, ×100, t₋ = last session ≤ t − 1 month (FUNCTIONS_TIER1 §0.3)',
     example: { ref: 'AAPL US Equity', value: 3.42, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
     id: 'RET_YTD',
-    label: 'Total return (year to date)',
+    label: 'Year-to-date return',
     definition:
-      'Total return from the last session of the previous calendar year to validAt, in percent, on ' +
-      'the dividend-reinvested series.',
+      'Price return from the last session of the previous calendar year to the last completed ' +
+      'session, in percent, on the split-adjusted close series.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -590,16 +597,18 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/index.ts#simpleReturn'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(last session of year − 1) − 1, ×100',
+    derivation:
+      'close(t) / close(t₋) − 1, ×100, t₋ = last session of the previous calendar year',
     example: { ref: 'AAPL US Equity', value: 14.62, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
     id: 'RET_1Y',
-    label: 'Total return (1 year)',
+    label: '1-year return',
     definition:
-      'Total return over the trailing 252 sessions, in percent, on the dividend-reinvested series. ' +
-      'Not annualised — it already covers one year.',
+      'Price return over the trailing year, in percent, on the split-adjusted close series. t₋ is ' +
+      'the last session on or before t − 1 calendar year. Not annualised — it already covers one ' +
+      'year.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -608,7 +617,8 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/index.ts#simpleReturn'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'TOT_RETURN_INDEX(t) / TOT_RETURN_INDEX(t − 252 sessions) − 1, ×100',
+    derivation:
+      'close(t) / close(t₋) − 1, ×100, t₋ = last session ≤ t − 1 year (FUNCTIONS_TIER1 §0.3)',
     example: { ref: 'AAPL US Equity', value: 22.08, asOf: '2026-09-15' },
     since: SINCE,
   },

@@ -153,6 +153,21 @@ export default async function setup(project: TestProject): Promise<void> {
     await closeDb();
   }
 
+  // 5b. Shared reference rows, committed once.
+  //
+  // `server-int` runs four forks against one database and every test rolls its transaction back,
+  // so a row a test inserts is invisible to its siblings and every fork inserts it again. For the
+  // *fixed* reference rows — the GICS scheme, the three exchanges, the three venue calendars —
+  // that means four transactions holding speculative-insert locks on the same primary keys at
+  // once, in whatever order each file happens to seed them, and Postgres reports 40P01 on
+  // whichever pair inverts. The rows are identical in every fork, so the contention buys nothing.
+  //
+  // Committing them here makes each test's `ON CONFLICT DO NOTHING` a no-op that takes no write
+  // lock at all. The tests still seed them — they must stay runnable on their own, and a test that
+  // depends on a fixture it does not create is a test that lies about its own inputs — but in a
+  // normal run the row is already there and nothing is written.
+  await seedSharedReference(databaseUrl);
+
   // 6. publish the volumes the seed produced.
   const counter = new Client({ connectionString: databaseUrl });
   await counter.connect();
@@ -167,6 +182,37 @@ export default async function setup(project: TestProject): Promise<void> {
 
   // TESTING §7 budget: "Seed + migrate (CI cost) < 120 s cold … globalSetup logs the duration".
   process.stdout.write(`  globalSetup: migrate + seed in ${Date.now() - startedAt} ms\n`);
+}
+
+/**
+ * The one fixed reference row several integration files share, written once and committed.
+ *
+ * `classification_schemes` holds a single `GICS` row that four suites seed identically
+ * (`DES`, `QM`, `SECF`, `reference-routes`). `server-int` runs four forks against one database and
+ * every test rolls back, so each fork finds the table empty and inserts the same primary key: four
+ * transactions holding speculative-insert locks on one key, in whatever order each file seeds it,
+ * and Postgres reports `40P01 deadlock detected` on whichever pair inverts. The rows are identical,
+ * so the contention buys nothing.
+ *
+ * Committing it here turns each test's seed into a read that finds it (`ensureShared`), so nothing
+ * is written and no lock is taken. The tests still carry the seed, because a test must stay
+ * runnable on its own.
+ *
+ * Deliberately *only* this row. `calendars`, `exchanges` and the rest are seeded with a provenance
+ * each suite controls, and committing them here would put a row this file chose into payloads whose
+ * goldens the suites own — a shared fixture deciding another file's result.
+ */
+async function seedSharedReference(databaseUrl: string): Promise<void> {
+  const client = new Client({ connectionString: databaseUrl });
+  await client.connect();
+  try {
+    await client.query(
+      `INSERT INTO classification_schemes (scheme, name, source_id, levels)
+       VALUES ('GICS', 'GICS', 'wiki.sp500', 4) ON CONFLICT (scheme) DO NOTHING`,
+    );
+  } finally {
+    await client.end();
+  }
 }
 
 declare module 'vitest' {

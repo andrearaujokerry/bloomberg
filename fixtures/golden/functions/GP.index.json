@@ -1,0 +1,147 @@
+{
+  "variant": "index",
+  "primary": {
+    "ref": {
+      "id": "<index>"
+    },
+    "instrument": {
+      "instrumentId": "<index>",
+      "assetClass": "index",
+      "marketSector": "Index",
+      "display": "SPX Index",
+      "name": "S&P 500",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "SPX",
+      "exchCode": "INDEX",
+      "securityType": "Index",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "SPX Index",
+    "label": "S&P 500",
+    "calendarId": "XNAS",
+    "tz": "UTC",
+    "periodicity": "D",
+    "currency": "USD",
+    "unit": "index",
+    "t": [
+      1788220800000,
+      1788307200000,
+      1788393600000,
+      1788480000000,
+      1788739200000,
+      1788825600000,
+      1788912000000,
+      1788998400000,
+      1789084800000,
+      1789344000000,
+      1789430400000
+    ],
+    "o": [
+      7599,
+      7602,
+      7605,
+      7608,
+      7611,
+      7614,
+      7617,
+      7620,
+      7623,
+      7626,
+      7629
+    ],
+    "h": [
+      7602,
+      7605,
+      7608,
+      7611,
+      7614,
+      7617,
+      7620,
+      7623,
+      7626,
+      7629,
+      7632
+    ],
+    "l": [
+      7598,
+      7601,
+      7604,
+      7607,
+      7610,
+      7613,
+      7616,
+      7619,
+      7622,
+      7625,
+      7628
+    ],
+    "c": [
+      7600,
+      7603,
+      7606,
+      7609,
+      7612,
+      7615,
+      7618,
+      7621,
+      7624,
+      7627,
+      7630
+    ],
+    "v": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<index>",
+      "field": "PX_LAST",
+      "mode": "replace-last"
+    }
+  },
+  "overlays": [],
+  "events": [],
+  "annotations": [],
+  "window": {
+    "start": "2026-09-01",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "D",
+    "bars": 11
+  },
+  "last": {
+    "v": 7630.25,
+    "st": "live",
+    "ts": 1789496788000,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<index>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [
+    {
+      "label": "prev close",
+      "v": 7627,
+      "provIdx": 0
+    }
+  ],
+  "adjustments": [],
+  "fx": []
+}

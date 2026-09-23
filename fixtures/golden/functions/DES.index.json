@@ -1,0 +1,223 @@
+{
+  "variant": "index",
+  "instrument": {
+    "instrumentId": "<SPX>",
+    "assetClass": "index",
+    "marketSector": "Index",
+    "display": "SPX Index",
+    "name": "S&P 500 Index",
+    "currency": "USD",
+    "mdLineIds": [
+      "<SPX_LINE>"
+    ],
+    "ticker": "SPX",
+    "exchCode": "INDEX",
+    "securityType": "Index",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2,
+    "primaryListingId": "<SPX_LISTING>"
+  },
+  "terms": {
+    "provider": "S&P Dow Jones",
+    "methodology": "float_cap_weighted",
+    "calcCurrency": "USD",
+    "region": "Americas",
+    "baseDate": "1957-03-04",
+    "baseValue": 10,
+    "constituentCount": 500,
+    "proxyFund": {
+      "instrumentId": "<SPY>",
+      "key": "SPY US Equity"
+    },
+    "membershipSourceId": "ssga.holdings",
+    "provIdx": 0
+  },
+  "quote": {
+    "px": {
+      "v": 6014.2,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "PX_LAST"
+      }
+    },
+    "chgNet": {
+      "v": -12.4,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "CHG_NET_1D"
+      }
+    },
+    "chgPct": {
+      "v": -0.2058,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "CHG_PCT_1D"
+      }
+    },
+    "open": {
+      "v": 6026.1,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "PX_OPEN"
+      }
+    },
+    "high": {
+      "v": 6031.8,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "PX_HIGH"
+      }
+    },
+    "low": {
+      "v": 6009.4,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "PX_LOW"
+      }
+    },
+    "prevClose": {
+      "v": 6026.6,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "PX_CLOSE_1D"
+      }
+    },
+    "ivol30d": {
+      "v": 15.12,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "IVOL_30D"
+      }
+    },
+    "sessionState": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 3,
+      "live": {
+        "subject": "q:<SPX>",
+        "field": "SESSION_STATE"
+      }
+    }
+  },
+  "stats": {
+    "high52w": {
+      "v": 5180,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "low52w": {
+      "v": 4997,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "avgVolume30d": {
+      "v": 1043700,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "vol30d": {
+      "v": 0.16774716542285825,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "ret1d": {
+      "v": 0.05798221878623444,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "ret1w": {
+      "v": 0.29058504455636847,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "ret1m": {
+      "v": 1.2913324202699972,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789430400000
+    },
+    "retYtd": {
+      "v": null,
+      "st": "na",
+      "provIdx": 4
+    },
+    "ret1y": {
+      "v": null,
+      "st": "na",
+      "provIdx": 4
+    },
+    "beta1y": {
+      "v": null,
+      "st": "na",
+      "provIdx": 4
+    },
+    "barsAsOf": "2026-09-15"
+  },
+  "membership": {
+    "asOfDate": "2026-09-15",
+    "count": 1,
+    "sourceId": "ssga.holdings",
+    "top10": [
+      {
+        "instrumentId": "<AAPL>",
+        "key": "AAPL US Equity",
+        "name": "Apple Inc",
+        "weight": 0.0712
+      }
+    ],
+    "sectorWeights": [
+      {
+        "sector": "Information Technology",
+        "weight": 0.0712,
+        "count": 1
+      }
+    ],
+    "provIdx": 5
+  },
+  "related": [
+    {
+      "key": "SPY US Equity",
+      "label": "Proxy fund"
+    },
+    {
+      "key": "VIX Index",
+      "label": "Volatility index"
+    }
+  ],
+  "calendar": {
+    "calendarId": "XNAS",
+    "tz": "America/New_York"
+  }
+}

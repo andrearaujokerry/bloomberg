@@ -65,6 +65,13 @@ export default defineConfig({
           root: 'packages/server',
           environment: 'node',
           include: ['test/integration/**/*.test.ts'],
+          // Partition maintenance is DDL: `CREATE TABLE … PARTITION OF` and `ATTACH PARTITION`
+          // take ACCESS EXCLUSIVE on the parent, and every file here holds one transaction open
+          // for its whole duration (`withTxDb`). So a single DDL file does not merely contend —
+          // it blocks every other file that touches `quote_ticks` until it finishes, which is why
+          // `Q` and `DES` timed out in their `beforeAll` while passing in three seconds alone.
+          // The DDL suites run in `server-serial` instead, one at a time, after this project.
+          exclude: ['test/integration/ingest/partitions.test.ts'],
           setupFiles: ['test/setup.int.ts'],
           globalSetup: ['test/globalSetup.ts'],
           env: {
@@ -87,6 +94,42 @@ export default defineConfig({
           // the other four stay on the default group 0 and run first.
           sequence: { groupOrder: 1 },
           testTimeout: 30_000,
+          // Hooks get the same budget as tests. The default is 10 s, which was enough while the
+          // integration suite was small; WP-09 roughly doubled the file count and its `beforeAll`
+          // hooks seed a whole screen's worth of reference data, quotes, news and messages. Four
+          // of those running at once against one Postgres is ordinary contention, not a fault, and
+          // a hook that needs twelve seconds under load should wait rather than fail the file and
+          // cascade every test in it. A genuinely stuck hook still fails — at 60 s, not 10.
+          hookTimeout: 60_000,
+        },
+      },
+      {
+        test: {
+          // `server-serial`: the suites whose statements take table-level locks. Partition
+          // maintenance is the whole membership today — it creates, attaches and drops
+          // partitions of `quote_ticks` and the five other partitioned parents, each of which
+          // takes ACCESS EXCLUSIVE on the parent and holds it until the file's transaction ends.
+          //
+          // Run beside the ordinary integration files that is not contention to be tuned away: a
+          // reader cannot proceed at all while the parent is locked, so those files block for the
+          // DDL file's entire run and fail in their setup hook. One worker, one file at a time,
+          // after `server-int`, is the only arrangement where both halves are deterministic.
+          name: 'server-serial',
+          root: 'packages/server',
+          environment: 'node',
+          include: ['test/integration/ingest/partitions.test.ts'],
+          setupFiles: ['test/setup.int.ts'],
+          globalSetup: ['test/globalSetup.ts'],
+          env: {
+            DATABASE_URL: TEST_DATABASE_URL,
+            PROVIDER_MODE: 'replay',
+          },
+          pool: 'forks',
+          fileParallelism: false,
+          maxWorkers: 1,
+          sequence: { groupOrder: 2 },
+          testTimeout: 30_000,
+          hookTimeout: 60_000,
         },
       },
       {

@@ -1,0 +1,674 @@
+{
+  "variant": "price",
+  "instrument": {
+    "instrumentId": "<AAPL>",
+    "assetClass": "equity",
+    "marketSector": "Equity",
+    "display": "AAPL US Equity",
+    "name": "Apple Inc",
+    "currency": "USD",
+    "mdLineIds": "<1 md line(s)>",
+    "ticker": "AAPL",
+    "exchCode": "US",
+    "securityType": "Common Stock",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2
+  },
+  "columns": [
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "fmt": "px",
+      "decimals": null
+    },
+    {
+      "id": "PX_OPEN",
+      "label": "Open",
+      "fmt": "px",
+      "decimals": null
+    },
+    {
+      "id": "PX_HIGH",
+      "label": "High",
+      "fmt": "px",
+      "decimals": null
+    },
+    {
+      "id": "PX_LOW",
+      "label": "Low",
+      "fmt": "px",
+      "decimals": null
+    },
+    {
+      "id": "PX_VOLUME",
+      "label": "Volume",
+      "fmt": "shares",
+      "decimals": 0
+    },
+    {
+      "id": "CHG_PCT_1D",
+      "label": "Percent change",
+      "fmt": "pct",
+      "decimals": 2
+    }
+  ],
+  "rows": [
+    {
+      "date": "2020-09-30",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-29",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-28",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-25",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-24",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-23",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-22",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-21",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-18",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-17",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-16",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-15",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-14",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-11",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-10",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-09",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-08",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-04",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-03",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-02",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-09-01",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        0
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-31",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        100000000,
+        -3.8519319752418735
+      ],
+      "adjFactor": 1,
+      "volumeFactor": 1,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-28",
+      "v": [
+        124.8075,
+        124.8075,
+        124.8075,
+        124.8075,
+        400000000,
+        4.006250000000011
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-27",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-26",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-25",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-24",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-21",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-20",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-19",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-18",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-17",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-14",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-13",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-12",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-11",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-10",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-07",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-06",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-05",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-04",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        0
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    },
+    {
+      "date": "2020-08-03",
+      "v": [
+        120,
+        120,
+        120,
+        120,
+        400000000,
+        null
+      ],
+      "adjFactor": 0.25,
+      "volumeFactor": 4,
+      "sessions": 1
+    }
+  ],
+  "summary": {
+    "first": 120,
+    "last": 120,
+    "high": 124.8075,
+    "highDate": "2020-08-28",
+    "low": 120,
+    "lowDate": "2020-08-03",
+    "priceReturnPct": 0,
+    "totalReturnPct": null,
+    "avgVolume": 242857142.85714287,
+    "bars": 42,
+    "firstDate": "2020-08-03",
+    "lastDate": "2020-09-30"
+  },
+  "window": {
+    "start": "2020-08-03",
+    "end": "2020-09-30",
+    "range": "CUSTOM"
+  },
+  "periodicity": "D",
+  "adjust": "price",
+  "currency": "USD",
+  "converted": null,
+  "calendarId": "XNAS",
+  "sessionOpen": false,
+  "provIdx": [
+    0
+  ]
+}

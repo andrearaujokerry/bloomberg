@@ -88,6 +88,18 @@ import {
 } from './context.js';
 import type { CachedResult, ResultCache } from './resultCache.js';
 
+/**
+ * Every `ValueState` string (`core/types/quote.ts`), as a set, so step 7½ can recognise a
+ * {@link ValueCell} from its shape alone without importing a manifest's column map.
+ */
+const VALUE_STATES: ReadonlySet<string> = new Set<string>([
+  'live',
+  'stale',
+  'closed',
+  'blank',
+  'na',
+]);
+
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // Request shapes
 // ─────────────────────────────────────────────────────────────────────────────────────────────
@@ -691,6 +703,21 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
    * must not be served), a production build reports it through `onWarning` and serves, because a
    * screen that is one unexplained null short is still better than no screen.
    */
+  /**
+   * Is this object a {@link ValueCell}?
+   *
+   * Decidable from shape alone, which is the point: the runner knows no manifest's column map, but
+   * every screen cell in the system is `{ v, st, provIdx, … }` (FUNCTIONS.md §1.5, TIER1 §0.4) and
+   * `st` is one of the seven `ValueState` strings. That is narrow enough that an echoed parameter
+   * object cannot be mistaken for one, and broad enough that every cell a screen renders is caught
+   * wherever in the payload it sits.
+   */
+  function isValueCell(node: object): boolean {
+    if (!('v' in node) || !('st' in node)) return false;
+    const st = (node as { st: unknown }).st;
+    return typeof st === 'string' && VALUE_STATES.has(st);
+  }
+
   function assertPayloadMeta(
     manifest: AnyFunctionManifest,
     ctx: ResolveContext,
@@ -706,8 +733,9 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
       meta.unavailable.length > 0 || meta.entitlement.some((e) => e.decision === 'deny');
     const uncited: string[] = [];
     const gaps: string[] = [];
+    const unciteableCells: string[] = [];
 
-    const walk = (node: unknown, key: string | null): void => {
+    const walk = (node: unknown, key: string | null, path: string): void => {
       if (typeof node === 'number') {
         if (Number.isFinite(node) && isCell(key)) uncited.push(key);
         return;
@@ -718,19 +746,42 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
       }
       if (Array.isArray(node)) {
         // An array carries its parent's key: `rows: [1, 2]` is still the `rows` cell.
-        for (const item of node) walk(item, key);
+        node.forEach((item, i) => {
+          walk(item, key, `${path}[${String(i)}]`);
+        });
         return;
       }
       if (typeof node === 'object') {
-        for (const [k, v] of Object.entries(node as Record<string, unknown>)) walk(v, k);
+        if (isValueCell(node)) {
+          const cell = node as { v: unknown; provIdx?: unknown };
+          if (typeof cell.v === 'number' && Number.isFinite(cell.v)) {
+            const idx = cell.provIdx;
+            if (typeof idx !== 'number' || !Number.isInteger(idx) || idx < 0) {
+              unciteableCells.push(path === '' ? (key ?? '<root>') : path);
+            }
+          }
+          // Fall through: a cell's own fields are not themselves cells, but a `Custom` node may
+          // nest one, and walking on costs nothing.
+        }
+        for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+          walk(v, k, path === '' ? k : `${path}.${k}`);
+        }
       }
     };
-    walk(data, null);
+    walk(data, null, '');
 
     if (uncited.length > 0 && ctx.prov.size() === 0 && ctx.engines.list().length === 0) {
       violations.push(
         `numbers with no provenance and no engine: ${[...new Set(uncited)].sort().join(', ')} ` +
           '(DATA-10)',
+      );
+    }
+    if (unciteableCells.length > 0) {
+      violations.push(
+        `value cells showing a finite number with no provenance index: ` +
+          `${[...new Set(unciteableCells)].sort().slice(0, 12).join(', ')}` +
+          `${unciteableCells.length > 12 ? ` (+${String(unciteableCells.length - 12)} more)` : ''} ` +
+          '(DATA-10; provIdx -1 is reserved for the pending cell, whose `v` is null)',
       );
     }
     if (gaps.length > 0 && !explained) {

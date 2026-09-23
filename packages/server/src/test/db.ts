@@ -252,6 +252,32 @@ export async function asUser(
 }
 
 /**
+ * Seed a **shared** reference row only when it is not already there.
+ *
+ * `server-int` runs four forks against one database and every test rolls back, so a row one test
+ * inserts is invisible to its siblings and each of them inserts it again. For a fixed reference row
+ * — the GICS scheme, an `exchanges` entry, a venue calendar — that means four transactions holding
+ * speculative-insert locks on the same primary key at once, in whatever order each file seeds them,
+ * and Postgres reports `40P01 deadlock detected` on whichever pair inverts. `ON CONFLICT DO
+ * NOTHING` does not help: the second transaction still waits on the first's uncommitted row.
+ *
+ * `test/globalSetup.ts` commits those rows once, so in a normal run `probe` finds them and nothing
+ * is written. The seed stays in each test because a test must remain runnable on its own against a
+ * database that has not been through globalSetup — and a test that silently depends on a fixture it
+ * does not create is a test that lies about its own inputs.
+ */
+export async function ensureShared(
+  t: TestDb,
+  probe: string,
+  seed: string,
+  params: readonly unknown[] = [],
+): Promise<void> {
+  const present = await t.client.query(probe);
+  if (present.rowCount !== null && present.rowCount > 0) return;
+  await t.client.query(seed, params as unknown[]);
+}
+
+/**
  * Additionally switch the session to `terminal_app` so the RLS policies of migration 0015 apply to
  * the test (the owner role is a superuser locally and bypasses RLS — DATA_MODEL §15.1 L2438).
  * Transaction-scoped; reverted by the rollback.

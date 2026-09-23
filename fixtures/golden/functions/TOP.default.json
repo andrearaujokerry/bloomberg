@@ -1,0 +1,243 @@
+{
+  "variant": "default",
+  "resolved": {
+    "scope": "all",
+    "id": null,
+    "label": "All news"
+  },
+  "rows": [
+    {
+      "newsId": "<NEWS2>",
+      "headline": "8-K · Aerkomm Inc · Item 5.02 Departure of Directors",
+      "summary": null,
+      "sourceId": "sec.atom",
+      "feed": "8-K",
+      "kind": "filing",
+      "author": null,
+      "category": null,
+      "cik": "0001590496",
+      "items8k": [
+        "5.02"
+      ],
+      "publishedAt": "2026-09-15T18:21:20.000Z",
+      "capturedAt": "2026-09-15T18:41:00.000Z",
+      "url": "https://www.sec.gov/Archives/edgar/data/1590496/000121390026100070/index.htm",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC8>",
+          "display": "Filings",
+          "confidence": 1,
+          "method": "feed_topic"
+        }
+      ],
+      "provIdx": 2,
+      "rank": 0.536506031,
+      "rankParts": {
+        "recency": 0.894176718,
+        "feedWeight": 0.6,
+        "linkConfidence": 1,
+        "clickThrough": 0
+      }
+    },
+    {
+      "newsId": "<NEWS1>",
+      "headline": "AI Will Be Biggest 'Misallocation' of Capital, Says Noble",
+      "summary": "Correct: the capital reallocation thesis, restated.",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "video",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T15:04:08.000Z",
+      "capturedAt": "2026-09-15T18:40:06.000Z",
+      "url": "https://www.bloomberg.com/news/videos/2026-09-15/ai-misallocation-video",
+      "isCorrection": true,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC1>",
+          "display": "Markets",
+          "confidence": 1,
+          "method": "feed_topic"
+        },
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC13>",
+          "display": "Artificial intelligence",
+          "confidence": 0.9,
+          "method": "keyword"
+        }
+      ],
+      "provIdx": 0,
+      "rank": 0.298971387,
+      "rankParts": {
+        "recency": 0.298971387,
+        "feedWeight": 1,
+        "linkConfidence": 1,
+        "clickThrough": 0
+      }
+    },
+    {
+      "newsId": "<NEWS3>",
+      "headline": "Federal Reserve Board announces termination of enforcement action",
+      "summary": "The Board announced the termination of an enforcement action.",
+      "sourceId": "fed.rss",
+      "feed": "press_all",
+      "kind": "fed_release",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T13:55:00.000Z",
+      "capturedAt": "2026-09-15T18:39:40.000Z",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260915a.htm",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC7>",
+          "display": "Federal Reserve",
+          "confidence": 1,
+          "method": "feed_topic"
+        }
+      ],
+      "provIdx": 1,
+      "rank": 0.183261351,
+      "rankParts": {
+        "recency": 0.203623723,
+        "feedWeight": 0.9,
+        "linkConfidence": 1,
+        "clickThrough": 0
+      }
+    },
+    {
+      "newsId": "<NEWS4>",
+      "headline": "Traders Trim Bets on an October Rate Cut",
+      "summary": "Swaps now imply a lower chance of a cut at the October meeting.",
+      "sourceId": "bbg.rss",
+      "feed": "economics",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T11:02:00.000Z",
+      "capturedAt": "2026-09-15T18:40:06.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/traders-trim-bets",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC2>",
+          "display": "Economics",
+          "confidence": 1,
+          "method": "feed_topic"
+        },
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC11>",
+          "display": "Rates",
+          "confidence": 0.9,
+          "method": "keyword"
+        }
+      ],
+      "provIdx": 0,
+      "rank": 0.0623035954,
+      "rankParts": {
+        "recency": 0.0778794942,
+        "feedWeight": 0.8,
+        "linkConfidence": 1,
+        "clickThrough": 0
+      }
+    },
+    {
+      "newsId": "<NEWS5>",
+      "headline": "Apple Shares Rise on Capital Return Plan",
+      "summary": "The board approved a larger buyback.",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T09:30:00.000Z",
+      "capturedAt": "2026-09-15T18:40:06.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/apple-capital-return",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "instrument",
+          "entityId": "<AAPL>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "ticker_exact"
+        },
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC1>",
+          "display": "Markets",
+          "confidence": 1,
+          "method": "feed_topic"
+        }
+      ],
+      "provIdx": 0,
+      "rank": 0.0467143583,
+      "rankParts": {
+        "recency": 0.0467143583,
+        "feedWeight": 1,
+        "linkConfidence": 1,
+        "clickThrough": 0
+      }
+    }
+  ],
+  "liveSubject": "n:all",
+  "feedHealth": [
+    {
+      "sourceId": "bbg.rss",
+      "feed": "economics",
+      "lastCapturedAt": "2026-09-15T18:40:06.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 0
+    },
+    {
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "lastCapturedAt": "2026-09-15T18:40:06.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 0
+    },
+    {
+      "sourceId": "fed.rss",
+      "feed": "press_all",
+      "lastCapturedAt": "2026-09-15T18:39:40.000Z",
+      "expectedIntervalMs": 300000,
+      "st": "live",
+      "provIdx": 1
+    },
+    {
+      "sourceId": "sec.atom",
+      "feed": "8-K",
+      "lastCapturedAt": "2026-09-15T18:41:00.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 2
+    }
+  ],
+  "suppressed": {
+    "entitlement": 0,
+    "kindFilter": 0
+  },
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

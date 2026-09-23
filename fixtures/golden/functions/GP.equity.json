@@ -1,0 +1,178 @@
+{
+  "variant": "equity",
+  "primary": {
+    "ref": {
+      "id": "<equity>"
+    },
+    "instrument": {
+      "instrumentId": "<equity>",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "display": "AAPL US Equity",
+      "name": "Apple Inc",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "AAPL",
+      "exchCode": "US",
+      "securityType": "Common Stock",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "AAPL US Equity",
+    "label": "Apple Inc",
+    "calendarId": "XNAS",
+    "tz": "UTC",
+    "periodicity": "D",
+    "currency": "USD",
+    "unit": "price",
+    "t": [
+      1788220800000,
+      1788307200000,
+      1788393600000,
+      1788480000000,
+      1788739200000,
+      1788825600000,
+      1788912000000,
+      1788998400000,
+      1789084800000,
+      1789344000000,
+      1789430400000
+    ],
+    "o": [
+      329,
+      329.5,
+      330,
+      330.5,
+      331,
+      331.5,
+      332,
+      332.5,
+      333,
+      333.5,
+      334
+    ],
+    "h": [
+      332,
+      332.5,
+      333,
+      333.5,
+      334,
+      334.5,
+      335,
+      335.5,
+      336,
+      336.5,
+      337
+    ],
+    "l": [
+      328,
+      328.5,
+      329,
+      329.5,
+      330,
+      330.5,
+      331,
+      331.5,
+      332,
+      332.5,
+      333
+    ],
+    "c": [
+      330,
+      330.5,
+      331,
+      331.5,
+      332,
+      332.5,
+      333,
+      333.5,
+      334,
+      334.5,
+      335
+    ],
+    "v": [
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000,
+      5000000
+    ],
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<equity>",
+      "field": "PX_LAST",
+      "mode": "replace-last"
+    }
+  },
+  "overlays": [],
+  "events": [
+    {
+      "t": 1788480000000,
+      "kind": "earnings",
+      "label": "8-K",
+      "command": "AAPL US Equity CF",
+      "provIdx": 0
+    },
+    {
+      "t": 1788825600000,
+      "kind": "dividend",
+      "label": "$0.26",
+      "command": "AAPL US Equity CACS",
+      "provIdx": 0
+    }
+  ],
+  "annotations": [
+    {
+      "annotationId": "<annotationId>",
+      "kind": "hline",
+      "anchors": [
+        {
+          "t": 0,
+          "v": 340
+        }
+      ],
+      "label": "resistance",
+      "style": {},
+      "ownerUserId": "<ownerUserId>",
+      "sharedScope": "private",
+      "editable": true
+    }
+  ],
+  "window": {
+    "start": "2026-09-01",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "D",
+    "bars": 11
+  },
+  "last": {
+    "v": 335.12,
+    "st": "live",
+    "ts": 1789496788000,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<equity>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [
+    {
+      "label": "prev close",
+      "v": 334.5,
+      "provIdx": 0
+    }
+  ],
+  "adjustments": [],
+  "fx": []
+}

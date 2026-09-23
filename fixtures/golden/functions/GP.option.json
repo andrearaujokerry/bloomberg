@@ -1,0 +1,153 @@
+{
+  "variant": "option",
+  "primary": {
+    "ref": {
+      "id": "<option>"
+    },
+    "instrument": {
+      "instrumentId": "<option>",
+      "assetClass": "option",
+      "marketSector": "Equity",
+      "display": "AAPL260916C00245000 US Equity",
+      "name": "AAPL 9/16/26 C245",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "AAPL260916C00245000",
+      "exchCode": "US",
+      "securityType": "Equity",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "AAPL260916C00245000 US Equity",
+    "label": "AAPL 9/16/26 C245",
+    "calendarId": "",
+    "tz": "UTC",
+    "periodicity": "5m",
+    "currency": "USD",
+    "unit": "price",
+    "t": [
+      1789480800000,
+      1789481100000,
+      1789481400000,
+      1789481700000,
+      1789482000000,
+      1789482300000,
+      1789482600000,
+      1789482900000,
+      1789483200000,
+      1789483500000,
+      1789483800000,
+      1789484100000
+    ],
+    "o": [
+      12.2,
+      12.25,
+      12.3,
+      12.35,
+      12.4,
+      12.45,
+      12.5,
+      12.55,
+      12.6,
+      12.65,
+      12.7,
+      12.75
+    ],
+    "h": [
+      12.2,
+      12.25,
+      12.3,
+      12.35,
+      12.4,
+      12.45,
+      12.5,
+      12.55,
+      12.6,
+      12.65,
+      12.7,
+      12.75
+    ],
+    "l": [
+      12.2,
+      12.25,
+      12.3,
+      12.35,
+      12.4,
+      12.45,
+      12.5,
+      12.55,
+      12.6,
+      12.65,
+      12.7,
+      12.75
+    ],
+    "c": [
+      12.2,
+      12.25,
+      12.3,
+      12.35,
+      12.4,
+      12.45,
+      12.5,
+      12.55,
+      12.6,
+      12.65,
+      12.7,
+      12.75
+    ],
+    "v": [
+      250,
+      250,
+      250,
+      250,
+      250,
+      250,
+      250,
+      250,
+      250,
+      250,
+      250,
+      250
+    ],
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 0,
+    "live": {
+      "subject": "b1m:<option>",
+      "field": "PX_LAST",
+      "mode": "append-forming-bar"
+    }
+  },
+  "overlays": [],
+  "events": [],
+  "annotations": [],
+  "window": {
+    "start": "2026-09-15",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "5m",
+    "bars": 12
+  },
+  "last": {
+    "v": 12.75,
+    "st": "live",
+    "ts": 1789496788000,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<option>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [
+    {
+      "label": "strike",
+      "v": 245,
+      "provIdx": 0
+    }
+  ],
+  "adjustments": [],
+  "fx": []
+}

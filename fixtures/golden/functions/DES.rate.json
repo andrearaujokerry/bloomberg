@@ -1,0 +1,144 @@
+{
+  "variant": "rate",
+  "instrument": {
+    "instrumentId": "<SOFR>",
+    "assetClass": "rate",
+    "marketSector": "Index",
+    "display": "SOFR Index",
+    "name": "Secured Overnight Financing Rate",
+    "currency": "USD",
+    "mdLineIds": [
+      "<SOFR_LINE>"
+    ],
+    "ticker": "SOFR",
+    "exchCode": "RATE",
+    "securityType": "Rate",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 4
+  },
+  "terms": {
+    "rateCode": "SOFR",
+    "publisher": "Federal Reserve Bank of New York",
+    "dayCount": "ACT/360",
+    "publicationTimeEt": "08:00:00",
+    "tenorDays": 1,
+    "compounding": "simple",
+    "seriesCode": null,
+    "provIdx": 2
+  },
+  "latest": {
+    "effectiveDate": "2026-09-14",
+    "rate": {
+      "v": 4.33,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "RATE"
+      }
+    },
+    "pct1": {
+      "v": 4.25,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "RATE_P1"
+      }
+    },
+    "pct25": {
+      "v": 4.28,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "RATE_P25"
+      }
+    },
+    "pct75": {
+      "v": 4.33,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "RATE_P75"
+      }
+    },
+    "pct99": {
+      "v": 4.4,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "RATE_P99"
+      }
+    },
+    "volumeBn": {
+      "v": 2403,
+      "st": "closed",
+      "ts": 1789387200000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "RATE_VOLUME_BN"
+      }
+    },
+    "targetFrom": {
+      "v": null,
+      "st": "na",
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "TARGET_FROM"
+      }
+    },
+    "targetTo": {
+      "v": null,
+      "st": "na",
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<SOFR>",
+        "field": "TARGET_TO"
+      }
+    },
+    "revisionIndicator": null,
+    "vintageAt": "2026-09-14T12:00:00.000Z"
+  },
+  "averages": {
+    "effectiveDate": "2026-09-14",
+    "avg30d": 4.31,
+    "avg90d": 4.29,
+    "avg180d": 4.27,
+    "indexValue": 1.13456789,
+    "provIdx": 2
+  },
+  "history": [
+    {
+      "effectiveDate": "2026-09-09",
+      "rate": 4.3,
+      "provIdx": 2
+    },
+    {
+      "effectiveDate": "2026-09-10",
+      "rate": 4.31,
+      "provIdx": 2
+    },
+    {
+      "effectiveDate": "2026-09-11",
+      "rate": 4.32,
+      "provIdx": 2
+    },
+    {
+      "effectiveDate": "2026-09-14",
+      "rate": 4.33,
+      "provIdx": 2
+    }
+  ],
+  "description": "Secured Overnight Financing Rate — volume-weighted median of overnight Treasury repo; published 08:00 ET by the New York Fed; ACT/360"
+}

@@ -1,0 +1,479 @@
+{
+  "variant": "default",
+  "source": {
+    "kind": "watchlist",
+    "id": "<WATCHLIST>",
+    "name": "MAG3",
+    "asOfDate": null,
+    "sourceId": null
+  },
+  "title": "MAG3",
+  "columns": [
+    {
+      "id": "PX_LAST",
+      "label": "Last price",
+      "fieldId": "PX_LAST",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_NET_1D",
+      "label": "Net change",
+      "fieldId": "CHG_NET_1D",
+      "fmt": "px"
+    },
+    {
+      "id": "CHG_PCT_1D",
+      "label": "Percent change",
+      "fieldId": "CHG_PCT_1D",
+      "fmt": "pct",
+      "decimals": 2
+    },
+    {
+      "id": "PX_BID",
+      "label": "Bid",
+      "fieldId": "PX_BID",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_ASK",
+      "label": "Ask",
+      "fieldId": "PX_ASK",
+      "fmt": "px"
+    },
+    {
+      "id": "BID_SIZE",
+      "label": "Bid size",
+      "fieldId": "BID_SIZE",
+      "fmt": "shares",
+      "decimals": 0
+    },
+    {
+      "id": "ASK_SIZE",
+      "label": "Ask size",
+      "fieldId": "ASK_SIZE",
+      "fmt": "shares",
+      "decimals": 0
+    },
+    {
+      "id": "PX_VOLUME",
+      "label": "Volume",
+      "fieldId": "PX_VOLUME",
+      "fmt": "shares",
+      "decimals": 0
+    },
+    {
+      "id": "PX_HIGH",
+      "label": "High",
+      "fieldId": "PX_HIGH",
+      "fmt": "px"
+    },
+    {
+      "id": "PX_LOW",
+      "label": "Low",
+      "fieldId": "PX_LOW",
+      "fmt": "px"
+    },
+    {
+      "id": "LAST_TRADE_TIME",
+      "label": "Last trade time",
+      "fieldId": "LAST_TRADE_TIME",
+      "fmt": "datetime"
+    },
+    {
+      "id": "SESSION_STATE",
+      "label": "Session",
+      "fieldId": "SESSION_STATE",
+      "fmt": "text"
+    }
+  ],
+  "rows": [
+    {
+      "instrumentId": "<AAPL>",
+      "key": "AAPL US Equity",
+      "name": "Apple Inc",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": "Real Estate",
+      "subject": "q:<AAPL>",
+      "cells": {
+        "PX_LAST": {
+          "v": 330.27,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": -2.81,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": -0.8436,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_BID": {
+          "v": 330.25,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "PX_BID"
+          }
+        },
+        "PX_ASK": {
+          "v": 330.28,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "PX_ASK"
+          }
+        },
+        "BID_SIZE": {
+          "v": 40,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "BID_SIZE"
+          }
+        },
+        "ASK_SIZE": {
+          "v": 120,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "ASK_SIZE"
+          }
+        },
+        "PX_VOLUME": {
+          "v": 16591786,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "PX_VOLUME"
+          }
+        },
+        "PX_HIGH": {
+          "v": 331.59,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 328.35,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "PX_LOW"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "LAST_TRADE_TIME"
+          }
+        },
+        "SESSION_STATE": {
+          "v": null,
+          "st": "live",
+          "ts": null,
+          "provIdx": 0,
+          "live": {
+            "subject": "q:<AAPL>",
+            "field": "SESSION_STATE"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<MSFT>",
+      "key": "MSFT US Equity",
+      "name": "Microsoft Corp",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": null,
+      "subject": "q:<MSFT>",
+      "cells": {
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_BID": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "PX_BID"
+          }
+        },
+        "PX_ASK": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "PX_ASK"
+          }
+        },
+        "BID_SIZE": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "BID_SIZE"
+          }
+        },
+        "ASK_SIZE": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "ASK_SIZE"
+          }
+        },
+        "PX_VOLUME": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "PX_VOLUME"
+          }
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "PX_LOW"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "LAST_TRADE_TIME"
+          }
+        },
+        "SESSION_STATE": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<MSFT>",
+            "field": "SESSION_STATE"
+          }
+        }
+      }
+    },
+    {
+      "instrumentId": "<NVDA>",
+      "key": "NVDA US Equity",
+      "name": "NVIDIA Corp",
+      "assetClass": "equity",
+      "marketSector": "Equity",
+      "exchCode": "US",
+      "gicsSector": null,
+      "subject": "q:<NVDA>",
+      "cells": {
+        "PX_LAST": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "PX_LAST"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "PX_BID": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "PX_BID"
+          }
+        },
+        "PX_ASK": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "PX_ASK"
+          }
+        },
+        "BID_SIZE": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "BID_SIZE"
+          }
+        },
+        "ASK_SIZE": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "ASK_SIZE"
+          }
+        },
+        "PX_VOLUME": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "PX_VOLUME"
+          }
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "PX_LOW"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "LAST_TRADE_TIME"
+          }
+        },
+        "SESSION_STATE": {
+          "v": null,
+          "st": "blank",
+          "provIdx": -1,
+          "live": {
+            "subject": "q:<NVDA>",
+            "field": "SESSION_STATE"
+          }
+        }
+      }
+    }
+  ],
+  "skipped": [
+    {
+      "ref": "RATIO(AAPL US Equity, SPX Index)",
+      "reason": "FORMULA_ROW"
+    }
+  ],
+  "groupBy": "none",
+  "sort": null,
+  "counts": {
+    "rows": 3,
+    "live": 12,
+    "pending": 2,
+    "stale": 0,
+    "blank": 0
+  },
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

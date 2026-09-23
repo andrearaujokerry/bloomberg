@@ -165,6 +165,35 @@ const INSERT_LICENCE = `
  * that was never registered.
  */
 export async function seedLicences(db: SeedDb): Promise<SeedLicencesResult> {
+  // One writer at a time, across connections.
+  //
+  // `licence_registry` and `field_licence` are process-wide reference data that *every* caller
+  // writes in full: the production seed, and each of the four `server-int` forks, whose
+  // transactions roll back so each one finds the registry empty and re-seeds it. Two of them
+  // running side by side upsert the same 299-row field matrix and take the same `FOR KEY SHARE`
+  // locks on the same `licence_registry` rows through `field_licence`'s foreign key — in an order
+  // neither controls — and Postgres reports 40P01 on whichever it picks. The failure is a lock
+  // inversion, not a data race: the rows written are identical.
+  //
+  // A **transaction-scoped** lock would hold until the caller's transaction ends, which for a test
+  // is the whole test, and would serialise the suite. This one is session-scoped and released in
+  // the `finally` below, so it serialises exactly the seeding and nothing after it.
+  await db.query('SELECT pg_advisory_lock($1)', [SEED_LOCK_KEY]);
+  try {
+    return await seedLicencesLocked(db);
+  } finally {
+    await db.query('SELECT pg_advisory_unlock($1)', [SEED_LOCK_KEY]);
+  }
+}
+
+/**
+ * The advisory key `seedLicences` serialises on: `hashtext('seed:licences')` computed once, as a
+ * signed 64-bit integer, so it cannot collide with `ingest/lock.ts`'s leader key or with the
+ * per-room key `messages_chain` takes.
+ */
+const SEED_LOCK_KEY = 0x5eed_11ce_0000_0001n.toString();
+
+async function seedLicencesLocked(db: SeedDb): Promise<SeedLicencesResult> {
   // ── licence_registry ────────────────────────────────────────────────────────────────────────
   const current = await select<CurrentLicence>(
     db,

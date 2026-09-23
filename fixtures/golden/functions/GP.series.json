@@ -1,0 +1,88 @@
+{
+  "variant": "series",
+  "primary": {
+    "ref": {
+      "id": "<series>"
+    },
+    "instrument": {
+      "instrumentId": "<series>",
+      "assetClass": "econ",
+      "marketSector": "Index",
+      "display": "DGS10 Index",
+      "name": "10-Year Treasury Constant Maturity Rate",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "DGS10",
+      "exchCode": "ECON",
+      "securityType": "Index",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "DGS10 Index",
+    "label": "10-Year Treasury Constant Maturity Rate",
+    "calendarId": "",
+    "tz": "UTC",
+    "periodicity": "D",
+    "currency": "USD",
+    "unit": "pct",
+    "t": [
+      1788220800000,
+      1788307200000,
+      1788393600000,
+      1788480000000,
+      1788739200000,
+      1788825600000,
+      1788912000000,
+      1788998400000,
+      1789084800000,
+      1789344000000,
+      1789430400000
+    ],
+    "o": null,
+    "h": null,
+    "l": null,
+    "c": [
+      4.35,
+      4.36,
+      4.37,
+      4.38,
+      4.39,
+      4.4,
+      4.41,
+      4.42,
+      4.43,
+      4.44,
+      4.45
+    ],
+    "v": null,
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 0,
+    "live": null
+  },
+  "overlays": [],
+  "events": [],
+  "annotations": [],
+  "window": {
+    "start": "2026-09-01",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "D",
+    "bars": 11
+  },
+  "last": {
+    "v": null,
+    "st": "blank",
+    "provIdx": -1,
+    "live": {
+      "subject": "q:<series>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [],
+  "adjustments": [],
+  "fx": []
+}

@@ -74,6 +74,7 @@ import {
   type DeclarationRow as GeneratedDeclarationRow,
 } from '../../entitlements/declarations.js';
 import { traceQuery } from '../../observability/traceQuery.js';
+import { chainDigestSql } from '../../messaging/service.js';
 import { setPassword } from '../auth/password.js';
 import { requireSession, type Principal } from '../auth/session.js';
 import {
@@ -1905,13 +1906,8 @@ export const adminRoutes: FastifyPluginAsync = async (app) => {
           WITH ordered AS (
             SELECT room_id, seq, prev_hash, hash,
                    lag(hash) OVER (PARTITION BY room_id ORDER BY seq) AS expected_prev,
-                   digest(
-                     coalesce(lag(hash) OVER (PARTITION BY room_id ORDER BY seq), '\\x'::bytea)
-                     || convert_to(room_id::text || '|' || seq::text || '|' || sender_user_id::text
-                                   || '|' || to_char(sent_at AT TIME ZONE 'UTC',
-                                                     'YYYY-MM-DD"T"HH24:MI:SS.US"Z"')
-                                   || '|' || body || '|' || attachments::text, 'UTF8'),
-                     'sha256') AS expected_hash
+                   ${sql.raw(chainDigestSql('lag(hash) OVER (PARTITION BY room_id ORDER BY seq)'))}
+                     AS expected_hash
               FROM messages
              WHERE room_id IN (${sql.join(
                roomIds.map((id) => sql`${id}`),

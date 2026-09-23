@@ -1,0 +1,127 @@
+{
+  "variant": "default",
+  "query": {
+    "q": "capital",
+    "instrumentId": null,
+    "instrumentDisplay": null,
+    "feeds": [],
+    "topics": [],
+    "kinds": [],
+    "from": null,
+    "to": null
+  },
+  "matcher": "tsquery",
+  "tsquery": "'capit'",
+  "rows": [
+    {
+      "newsId": "<NEWS1>",
+      "headline": "AI Will Be Biggest 'Misallocation' of Capital, Says Noble",
+      "summary": "Correct: the capital reallocation thesis, restated.",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "video",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T15:04:08.000Z",
+      "capturedAt": "2026-09-15T18:40:06.000Z",
+      "url": "https://www.bloomberg.com/news/videos/2026-09-15/ai-misallocation-video",
+      "isCorrection": true,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC1>",
+          "display": "Markets",
+          "confidence": 1,
+          "method": "feed_topic"
+        },
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC13>",
+          "display": "Artificial intelligence",
+          "confidence": 0.9,
+          "method": "keyword"
+        }
+      ],
+      "provIdx": 0
+    },
+    {
+      "newsId": "<NEWS5>",
+      "headline": "Apple Shares Rise on Capital Return Plan",
+      "summary": "The board approved a larger buyback.",
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "kind": "story",
+      "author": null,
+      "category": null,
+      "cik": null,
+      "items8k": null,
+      "publishedAt": "2026-09-15T09:30:00.000Z",
+      "capturedAt": "2026-09-15T18:40:06.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-09-15/apple-capital-return",
+      "isCorrection": false,
+      "machineGenerated": false,
+      "links": [
+        {
+          "entityKind": "instrument",
+          "entityId": "<AAPL>",
+          "display": "Apple Inc",
+          "confidence": 1,
+          "method": "ticker_exact"
+        },
+        {
+          "entityKind": "topic",
+          "entityId": "<TOPIC1>",
+          "display": "Markets",
+          "confidence": 1,
+          "method": "feed_topic"
+        }
+      ],
+      "provIdx": 0
+    }
+  ],
+  "total": 2,
+  "totalIsCapped": false,
+  "nextCursor": null,
+  "savedSearch": null,
+  "feedHealth": [
+    {
+      "sourceId": "bbg.rss",
+      "feed": "economics",
+      "lastCapturedAt": "2026-09-15T18:40:06.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 0
+    },
+    {
+      "sourceId": "bbg.rss",
+      "feed": "markets",
+      "lastCapturedAt": "2026-09-15T18:40:06.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 0
+    },
+    {
+      "sourceId": "fed.rss",
+      "feed": "press_all",
+      "lastCapturedAt": "2026-09-15T18:39:40.000Z",
+      "expectedIntervalMs": 300000,
+      "st": "live",
+      "provIdx": 1
+    },
+    {
+      "sourceId": "sec.atom",
+      "feed": "8-K",
+      "lastCapturedAt": "2026-09-15T18:41:00.000Z",
+      "expectedIntervalMs": 60000,
+      "st": "live",
+      "provIdx": 2
+    }
+  ],
+  "suppressed": {
+    "entitlement": 0
+  },
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

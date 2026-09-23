@@ -1,0 +1,751 @@
+{
+  "variant": "quote",
+  "instrument": {
+    "instrumentId": "<AAPL>",
+    "assetClass": "equity",
+    "marketSector": "Equity",
+    "display": "AAPL US Equity",
+    "name": "Apple Inc",
+    "currency": "USD",
+    "mdLineIds": [
+      "<CBOE_LINE>",
+      "<YAHOO_LINE>"
+    ],
+    "ticker": "AAPL",
+    "exchCode": "US",
+    "securityType": "Common Stock",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2
+  },
+  "composite": {
+    "PX_LAST": {
+      "v": 330.18,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_LAST"
+      }
+    },
+    "LAST_SIZE": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "LAST_SIZE"
+      }
+    },
+    "LAST_TRADE_TIME": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "LAST_TRADE_TIME"
+      }
+    },
+    "PX_BID": {
+      "v": 330.25,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_BID"
+      }
+    },
+    "PX_ASK": {
+      "v": 330.28,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_ASK"
+      }
+    },
+    "BID_SIZE": {
+      "v": 40,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "BID_SIZE"
+      }
+    },
+    "ASK_SIZE": {
+      "v": 120,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "ASK_SIZE"
+      }
+    },
+    "PX_OPEN": {
+      "v": 330.24,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_OPEN"
+      }
+    },
+    "PX_HIGH": {
+      "v": 331.59,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_HIGH"
+      }
+    },
+    "PX_LOW": {
+      "v": 328.35,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_LOW"
+      }
+    },
+    "PX_CLOSE_1D": {
+      "v": 333.08,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_CLOSE_1D"
+      }
+    },
+    "PX_OFFICIAL_CLOSE": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_OFFICIAL_CLOSE"
+      }
+    },
+    "PX_VOLUME": {
+      "v": 17500000,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_VOLUME"
+      }
+    },
+    "VWAP": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "VWAP"
+      }
+    },
+    "CHG_NET_1D": {
+      "v": -2.9,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_NET_1D"
+      }
+    },
+    "CHG_PCT_1D": {
+      "v": -0.8707,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_PCT_1D"
+      }
+    },
+    "TICK_DIR": {
+      "v": "down",
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "TICK_DIR"
+      }
+    },
+    "IVOL_30D": {
+      "v": 24.427,
+      "st": "live",
+      "ts": 1789496788000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "IVOL_30D"
+      }
+    },
+    "SESSION_STATE": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "SESSION_STATE"
+      }
+    }
+  },
+  "compositeTs": {
+    "src": "2026-09-15T18:40:28.000Z",
+    "cap": "2026-09-15T18:41:28.000Z",
+    "pub": "2026-09-15T18:41:28.000Z"
+  },
+  "compositeSeq": 2,
+  "tier": "delayed",
+  "delayMin": 15,
+  "lines": [
+    {
+      "mdLineId": "<CBOE_LINE>",
+      "sourceId": "cboe.quotes",
+      "providerSymbol": "AAPL",
+      "lineKind": "composite",
+      "priority": 10,
+      "intrinsicDelayMin": 15,
+      "expectedIntervalMs": 10000,
+      "subject": "l:<CBOE_LINE>",
+      "cells": {
+        "PX_LAST": {
+          "v": 330.27,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_LAST"
+          }
+        },
+        "LAST_SIZE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "LAST_SIZE"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": 1789496786000,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "LAST_TRADE_TIME"
+          }
+        },
+        "PX_BID": {
+          "v": 330.25,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_BID"
+          }
+        },
+        "PX_ASK": {
+          "v": 330.28,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_ASK"
+          }
+        },
+        "BID_SIZE": {
+          "v": 40,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "BID_SIZE"
+          }
+        },
+        "ASK_SIZE": {
+          "v": 120,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "ASK_SIZE"
+          }
+        },
+        "PX_OPEN": {
+          "v": 330.24,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": 331.59,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": 328.35,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": 333.08,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "PX_OFFICIAL_CLOSE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_OFFICIAL_CLOSE"
+          }
+        },
+        "PX_VOLUME": {
+          "v": 16591786,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "PX_VOLUME"
+          }
+        },
+        "VWAP": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "VWAP"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "TICK_DIR": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "TICK_DIR"
+          }
+        },
+        "IVOL_30D": {
+          "v": 24.427,
+          "st": "live",
+          "ts": 1789496788000,
+          "provIdx": 1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "IVOL_30D"
+          }
+        },
+        "SESSION_STATE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<CBOE_LINE>",
+            "field": "SESSION_STATE"
+          }
+        }
+      },
+      "ts": {
+        "src": "2026-09-15T18:26:28.000Z",
+        "cap": "2026-09-15T18:41:28.000Z",
+        "pub": "2026-09-15T18:41:28.000Z"
+      },
+      "srcSeq": 15972883317,
+      "st": "live",
+      "provIdx": 1,
+      "wonFields": [
+        "PX_BID",
+        "PX_ASK",
+        "BID_SIZE",
+        "ASK_SIZE",
+        "PX_OPEN",
+        "PX_HIGH",
+        "PX_LOW",
+        "PX_CLOSE_1D",
+        "IVOL_30D"
+      ]
+    },
+    {
+      "mdLineId": "<YAHOO_LINE>",
+      "sourceId": "yahoo.chart",
+      "providerSymbol": "AAPL",
+      "lineKind": "venue",
+      "priority": 20,
+      "intrinsicDelayMin": 15,
+      "expectedIntervalMs": 60000,
+      "subject": "l:<YAHOO_LINE>",
+      "cells": {
+        "PX_LAST": {
+          "v": 330.18,
+          "st": "live",
+          "ts": 1789497628000,
+          "provIdx": 0,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_LAST"
+          }
+        },
+        "LAST_SIZE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "LAST_SIZE"
+          }
+        },
+        "LAST_TRADE_TIME": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "LAST_TRADE_TIME"
+          }
+        },
+        "PX_BID": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_BID"
+          }
+        },
+        "PX_ASK": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_ASK"
+          }
+        },
+        "BID_SIZE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "BID_SIZE"
+          }
+        },
+        "ASK_SIZE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "ASK_SIZE"
+          }
+        },
+        "PX_OPEN": {
+          "v": 330.11,
+          "st": "live",
+          "ts": 1789497628000,
+          "provIdx": 0,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_OPEN"
+          }
+        },
+        "PX_HIGH": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_HIGH"
+          }
+        },
+        "PX_LOW": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_LOW"
+          }
+        },
+        "PX_CLOSE_1D": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_CLOSE_1D"
+          }
+        },
+        "PX_OFFICIAL_CLOSE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_OFFICIAL_CLOSE"
+          }
+        },
+        "PX_VOLUME": {
+          "v": 17500000,
+          "st": "live",
+          "ts": 1789497628000,
+          "provIdx": 0,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "PX_VOLUME"
+          }
+        },
+        "VWAP": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "VWAP"
+          }
+        },
+        "CHG_NET_1D": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "CHG_NET_1D"
+          }
+        },
+        "CHG_PCT_1D": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "CHG_PCT_1D"
+          }
+        },
+        "TICK_DIR": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "TICK_DIR"
+          }
+        },
+        "IVOL_30D": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "IVOL_30D"
+          }
+        },
+        "SESSION_STATE": {
+          "v": null,
+          "st": "na",
+          "ts": null,
+          "provIdx": -1,
+          "live": {
+            "subject": "l:<YAHOO_LINE>",
+            "field": "SESSION_STATE"
+          }
+        }
+      },
+      "ts": {
+        "src": "2026-09-15T18:40:28.000Z",
+        "cap": "2026-09-15T18:41:28.000Z",
+        "pub": "2026-09-15T18:41:28.000Z"
+      },
+      "srcSeq": null,
+      "st": "live",
+      "provIdx": 0,
+      "wonFields": [
+        "PX_LAST",
+        "PX_VOLUME"
+      ]
+    }
+  ],
+  "book": {
+    "bids": [
+      {
+        "px": 330.25,
+        "size": 40,
+        "venue": "XNAS",
+        "provIdx": 0
+      }
+    ],
+    "asks": [
+      {
+        "px": 330.28,
+        "size": 120,
+        "venue": "XNAS",
+        "provIdx": 0
+      }
+    ],
+    "depthRequested": 5,
+    "depthAvailable": 1,
+    "reason": "DEPTH_UNAVAILABLE_SOURCE"
+  },
+  "session": {
+    "state": "open",
+    "calendarId": "XNAS",
+    "tz": "America/New_York",
+    "openLocal": "09:30",
+    "closeLocal": "16:00",
+    "nextChangeAt": "2026-09-15T20:00:00.000Z",
+    "earlyClose": false
+  },
+  "tape": [
+    {
+      "capTs": "2026-09-15T18:41:28.000Z",
+      "srcTs": "2026-09-15T18:41:28.000Z",
+      "kind": "trade",
+      "price": 330.27,
+      "size": null,
+      "bid": 330.25,
+      "ask": 330.28,
+      "tickDir": null,
+      "srcSeq": 15972883317,
+      "conditions": [
+        "delayed"
+      ],
+      "provIdx": 2
+    },
+    {
+      "capTs": "2026-09-15T18:40:28.000Z",
+      "srcTs": "2026-09-15T18:40:28.000Z",
+      "kind": "quote",
+      "price": 330.25,
+      "size": null,
+      "bid": 330.25,
+      "ask": 330.28,
+      "tickDir": null,
+      "srcSeq": 15972883257,
+      "conditions": [
+        "delayed"
+      ],
+      "provIdx": 2
+    },
+    {
+      "capTs": "2026-09-15T18:39:28.000Z",
+      "srcTs": "2026-09-15T18:39:28.000Z",
+      "kind": "trade",
+      "price": 330.2,
+      "size": null,
+      "bid": 330.25,
+      "ask": 330.28,
+      "tickDir": null,
+      "srcSeq": 15972883197,
+      "conditions": [
+        "delayed"
+      ],
+      "provIdx": 2
+    }
+  ],
+  "compositionRules": [
+    "PX_LAST, LAST_SIZE, LAST_TRADE_TIME: taken together from the freshest line that carries a last price — never mixed across lines",
+    "PX_BID, PX_ASK, BID_SIZE, ASK_SIZE: one whole book side from the freshest venue or composite line that publishes one",
+    "PX_VOLUME: the largest volume among the lines observing the composite’s session date (every source reports consolidated volume)",
+    "PX_HIGH, PX_LOW: the highest high and the lowest low among the lines of that same session date",
+    "PX_OPEN, PX_CLOSE_1D, PX_OFFICIAL_CLOSE: the primary line (lowest priority number), falling back down the priority order",
+    "IVOL_30D: a Cboe line only — no other v1 source publishes implied volatility",
+    "every other field: the freshest line that carries it",
+    "CHG_NET_1D, CHG_PCT_1D, TICK_DIR: derived by the plant from the composite, never taken from a line",
+    "fieldTs[f] is the line time (source ts, or capture when the source publishes none) of the line that supplied f (FEED-05)",
+    "two lines disagreeing on PX_LAST by more than 0.5 % within 60 s raise CROSS_SOURCE_DIVERGENCE (OPS-03); a last price with no prior close raises MISSING_CLOSE"
+  ],
+  "dq": [
+    "LAST_OUTSIDE_BOOK"
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

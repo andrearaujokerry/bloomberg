@@ -87,6 +87,14 @@ const DRIZZLE_CANNOT_MODEL = {
     'messages_chain',
     'is_room_member',
     'room_has_firm',
+    'can_seat_room_member',
+    'record_surveillance_hit',
+    'anchor_room_chain',
+    'messages_anchor',
+    'armed_alerts',
+    'fire_alert',
+    'alert_fired_on',
+    'saved_search_query',
   ] as const,
   /** Views — CONTRACTS §1.3. Drizzle 0.45 has `pgView`, but the mirror models tables only. */
   views: [
@@ -122,7 +130,7 @@ const DRIZZLE_CANNOT_MODEL = {
    * Triggers, RLS policies, roles and GRANT/REVOKE have no Drizzle representation at all; they are
    * counted, not enumerated, so that adding one does not have to be mirrored here as well.
    */
-  triggerCount: 43,
+  triggerCount: 44,
   policyCount: 19,
 } as const;
 

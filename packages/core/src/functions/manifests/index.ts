@@ -10,9 +10,55 @@
 import type { ParamsOf as ParamsOfManifest, PayloadOf as PayloadOfManifest } from '../manifest.js';
 import { FunctionRegistry } from '../registry.js';
 
-// The glob matched no modules yet.
+import { DES } from './DES.js';
+import { GIP } from './GIP.js';
+import { GP } from './GP.js';
+import { HELP } from './HELP.js';
+import { HP } from './HP.js';
+import { MSG } from './MSG.js';
+import { N } from './N.js';
+import { NI } from './NI.js';
+import { Q } from './Q.js';
+import { QM } from './QM.js';
+import { SECF } from './SECF.js';
+import { TOP } from './TOP.js';
+import { W } from './W.js';
+import { WEI } from './WEI.js';
 
-export const manifestModules = {} as const;
+export {
+  DES,
+  GIP,
+  GP,
+  HELP,
+  HP,
+  MSG,
+  N,
+  NI,
+  Q,
+  QM,
+  SECF,
+  TOP,
+  W,
+  WEI,
+};
+
+/** Every module the glob matched, keyed by its file (or directory) name. */
+export const manifestModules = {
+  DES,
+  GIP,
+  GP,
+  HELP,
+  HP,
+  MSG,
+  N,
+  NI,
+  Q,
+  QM,
+  SECF,
+  TOP,
+  W,
+  WEI,
+} as const;
 
 /** Canonical code → manifest (FUNCTIONS.md L524). Aliases are not keys; `registry` resolves those. */
 export const manifests = manifestModules;

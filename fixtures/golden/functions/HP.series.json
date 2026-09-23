@@ -1,0 +1,289 @@
+{
+  "variant": "series",
+  "instrument": {
+    "instrumentId": "<CPI>",
+    "assetClass": "econ",
+    "marketSector": "Index",
+    "display": "CUUR0000SA0 Index",
+    "name": "CPI-U All items, NSA",
+    "currency": "USD",
+    "mdLineIds": [],
+    "ticker": "CUUR0000SA0",
+    "exchCode": "ECON",
+    "securityType": "Economic series",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2
+  },
+  "series": {
+    "kind": "econ",
+    "code": "<SERIES_CODE>",
+    "name": "CPI-U All items, NSA",
+    "units": "Index 1982-84=100",
+    "frequency": "M",
+    "sourceId": "bls.timeseries",
+    "curveId": null,
+    "tenor": null
+  },
+  "columns": [
+    {
+      "id": "ECO_VALUE",
+      "label": "Observation value",
+      "fmt": "px",
+      "decimals": 3
+    }
+  ],
+  "rows": [
+    {
+      "date": "2026-08-01",
+      "v": [
+        324.2
+      ],
+      "status": "final",
+      "vintageAt": "2026-08-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12353304508956331
+    },
+    {
+      "date": "2026-07-01",
+      "v": [
+        323.8
+      ],
+      "status": "final",
+      "vintageAt": "2026-07-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12368583797155441
+    },
+    {
+      "date": "2026-06-01",
+      "v": [
+        323.4
+      ],
+      "status": "final",
+      "vintageAt": "2026-06-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12383900928791824
+    },
+    {
+      "date": "2026-05-01",
+      "v": [
+        323
+      ],
+      "status": "final",
+      "vintageAt": "2026-05-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12399256044637319
+    },
+    {
+      "date": "2026-04-01",
+      "v": [
+        322.6
+      ],
+      "status": "final",
+      "vintageAt": "2026-04-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12414649286158763
+    },
+    {
+      "date": "2026-03-01",
+      "v": [
+        322.2
+      ],
+      "status": "final",
+      "vintageAt": "2026-03-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12430080795524656
+    },
+    {
+      "date": "2026-02-01",
+      "v": [
+        321.8
+      ],
+      "status": "final",
+      "vintageAt": "2026-02-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12445550715620701
+    },
+    {
+      "date": "2026-01-01",
+      "v": [
+        321.4
+      ],
+      "status": "final",
+      "vintageAt": "2026-01-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12461059190029822
+    },
+    {
+      "date": "2025-12-01",
+      "v": [
+        321
+      ],
+      "status": "final",
+      "vintageAt": "2025-12-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12476606363067688
+    },
+    {
+      "date": "2025-11-01",
+      "v": [
+        320.6
+      ],
+      "status": "final",
+      "vintageAt": "2025-11-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12492192379762734
+    },
+    {
+      "date": "2025-10-01",
+      "v": [
+        320.2
+      ],
+      "status": "final",
+      "vintageAt": "2025-10-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.1250781738586504
+    },
+    {
+      "date": "2025-09-01",
+      "v": [
+        319.8
+      ],
+      "status": "final",
+      "vintageAt": "2025-09-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.1252348152786631
+    },
+    {
+      "date": "2025-08-01",
+      "v": [
+        319.4
+      ],
+      "status": "final",
+      "vintageAt": "2025-08-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12539184952977678
+    },
+    {
+      "date": "2025-07-01",
+      "v": [
+        319
+      ],
+      "status": "final",
+      "vintageAt": "2025-07-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.12554927809165228
+    },
+    {
+      "date": "2025-06-01",
+      "v": [
+        318.6
+      ],
+      "status": "final",
+      "vintageAt": "2025-06-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12570710245130012
+    },
+    {
+      "date": "2025-05-01",
+      "v": [
+        318.2
+      ],
+      "status": "final",
+      "vintageAt": "2025-05-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.1258653241031915
+    },
+    {
+      "date": "2025-04-01",
+      "v": [
+        317.8
+      ],
+      "status": "final",
+      "vintageAt": "2025-04-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.1260239445494804
+    },
+    {
+      "date": "2025-03-01",
+      "v": [
+        317.4
+      ],
+      "status": "final",
+      "vintageAt": "2025-03-01T13:30:00.000Z",
+      "chgAbs": null,
+      "chgPct": null
+    },
+    {
+      "date": "2025-02-01",
+      "v": [
+        null
+      ],
+      "status": "missing",
+      "vintageAt": "2025-02-01T13:30:00.000Z",
+      "chgAbs": null,
+      "chgPct": null
+    },
+    {
+      "date": "2025-01-01",
+      "v": [
+        316.6
+      ],
+      "status": "final",
+      "vintageAt": "2025-01-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12650221378875948
+    },
+    {
+      "date": "2024-12-01",
+      "v": [
+        316.2
+      ],
+      "status": "final",
+      "vintageAt": "2024-12-01T13:30:00.000Z",
+      "chgAbs": 0.39999999999997726,
+      "chgPct": 0.1266624445851683
+    },
+    {
+      "date": "2024-11-01",
+      "v": [
+        315.8
+      ],
+      "status": "final",
+      "vintageAt": "2024-11-01T13:30:00.000Z",
+      "chgAbs": 0.4000000000000341,
+      "chgPct": 0.12682308180089752
+    },
+    {
+      "date": "2024-10-01",
+      "v": [
+        315.4
+      ],
+      "status": "final",
+      "vintageAt": "2024-10-01T13:30:00.000Z",
+      "chgAbs": null,
+      "chgPct": null
+    }
+  ],
+  "summary": {
+    "first": 315.4,
+    "last": 324.2,
+    "high": 324.2,
+    "highDate": "2026-08-01",
+    "low": 315.4,
+    "lowDate": "2024-10-01",
+    "changeAbs": 8.800000000000011,
+    "changePct": 2.7901077996195456,
+    "observations": 23
+  },
+  "window": {
+    "start": "2024-09-15",
+    "end": "2026-09-15",
+    "range": "2Y"
+  },
+  "periodicity": "D",
+  "knownAt": "<knownAt>",
+  "provIdx": [
+    0
+  ]
+}

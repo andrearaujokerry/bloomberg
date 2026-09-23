@@ -1,0 +1,44 @@
+{
+  "variant": "crypto",
+  "instrument": {
+    "instrumentId": "<BTC>",
+    "assetClass": "crypto",
+    "marketSector": "Crypto",
+    "display": "BTC Crypto",
+    "name": "Bitcoin",
+    "currency": "USD",
+    "mdLineIds": [
+      "<BTC_LINE>"
+    ],
+    "ticker": "BTC",
+    "exchCode": "CRYPTO",
+    "securityType": "Spot",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2
+  },
+  "coingeckoId": "bitcoin",
+  "px": {
+    "v": 75828,
+    "st": "live",
+    "ts": 1789497628000,
+    "provIdx": 3,
+    "live": {
+      "subject": "q:<BTC>",
+      "field": "PX_LAST"
+    }
+  },
+  "chg24hPct": {
+    "v": -4.2174,
+    "st": "live",
+    "ts": 1789497628000,
+    "provIdx": 3,
+    "live": {
+      "subject": "q:<BTC>",
+      "field": "CHG_PCT_1D"
+    }
+  },
+  "asOf": "2026-09-15T18:40:28.000Z",
+  "source": "coingecko.simple",
+  "caveat": "CONTEXT_ONLY_NOT_EXCHANGE_DATA"
+}

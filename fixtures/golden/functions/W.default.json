@@ -1,0 +1,263 @@
+{
+  "variant": "default",
+  "me": {
+    "userId": "<ME>",
+    "firmId": "<VOLATILE>"
+  },
+  "watchlists": [
+    {
+      "watchlistId": "<SHARED>",
+      "name": "Desk core",
+      "ownerUserId": "<VOLATILE>",
+      "ownerDisplay": "W Colleague",
+      "isOwner": false,
+      "sharedScope": "firm",
+      "itemCount": 1,
+      "updatedAt": "<VOLATILE>"
+    },
+    {
+      "watchlistId": "<MINE>",
+      "name": "MAG3",
+      "ownerUserId": "<ME>",
+      "ownerDisplay": "W User",
+      "isOwner": true,
+      "sharedScope": "private",
+      "itemCount": 4,
+      "updatedAt": "<VOLATILE>"
+    }
+  ],
+  "active": {
+    "watchlistId": "<MINE>",
+    "name": "MAG3",
+    "isOwner": true,
+    "sharedScope": "private",
+    "sharedUserIds": [],
+    "updatedAt": "<VOLATILE>",
+    "columns": [
+      {
+        "id": "PX_LAST",
+        "label": "Last price",
+        "fieldId": "PX_LAST",
+        "fmt": "px"
+      },
+      {
+        "id": "PX_CLOSE_1D",
+        "label": "Previous close",
+        "fieldId": "PX_CLOSE_1D",
+        "fmt": "px"
+      },
+      {
+        "id": "c1",
+        "label": "Chg",
+        "fmt": "px",
+        "formula": "PX_LAST/PX_CLOSE_1D-1",
+        "decimals": 6
+      },
+      {
+        "id": "c2",
+        "label": "Broken",
+        "fmt": "px",
+        "formula": "PX_LAST/"
+      }
+    ],
+    "sort": [
+      {
+        "col": "PX_LAST",
+        "dir": "desc"
+      }
+    ],
+    "groupBy": null,
+    "rows": [
+      {
+        "instrumentId": "<AAPL>",
+        "key": "AAPL US Equity",
+        "name": "Apple Inc",
+        "assetClass": "equity",
+        "marketSector": "Equity",
+        "exchCode": "US",
+        "gicsSector": null,
+        "subject": "q:<AAPL>",
+        "cells": {
+          "PX_LAST": {
+            "v": 330.27,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 0,
+            "live": {
+              "subject": "q:<AAPL>",
+              "field": "PX_LAST"
+            }
+          },
+          "PX_CLOSE_1D": {
+            "v": 333.08,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 0,
+            "live": {
+              "subject": "q:<AAPL>",
+              "field": "PX_CLOSE_1D"
+            }
+          },
+          "c1": {
+            "v": -0.008436411672871347,
+            "st": "live",
+            "provIdx": 0
+          },
+          "c2": {
+            "v": null,
+            "st": "na",
+            "provIdx": -1
+          }
+        },
+        "position": 0,
+        "label": null,
+        "note": "core holding",
+        "addedAt": "<VOLATILE>",
+        "formula": null,
+        "deps": []
+      },
+      {
+        "instrumentId": "<MSFT>",
+        "key": "MSFT US Equity",
+        "name": "Microsoft Corp",
+        "assetClass": "equity",
+        "marketSector": "Equity",
+        "exchCode": "US",
+        "gicsSector": null,
+        "subject": "q:<MSFT>",
+        "cells": {
+          "PX_LAST": {
+            "v": 505.5,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 0,
+            "live": {
+              "subject": "q:<MSFT>",
+              "field": "PX_LAST"
+            }
+          },
+          "PX_CLOSE_1D": {
+            "v": 500,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 0,
+            "live": {
+              "subject": "q:<MSFT>",
+              "field": "PX_CLOSE_1D"
+            }
+          },
+          "c1": {
+            "v": 0.010999999999999899,
+            "st": "live",
+            "provIdx": 0
+          },
+          "c2": {
+            "v": null,
+            "st": "na",
+            "provIdx": -1
+          }
+        },
+        "position": 1,
+        "label": null,
+        "note": null,
+        "addedAt": "<VOLATILE>",
+        "formula": null,
+        "deps": []
+      },
+      {
+        "instrumentId": "<NVDA>",
+        "key": "NVDA US Equity",
+        "name": "NVIDIA Corp",
+        "assetClass": "equity",
+        "marketSector": "Equity",
+        "exchCode": "US",
+        "gicsSector": null,
+        "subject": "q:<NVDA>",
+        "cells": {
+          "PX_LAST": {
+            "v": null,
+            "st": "blank",
+            "provIdx": -1,
+            "live": {
+              "subject": "q:<NVDA>",
+              "field": "PX_LAST"
+            }
+          },
+          "PX_CLOSE_1D": {
+            "v": null,
+            "st": "blank",
+            "provIdx": -1,
+            "live": {
+              "subject": "q:<NVDA>",
+              "field": "PX_CLOSE_1D"
+            }
+          },
+          "c1": {
+            "v": null,
+            "st": "na",
+            "provIdx": -1
+          },
+          "c2": {
+            "v": null,
+            "st": "na",
+            "provIdx": -1
+          }
+        },
+        "position": 2,
+        "label": null,
+        "note": null,
+        "addedAt": "<VOLATILE>",
+        "formula": null,
+        "deps": []
+      },
+      {
+        "instrumentId": 0,
+        "key": "RATIO(AAPL US Equity, MSFT US Equity)",
+        "name": "AAPL/MSFT",
+        "assetClass": "equity",
+        "marketSector": "Equity",
+        "exchCode": "",
+        "gicsSector": null,
+        "subject": "",
+        "cells": {
+          "PX_LAST": {
+            "v": 0.6533531157270029,
+            "st": "live",
+            "provIdx": 0
+          },
+          "PX_CLOSE_1D": {
+            "v": 0.66616,
+            "st": "live",
+            "provIdx": 0
+          },
+          "c1": {
+            "v": -0.01922493736189057,
+            "st": "live",
+            "provIdx": 0
+          },
+          "c2": {
+            "v": null,
+            "st": "na",
+            "provIdx": -1
+          }
+        },
+        "position": 3,
+        "label": "AAPL/MSFT",
+        "note": null,
+        "addedAt": "<VOLATILE>",
+        "formula": "RATIO(AAPL US Equity, MSFT US Equity)",
+        "deps": [
+          "q:<AAPL>",
+          "q:<MSFT>"
+        ]
+      }
+    ],
+    "formulaErrors": [
+      {
+        "where": "c2",
+        "message": "the formula ends where a value was expected (at 8)"
+      }
+    ]
+  },
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

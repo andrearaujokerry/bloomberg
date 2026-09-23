@@ -1,0 +1,513 @@
+{
+  "variant": "default",
+  "view": "function",
+  "function": {
+    "code": "DES",
+    "name": "Security Description",
+    "tier": 1,
+    "variant": "equity",
+    "help": {
+      "summary": "Security description: profile, identifiers, quote, terms, membership, filings, news",
+      "description": "DES is the landing screen for any security. It shows who issued it, how it is identified (FIGI, ISIN, CUSIP, CIK, LEI), the live composite quote with its source and staleness, one-year statistics, point-in-time fundamentals from SEC XBRL (as known at the knownAt shown in the footer), index membership, the latest filings and headlines. The screen differs by asset class: equities and ETFs show issuer and fundamentals, indices show methodology and top constituents, FX shows conventions and the ECB reference rate, Treasuries show full terms and curve-implied pricing (settlement T+1, ACT/360 discount for bills, street convention for notes), options show contract terms with Cboe-published greeks, rates show the latest fixing with percentiles, economic series show the latest observation and the next release. Numbers marked with a dash are unavailable for the reason shown; nothing is estimated.",
+      "params": [
+        {
+          "name": "tab",
+          "text": "Which lower block is open",
+          "example": "FILINGS"
+        },
+        {
+          "name": "filingsLimit",
+          "text": "Filings shown, 3-20",
+          "example": "FILINGS=12"
+        },
+        {
+          "name": "newsLimit",
+          "text": "Headlines shown, 3-20",
+          "example": "NEWS=10"
+        }
+      ],
+      "keys": [
+        {
+          "key": "1",
+          "action": "Open the profile tab"
+        },
+        {
+          "key": "2",
+          "action": "Open the identifiers tab"
+        },
+        {
+          "key": "3",
+          "action": "Open the listings tab"
+        },
+        {
+          "key": "4",
+          "action": "Open the filings tab"
+        },
+        {
+          "key": "5",
+          "action": "Open the news tab"
+        },
+        {
+          "key": "6",
+          "action": "Open the members tab"
+        },
+        {
+          "key": "7",
+          "action": "Open the terms tab"
+        },
+        {
+          "key": "8",
+          "action": "Open the history tab"
+        },
+        {
+          "key": "G",
+          "action": "Price graph (GP)"
+        },
+        {
+          "key": "Shift+G",
+          "action": "GP in the next panel"
+        },
+        {
+          "key": "I",
+          "action": "Intraday graph (GIP)"
+        },
+        {
+          "key": "H",
+          "action": "Historical prices (HP)"
+        },
+        {
+          "key": "Q",
+          "action": "Quote lines (Q)"
+        },
+        {
+          "key": "F",
+          "action": "Financial analysis (FA)"
+        },
+        {
+          "key": "C",
+          "action": "Company news (CN)"
+        },
+        {
+          "key": "A",
+          "action": "Corporate actions (CACS)"
+        },
+        {
+          "key": "M",
+          "action": "Index members (MEMB)"
+        },
+        {
+          "key": "O",
+          "action": "Option monitor (OMON)"
+        },
+        {
+          "key": "V",
+          "action": "Option valuation (OVML)"
+        },
+        {
+          "key": "Y",
+          "action": "Yield and spread (YAS)"
+        },
+        {
+          "key": "E",
+          "action": "Economic release (ECO) / FED"
+        },
+        {
+          "key": "Enter",
+          "action": "Open the SEC filing"
+        },
+        {
+          "key": "Ctrl+W",
+          "action": "Add to a watchlist"
+        }
+      ],
+      "sources": [
+        "cboe.quotes",
+        "yahoo.chart",
+        "openfigi.mapping",
+        "sec.tickers",
+        "sec.submissions",
+        "sec.companyfacts",
+        "sec.archives",
+        "ssga.holdings",
+        "wiki.sp500",
+        "finra.shortInterest",
+        "bbg.rss",
+        "sec.atom",
+        "treasury.yieldcurve",
+        "treasury.bills",
+        "nyfed.rates",
+        "fred.csv",
+        "bls.timeseries",
+        "frankfurter",
+        "coingecko.simple",
+        "cboe.options",
+        "internal.derived"
+      ],
+      "related": [
+        "GP",
+        "GIP",
+        "HP",
+        "Q",
+        "FA",
+        "CN",
+        "CACS",
+        "MEMB",
+        "OMON",
+        "YAS",
+        "ECO"
+      ]
+    },
+    "params": [
+      {
+        "name": "tab",
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "default": "profile",
+          "type": "string",
+          "enum": [
+            "profile",
+            "identifiers",
+            "listings",
+            "filings",
+            "news",
+            "members",
+            "terms",
+            "history"
+          ]
+        },
+        "default": "profile"
+      },
+      {
+        "name": "filingsLimit",
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "default": 8,
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 20
+        },
+        "default": 8
+      },
+      {
+        "name": "newsLimit",
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "default": 6,
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 20
+        },
+        "default": 6
+      }
+    ],
+    "csvColumns": [
+      {
+        "id": "section",
+        "label": "Section",
+        "type": "string"
+      },
+      {
+        "id": "key",
+        "label": "Key",
+        "type": "string"
+      },
+      {
+        "id": "value",
+        "label": "Value",
+        "type": "string"
+      },
+      {
+        "id": "unit",
+        "label": "Unit",
+        "type": "string"
+      },
+      {
+        "id": "asOf",
+        "label": "As of",
+        "type": "string"
+      },
+      {
+        "id": "source",
+        "label": "Source",
+        "type": "string"
+      }
+    ],
+    "fields": [
+      {
+        "id": "PX_LAST",
+        "label": "Last price",
+        "definition": "Price of the most recent trade on the primary venue, in the instrument currency. Outside trading hours it holds the last trade of the most recent session and the line reports the session state rather than a new timestamp.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "CHG_NET_1D",
+        "label": "Net change",
+        "definition": "PX_LAST minus PX_CLOSE_1D, in the instrument currency, from one and the same quote snapshot. Unavailable rather than zero when either input is missing.",
+        "sourceId": "internal.derived",
+        "attribution": "Derived by this terminal from the sources cited on the screen.",
+        "decision": "allow",
+        "reason": "OK"
+      },
+      {
+        "id": "CHG_PCT_1D",
+        "label": "Percent change",
+        "definition": "CHG_NET_1D as a percentage of PX_CLOSE_1D. The previous close is unadjusted, so on an ex-dividend or split date the change is the raw one the tape shows, and the corporate action is flagged on the line.",
+        "sourceId": "internal.derived",
+        "attribution": "Derived by this terminal from the sources cited on the screen.",
+        "decision": "allow",
+        "reason": "OK"
+      },
+      {
+        "id": "PX_OPEN",
+        "label": "Open",
+        "definition": "First trade price of the current regular session on the primary venue.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "PX_HIGH",
+        "label": "High",
+        "definition": "Highest trade price of the current regular session on the primary venue.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "PX_LOW",
+        "label": "Low",
+        "definition": "Lowest trade price of the current regular session on the primary venue.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "PX_CLOSE_1D",
+        "label": "Previous close",
+        "definition": "Official closing price of the previous trading session, unadjusted for corporate actions. It is the denominator of CHG_PCT_1D and never changes intraday.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "PX_VOLUME",
+        "label": "Volume",
+        "definition": "Consolidated number of shares or contracts traded in the current session to the quote timestamp. Index subjects report the volume of their constituents only where the venue does.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "PX_BID",
+        "label": "Bid",
+        "definition": "Best bid price displayed on the primary venue at the quote timestamp.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "PX_ASK",
+        "label": "Ask",
+        "definition": "Best offer price displayed on the primary venue at the quote timestamp.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "BID_SIZE",
+        "label": "Bid size",
+        "definition": "Quantity displayed at the best bid, in shares for equities and in contracts for options.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "ASK_SIZE",
+        "label": "Ask size",
+        "definition": "Quantity displayed at the best offer, in shares for equities and in contracts for options.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "deny",
+        "reason": "FIELD_UNKNOWN"
+      },
+      {
+        "id": "LAST_TRADE_TIME",
+        "label": "Last trade time",
+        "definition": "Exchange timestamp of the trade that set PX_LAST, in UTC. It is the event time the staleness indicator measures against, never the time the row was ingested.",
+        "sourceId": "cboe.quotes",
+        "attribution": "Quotes delayed at least 15 minutes. Source: Cboe Global Markets.",
+        "decision": "allow",
+        "reason": "OK"
+      },
+      {
+        "id": "IVOL_30D",
+        "label": "Implied volatility (30d)",
+        "definition": "At-the-money implied volatility at a constant 30-day horizon, in percent, interpolated in total variance between the two listed expiries that bracket 30 days on the fitted surface.",
+        "sourceId": "internal.derived",
+        "attribution": "Derived by this terminal from the sources cited on the screen.",
+        "decision": "allow",
+        "reason": "OK"
+      },
+      {
+        "id": "SESSION_STATE",
+        "label": "Session",
+        "definition": "Trading-session phase of the subject at the quote timestamp (FEED-06): pre, open, auction, halted, closed, post or unknown. Halts come from the venue; every other phase from the instrument calendar and the exchange session template.",
+        "sourceId": "internal.derived",
+        "attribution": "Derived by this terminal from the sources cited on the screen.",
+        "decision": "allow",
+        "reason": "OK"
+      }
+    ],
+    "keys": [
+      {
+        "key": "1",
+        "action": "tab-1",
+        "when": "always",
+        "description": "Open the profile tab"
+      },
+      {
+        "key": "2",
+        "action": "tab-2",
+        "when": "always",
+        "description": "Open the identifiers tab"
+      },
+      {
+        "key": "3",
+        "action": "tab-3",
+        "when": "always",
+        "description": "Open the listings tab"
+      },
+      {
+        "key": "4",
+        "action": "tab-4",
+        "when": "always",
+        "description": "Open the filings tab"
+      },
+      {
+        "key": "5",
+        "action": "tab-5",
+        "when": "always",
+        "description": "Open the news tab"
+      },
+      {
+        "key": "6",
+        "action": "tab-6",
+        "when": "always",
+        "description": "Open the members tab"
+      },
+      {
+        "key": "7",
+        "action": "tab-7",
+        "when": "always",
+        "description": "Open the terms tab"
+      },
+      {
+        "key": "8",
+        "action": "tab-8",
+        "when": "always",
+        "description": "Open the history tab"
+      },
+      {
+        "key": "G",
+        "action": "open-gp",
+        "when": "always",
+        "description": "Price graph (GP)"
+      },
+      {
+        "key": "Shift+G",
+        "action": "open-gp-next",
+        "when": "always",
+        "description": "GP in the next panel"
+      },
+      {
+        "key": "I",
+        "action": "open-gip",
+        "when": "always",
+        "description": "Intraday graph (GIP)"
+      },
+      {
+        "key": "H",
+        "action": "open-hp",
+        "when": "always",
+        "description": "Historical prices (HP)"
+      },
+      {
+        "key": "Q",
+        "action": "open-q",
+        "when": "always",
+        "description": "Quote lines (Q)"
+      },
+      {
+        "key": "F",
+        "action": "open-fa",
+        "when": "always",
+        "description": "Financial analysis (FA)"
+      },
+      {
+        "key": "C",
+        "action": "open-cn",
+        "when": "always",
+        "description": "Company news (CN)"
+      },
+      {
+        "key": "A",
+        "action": "open-cacs",
+        "when": "always",
+        "description": "Corporate actions (CACS)"
+      },
+      {
+        "key": "M",
+        "action": "open-memb",
+        "when": "always",
+        "description": "Index members (MEMB)"
+      },
+      {
+        "key": "O",
+        "action": "open-omon",
+        "when": "always",
+        "description": "Option monitor (OMON)"
+      },
+      {
+        "key": "V",
+        "action": "open-ovml",
+        "when": "always",
+        "description": "Option valuation (OVML)"
+      },
+      {
+        "key": "Y",
+        "action": "open-yas",
+        "when": "always",
+        "description": "Yield and spread (YAS)"
+      },
+      {
+        "key": "E",
+        "action": "open-eco",
+        "when": "always",
+        "description": "Economic release (ECO) / FED"
+      },
+      {
+        "key": "Enter",
+        "action": "open-filing",
+        "when": "grid",
+        "description": "Open the SEC filing"
+      },
+      {
+        "key": "Ctrl+W",
+        "action": "add-watchlist",
+        "when": "always",
+        "description": "Add to a watchlist"
+      }
+    ]
+  }
+}

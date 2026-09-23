@@ -14,6 +14,7 @@ import * as crypto from './crypto.js';
 import * as dqMonitors from './dqMonitors.js';
 import * as fxEod from './fxEod.js';
 import * as fxIntraday from './fxIntraday.js';
+import * as newsRss from './newsRss.js';
 import * as partitionMaintenance from './partitionMaintenance.js';
 import * as reconcile from './reconcile.js';
 import * as retentionPurge from './retentionPurge.js';
@@ -34,6 +35,7 @@ export {
   dqMonitors,
   fxEod,
   fxIntraday,
+  newsRss,
   partitionMaintenance,
   reconcile,
   retentionPurge,
@@ -56,6 +58,7 @@ export const ingestJobModules = {
   dqMonitors,
   fxEod,
   fxIntraday,
+  newsRss,
   partitionMaintenance,
   reconcile,
   retentionPurge,

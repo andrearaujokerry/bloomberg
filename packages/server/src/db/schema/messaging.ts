@@ -46,10 +46,19 @@ export const rooms = pgTable(
     wallTag: text('wall_tag'),
     /** `{permittedFirms:[], allowExternal:false}` */
     policy: jsonb('policy').notNull().default({}),
+    /**
+     * MSG-02 chain anchor: the highest `messages.seq` ever written to this room, maintained by the
+     * chain trigger and monotonic. Without it `verifyChain` proves internal consistency only —
+     * deleting the tail of a room, or rewriting it from seq 1, verifies clean.
+     */
+    lastSeq: bigint('last_seq', { mode: 'number' }).notNull().default(0),
+    /** The anchored `hash` of `lastSeq`. */
+    lastHash: bytea('last_hash'),
   },
   (t) => [
     check('rooms_kind_check', sql`${t.kind} IN ('dm','group','firm','helpdesk')`),
     check('rooms_scope_check', sql`${t.scope} IN ('internal','external')`),
+    check('rooms_retention_floor', sql`${t.retentionDays} >= 2557`),
   ],
 );
 
@@ -99,9 +108,14 @@ export const messages = pgTable(
     /** Idempotent send. */
     clientMsgId: uuid('client_msg_id').notNull(),
     prevHash: bytea('prev_hash'),
-    /** `sha256(prev_hash || room_id || seq || sender || sent_at || body || attachments)` */
+    /**
+     * `sha256(prev_hash || room_id || seq || sender || sent_at || body || attachments ||
+     * structured || sender_firm_id || client_msg_id)` at {@link messages.digestVersion} 2.
+     */
     hash: bytea('hash').notNull(),
     traceId: uuid('trace_id'),
+    /** 1 = the 0015 digest, 2 = the 0017 digest. `verifyChain` picks the expression by version. */
+    digestVersion: smallint('digest_version').notNull().default(2),
   },
   (t) => [
     unique('messages_room_id_seq_key').on(t.roomId, t.seq),

@@ -1,0 +1,93 @@
+{
+  "variant": "crypto",
+  "primary": {
+    "ref": {
+      "id": "<crypto>"
+    },
+    "instrument": {
+      "instrumentId": "<crypto>",
+      "assetClass": "crypto",
+      "marketSector": "Crypto",
+      "display": "BTC Crypto",
+      "name": "Bitcoin",
+      "currency": "USD",
+      "mdLineIds": "<1 md line(s)>",
+      "ticker": "BTC",
+      "exchCode": "CRYPTO",
+      "securityType": "Crypto",
+      "compositeFigi": null,
+      "status": "active",
+      "priceDecimals": 2
+    },
+    "formula": null,
+    "key": "BTC Crypto",
+    "label": "Bitcoin",
+    "calendarId": "WEEKEND",
+    "tz": "UTC",
+    "periodicity": "D",
+    "currency": "USD",
+    "unit": "price",
+    "t": [
+      1789257600000,
+      1789344000000
+    ],
+    "o": [
+      64000,
+      64288
+    ],
+    "h": [
+      64276,
+      64564
+    ],
+    "l": [
+      64000,
+      64288
+    ],
+    "c": [
+      64276,
+      64564
+    ],
+    "v": [
+      1000,
+      1000
+    ],
+    "adjust": "price",
+    "sessions": null,
+    "converted": null,
+    "provIdx": 1,
+    "live": {
+      "subject": "q:<crypto>",
+      "field": "PX_LAST",
+      "mode": "replace-last"
+    }
+  },
+  "overlays": [],
+  "events": [],
+  "annotations": [],
+  "window": {
+    "start": "2026-09-13",
+    "end": "2026-09-15",
+    "range": "CUSTOM",
+    "periodicity": "D",
+    "bars": 2
+  },
+  "last": {
+    "v": 64564,
+    "st": "live",
+    "ts": 1789496788000,
+    "provIdx": 0,
+    "live": {
+      "subject": "q:<crypto>",
+      "field": "PX_LAST"
+    }
+  },
+  "reference": [
+    {
+      "label": "prev close",
+      "v": 64100,
+      "provIdx": 0
+    }
+  ],
+  "adjustments": [],
+  "fx": []
+}

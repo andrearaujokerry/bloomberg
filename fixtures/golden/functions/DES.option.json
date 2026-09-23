@@ -1,0 +1,249 @@
+{
+  "variant": "option",
+  "instrument": {
+    "instrumentId": "<OPT>",
+    "assetClass": "option",
+    "marketSector": "Equity",
+    "display": "AAPL260916C00245000 US Equity",
+    "name": "AAPL 9/16/26 C245",
+    "currency": "USD",
+    "mdLineIds": [
+      "<OPT_LINE>"
+    ],
+    "ticker": "AAPL260916C00245000",
+    "exchCode": "US",
+    "securityType": "Equity Option",
+    "compositeFigi": null,
+    "status": "active",
+    "priceDecimals": 2
+  },
+  "terms": {
+    "occSymbol": "AAPL260916C00245000",
+    "root": "AAPL",
+    "underlying": {
+      "instrumentId": "<AAPL>",
+      "key": "AAPL US Equity",
+      "name": "Apple Inc"
+    },
+    "expiry": "2026-09-16",
+    "strike": 245,
+    "putCall": "C",
+    "exerciseStyle": "american",
+    "settlement": "physical",
+    "amPm": "pm",
+    "multiplier": 100,
+    "isWeekly": false,
+    "lastTradeDate": "2026-09-16",
+    "daysToExpiry": 1,
+    "provIdx": 2
+  },
+  "quote": {
+    "bid": {
+      "v": 92.1,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "PX_BID"
+      }
+    },
+    "ask": {
+      "v": 92.6,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "PX_ASK"
+      }
+    },
+    "last": {
+      "v": 92.35,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "PX_LAST"
+      }
+    },
+    "lastTradeTime": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "LAST_TRADE_TIME"
+      }
+    },
+    "volume": {
+      "v": 412,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "PX_VOLUME"
+      }
+    },
+    "oi": {
+      "v": 5120,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_OI"
+      }
+    },
+    "prevClose": {
+      "v": 94.8,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "PX_CLOSE_1D"
+      }
+    },
+    "chgNet": {
+      "v": -2.45,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "CHG_NET_1D"
+      }
+    },
+    "chgPct": {
+      "v": -2.5844,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "CHG_PCT_1D"
+      }
+    },
+    "iv": {
+      "v": 28.4,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_IV"
+      }
+    },
+    "delta": {
+      "v": 0.92,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_DELTA"
+      }
+    },
+    "gamma": {
+      "v": 0.0021,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_GAMMA"
+      }
+    },
+    "vega": {
+      "v": 0.11,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_VEGA"
+      }
+    },
+    "theta": {
+      "v": -0.08,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_THETA"
+      }
+    },
+    "rho": {
+      "v": 0.04,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_RHO"
+      }
+    },
+    "theo": {
+      "v": null,
+      "st": "live",
+      "ts": null,
+      "provIdx": 2,
+      "live": {
+        "subject": "q:<OPT>",
+        "field": "OPT_THEO"
+      }
+    }
+  },
+  "underlying": {
+    "px": {
+      "v": 330.27,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 4,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_LAST"
+      }
+    },
+    "chgPct": {
+      "v": -0.8436,
+      "st": "live",
+      "ts": 1789497628000,
+      "provIdx": 4,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_PCT_1D"
+      }
+    }
+  },
+  "moneyness": {
+    "intrinsic": {
+      "v": 85.26999999999998,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789497628000
+    },
+    "timeValue": {
+      "v": 7.0800000000000125,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789497628000
+    },
+    "pctFromSpot": {
+      "v": -25.81826990038453,
+      "st": "closed",
+      "provIdx": 4,
+      "ts": 1789497628000
+    }
+  },
+  "chain": null,
+  "calendar": {
+    "calendarId": "",
+    "tz": ""
+  }
+}

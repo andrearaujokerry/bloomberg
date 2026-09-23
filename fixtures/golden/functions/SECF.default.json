@@ -1,0 +1,171 @@
+{
+  "variant": "default",
+  "hits": [
+    {
+      "instrument": {
+        "instrumentId": "<T:AD>",
+        "assetClass": "index",
+        "marketSector": "Index",
+        "display": "<T>AD Index",
+        "name": "<BRAND> Composite Index",
+        "currency": "USD",
+        "mdLineIds": [],
+        "ticker": "<T>AD",
+        "exchCode": "INDEX",
+        "securityType": "Index",
+        "compositeFigi": null,
+        "status": "active",
+        "priceDecimals": 2
+      },
+      "matchedOn": "name",
+      "matched": [],
+      "score": 70,
+      "identifiers": {
+        "figi": null,
+        "isin": null,
+        "cusip": null
+      },
+      "memberOf": [],
+      "listings": 0,
+      "gicsSector": "Information Technology",
+      "provIdx": 0
+    },
+    {
+      "instrument": {
+        "instrumentId": "<T:AA>",
+        "assetClass": "equity",
+        "marketSector": "Equity",
+        "display": "<T>AA US Equity",
+        "name": "<BRAND> Inc",
+        "currency": "USD",
+        "mdLineIds": [],
+        "ticker": "<T>AA",
+        "exchCode": "US",
+        "securityType": "Common Stock",
+        "compositeFigi": null,
+        "status": "active",
+        "priceDecimals": 2,
+        "primaryListingId": "<listing>"
+      },
+      "matchedOn": "name",
+      "matched": [],
+      "score": 70,
+      "identifiers": {
+        "figi": "BBG0<T>0XR1",
+        "isin": "US03783<T>1",
+        "cusip": "0378<T>0"
+      },
+      "memberOf": [
+        "<T>SPX"
+      ],
+      "listings": 1,
+      "gicsSector": "Information Technology",
+      "provIdx": 0
+    },
+    {
+      "instrument": {
+        "instrumentId": "<T:AB>",
+        "assetClass": "equity",
+        "marketSector": "Equity",
+        "display": "<T>AB US Equity",
+        "name": "<BRAND> Hospitality REIT",
+        "currency": "USD",
+        "mdLineIds": [],
+        "ticker": "<T>AB",
+        "exchCode": "US",
+        "securityType": "REIT",
+        "compositeFigi": null,
+        "status": "active",
+        "priceDecimals": 2,
+        "primaryListingId": "<listing>"
+      },
+      "matchedOn": "name",
+      "matched": [],
+      "score": 70,
+      "identifiers": {
+        "figi": null,
+        "isin": null,
+        "cusip": null
+      },
+      "memberOf": [],
+      "listings": 1,
+      "gicsSector": null,
+      "provIdx": 0
+    },
+    {
+      "instrument": {
+        "instrumentId": "<T:AC>",
+        "assetClass": "etf",
+        "marketSector": "Equity",
+        "display": "<T>AC US Equity",
+        "name": "<BRAND> 500 ETF",
+        "currency": "USD",
+        "mdLineIds": [],
+        "ticker": "<T>AC",
+        "exchCode": "US",
+        "securityType": "ETP",
+        "compositeFigi": null,
+        "status": "active",
+        "priceDecimals": 2,
+        "primaryListingId": "<listing>"
+      },
+      "matchedOn": "name",
+      "matched": [],
+      "score": 70,
+      "identifiers": {
+        "figi": null,
+        "isin": null,
+        "cusip": null
+      },
+      "memberOf": [],
+      "listings": 1,
+      "gicsSector": "Information Technology",
+      "provIdx": 0
+    },
+    {
+      "instrument": {
+        "instrumentId": "<T:AF>",
+        "assetClass": "index",
+        "marketSector": "Index",
+        "display": "<T>AF Index",
+        "name": "<BRAND> Unsourced Index",
+        "currency": "USD",
+        "mdLineIds": [],
+        "ticker": "<T>AF",
+        "exchCode": "INDEX",
+        "securityType": "Index",
+        "compositeFigi": null,
+        "status": "active",
+        "priceDecimals": 2
+      },
+      "matchedOn": "name",
+      "matched": [],
+      "score": 65,
+      "identifiers": {
+        "figi": null,
+        "isin": null,
+        "cusip": null
+      },
+      "memberOf": [],
+      "listings": 0,
+      "gicsSector": "Information Technology",
+      "provIdx": 0
+    }
+  ],
+  "total": 5,
+  "facets": {
+    "assetClass": {
+      "etf": 1,
+      "equity": 2,
+      "index": 2
+    },
+    "exchange": {
+      "INDEX": 2,
+      "US": 3
+    },
+    "status": {
+      "active": 5
+    }
+  },
+  "source": "master"
+}

@@ -1,0 +1,380 @@
+{
+  "variant": "default",
+  "view": "split",
+  "me": {
+    "userId": "<PM>",
+    "displayName": "Alex Pardo",
+    "firmId": "<FIRM>",
+    "firmName": "<FIRMNAME>",
+    "desk": "Equities PM",
+    "role": "user"
+  },
+  "rooms": [
+    {
+      "roomId": "<DM>",
+      "kind": "dm",
+      "name": "<VOLATILE>",
+      "scope": "internal",
+      "firmId": "<FIRM>",
+      "wallTag": null,
+      "disclaimer": null,
+      "retentionDays": 2557,
+      "createdAt": "<VOLATILE>",
+      "members": [
+        {
+          "userId": "<PM>",
+          "displayName": "Alex Pardo",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "owner",
+          "verified": true,
+          "isSelf": true
+        },
+        {
+          "userId": "<JANE>",
+          "displayName": "Jane Ruiz",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "member",
+          "verified": true,
+          "isSelf": false
+        }
+      ],
+      "lastSeq": 3,
+      "lastReadSeq": 2,
+      "unread": 1,
+      "lastMessageAt": "<VOLATILE>",
+      "lastMessagePreview": null,
+      "subject": "room:<DM>"
+    },
+    {
+      "roomId": "<FIRMROOM>",
+      "kind": "firm",
+      "name": "<FIRMNAME>",
+      "scope": "internal",
+      "firmId": "<FIRM>",
+      "wallTag": null,
+      "disclaimer": "Messages are archived and monitored.",
+      "retentionDays": 2557,
+      "createdAt": "<VOLATILE>",
+      "members": [
+        {
+          "userId": "<PM>",
+          "displayName": "Alex Pardo",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "owner",
+          "verified": true,
+          "isSelf": true
+        },
+        {
+          "userId": "<EOD>",
+          "displayName": "Eve Odell",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "member",
+          "verified": true,
+          "isSelf": false
+        },
+        {
+          "userId": "<JANE>",
+          "displayName": "Jane Ruiz",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "member",
+          "verified": true,
+          "isSelf": false
+        }
+      ],
+      "lastSeq": 26,
+      "lastReadSeq": 0,
+      "unread": 26,
+      "lastMessageAt": "<VOLATILE>",
+      "lastMessagePreview": "desk copy [AAPL US Equity]",
+      "subject": "room:<FIRMROOM>"
+    }
+  ],
+  "active": {
+    "room": {
+      "roomId": "<DM>",
+      "kind": "dm",
+      "name": "<VOLATILE>",
+      "scope": "internal",
+      "firmId": "<FIRM>",
+      "wallTag": null,
+      "disclaimer": null,
+      "retentionDays": 2557,
+      "createdAt": "<VOLATILE>",
+      "members": [
+        {
+          "userId": "<PM>",
+          "displayName": "Alex Pardo",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "owner",
+          "verified": true,
+          "isSelf": true
+        },
+        {
+          "userId": "<JANE>",
+          "displayName": "Jane Ruiz",
+          "firmId": "<FIRM>",
+          "firmName": "<FIRMNAME>",
+          "desk": "Equities PM",
+          "role": "member",
+          "verified": true,
+          "isSelf": false
+        }
+      ],
+      "lastSeq": 3,
+      "lastReadSeq": 2,
+      "unread": 1,
+      "lastMessageAt": "<VOLATILE>",
+      "lastMessagePreview": null,
+      "subject": "room:<DM>"
+    },
+    "messages": [
+      {
+        "messageId": "<VOLATILE>",
+        "roomId": "<DM>",
+        "seq": 1,
+        "senderUserId": "<JANE>",
+        "senderFirmId": "<FIRM>",
+        "senderDisplay": "Jane Ruiz",
+        "senderFirmName": "<FIRMNAME>",
+        "senderDesk": "Equities PM",
+        "isOwn": false,
+        "sentAt": "<VOLATILE>",
+        "body": "morning — flagging the print on the open",
+        "attachments": [],
+        "structured": null,
+        "clientMsgId": "<VOLATILE>",
+        "prevHash": null,
+        "hash": "<VOLATILE>",
+        "chainOk": true,
+        "unread": false
+      },
+      {
+        "messageId": "<VOLATILE>",
+        "roomId": "<DM>",
+        "seq": 2,
+        "senderUserId": "<PM>",
+        "senderFirmId": "<FIRM>",
+        "senderDisplay": "Alex Pardo",
+        "senderFirmName": "<FIRMNAME>",
+        "senderDesk": "Equities PM",
+        "isOwn": true,
+        "sentAt": "<VOLATILE>",
+        "body": "here it is",
+        "attachments": [
+          {
+            "idx": 0,
+            "kind": "security",
+            "instrumentId": "<AAPL>",
+            "code": null,
+            "params": {},
+            "resultId": null,
+            "portfolioId": null,
+            "watchlistId": null,
+            "annotationIds": [],
+            "subject": "q:<AAPL>",
+            "px": {
+              "v": 330.27,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<AAPL>",
+                "field": "PX_LAST"
+              }
+            },
+            "chgPct": {
+              "v": -0.8407,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<AAPL>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "label": "AAPL US Equity",
+            "command": "AAPL US Equity DES",
+            "resolvable": true,
+            "reason": "OK"
+          },
+          {
+            "idx": 1,
+            "kind": "chart",
+            "instrumentId": "<AAPL>",
+            "code": "GP",
+            "params": {
+              "range": "1Y"
+            },
+            "resultId": null,
+            "portfolioId": null,
+            "watchlistId": null,
+            "annotationIds": [],
+            "subject": "q:<AAPL>",
+            "px": {
+              "v": 330.27,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<AAPL>",
+                "field": "PX_LAST"
+              }
+            },
+            "chgPct": {
+              "v": -0.8407,
+              "st": "live",
+              "ts": 1789496788000,
+              "provIdx": 0,
+              "live": {
+                "subject": "q:<AAPL>",
+                "field": "CHG_PCT_1D"
+              }
+            },
+            "label": "GP · AAPL US Equity · 1Y",
+            "command": "AAPL US Equity GP RANGE=1Y",
+            "resolvable": true,
+            "reason": "OK"
+          },
+          {
+            "idx": 2,
+            "kind": "watchlist",
+            "instrumentId": null,
+            "code": null,
+            "params": {},
+            "resultId": null,
+            "portfolioId": null,
+            "watchlistId": "<WATCHLIST>",
+            "annotationIds": [],
+            "subject": null,
+            "px": null,
+            "chgPct": null,
+            "label": "Core",
+            "command": "W <WATCHLIST>",
+            "resolvable": true,
+            "reason": "OK"
+          },
+          {
+            "idx": 3,
+            "kind": "portfolio",
+            "instrumentId": null,
+            "code": null,
+            "params": {},
+            "resultId": null,
+            "portfolioId": "<PORTFOLIO>",
+            "watchlistId": null,
+            "annotationIds": [],
+            "subject": null,
+            "px": null,
+            "chgPct": null,
+            "label": "portfolio #<PORTFOLIO>",
+            "command": null,
+            "resolvable": false,
+            "reason": "NOT_SHARED_WITH_YOU"
+          },
+          {
+            "idx": 4,
+            "kind": "function",
+            "instrumentId": null,
+            "code": "ZZQQ",
+            "params": {},
+            "resultId": null,
+            "portfolioId": null,
+            "watchlistId": null,
+            "annotationIds": [],
+            "subject": null,
+            "px": null,
+            "chgPct": null,
+            "label": "ZZQQ",
+            "command": null,
+            "resolvable": false,
+            "reason": "FUNCTION_NOT_FOUND"
+          }
+        ],
+        "structured": null,
+        "clientMsgId": "<VOLATILE>",
+        "prevHash": "<VOLATILE>",
+        "hash": "<VOLATILE>",
+        "chainOk": true,
+        "unread": false
+      },
+      {
+        "messageId": "<VOLATILE>",
+        "roomId": "<DM>",
+        "seq": 3,
+        "senderUserId": "<JANE>",
+        "senderFirmId": "<FIRM>",
+        "senderDisplay": "Jane Ruiz",
+        "senderFirmName": "<FIRMNAME>",
+        "senderDesk": "Equities PM",
+        "isOwn": false,
+        "sentAt": "<VOLATILE>",
+        "body": "",
+        "attachments": [],
+        "structured": {
+          "type": "ioi",
+          "side": "buy",
+          "instrumentId": "<AAPL>",
+          "display": "AAPL US Equity",
+          "qty": 25000,
+          "price": 330,
+          "px": {
+            "v": 330.27,
+            "st": "live",
+            "ts": 1789496788000,
+            "provIdx": 0,
+            "live": {
+              "subject": "q:<AAPL>",
+              "field": "PX_LAST"
+            }
+          },
+          "subject": "q:<AAPL>"
+        },
+        "clientMsgId": "<VOLATILE>",
+        "prevHash": "<VOLATILE>",
+        "hash": "<VOLATILE>",
+        "chainOk": true,
+        "unread": true
+      }
+    ],
+    "canSend": true,
+    "sendBlockedReason": "OK",
+    "olderCursor": null,
+    "newerCursor": null
+  },
+  "directory": [],
+  "policy": {
+    "firmName": "<FIRMNAME>",
+    "retentionDays": 2557,
+    "disclaimer": "Messages are archived and monitored.",
+    "permittedCounterpartyFirms": [
+      "<PERMITTED>"
+    ],
+    "ethicalWalls": [
+      {
+        "deskA": "Equities PM",
+        "deskB": "Research"
+      }
+    ],
+    "archived": true,
+    "surveillance": true,
+    "legalHoldActive": false,
+    "federation": "NOT_IN_SCOPE_V1"
+  },
+  "totals": {
+    "rooms": 2,
+    "unread": 27,
+    "directoryMatches": 0
+  }
+}
