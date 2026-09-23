@@ -18,29 +18,81 @@
  *              feed_topic 1.00 · keyword 0.90 · manual 1.00 (data ops only, never minted here)
  *   × 0.97     the match occurs only in the summary — a story is about what its headline names
  *   × 0.95     the matched surface form is a single token, which is where false positives live
- *   × 0.90     the matched form is uncorroborated and is either a single token or — raw or
- *              normalised — in the dictionary's ambiguous-word list
  *   × 0.00     the match falls inside a URL or inside an attribution to another publication
- *   reject     an uncorroborated `ticker_exact` whose ticker is an ambiguous word
+ *   reject     the matched form is ambiguous and nothing in the story corroborates it
  * ```
  *
  * which lands where §11.3.3's table says it should:
  *
  * | Case | Score | Written |
  * | --- | --- | --- |
- * | `$AAPL` in the headline | 1.000 | yes |
- * | `(AAPL)` in the summary | 0.970 | yes |
- * | `Apple Inc` — exact name, headline, two tokens | 0.950 | yes |
- * | `Apple` — exact name, summary, single token | 0.828 | **no** |
- * | alias `Facebook` in the headline | 0.900 | yes |
- * | alias in the summary | 0.873 | **no** |
- * | `GAP` — ambiguous, headline, single token, uncorroborated | 0.812 | **no** |
- * | `Target` — headline, single token, uncorroborated | 0.812 | **no** |
+ * | `$AAPL` / `(AAPL US)` / `AAPL:US` in the headline | 1.000 | yes |
+ * | the same, in the summary | 0.970 | yes |
+ * | `Apple Inc` — exact name, headline, corporate form | 0.950 | yes |
+ * | `Glencore Plc` — exact name, summary, corporate form | 0.922 | yes |
+ * | `General Motors Co` — exact name, summary, two-token key | 0.922 | yes |
+ * | alias `Weight Watchers` in the headline | 0.900 | yes (**on** the floor — see below) |
+ * | the same alias in the summary | 0.873 | **no** |
+ * | `Apple` — exact name, headline, bare word | — | **no** (ambiguous, uncorroborated) |
+ * | `the outlook` — exact name of Outlook Group Corp, summary | — | **no** |
+ * | `(AAPL)` unqualified, nothing else in the story | — | **no** |
  * | `(AI)` in the headline, uncorroborated | — | **no** (an unqualified gloss, refused) |
  *
- * The last two rows are the recorded deviation from §11.3.3's literal wording: the ×0.90 row names
- * an enumerated word list, and precision that rests on an enumeration being complete is not
- * precision. See {@link linkHeadline}'s scoring loop for the argument.
+ * ## The ×0.90 row is a refusal, not a discount (recorded deviation from §11.3.3)
+ *
+ * §11.3.3 writes the ambiguity rule as a ×0.90 modifier over a list of ambiguous words. Both halves
+ * of that are wrong, and both are corrected here rather than quietly implemented:
+ *
+ *  1. **The list cannot carry the property.** An enumeration of ordinary English words that are
+ *     also issuer names is never complete — `TARGET`, `BLOCK`, `MATCH`, `SQUARE`, `SHELL`,
+ *     `BUDGET`, `OUTLOOK` are on none of them — and a single-token `name_exact` outside the list
+ *     scored 0.95 × 0.95 = 0.9025 and was written. Ambiguity is therefore decided **structurally**
+ *     by `refdata/newsDict.ts`: every one-word surface needs corroboration, whatever the word is.
+ *  2. **×0.90 does not refuse anything it is meant to refuse.** `base × 0.90 < 0.90` for every
+ *     base below 1.00, so for `name_exact`, `name_alias` and `keyword` the modifier already meant
+ *     "not written" — while for the two base-1.00 methods it lands on 0.900 *exactly*, which the
+ *     floor admits. The one surface the modifier exists to suppress was the one surface it could
+ *     not suppress. A refusal is the only reading under which the rule is the same rule for every
+ *     method, so an uncorroborated ambiguous match is dropped here and never scored.
+ *
+ * ## Corroboration (§11.3.3)
+ *
+ * An ambiguous surface is linked only when the story says the same thing twice. Exactly four
+ * things corroborate, and nothing else does:
+ *
+ *  - a **second method** naming the same issuer anywhere in the story — a CIK, a marked ticker, or
+ *    a different surface hitting the name and the alias map (§11.3.3's "a marked ticker within 40
+ *    characters" is the narrow form of this, and is subsumed by it);
+ *  - an **exchange qualifier** on a ticker mark — `$AAPL`, `(AAPL US)`, `AAPL:US`;
+ *  - a **corporate legal form** attached to the name — `Apple Inc`, `Glencore Plc`, `Pepkor
+ *    Holdings Ltd` (see {@link CORPORATE_FORMS}, and note what is deliberately *not* in it);
+ *  - a **key of two or more tokens**, which was never ambiguous in the first place.
+ *
+ * A second mention of the *same* single word is not corroboration: "Regulators Block Merger; Court
+ * Blocks Appeal" says one word twice, not two things once.
+ *
+ * ## Where the boundary sits, and why (NEWS-02)
+ *
+ * The floor is **inclusive**: a candidate at exactly 0.900 is written, one at 0.899999 is not.
+ * Three reasons, in order of weight:
+ *
+ *  1. NEWS-02 is "nothing *below* 0.9 is written", and 0.900 is not below 0.900. §11.3.3's table
+ *     has rows that land exactly there — an alias or a curated keyword in a headline, both base
+ *     0.90 with no modifier — and says they are written. Making the boundary exclusive would
+ *     delete that whole class for no precision gain: an alias in a headline is a strong signal,
+ *     and it is not what put a wrong story on a screen.
+ *  2. Nothing may *arrive* at 0.900 by being discounted. The audit's case — an ambiguous marked
+ *     ticker at 1.00 × 0.90 — is refused above, at the source, so the only candidates on the floor
+ *     are the ones whose **base** is 0.90 and which earned no penalty at all.
+ *  3. The comparison is made in the type the column has. `news_entity_links.confidence` is `real`
+ *     and 0.9 is not representable in binary: it stores as 0.8999999761581421. A `> 0.9` gate
+ *     would reject values the column cannot even distinguish from 0.9, and a naive `>= 0.9` read
+ *     back out of SQL would reject rows this module wrote. {@link clearsFloor} therefore rounds to
+ *     float4 first and compares against {@link LINK_THRESHOLD_STORED}, which is the same statement
+ *     the `INSERT` makes in SQL and the same one `functions/NI` makes when it reads.
+ *
+ * {@link scoreLink} quantises to six decimals before any of this, so "exactly on the floor" is a
+ * decidable question rather than a property of the last bit of a double.
  *
  * Two structural rules keep the link set honest beyond the floor (§11.3.4):
  *
@@ -59,6 +111,12 @@
  * as Consumer Spending Holds"* to three unrelated small caps. The ticker matcher therefore
  * requires an explicit marker — `$AAPL`, `(AAPL)`, `(AAPL US)` or `AAPL:US` — and a prose mention
  * is reached only through the full-name path.
+ *
+ * Of those four marks only three are unambiguous. `$AAPL`, `(AAPL US)` and `AAPL:US` carry an
+ * exchange qualifier or a sigil and say "this is a ticker"; the bare `(AAPL)` is also how English
+ * prose glosses an abbreviation — *"Artificial Intelligence (AI) Spending Surges"* is the same
+ * three characters as a deliberate ticker mark — so it is ambiguous like any other one-word
+ * surface and is written only when the story corroborates it elsewhere.
  *
  * ## What this module is not
  *
@@ -124,11 +182,26 @@ export const LINK_THRESHOLD = 0.9;
  *
  * The column is `real` (IEEE float4) and 0.9 is not representable in binary: `0.9::real` reads
  * back as 0.8999999761581421. A value written at exactly the floor therefore compares `< 0.9`
- * when it is read out again, in SQL and in JavaScript alike. Code that asserts the floor against
- * *stored* values compares with this constant; code that asserts it against a candidate's score,
- * before the column rounds it, compares with {@link LINK_THRESHOLD}.
+ * when it is read out again, in SQL and in JavaScript alike. This constant is the floor in that
+ * type, and it is what every comparison — SQL or TypeScript, stored value or fresh candidate —
+ * measures against, through {@link clearsFloor} in this module and directly in the `INSERT` guard
+ * and `functions/NI`'s `WHERE`. {@link LINK_THRESHOLD} is the number the spec states; this is the
+ * number the database can hold.
  */
 export const LINK_THRESHOLD_STORED = Math.fround(LINK_THRESHOLD);
+
+/**
+ * The floor, as one decidable test — **inclusive**, and evaluated in the column's own type.
+ *
+ * `clearsFloor(0.9)` is `true` and `clearsFloor(0.899999)` is `false`. The argument for the
+ * inclusive side, and for rounding to float4 before comparing rather than comparing a double
+ * against a literal the column cannot represent, is in this file's header under "Where the
+ * boundary sits". Every gate in the module goes through here, so the pure matcher, the `INSERT`
+ * and `functions/NI`'s read-back all draw the line in the same place.
+ */
+export function clearsFloor(confidence: number): boolean {
+  return Math.fround(confidence) >= LINK_THRESHOLD_STORED;
+}
 
 /** §11.3.2's base confidences. Fixed by the spec and by the `method` CHECK; not tunable. */
 export const BASE_CONFIDENCE: Readonly<Record<LinkMethod, number>> = Object.freeze({
@@ -168,8 +241,53 @@ export const FEED_TOPIC_CODE: ReadonlyMap<string, string> = new Map([
 export const SUMMARY_MODIFIER = 0.97;
 /** §11.3.3: one-word surface forms are where the false positives live. */
 export const SINGLE_TOKEN_MODIFIER = 0.95;
-/** §11.3.3: an ambiguous word that nothing else corroborates. */
+/**
+ * §11.3.3's ambiguity modifier, kept as the spec's number and **not applied by
+ * {@link linkHeadline}**, which refuses instead. `base × 0.90` is below the floor for every base
+ * under 1.00 and exactly on it for base 1.00, so as a modifier it is either a refusal in disguise
+ * or a no-op; the header explains the reading. Exported so a caller scoring a candidate by hand —
+ * data ops, a backfill — reproduces §11.3.3's arithmetic rather than inventing a second one.
+ */
 export const AMBIGUOUS_MODIFIER = 0.9;
+
+/**
+ * The legal forms that make a one-word name a company (§11.3.3's corroboration clause).
+ *
+ * `Apple Inc`, `Glencore Plc`, `Pepkor Holdings Ltd`: nothing but a company is written this way,
+ * so the form is the second signal a bare word lacks — the name-side equivalent of the exchange
+ * qualifier on a ticker mark. Only forms that are **never ordinary English** are here, and the
+ * omissions are the point:
+ *
+ *  - `COMPANY`, `CO`, `GROUP`, `HOLDINGS`, `LIMITED` are ordinary English words, and
+ *    `core/text/normName.ts` strips them, so a prose run reaches the dictionary through them. The
+ *    recorded feeds carry *"Radiant World Group Sues Glencore"* — a company we do not hold —
+ *    beside *"Vodacom Group Ltd. said it will appeal"*, which we do, and the two surfaces are the
+ *    same shape. Admitting `GROUP` would link the first to `World Holdings Inc`. `LTD` in the
+ *    second is what makes it decidable, and `Carlyle Co-President` — a hyphen, folded to a space —
+ *    is what `CO` would have cost.
+ *  - `AG` *is* stripped by `normName` and is still left out: "ag" is how US financial prose clips
+ *    "agriculture" ("ag exports", "Big Ag"), and it sits in the same grammatical slot as the word
+ *    it would corroborate. The cost is single-word German and Swiss issuers — `Bayer AG` in prose
+ *    needs a ticker, a CIK or a second surface, like any other bare word.
+ *  - `SE`, `AB`, `GMBH`, `OYJ` and friends need no entry at all: `normName` does not strip them,
+ *    so they stay part of the key and make it multi-token, which is already enough
+ *    (`TOTALENERGIES SE`, `VOLVO CAR AB`).
+ *
+ * A form missing from this set costs a link, never a wrong one — which is the only kind of
+ * enumeration this module is allowed to depend on.
+ */
+export const CORPORATE_FORMS: ReadonlySet<string> = new Set([
+  'INC',
+  'INCORPORATED',
+  'CORP',
+  'CORPORATION',
+  'PLC',
+  'LLC',
+  'LLP',
+  'LTD',
+  'NV',
+  'SA',
+]);
 
 /** §11.3.4: instrument links per story, beyond which only issuer and topic links are kept. */
 export const MAX_INSTRUMENT_LINKS = 8;
@@ -202,9 +320,11 @@ const TICKER_PATTERNS: readonly TickerPattern[] = [
  * The bare `(AAPL)` form does not: parenthesising a capitalised run is also how ordinary prose
  * glosses an abbreviation, and *"Artificial Intelligence (AI) Spending Surges"* or *"Consumer
  * Price Index (CPI) Rose 0.3%"* are the same three characters as a deliberate ticker mark. The
- * unqualified form is therefore kept — §11.3.2 lists it and §11.3.3's table depends on it — but
- * it is refused for any ticker on the ambiguous-word list, which is exactly the set the gloss
- * form collides with (AI, CPI, GDP, ETF, EV, FED, IPO, SEC, EU, UK, US).
+ * unqualified form is therefore kept — §11.3.2 lists it — but it claims nothing on its own: it is
+ * one ambiguous token like any bare word, and it is written only where the story names that issuer
+ * some other way. Which tickers a gloss collides with (AI, CPI, GDP, ETF, EV, FED, IPO, SEC, EU,
+ * UK, US) is then a fact about the corpus rather than a list this rule depends on — the earlier
+ * version refused exactly those and admitted every collision nobody had thought of.
  */
 interface TickerPattern {
   readonly re: RegExp;
@@ -293,17 +413,24 @@ interface RawMatch {
   inHeadline: boolean;
   singleToken: boolean;
   /**
-   * The matched form is an ambiguous word (§11.3.3's ×0.90 row), pending corroboration.
+   * The matched form cannot identify an issuer on its own (§11.3.3's ×0.90 row, read as a
+   * refusal), pending corroboration.
    *
-   * Tested against the **normalised** form as well as the raw one. `normName` strips trailing legal
-   * forms, so the run "Radiant World Group" normalises to `WORLD` and matches an issuer called
-   * "World Holdings" exactly as "Apple Inc" matches "Apple" — the two are the same operation and
-   * nothing downstream can tell them apart. What distinguishes them is that `WORLD` is an ambiguous
-   * word and `APPLE` is not, and that test has to be made on the form the match was actually made
-   * on. Testing only the raw surface would let a two-token prose run smuggle an ambiguous
-   * single-word name past the modifier at its full 0.95.
+   * Tested against the **normalised key** as well as the raw surface, and that is the whole of the
+   * bug this replaced. `normName` strips trailing legal forms and a leading article, so the prose
+   * runs "Radiant World Group" and "the outlook" normalise to `WORLD` and `OUTLOOK` and match
+   * issuers called "World Holdings" and "Outlook Group" exactly as "Apple Inc" matches "Apple" —
+   * the same operation, and nothing downstream can tell them apart. Testing only the raw surface
+   * counted those as two tokens and let them through at their full 0.95, which is how the recorded
+   * feeds filed *"Sri Lanka's Growth Misses Forecast"* under a Wisconsin printing company.
    */
   ambiguous: boolean;
+  /**
+   * The surface carries its own second signal — an exchange qualifier on a ticker mark, a
+   * corporate legal form on a name, or the identity claim of a CIK. Corroboration from *elsewhere*
+   * in the story is a whole-story question and is computed in {@link linkHeadline}.
+   */
+  selfCorroborated: boolean;
   /** The issuer the match is about, when it is about one — the corroboration key. */
   issuerId: number | null;
 }
@@ -323,16 +450,19 @@ function matchTickers(
       if (ticker === undefined) continue;
       const target = dict.lookupTicker(ticker);
       if (target === null) continue;
-      // An unqualified `(XYZ)` is only a ticker mark when `XYZ` is not also an English gloss.
-      if (!pattern.qualified && dict.isAmbiguous(target.ticker)) continue;
-      // A marked ticker is a deliberate mark: it is never softened by the single-token modifier,
-      // because `$AAPL` is one token by construction and the marker is the corroboration.
+      // A ticker is one token, so the dictionary calls every one of them ambiguous. What separates
+      // `$AAPL` from `(AAPL)` is the mark itself: a sigil or an exchange qualifier is a statement
+      // that this is a ticker, and it is its own corroboration — so it keeps the full 1.00 and
+      // takes no single-token discount. The bare parenthesis makes no such statement (it is also
+      // how prose glosses an abbreviation), so it is one ambiguous word like any other: discounted
+      // for being one token, and written only if the story names the issuer some other way too.
       const shared = {
         method: 'ticker_exact' as const,
         base: BASE_CONFIDENCE.ticker_exact,
         inHeadline,
-        singleToken: false,
+        singleToken: !pattern.qualified,
         ambiguous: dict.isAmbiguous(target.ticker),
+        selfCorroborated: pattern.qualified,
         issuerId: target.issuerId,
       };
       out.push({
@@ -369,7 +499,8 @@ function matchNames(
   while (i < tokens.length) {
     let consumed = 1;
     for (let len = Math.min(MAX_NAME_TOKENS, tokens.length - i); len >= 1; len -= 1) {
-      const surface = tokens.slice(i, i + len).join(' ');
+      const run = tokens.slice(i, i + len);
+      const surface = run.join(' ');
       const key = normName(surface);
       const hit = dict.lookupName(key);
       if (hit === null) continue;
@@ -382,6 +513,10 @@ function matchNames(
         inHeadline,
         singleToken: len === 1,
         ambiguous: dict.isAmbiguous(key) || dict.isAmbiguous(surface),
+        // "Apple Inc" is a company; "the outlook" is a noun phrase that normalises to the same
+        // shape. The legal form the run carries is what tells them apart, and only a form no
+        // English sentence uses counts — see CORPORATE_FORMS.
+        selfCorroborated: run.some((t) => CORPORATE_FORMS.has(t)),
         issuerId: hit.issuerId,
       });
       consumed = len;
@@ -415,6 +550,10 @@ function matchKeywords(
         inHeadline,
         singleToken: len === 1,
         ambiguous: dict.isAmbiguous(surface),
+        // A topic keyword has no issuer, so no second method can ever name it: a one-word curated
+        // keyword is refused outright, and only a phrase links. That is the same trade as the
+        // names — "RATES" in a headline is not a claim that the story is about interest rates.
+        selfCorroborated: false,
         issuerId: null,
       });
       consumed = len;
@@ -462,6 +601,8 @@ export function linkHeadline(
         inHeadline: true,
         singleToken: false,
         ambiguous: false,
+        // The filer's own identity claim, made in the feed's structure rather than its prose.
+        selfCorroborated: true,
         issuerId,
       });
     }
@@ -495,6 +636,8 @@ export function linkHeadline(
         inHeadline: true,
         singleToken: false,
         ambiguous: false,
+        // A statement about the feed, not about the text: the publisher filed it under this topic.
+        selfCorroborated: true,
         issuerId: null,
       });
     }
@@ -518,31 +661,33 @@ export function linkHeadline(
 
   const best = new Map<string, LinkCandidate>();
   for (const m of raw) {
-    const corroborated = m.issuerId !== null && (methodsByIssuer.get(m.issuerId)?.size ?? 0) > 1;
+    const corroborated =
+      m.selfCorroborated ||
+      (m.issuerId !== null && (methodsByIssuer.get(m.issuerId)?.size ?? 0) > 1);
 
-    // An ambiguous ticker mark that nothing else corroborates is dropped, not discounted. The
-    // ×0.90 modifier applied to a base of 1.00 lands on 0.90 exactly, and `< LINK_THRESHOLD` does
-    // not reject 0.90 — so the one surface the modifier exists to suppress is the one surface it
-    // cannot suppress by arithmetic. A hard reject is the only reading of §11.3.3 under which the
-    // modifier does anything for `ticker_exact` at all.
-    if (m.method === 'ticker_exact' && m.ambiguous && !corroborated) continue;
+    // §11.3.3's ×0.90 row, applied as the refusal it arithmetically is (see this file's header).
+    // An ambiguous surface with no second signal is dropped here and never scored: for a base
+    // under 1.00 the modifier already meant "below the floor", and for a base of 1.00 it lands on
+    // 0.90 exactly, where an inclusive floor writes it — which is the one outcome the row exists
+    // to prevent. A single rule for every method is the only reading that is not arbitrary.
+    //
+    // `m.ambiguous` is now decided structurally: one word is one word, whether or not anybody
+    // enumerated it. The cases this drops on the recorded feeds are "Fed's New Inflation Target
+    // Draws Criticism" (Target Corporation), "Regulators Block Merger" (Block, Inc.) and
+    // "clouding the outlook for the island nation's recovery" (Outlook Group Corp) — none of which
+    // any word list held. What survives is "Apple Inc", "Glencore Plc", "$AAPL", "(AAPL US)",
+    // a CIK, and any name of two tokens or more.
+    if (m.ambiguous && !corroborated) continue;
 
     const confidence = scoreLink(m.base, {
       inHeadline: m.inHeadline,
       singleToken: m.singleToken,
-      // DEVIATION from §11.3.3's literal wording, recorded rather than hidden. The ×0.90 row names
-      // the dictionary's ambiguous-word list, but that list is an enumeration and precision cannot
-      // rest on one being complete: TARGET, BLOCK, MATCH, SQUARE, SHELL, TOTAL, UNITY, ARM and
-      // CARVANA are ordinary English words that are also issuer names, and a single-token
-      // `name_exact` on one of them scores 0.95 × 0.95 = 0.9025 and is written — so "Fed's New
-      // Inflation Target Draws Criticism" files under Target Corporation. Every *uncorroborated
-      // single-token* surface is therefore treated as ambiguous, which puts it at
-      // 0.95 × 0.95 × 0.90 = 0.81225 — precisely the value §11.3.3's own table assigns the
-      // uncorroborated `GAP` row. Two-token names and corroborated single tokens are untouched,
-      // and the word list stays as the extra brake on multi-token surfaces.
-      ambiguousUncorroborated: (m.ambiguous || m.singleToken) && !corroborated,
+      // Never reached: an uncorroborated ambiguous match was refused above, and a corroborated one
+      // is not discounted for the ambiguity it no longer has. Left explicit so that `scoreLink`
+      // stays §11.3.3's arithmetic rather than a function with an argument nobody passes.
+      ambiguousUncorroborated: false,
     });
-    if (confidence < LINK_THRESHOLD) continue;
+    if (!clearsFloor(confidence)) continue;
 
     const key = `${m.entityKind}:${String(m.entityId)}`;
     const candidate: LinkCandidate = {
@@ -705,7 +850,7 @@ export async function linkNewsItems(
     const byKey = new Map<string, LinkCandidate>();
     for (const c of candidates) byKey.set(`${c.entityKind}:${String(c.entityId)}`, c);
     for (const c of options.extraLinks?.get(item.newsId) ?? []) {
-      if (c.confidence < LINK_THRESHOLD) continue;
+      if (!clearsFloor(c.confidence)) continue;
       const key = `${c.entityKind}:${String(c.entityId)}`;
       const seen = byKey.get(key);
       if (seen === undefined || betterThan(c, seen)) byKey.set(key, c);

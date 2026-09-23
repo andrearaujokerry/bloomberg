@@ -7,6 +7,30 @@
 //
 // Provider-published greeks are analytic too (the venue ran the model, not us) — they are marked by
 // their source being the option chain rather than `internal.derived`.
+//
+// ── Return convention (RET_*, VOL_*), reconciled in the code's direction ──────────────────────
+//
+// These entries used to describe a TOTAL return — dividends reinvested — while the only code that
+// computes them, `server/src/functions/shared/returns.ts#periodReturns`, computes a PRICE return on
+// split-adjusted closes. Two documents disagreed about what the number on the screen means, which is
+// worse than either answer alone, so the conflict is settled here once and in one direction: **the
+// dictionary now says what the code does.** RET_1D, RET_1W, RET_1M, RET_YTD, RET_1Y and VOL_30D are
+// simple (arithmetic) returns on the `AdjustPolicy 'price'` close series — splits applied, cash
+// dividends NOT reinvested, so an ex-dividend date shows as a drop. VOL_90D has no implementation in
+// v1; it is declared on the same basis so that whoever writes one has one convention to meet rather
+// than a choice to make.
+//
+// The code was not moved to meet the dictionary because the code is the side the specification
+// already agreed with: FUNCTIONS_TIER1 §0.3 defines RET_1W/RET_1M/RET_1Y as `close(t)/close(t₋) − 1`
+// and §W defines RET_YTD the same way, and §0.6 pins the engine to
+// `{ returns:'simple', priceBasis:'close', adjust:'price', annualisation:252 }` — which
+// `PERIOD_RETURNS_CONVENTIONS` freezes and every payload echoes in its footer. Only these
+// definitions dissented.
+//
+// A dividend-reinvested figure is a different quantity, not a correction of this one. The machinery
+// for it exists (`AdjustPolicy 'total_return'` in `server/src/data/historical.ts`), so when the
+// terminal wants one it gets its own field ids rather than a quiet change of meaning underneath
+// these — a number whose definition moves is worse than a number that is missing.
 
 import type { FieldDef } from '../../types/fields.js';
 
@@ -491,8 +515,10 @@ export const analyticFields: readonly FieldDef[] = [
     id: 'VOL_30D',
     label: 'Realised volatility (30d)',
     definition:
-      'Annualised standard deviation of the last 30 daily log returns of the total-return series, ' +
-      'in percent, on a 252-day year. Requires at least 25 observations or it is unavailable.',
+      'Annualised standard deviation of the last 30 daily simple returns of the split-adjusted ' +
+      'close series (adjustment policy `price`), in percent, on a 252-day year. Needs 31 ' +
+      'consecutive sessions each carrying a close — a hole in the window makes one “daily” return ' +
+      'span two sessions, so the figure is unavailable rather than stretched.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -501,7 +527,9 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/volatility.ts#realised'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'stdev(ln(P_t/P_{t−1}), n = 30) × sqrt(252) × 100',
+    derivation:
+      'stdev(P_t/P_{t−1} − 1, n = 30) × sqrt(252) × 100, on the price-adjusted close series ' +
+      '(FUNCTIONS_TIER1 §0.6)',
     example: { ref: 'AAPL US Equity', value: 21.36, asOf: '2026-09-15' },
     since: SINCE,
   },
@@ -510,8 +538,9 @@ export const analyticFields: readonly FieldDef[] = [
     id: 'VOL_90D',
     label: 'Realised volatility (90d)',
     definition:
-      'Annualised standard deviation of the last 90 daily log returns of the total-return series, ' +
-      'in percent, on a 252-day year. Requires at least 75 observations or it is unavailable.',
+      'Annualised standard deviation of the last 90 daily simple returns of the split-adjusted ' +
+      'close series (adjustment policy `price`), in percent, on a 252-day year — VOL_30D over the ' +
+      'longer window. Requires at least 75 observations or it is unavailable.',
     type: 'number',
     unit: 'pct',
     decimals: 2,
@@ -520,7 +549,9 @@ export const analyticFields: readonly FieldDef[] = [
     sources: engine('core/analytics/stats/index.ts#volatility'),
     updateFreq: 'daily',
     pit: false,
-    derivation: 'stdev(ln(P_t/P_{t−1}), n = 90) × sqrt(252) × 100',
+    derivation:
+      'stdev(P_t/P_{t−1} − 1, n = 90) × sqrt(252) × 100, on the price-adjusted close series ' +
+      '(FUNCTIONS_TIER1 §0.6)',
     example: { ref: 'AAPL US Equity', value: 23.71, asOf: '2026-09-15' },
     since: SINCE,
   },

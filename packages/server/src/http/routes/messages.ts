@@ -194,7 +194,19 @@ export const messagesRoutes: FastifyPluginAsync = async (app) => {
    *
    * `deliver` is the WS `room:<roomId>` fan-out of API.md §6.9; `surveillance` is MSG-02's
    * lexicon scan, which the service runs after the row is durable and never lets fail a send.
+   *
+   * `onError` is passed to both, and it is the half of MSG-02 that was missing: the scan is
+   * allowed to fail (a message already in the WORM log must not be lost to the thing that only
+   * watches it), so the *only* trace a supervision gap leaves is this callback. Composed without
+   * it — as this factory was — every refused hit in every deployment was swallowed by the
+   * savepoint and the compliance archive stayed empty with nothing said. A gap here is an
+   * `error`, not a `warn`: supervision that is not recording is a regulatory failure, not a
+   * degraded nicety.
    */
+  const onError = (err: unknown, detail: string): void => {
+    app.log.error({ err, detail }, 'messaging: supervision gap');
+  };
+
   const serviceFor = (tx: Tx): MessagingService =>
     messagingService({
       db: tx,
@@ -206,7 +218,8 @@ export const messagesRoutes: FastifyPluginAsync = async (app) => {
           message,
         });
       },
-      surveillance: surveillanceScanner({ db: tx, clock: app.deps.clock }),
+      surveillance: surveillanceScanner({ db: tx, clock: app.deps.clock, onError }),
+      onError,
     });
 
   const inRoom = async <T>(

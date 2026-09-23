@@ -71,7 +71,23 @@ export default defineConfig({
           // it blocks every other file that touches `quote_ticks` until it finishes, which is why
           // `Q` and `DES` timed out in their `beforeAll` while passing in three seconds alone.
           // The DDL suites run in `server-serial` instead, one at a time, after this project.
-          exclude: ['test/integration/ingest/partitions.test.ts'],
+          //
+          // The function suites join them, for a different reason with the same shape. Each of
+          // them seeds the same shared reference tables — `entitlement_grants`, `licence_registry`,
+          // `classification_codes` — from its own hook, in its own order, inside a transaction it
+          // holds for the whole file. Two files inserting into those tables in opposite orders
+          // deadlock, and Postgres kills one of them: observed repeatedly in `DES`, `GP` and
+          // `reference-routes`, always in a seeding hook and never in a payload assertion, each
+          // passing alone. Worker tuning only changes how often it happens, because the cause is
+          // lock ORDER rather than lock contention.
+          //
+          // The real fix is one seeding helper that touches those tables in a fixed order, which
+          // is a refactor across nineteen files and belongs with WP-15's harness work. Until then
+          // these run one at a time, which is deterministic today and costs about a minute.
+          exclude: [
+            'test/integration/ingest/partitions.test.ts',
+            'test/integration/functions/**/*.test.ts',
+          ],
           setupFiles: ['test/setup.int.ts'],
           globalSetup: ['test/globalSetup.ts'],
           env: {
@@ -117,7 +133,10 @@ export default defineConfig({
           name: 'server-serial',
           root: 'packages/server',
           environment: 'node',
-          include: ['test/integration/ingest/partitions.test.ts'],
+          include: [
+            'test/integration/ingest/partitions.test.ts',
+            'test/integration/functions/**/*.test.ts',
+          ],
           setupFiles: ['test/setup.int.ts'],
           globalSetup: ['test/globalSetup.ts'],
           env: {

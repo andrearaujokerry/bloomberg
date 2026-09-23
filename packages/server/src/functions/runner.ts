@@ -671,16 +671,26 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
    * Assert that the payload and the `meta` the runner is about to stamp on it agree.
    *
    * `assertVariant` already checks that the payload is the *shape* FUNC-02 promised. This checks
-   * the two claims §1.3 makes about its *contents*, and it lives here for the same reason: the
-   * runner is the one choke point every function payload passes through, and a resolver cannot
-   * check itself. No manifest exists yet (WP-09/10/11 write them), so nothing violates this
-   * today — which is exactly why it has to be in place before forty of them are written.
+   * the claims §1.3 makes about its *contents*, and it lives here for the same reason: the runner
+   * is the one choke point every function payload passes through, and a resolver cannot check
+   * itself. Tier 1's fourteen manifests are written (WP-09) and Tier 2/3's twenty-six are not
+   * (WP-10/11) — which is exactly why this has to say what it means before the rest are written
+   * against it.
    *
-   *  1. **A number is attributable.** A payload that carries a data cell holding a finite number
-   *     while nothing was cited — no `ctx.prov.add()`, no `ctx.engines.add()` — is a number the
-   *     client cannot trace to a source or to a computation. DATA-10: every value block cites one
-   *     idx.
-   *  2. **A null is explained.** §1.3 rule 6: unavailable data is `null` in the payload *and* a
+   *  1. **The payload as a whole is attributable.** A payload that carries a data cell holding a
+   *     finite number while nothing at all was cited — no `ctx.prov.add()`, no `ctx.engines.add()`
+   *     — is a number the client cannot trace to a source or to a computation. DATA-10: every
+   *     value block cites one idx.
+   *  2. **Each cell is attributable on its own.** Rule 1 is an aggregate, and an aggregate is not
+   *     what DATA-10 says: one citation anywhere in a payload would otherwise excuse every other
+   *     number in it, and `Ctrl+I` on the cell that was *not* cited answers nothing. So every
+   *     object shaped like a {@link ValueCell} is checked individually — a cell whose `v` is a
+   *     finite number carries an integer `provIdx >= 0`, wherever in the payload it sits. The one
+   *     documented exception is the reserved `provIdx: -1` (TIER1 §0.4 rule 1), which marks a cell
+   *     that is *pending* or *denied* and therefore has a null `v`: `-1` never accompanies a
+   *     number. A cell citing an engine rather than a source still carries the idx of the input
+   *     the engine ran on (§0.4 rule 4), so this rule holds for derived cells too.
+   *  3. **A null is explained.** §1.3 rule 6: unavailable data is `null` in the payload *and* a
    *     `meta.unavailable[]` entry. The checkable form of that is weaker than the rule: a payload
    *     carrying a null in a data cell must carry *some* explanation in `meta` — an `unavailable`
    *     entry, or an entitlement denial, which is where §12.3 puts the reason for a blanked field.
@@ -690,14 +700,20 @@ export function functionRunner(deps: RunnerDeps): FunctionRunner {
    *     with gaps is never served with an empty `meta` — which is the case that reaches a user as
    *     a blank cell with nothing to hover over.
    *
-   * Both rules are bounded to the keys that are certainly **data cells**: a dictionary `FieldId`,
-   * or a column the manifest's own CSV spec names. That boundary is the honest one. A generic walk
-   * cannot tell a quote from an echoed parameter, a row count or a page index — all numbers with
-   * no source and no business having one — so a rule over *every* number would fire on correct
-   * payloads, and a rule over every null would fire on a structural `nextCursor: null`. The keys a
-   * manifest itself declares as columns are the cells that reach a screen and a CSV, which is
-   * exactly the surface DATA-10 and rule 6 are about; anything else in the payload is the
+   * Rules 1 and 3 are bounded to the keys that are certainly **data cells**: a dictionary
+   * `FieldId`, or a column the manifest's own CSV spec names. That boundary is the honest one. A
+   * generic walk cannot tell a quote from an echoed parameter, a row count or a page index — all
+   * numbers with no source and no business having one — so a rule over *every* number would fire
+   * on correct payloads, and a rule over every null would fire on a structural `nextCursor: null`.
+   * The keys a manifest itself declares as columns are the cells that reach a screen and a CSV,
+   * which is exactly the surface DATA-10 and rule 6 are about; anything else in the payload is the
    * manifest's own business.
+   *
+   * Rule 2 needs no such boundary, and is the stronger check because of it: it recognises a cell by
+   * its shape rather than by its key, so it reaches a cell nested in a row, a line or a block that
+   * no column list names. What it cannot reach is a bare series — `number[]` has nowhere to put a
+   * citation — so a payload that ships a *series* of prices carries a block-level idx beside it
+   * (`GpSeries.provIdx`, `GipPayload.vwapProvIdx`) and the walk is not what proves it.
    *
    * Strictness follows `strictVariant`: a dev or test build throws (the payload is a defect and
    * must not be served), a production build reports it through `onWarning` and serves, because a

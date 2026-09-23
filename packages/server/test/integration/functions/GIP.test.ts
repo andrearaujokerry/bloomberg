@@ -26,7 +26,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, subjectToken } from './golden.js';
 
 import { FunctionRegistry, toCsv } from '@terminal/core';
 import type { NormalisedUpdate, QuoteFields } from '@terminal/core';
@@ -619,7 +619,7 @@ function normalise(payload: GipPayload): unknown {
       if (key === 'mdLineIds' && Array.isArray(value)) return `<${String(value.length)} md line(s)>`;
       if (key === 'mdLineId' && value === mdLineId) return '<mdLine>';
       if (typeof value === 'number' && value === id) return '<AAPL>';
-      if (typeof value === 'string') return value.split(String(id)).join('<AAPL>');
+      if (typeof value === 'string') return subjectToken(value, new Map([[id, '<AAPL>']]));
       return value;
     }),
   );

@@ -37,6 +37,7 @@ import { sql } from 'drizzle-orm';
 import type { Clock } from '@terminal/core';
 
 import type { Db, Tx } from '../db/client.js';
+import { announceSupervisionGap } from './service.js';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // Shapes
@@ -136,7 +137,10 @@ const asRows = <T>(result: { rows: unknown[] }): T[] => result.rows as T[];
 
 export function surveillanceScanner(deps: SurveillanceDeps): SurveillanceScanner {
   const db = deps.db;
-  const report = deps.onError ?? ((): void => undefined);
+  // Loud by default, for the reason `announceSupervisionGap` gives: a lexicon term that will not
+  // compile is a rule compliance believes is being enforced and is not. Skipping it is right;
+  // skipping it without saying so is how MSG-02 went a whole work package recording nothing.
+  const report = deps.onError ?? announceSupervisionGap;
   /** Compiled patterns, keyed by `termId:pattern` so an edited term recompiles. */
   const compiled = new Map<string, RegExp | null>();
 

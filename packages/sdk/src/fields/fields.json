@@ -9126,7 +9126,7 @@
     {
       "id": "VOL_30D",
       "label": "Realised volatility (30d)",
-      "definition": "Annualised standard deviation of the last 30 daily log returns of the total-return series, in percent, on a 252-day year. Requires at least 25 observations or it is unavailable.",
+      "definition": "Annualised standard deviation of the last 30 daily simple returns of the split-adjusted close series (adjustment policy `price`), in percent, on a 252-day year. Needs 31 consecutive sessions each carrying a close — a hole in the window makes one “daily” return span two sessions, so the figure is unavailable rather than stretched.",
       "type": "number",
       "unit": "pct",
       "decimals": 2,
@@ -9148,7 +9148,7 @@
       ],
       "updateFreq": "daily",
       "pit": false,
-      "derivation": "stdev(ln(P_t/P_{t−1}), n = 30) × sqrt(252) × 100",
+      "derivation": "stdev(P_t/P_{t−1} − 1, n = 30) × sqrt(252) × 100, on the price-adjusted close series (FUNCTIONS_TIER1 §0.6)",
       "example": {
         "ref": "AAPL US Equity",
         "value": 21.36,
@@ -9159,7 +9159,7 @@
     {
       "id": "VOL_90D",
       "label": "Realised volatility (90d)",
-      "definition": "Annualised standard deviation of the last 90 daily log returns of the total-return series, in percent, on a 252-day year. Requires at least 75 observations or it is unavailable.",
+      "definition": "Annualised standard deviation of the last 90 daily simple returns of the split-adjusted close series (adjustment policy `price`), in percent, on a 252-day year — VOL_30D over the longer window. Requires at least 75 observations or it is unavailable.",
       "type": "number",
       "unit": "pct",
       "decimals": 2,
@@ -9181,7 +9181,7 @@
       ],
       "updateFreq": "daily",
       "pit": false,
-      "derivation": "stdev(ln(P_t/P_{t−1}), n = 90) × sqrt(252) × 100",
+      "derivation": "stdev(P_t/P_{t−1} − 1, n = 90) × sqrt(252) × 100, on the price-adjusted close series (FUNCTIONS_TIER1 §0.6)",
       "example": {
         "ref": "AAPL US Equity",
         "value": 23.71,

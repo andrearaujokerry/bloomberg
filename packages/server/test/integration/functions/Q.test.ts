@@ -37,7 +37,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, subjectToken } from './golden.js';
 
 import type { NormalisedUpdate } from '@terminal/core';
 import { FunctionRegistry } from '@terminal/core';
@@ -357,11 +357,9 @@ function normalise(payload: QPayload): unknown {
   ]);
   const json = JSON.stringify(payload, (_key, value: unknown) => {
     if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
-    if (typeof value === 'string') {
-      let out = value.split(SYMBOL_TAG).join('');
-      for (const [id, token] of tokens) out = out.split(String(id)).join(token);
-      return out;
-    }
+    // The per-run provider-symbol suffix is stripped; the ids are substituted in subject strings
+    // only (`subjectToken`), never in a timestamp that happens to contain their digits.
+    if (typeof value === 'string') return subjectToken(value.split(SYMBOL_TAG).join(''), tokens);
     return value;
   });
   return JSON.parse(json);

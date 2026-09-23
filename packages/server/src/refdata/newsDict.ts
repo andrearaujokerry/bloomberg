@@ -19,10 +19,13 @@
  * | `aliases` | `issuer_aliases` (`former_name`, `short_name`, `brand`, `curated`) + `issuers.former_names` | as for names |
  * | `topicKeywords` | `topics.keywords` | a keyword shared by two topics |
  *
- * `ambiguousWords` is the sixth: ordinary English words and financial abbreviations that are also
- * issuer names or tickers (`GAP`, `KEY`, `ALLY`, `LOW`, `ON`, `ALL`, `IT`, `CAT`, `SO`). It never
- * removes a candidate; it drives the ×0.90 modifier of §11.3.3, which is exactly enough to push an
- * uncorroborated single-token match below the 0.90 floor.
+ * {@link NewsDictionary.isAmbiguous} is the sixth thing the matcher asks, and it is **not** a map.
+ * It answers "can this surface form identify an issuer on its own?", and its rule is structural:
+ * **one word is never enough**. Every single-token surface — `APPLE`, `TARGET`, `BUDGET`, `WORLD`,
+ * `AAPL` alike — is ambiguous and must be corroborated by something else in the story before it may
+ * be linked. `ambiguousWords` survives underneath that rule as curation for *multi-token* surfaces
+ * and as documentation of the collisions the recorded feeds actually contain; it is no longer what
+ * carries precision. See {@link AMBIGUOUS_WORDS} for why the enumeration could not carry it.
  *
  * Normalisation is `core/text/normName.ts` and nothing else — the same function
  * `refdata/resolve.ts` uses for its name fallback, so "the same name" means one thing in this
@@ -31,7 +34,7 @@
 
 import { sql } from 'drizzle-orm';
 
-import { normName } from '@terminal/core';
+import { foldName, normName } from '@terminal/core';
 
 import type { AsOf } from '../db/bitemporal.js';
 import type { Tx } from '../db/client.js';
@@ -77,11 +80,22 @@ export interface NewsDictionary {
   readonly aliases: ReadonlyMap<string, number>;
   /** Upper-cased keyword → `topicId`. */
   readonly topicKeywords: ReadonlyMap<string, number>;
-  /** §11.3.3's ×0.90 list, normalised. */
+  /** The curated multi-token additions to the structural rule, normalised (§11.3.3). */
   readonly ambiguousWords: ReadonlySet<string>;
   readonly stats: NewsDictStats;
 
-  /** `true` when this surface form needs corroboration before it may be linked. */
+  /**
+   * `true` when this surface form cannot identify an issuer on its own and needs corroboration.
+   *
+   * **Every one-word surface is ambiguous**, whatever the word is. That is the whole rule for
+   * single tokens: not "every word on a list", which is an enumeration precision may not rest on
+   * (see {@link AMBIGUOUS_WORDS}), but every word there is. A multi-token surface is ambiguous only
+   * when data ops have said so — {@link AMBIGUOUS_WORDS} plus
+   * {@link BuildNewsDictOptions.extraAmbiguousWords}.
+   *
+   * The input is folded first (`core/text/normName.ts`), so `'Apple Inc.'` is two tokens and
+   * `' apple '` is one; the caller may pass a raw surface or a normalised key.
+   */
   isAmbiguous(surface: string): boolean;
   /** The issuer a normalised surface form names, by exact name then alias. `null` when none. */
   lookupName(surface: string): { issuerId: number; method: 'name_exact' | 'name_alias' } | null;
@@ -111,18 +125,26 @@ export interface BuildNewsDictOptions {
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 
 /**
- * English words, financial abbreviations and country codes that are also live US tickers or
- * issuer names. Each entry is a real collision: `ALL` (Allstate), `KEY` (KeyCorp), `GAP` (The Gap),
+ * English words, financial abbreviations and country codes that are also live US tickers or issuer
+ * names. Each entry is a real collision: `ALL` (Allstate), `KEY` (KeyCorp), `GAP` (The Gap),
  * `ON` (ON Semiconductor), `IT` (Gartner), `CAT` (Caterpillar), `SO` (Southern Company),
  * `LOW` (Lowe's), `ALLY` (Ally Financial), `WELL` (Welltower), `PLAY` (Dave & Buster's),
  * `FAST` (Fastenal), `OPEN` (Opendoor), `HOOD` (Robinhood), `RUN` (Sunrun), `SAVE` (Spirit),
  * `CAR` (Avis), `TRIP` (TripAdvisor), `EAT` (Brinker), `WOOF` (Petco), `FUN` (Cedar Fair).
  *
- * PROVIDERS §11.3.1 sizes the list at ~400 entries; this is the working set that the recorded
- * Bloomberg and SEC feeds actually collide with, and data ops extends it through
- * `BuildNewsDictOptions.extraAmbiguousWords` as new collisions are found in the 50-link daily
- * sample (§11.3.5). Everything here is upper-case and single-token, which is the only form the
- * ×0.90 modifier is applied to.
+ * **This list is no longer what makes the matcher precise, and it never could have been.** It was:
+ * a single-token `name_exact` scored 0.95 × 0.95 = 0.9025 and was written unless the word appeared
+ * here, so precision held only for the 253 words somebody had thought of. `TARGET`, `BLOCK`,
+ * `MATCH`, `SQUARE`, `SHELL`, `TOTAL`, `BUDGET`, `OUTLOOK`, `UNITY` and `CARVANA` are ordinary
+ * English words that are also issuer names and are on no list here — and on the recorded feeds that
+ * filed *"Sri Lanka's Growth Misses Forecast"* under Outlook Group Corp, because its summary says
+ * "clouding the outlook". An enumeration whose incompleteness costs *precision* is not a
+ * mechanism; there are more English words than anyone will enumerate. So the rule became
+ * structural — {@link NewsDictionary.isAmbiguous} calls **every** one-word surface ambiguous — and
+ * what is left here is curation: a record of the collisions the recorded feeds contain, a lever for
+ * data ops to mark a *multi-token* phrase ambiguous through
+ * {@link BuildNewsDictOptions.extraAmbiguousWords} (§11.3.5's 50-link daily sample), and a set the
+ * single-token rule now subsumes entirely. Its incompleteness costs recall, never precision.
  */
 export const AMBIGUOUS_WORDS: readonly string[] = Object.freeze([
   // Live tickers that are ordinary words.
@@ -544,7 +566,12 @@ export async function buildNewsDict(
     ambiguousWords,
     stats,
     isAmbiguous(surface: string): boolean {
-      return ambiguousWords.has(surface.trim().toUpperCase());
+      const folded = foldName(surface);
+      if (folded.length === 0) return false;
+      // One word is never enough on its own — whatever the word is. The list below it only ever
+      // adds multi-token phrases data ops have flagged.
+      if (!folded.includes(' ')) return true;
+      return ambiguousWords.has(folded);
     },
     lookupName(surface: string) {
       const key = normName(surface);

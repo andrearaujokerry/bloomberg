@@ -232,6 +232,9 @@ const CONTRACT_FUNCTIONS: readonly string[] = [
   'fire_alert',
   'alert_fired_on',
   'saved_search_query',
+  // 0018 — the anchor 0017 added was writable by the role the server connects as, which made it
+  // no anchor at all. This keeps it monotonic for every role, the owner included.
+  'rooms_anchor_guard',
 ];
 
 // ── CONTRACTS §1.3 — the six `*_now` views ────────────────────────────────────────────────────
@@ -293,6 +296,9 @@ const CONTRACT_TRIGGERS: Readonly<Record<string, string>> = {
   // one runs ahead of `ON CONFLICT DO NOTHING`: anchoring there would advance `rooms.last_seq`
   // for the losing half of an idempotent retry, a row that is then discarded.
   messages_anchor_trg: 'messages_anchor',
+  // 0018 §18.b. Column privileges keep terminal_app off `rooms.last_seq` / `last_hash`; this is
+  // the defence in depth against the owner role, in the shape 15.d uses for the WORM tables.
+  rooms_anchor_guard_trg: 'rooms_anchor_guard',
 };
 
 /**
@@ -409,10 +415,10 @@ async function names(sql: string, params: readonly unknown[] = []): Promise<stri
 }
 
 describe('migrations apply to an empty database', () => {
-  it('applies the seventeen migration files in name order', () => {
-    expect(applied).toHaveLength(17);
+  it('applies the eighteen migration files in name order', () => {
+    expect(applied).toHaveLength(18);
     expect(applied[0]).toBe('0001_extensions_enums.sql');
-    expect(applied.at(-1)).toBe('0017_messaging_alerts_integrity.sql');
+    expect(applied.at(-1)).toBe('0018_chain_anchor_immutable.sql');
     expect([...applied].sort()).toEqual(applied);
   });
 
@@ -535,7 +541,7 @@ describe('CONTRACTS §1.3 — triggers', () => {
         JOIN pg_class c ON c.oid = t.tgrelid
         JOIN pg_namespace n ON n.oid = c.relnamespace
        WHERE n.nspname = 'public' AND NOT t.tgisinternal`);
-    expect(Object.keys(CONTRACT_TRIGGERS)).toHaveLength(44);
+    expect(Object.keys(CONTRACT_TRIGGERS)).toHaveLength(45);
     expect(found.sort()).toEqual(Object.keys(CONTRACT_TRIGGERS).sort());
   });
 

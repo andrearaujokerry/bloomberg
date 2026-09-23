@@ -44,6 +44,32 @@ export function updatingGoldens(): boolean {
 }
 
 /**
+ * Replace a sequence-allocated id inside a **subject** string (`q:42`, `l:7`, `b1m:42`,
+ * `n:topic:12`, `room:3`) and leave every other string exactly as it was served.
+ *
+ * A payload carries an id in two places: as a number, which the caller's `JSON.stringify` replacer
+ * tokenises directly, and as the tail of a subject. Every one of these tests used to substitute
+ * *anywhere in any string* — `value.split(String(id)).join(token)` — which makes the golden a
+ * function of the database's sequence state rather than of the payload. Two runs that changed
+ * nothing failed on it: a watchlist id of 41 rewrote the frozen `asOf` as
+ * `2026-09-15T18:<WATCHLIST>:28.000Z`, and a topic id of 202 rewrote the year as `<TOPIC14>6`. The
+ * ids grow with every run, so the failure arrives, leaves and returns on its own.
+ *
+ * A digit-boundary rule is not enough — `18:41:28` has a colon on each side of the 41 — so the test
+ * is the subject *shape* instead: one or more lowercase families, each followed by `:`, then the id
+ * and nothing else.
+ *
+ * A payload that quotes an id somewhere else (MSG's message bodies, `W 41` and `portfolio #7`) needs
+ * a normaliser of its own and must not use this one.
+ */
+export function subjectToken(value: string, tokens: ReadonlyMap<number, string>): string {
+  const match = /^((?:[a-z][a-z0-9_]*:)+)(\d+)$/.exec(value);
+  if (match === null) return value;
+  const token = tokens.get(Number(match[2]));
+  return token === undefined ? value : `${match[1] ?? ''}${token}`;
+}
+
+/**
  * Assert `actual` against the golden named `name` (`'Q.quote.json'`), or write it when
  * `UPDATE_GOLDENS` is set.
  *

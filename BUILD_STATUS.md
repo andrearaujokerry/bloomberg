@@ -18,49 +18,87 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-09 | Tier 1 functions, news, messaging, alerts | merged, with open defects below |
 | WP-10 … WP-15 | Tier 2/3 screens, SDK client, web shell, seed and verification | not started |
 
-3,631 tests across 176 files.
+3,643 tests across 176 files.
 
 The suite runs with no network access: the replay store is a wall, and a fixture miss throws rather
 than falling through to a provider (FEED-08, QA-02).
 
 ## Open issues
 
-### WP-09 shipped with 24 audit findings unapplied, 6 of them blockers
+### WP-09's audit findings — applied, and a correction to what this file said
 
-The WP-09 integration round stalled on all six attempts and never applied the adversarial auditors'
-findings. The package is green and complete as built; these are defects the audit *found* and nobody
-has yet fixed. They are listed here rather than in a commit message because they are work, not
-history. Fix the blockers before this terminal handles a real message or a real news feed.
+WP-09's integration round stalled and never applied the adversarial auditors' findings, so this file
+listed all 24 as open. **That was wrong, and wrong in a way worth recording.** The findings were
+transcribed here from the audit without checking them against the code, and the audit had run
+against an earlier state of the tree: the construction agents had already fixed most of the cluster
+in migration `0017`. Three independent passes over the code found the same thing. A resume document
+that overstates the damage is no more useful than one that hides it — check findings against HEAD
+before writing them down.
 
-**Messaging and tenancy (the serious cluster).**
+What was genuinely open, and is now fixed, is below. Two things stand out. The chain anchor was not
+an anchor: the columns were writable by the role the server connects as, so a room's own creator
+could rewrite the messages and re-point the anchor to match. And the payload guard worked but had
+**no test at all**, while its own docstring described the weaker contract to the resolver authors who
+read it — so it would have decayed silently.
 
-| Where | Defect |
+**Messaging and tenancy — applied.** Migrations `0017_messaging_alerts_integrity.sql` and
+`0018_chain_anchor_immutable.sql` carry the database half; `messaging/service.ts`,
+`messaging/surveillance.ts`, `http/routes/messages.ts`, `alerts/engine.ts` and `index.ts` the rest.
+Every assertion that claims a policy holds now runs as `terminal_app` (`asAppRole`), because the
+migration owner is a superuser locally and bypasses RLS — the suite missed most of this cluster for
+exactly that reason.
+
+| Where | What it does now |
 | --- | --- |
-| `messaging/service.ts` | `createRoom` is broken under the role the server actually connects as: the row it returns is not visible to the members policy because the creator is not a member yet. |
-| `messaging/service.ts` | MSG-02 surveillance records nothing in production. The scan runs in the sender's transaction where `app.role` is `user`, the policy refuses the insert, and the savepoint rolls it back silently. |
-| migration `0015` | `surveillance_hits_compliance` and `message_reviews` policies have no firm scoping, so any compliance user at any firm reads every firm's flagged message text. |
-| migration `0015` | `room_members_visible` has a vacuous `WITH CHECK`, so any authenticated principal can insert their own membership row into any room. |
-| `messaging/service.ts` | The hash chain is not anchored. Editing a message and recomputing the suffix verifies clean, and a room can be rewritten from seq 1. Needs `rooms.last_seq`/`last_hash` or an append-only anchor table. |
-| migration `0015` + `service.ts` | The chain digest omits `structured`, `sender_firm_id`, `client_msg_id` and `trace_id`, so a stored order can be rewritten without breaking the hash. |
-| `alerts/engine.ts` | `criteriaFor()` reads a saved search with no owner predicate, on the handle that bypasses per-user visibility. |
-| `alerts/engine.ts` | The engine is never constructed outside tests, so NEWS-07 alerts never fire in a running server. |
+| `0017` §17.b | `rooms_member` admits `created_by = app_user_id()`, so `INSERT INTO rooms … RETURNING` satisfies its own policy and `POST /rooms` stops 500ing wherever RLS applies. |
+| `0017` §17.e + `surveillance.ts` | Hits are written through `record_surveillance_hit`, a SECURITY DEFINER *writer* (it cannot read the queue), so the scan records from the sender's transaction without pretending to be compliance. |
+| `0017` §17.d | `surveillance_hits` and `message_reviews` are scoped through the message's room (`room_has_firm`), so a firm reads only queues for rooms its own people are in. |
+| `0017` §17.c | `room_members`' `WITH CHECK` is `can_seat_room_member`: a steward of the room, or the creator taking the first seat in an empty one. A self-join by row insertion is refused. |
+| `0017` §17.g + `0018` | `rooms.last_seq`/`last_hash` anchor the chain. `0018` is what makes them an anchor: `terminal_app` loses UPDATE on those two columns and a trigger refuses a decrease or a re-point at a seq the room already holds — until it landed, the room's own creator could restate the anchor and re-verify a forged room. |
+| `0017` §17.f + `service.ts` | `digest_version 2` covers `structured`, `sender_firm_id` and `client_msg_id`; `verifyChain` picks the expression by the row's own version, so rows written under version 1 keep verifying. `trace_id` is deliberately outside the digest — it is transport metadata, not content. |
+| `0017` §17.h + `engine.ts` | `saved_search_query` takes the alert owner, so an alert cannot name another user's saved search; `armed_alerts`/`fire_alert`/`alert_fired_on` give the fan-out a read path and a writer without a blanket bypass. |
+| `index.ts` | `attachAlertEngine` runs against plant deltas and a calendar tick, and `onNews`/`onFiling` are the entry points the news job takes as `ctx.alerts`. Nothing passes it one yet: the scheduler is startup step 8 and has not landed. |
 
-**News precision (NEWS-02).**
+**News precision (NEWS-02) — applied.** Ambiguity is decided structurally instead of by
+enumeration: `NewsDictionary.isAmbiguous` calls **every one-word surface** ambiguous, whatever the
+word is, and an ambiguous match with nothing corroborating it is refused rather than discounted.
+The 253-word list stays as curation for multi-token phrases and as a record of real collisions —
+its incompleteness now costs recall, never precision.
 
-| Where | Defect |
+| Where | What it does now |
 | --- | --- |
-| `refdata/newsDict.ts` | Precision is carried by an enumerated list of 253 ambiguous words. Any issuer whose name is an ordinary English word outside that list scores 0.9025 and is written. |
-| `news/entityLink.ts` | The floor test is `confidence < 0.9`, so a value landing exactly on 0.9 passes. An ambiguous bare-paren ticker scores exactly that. |
+| `refdata/newsDict.ts` | `isAmbiguous` folds the surface and returns `true` for anything of one token; the word list is consulted only for two tokens or more. The hole it closes is not the bare word (already refused) but the *key*: `normName` strips `THE`, `GROUP`, `HOLDINGS`, `INC`, so the two-token prose runs `THE OUTLOOK` and `RADIANT WORLD GROUP` reached one-token keys and took neither the single-token modifier nor the word list. On the recorded feeds that filed two stories under `Outlook Group Corp` at 0.9215. |
+| `news/entityLink.ts` | The ×0.90 modifier is applied as the refusal it arithmetically is (`base × 0.90 < 0.90` for every base under 1.00, and *on* the floor for base 1.00 — so as a discount it could never refuse the one surface it exists for). Corroboration is named and closed: a second method naming the issuer, an exchange qualifier on a ticker mark, a corporate legal form on a name (`CORPORATE_FORMS` — `INC`/`PLC`/`LTD`, deliberately not `GROUP`/`HOLDINGS`/`CO`/`COMPANY`, which are ordinary English), or a key of two tokens or more. |
+| `news/entityLink.ts` | `matchTickers` no longer sets `singleToken: false` for every mark: an unqualified `(XYZ)` is one ambiguous token like any other and needs corroboration, while `$AAPL`, `(AAPL US)` and `AAPL:US` are self-corroborating and keep the full 1.00. `$ALL` links now and did not before — the mark decides, not the word list. |
+| `news/entityLink.ts` | The floor is **decided**, documented in the file header and asserted on both sides: inclusive at 0.900, and evaluated in `real` through `clearsFloor()` so the TypeScript gate, the `INSERT` guard and `functions/NI`'s read-back are one statement. Nothing can *arrive* at 0.900 by discount any more; only a base of 0.90 with no penalty lands there. |
+| `test/integration/news/entityLink.test.ts` | Five adversarial cases that fail against the old matcher, on the recorded corpus where possible: the ordinary-word issuer in ordinary prose (`Outlook Group Corp` ×2 recorded stories), the same name corroborated by a form, a ticker or a CIK, the unqualified-vs-qualified ticker pair, and the exactly-0.900 alias beside the 0.873 below it. The minimum-confidence property over every written link still holds. |
 
-**Payload honesty (DATA-10).**
+Recall cost, measured over the 160 recorded stories against a 58-issuer universe drawn from them:
+207 links → 204. The three lost are two wrong (`Outlook Group Corp`, from "clouding the outlook")
+and one right (`Carlyle Group`, whose only surface was "Carlyle Co-President" — a hyphen folded to
+a space, which `CO` would have had to admit to keep). Every other link is unchanged, confidence for
+confidence.
 
-| Where | Defect |
+**Payload honesty (DATA-10) — applied.** `assertPayloadMeta` now judges each cell as well as the
+payload. The aggregate rule (a payload holding a number while nothing at all was cited) is joined by
+a per-cell rule: the walk recognises a `ValueCell` by shape — `{ v, st, … }` with `st` a
+`ValueState` — wherever it sits, and refuses one whose `v` is a finite number and whose `provIdx` is
+not an integer `>= 0`. `provIdx: -1` stays what FUNCTIONS_TIER1 §0.4 rule 1 reserves it for: a
+pending or denied cell, whose `v` is null. Both rules follow `strictVariant` — throw in dev and
+test, warn in production — and `test/unit/functions/runner.test.ts` pins the per-cell rule in both
+directions, including the case the aggregate rule cannot judge (a payload that cites *something*).
+
+| Where | What it does now |
 | --- | --- |
-| `functions/runner.ts` | `assertPayloadMeta` does not enforce what WP-09 was told it enforces: one citation anywhere excuses every number in the payload. It never checks a cell's own `provIdx`. |
-| `functions/Q/resolve.ts` | `lineCells()` hard-codes `provIdx: -1` on every per-line cell, including cells carrying a real price whose provenance is known twelve lines later. |
-| `functions/GIP/resolve.ts` | `vwap` is a bare `number[]` with nowhere to put a citation; 311 prices ship uncited. |
-| `functions/GP/resolve.ts` | Chart reference lines have no `provIdx` field at all. |
-| `core/fields/defs/analytic.ts` | The `RET_*` dictionary entries describe total return while the resolvers compute price return. One of the two documents is wrong and neither has been corrected. |
+| `functions/runner.ts` | Per-cell rule beside the aggregate one, so one citation no longer excuses every other number in the payload. |
+| `functions/Q/resolve.ts` | The line's citation is computed before `lineCells()` and passed in; `-1` survives only on the pending and denied branches. |
+| `functions/GIP/resolve.ts` | `vwapProvIdx` carries the bar block's idx beside the `vwap` series (`-1` only when there is no series). |
+| `functions/GP/resolve.ts` | `reference[]` carries `provIdx`: the strike cites `option_terms`, the last yield its own series, the prev close the plant cell that already held one. |
+| `core/fields/defs/analytic.ts` | `RET_*` and `VOL_*` say what the code computes — simple returns on the split-adjusted (`price`) close series — and the file header records the direction the conflict was reconciled in and why. |
+
+A bare series (`number[]`) is out of reach of a shape walk and is cited at block level instead
+(`GpSeries.provIdx`, `GipPayload.vwapProvIdx`); that is a convention a reviewer checks, not something
+the guard proves.
 
 **Goldens.** The Tier 1 goldens are hand-seeded rather than derived from the recorded captures, and
 three hand-typed values contradict their capture outright. `HP.series`, `HELP.default` and
@@ -104,10 +142,11 @@ fixture manifest must never be written there, or `GET /functions` serves it. Tes
 manifest build one with `defineFunction()` inside the test file, as WP-08's do.
 
 `runner.ts` holds two guards for resolver authors: `assertPayloadMeta` refuses a payload carrying a
-number with no provenance or a null with no `meta.unavailable` entry (DATA-10), and
-`assertProvenanceExists` refuses a citation to a `provenance` row that is not there. Both throw in
-dev and test and warn in production. **The first is weaker than it looks — see the payload-honesty
-row in the WP-09 findings above.**
+cell whose number cites no provenance — per cell, not per payload — or a null with no
+`meta.unavailable` entry (DATA-10), and `assertProvenanceExists` refuses a citation to a
+`provenance` row that is not there. Both throw in dev and test and warn in production. A resolver
+that leaves `provIdx: -1` on a cell holding a price fails its own tests, so the resolvers WP-10 and
+WP-11 add inherit the rule rather than the exception.
 
 ## Notes
 

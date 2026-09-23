@@ -37,7 +37,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, subjectToken } from './golden.js';
 
 import { FunctionRegistry, toCsv } from '@terminal/core';
 import type { AssetClass, MarketSector, NormalisedUpdate, QuoteFields } from '@terminal/core';
@@ -926,11 +926,9 @@ function normalise(payload: GpPayload): unknown {
       if (key === 'annotationId') return '<annotationId>';
       if (key === 'ownerUserId') return '<ownerUserId>';
       if (typeof value === 'number' && ids.has(value)) return ids.get(value);
-      if (typeof value === 'string') {
-        let out = value;
-        for (const [id, token] of ids) out = out.split(String(id)).join(token);
-        return out;
-      }
+      // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
+      // made the golden a function of the sequence values this run drew.
+      if (typeof value === 'string') return subjectToken(value, ids);
       return value;
     }),
   );

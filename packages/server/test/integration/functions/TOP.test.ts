@@ -23,7 +23,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, subjectToken } from './golden.js';
 
 import { FunctionRegistry } from '@terminal/core';
 import { TOP } from '@terminal/core/functions/manifests/TOP';
@@ -368,18 +368,11 @@ function normalise(payload: TopPayload): unknown {
   return JSON.parse(
     JSON.stringify(payload, (_key, value: unknown) => {
       if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
-      if (typeof value === 'string') {
-        // Whole numbers only. A bare `split(String(id))` also rewrites a digit run *inside* another
-        // number — a topic id of 390026 turns an EDGAR accession path into
-        // `.../000121<TOPIC6>26100070/index.htm` — so which ids the sequence happened to hand out
-        // decided what the golden said. A subject (`n:topic:12`) is a whole number in its string;
-        // an accession number is not.
-        let out = value;
-        for (const [id, token] of tokens) {
-          out = out.replace(new RegExp(`(?<!\\d)${String(id)}(?!\\d)`, 'g'), token);
-        }
-        return out;
-      }
+      // Subjects only (`n:topic:12`), through `subjectToken`. Substituting a bare digit run
+      // anywhere in any string let the ids the sequence happened to hand out decide what the golden
+      // said: inside an EDGAR accession path, and — a boundary rule does not help — inside the
+      // colon-separated fields of a timestamp.
+      if (typeof value === 'string') return subjectToken(value, tokens);
       return value;
     }),
   );

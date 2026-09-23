@@ -18,7 +18,7 @@
 import { randomUUID } from 'node:crypto';
 
 import { sql as sqlTag } from 'drizzle-orm';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { messagingService, type MessagingService } from '../../../src/messaging/service.js';
 import { surveillanceScanner } from '../../../src/messaging/surveillance.js';
@@ -433,6 +433,142 @@ describe('MSG-02 — WORM', () => {
     expect(verdict.checked).toBeLessThan(4);
   });
 
+  // ── the anchor's own integrity (migration 0018) ─────────────────────────────────────────────
+  //
+  // The two tests above lean entirely on `rooms.last_seq` / `rooms.last_hash` disagreeing with a
+  // rewritten `messages`. That is only worth anything if the attacker cannot restate the anchor
+  // as well — and until 0018 they could, without owner rights, without DDL, from the ordinary
+  // application role, because 15.b grants table-level UPDATE on `rooms` and `rooms_member`'s
+  // WITH CHECK admits the room's own creator.
+
+  it('refuses terminal_app every write to the chain anchor, and only to the anchor', async () => {
+    const { service, alice, roomId } = await harness();
+    for (const body of ['one', 'two']) {
+      await service.send({ roomId, senderUserId: alice.userId, body, clientMsgId: randomUUID() });
+    }
+    await asUser(t, alice.userId, alice.firmId);
+
+    const attack = async (statement: string): Promise<unknown> =>
+      t
+        .savepoint(async () => {
+          await asAppRole(t);
+          await t.client.query(statement, [roomId]);
+        })
+        .then(
+          () => null,
+          (err: unknown) => err,
+        );
+
+    // Reset it, so a room rewritten from seq 1 re-anchors at the forged head…
+    const backwards = await attack(
+      `UPDATE rooms SET last_seq = 0, last_hash = NULL WHERE room_id = $1`,
+    );
+    expect(sqlstate(backwards)).toBe('42501');
+    expect(pgMessage(backwards)).toContain('rooms');
+
+    // …or move it forward to whatever a re-hashed suffix now ends with.
+    const forwards = await attack(
+      `UPDATE rooms SET last_seq = 9, last_hash = digest('forged', 'sha256') WHERE room_id = $1`,
+    );
+    expect(sqlstate(forwards)).toBe('42501');
+
+    // The revoke is narrowed to the two anchor columns, not a blanket one: `setRetentionDays`
+    // writes this table on the request path and must keep working as terminal_app.
+    await t.savepoint(async () => {
+      await asAppRole(t);
+      await t.client.query(`UPDATE rooms SET retention_days = 3000 WHERE room_id = $1`, [roomId]);
+      const raised = await t.client.query<{ retention_days: number }>(
+        `SELECT retention_days FROM rooms WHERE room_id = $1`,
+        [roomId],
+      );
+      expect(raised.rows[0]!.retention_days).toBe(3000);
+    });
+
+    // The anchor still says what the trigger wrote, and the room still verifies.
+    await t.client.query('RESET ROLE');
+    const anchor = await t.client.query<{ last_seq: string }>(
+      `SELECT last_seq::text AS last_seq FROM rooms WHERE room_id = $1`,
+      [roomId],
+    );
+    expect(anchor.rows[0]!.last_seq).toBe('2');
+    expect(await service.verifyChain(roomId)).toEqual({ ok: true, checked: 2 });
+  });
+
+  it('refuses an anchor moved backwards or re-pointed at a seq the room already holds', async () => {
+    const { service, alice, roomId } = await harness();
+    for (const body of ['one', 'two', 'three', 'four']) {
+      await service.send({ roomId, senderUserId: alice.userId, body, clientMsgId: randomUUID() });
+    }
+    expect(await service.verifyChain(roomId)).toEqual({ ok: true, checked: 4 });
+
+    // The whole attack, by an adversary who holds owner rights and can therefore turn off the
+    // triggers on `messages`: edit seq 2, recompute seq 2..4 with the trigger's own expression —
+    // and then try to make the anchor agree, which is the step that decides whether any of the
+    // rest of it works.
+    await t.client.query(`ALTER TABLE messages DISABLE TRIGGER USER`);
+    await t.client.query(
+      `UPDATE messages SET body = 'I never said that' WHERE room_id = $1 AND seq = 2`,
+      [roomId],
+    );
+    for (const seq of [2, 3, 4]) {
+      await t.client.query(
+        `UPDATE messages m
+            SET prev_hash = p.hash,
+                hash = digest(coalesce(p.hash, '\\x'::bytea)
+                       || convert_to(m.room_id::text || '|' || m.seq::text || '|'
+                                     || m.sender_user_id::text || '|'
+                                     || to_char(m.sent_at AT TIME ZONE 'UTC',
+                                                'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') || '|'
+                                     || m.body || '|' || m.attachments::text || '|'
+                                     || coalesce(m.structured::text, '') || '|'
+                                     || m.sender_firm_id::text || '|'
+                                     || m.client_msg_id::text, 'UTF8'), 'sha256')
+           FROM messages p
+          WHERE m.room_id = $1 AND m.seq = $2 AND p.room_id = m.room_id AND p.seq = m.seq - 1`,
+        [roomId, seq],
+      );
+    }
+    await t.client.query(`ALTER TABLE messages ENABLE TRIGGER USER`);
+
+    // `rooms_anchor_guard_trg` is not on `messages`, so disabling that table's triggers does not
+    // reach it. Re-pointing seq 4 at the forged head raises, as does winding the anchor back so a
+    // fresh `anchor_room_chain` would accept the forgery.
+    const repoint = await t
+      .savepoint(() =>
+        t.client.query(
+          `UPDATE rooms r
+              SET last_hash = (SELECT hash FROM messages WHERE room_id = $1 AND seq = 4)
+            WHERE r.room_id = $1`,
+          [roomId],
+        ),
+      )
+      .then(
+        () => null,
+        (err: unknown) => err,
+      );
+    expect(sqlstate(repoint)).toBe('23000');
+    expect(pgMessage(repoint)).toContain('re-pointed');
+
+    const rewind = await t
+      .savepoint(() =>
+        t.client.query(`UPDATE rooms SET last_seq = 0, last_hash = NULL WHERE room_id = $1`, [
+          roomId,
+        ]),
+      )
+      .then(
+        () => null,
+        (err: unknown) => err,
+      );
+    expect(sqlstate(rewind)).toBe('23000');
+    expect(pgMessage(rewind)).toContain('backwards');
+
+    // So the anchor still names the head the chain trigger wrote, and the forgery stands out.
+    const verdict = await service.verifyChain(roomId);
+    expect(verdict.ok).toBe(false);
+    expect(verdict.firstBadSeq).toBe(4);
+    expect(verdict.detail).toContain('anchored');
+  });
+
   it('covers the MSG-06 structured block, the sending firm and the client id', async () => {
     const { service, alice, roomId } = await harness();
     await service.send({
@@ -487,13 +623,17 @@ describe('MSG-02 — WORM', () => {
       [roomId],
     );
     // The anchor is monotonic and already holds seq 1, so `anchor_room_chain` would refuse to move
-    // it. An archive migrated from the version-1 digest has its anchor rewritten by that
-    // migration, which is what this models.
+    // it and `rooms_anchor_guard_trg` (0018 §18.b) refuses to let anything else re-point it at a
+    // seq the room already holds. An archive migrated from the version-1 digest has its anchor
+    // rewritten by that migration, with the guard disabled for the duration — a conspicuous act in
+    // a migration file, which is exactly the point — and that is what this models.
+    await t.client.query(`ALTER TABLE rooms DISABLE TRIGGER rooms_anchor_guard_trg`);
     await t.client.query(
       `UPDATE rooms SET last_hash = (SELECT hash FROM messages WHERE room_id = $1 AND seq = 1)
         WHERE room_id = $1`,
       [roomId],
     );
+    await t.client.query(`ALTER TABLE rooms ENABLE TRIGGER rooms_anchor_guard_trg`);
     await t.client.query(`ALTER TABLE messages ENABLE TRIGGER USER`);
 
     expect(await service.verifyChain(roomId)).toEqual({ ok: true, checked: 1 });
@@ -723,6 +863,62 @@ describe('MSG-02 — lexicon surveillance', () => {
     const page = await service.history(room.roomId, { limit: 10 });
     expect(page.items.map((m) => m.body)).toEqual(['this must survive a failing scan']);
     expect(await service.verifyChain(room.roomId)).toEqual({ ok: true, checked: 1 });
+  });
+
+  it('announces a supervision gap even when the caller wires no onError', async () => {
+    // This is the seam MSG-02 actually failed at. The savepoint above is correct and the message
+    // must survive — but `http/routes/messages.ts` composed the service without `onError`, so the
+    // report went to a no-op default and a scan refused on every send in every deployment
+    // produced not one line anywhere. A supervision gap may be tolerated; it may not be silent.
+    const written: string[] = [];
+    const spy = vi.spyOn(process.stderr, 'write').mockImplementation((chunk): boolean => {
+      written.push(String(chunk));
+      return true;
+    });
+
+    try {
+      const clock = testClock(CLOCK_START);
+      const firmName = `Demo Capital ${randomUUID().slice(0, 6)}`;
+      const firmId = await createFirm(firmName);
+      const alice = await createUser(firmId, firmName, { desk: 'Equities PM' });
+
+      const service = messagingService({
+        db: t.db,
+        clock,
+        // No `onError`, exactly as the route factory composed it.
+        surveillance: {
+          scanMessage: async () => {
+            await t.db.execute(sqlTag`SELECT 1 / 0`);
+            return [];
+          },
+        },
+      });
+      await asUser(t, alice.userId, firmId);
+      const room = await service.createRoom({
+        kind: 'group',
+        name: 'Floor',
+        createdBy: alice.userId,
+        memberUserIds: [],
+        firmId,
+      });
+      const message = await service.send({
+        roomId: room.roomId,
+        senderUserId: alice.userId,
+        body: 'the scan fails and nobody was told',
+        clientMsgId: randomUUID(),
+      });
+
+      expect(message.seq).toBe(1);
+      const announced = written.filter((line) => line.includes('surveillance scan'));
+      expect(announced).toHaveLength(1);
+      // …and it carries the refusal, not drizzle's `Failed query:` wrapper. The regression this
+      // guards was a `42501` on `surveillance_hits`; a line that does not name the SQLSTATE is a
+      // line somebody has to reproduce before they can act on it.
+      expect(announced[0]).toContain('division by zero');
+      expect(announced[0]).toContain('[22012]');
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it('writes hits under the shipped compliance policy, as terminal_app', async () => {

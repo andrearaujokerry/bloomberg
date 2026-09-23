@@ -654,6 +654,49 @@ function parseStructured(input: unknown): StructuredMsg | null {
 // Dependencies
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 
+/**
+ * The default `onError`, and the reason it is not a no-op.
+ *
+ * MSG-02 shipped recording nothing, and the reason it went unnoticed for a whole work package is
+ * this seam rather than the RLS policy underneath it: the scan ran inside the sender's
+ * transaction, the INSERT was refused, {@link MessagingService.send}'s savepoint rolled it back so
+ * the message survived — and the error went to an `onError` that `http/routes/messages.ts` never
+ * passed. A refusal on every send in every deployment produced not one line anywhere. The
+ * compliance archive was empty and the server said so to nobody.
+ *
+ * So the default announces. A caller with a logger should still pass `onError` (the routes do, and
+ * a structured line with a request id is worth much more than this), but the floor is that a
+ * supervision gap is never *silent*, whoever composed the service and whatever they forgot. It is
+ * written to stderr rather than thrown, because the message is already durable in the WORM log by
+ * the time the scan runs and losing it to a failure in the thing that only watches it would be the
+ * worse trade.
+ */
+export function announceSupervisionGap(err: unknown, detail: string): void {
+  process.stderr.write(`${detail}: ${describeFailure(err)}\n`);
+}
+
+/**
+ * The innermost message and SQLSTATE of a failure, whatever wrapped it.
+ *
+ * A drizzle failure carries the driver error as `cause` and reports itself as `Failed query: …`,
+ * which names the statement and not the refusal. The line that matters here is the one that says
+ * `permission denied for table surveillance_hits [42501]` — a supervision gap announced without
+ * its SQLSTATE is a line somebody still has to reproduce before they can act on it.
+ */
+function describeFailure(err: unknown): string {
+  let current: unknown = err;
+  let message = typeof err === 'object' && err !== null ? 'unknown error' : String(err);
+  for (let depth = 0; depth < 5 && current !== null && typeof current === 'object'; depth += 1) {
+    const candidate = current as { message?: unknown; code?: unknown; cause?: unknown };
+    if (typeof candidate.message === 'string' && candidate.message !== '') {
+      message = candidate.message;
+    }
+    if (typeof candidate.code === 'string') return `${message} [${candidate.code}]`;
+    current = candidate.cause ?? null;
+  }
+  return message;
+}
+
 export interface MessagingDeps {
   /** The caller's transaction: RLS and the `app.*` context come with it. */
   db: Db | Tx;
@@ -676,7 +719,7 @@ export interface MessagingDeps {
 
 export function messagingService(deps: MessagingDeps): MessagingService {
   const db = deps.db;
-  const report = deps.onError ?? ((): void => undefined);
+  const report = deps.onError ?? announceSupervisionGap;
 
   /**
    * Run a side effect that is allowed to fail, inside a `SAVEPOINT`, so that a failure cannot take

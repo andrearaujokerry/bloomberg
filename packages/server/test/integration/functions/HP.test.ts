@@ -48,7 +48,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, subjectToken } from './golden.js';
 
 import { FunctionRegistry, toCsv } from '@terminal/core';
 import { XNAS } from '@terminal/core/calendars/nyse';
@@ -914,8 +914,11 @@ describe('HP — the series variant (FUNC-02)', () => {
       JSON.stringify(payload, (key: string, value: unknown) => {
         if (key === 'knownAt') return '<knownAt>';
         if (typeof value === 'number' && value === id) return '<CPI>';
+        // The series code is a fixture string and is replaced wherever it appears; the instrument
+        // id is a sequence value and is replaced in subject strings only (`subjectToken`), never in
+        // a timestamp that happens to contain its digits.
         if (typeof value === 'string') {
-          return value.split(String(id)).join('<CPI>').split(code).join('<SERIES_CODE>');
+          return subjectToken(value.split(code).join('<SERIES_CODE>'), new Map([[id, '<CPI>']]));
         }
         return value;
       }),
@@ -951,7 +954,7 @@ function normalise(payload: HpPricePayload): unknown {
       // records that there is exactly one line rather than which number this run drew.
       if (key === 'mdLineIds' && Array.isArray(value)) return `<${String(value.length)} md line(s)>`;
       if (typeof value === 'number' && value === id) return '<AAPL>';
-      if (typeof value === 'string') return value.split(String(id)).join('<AAPL>');
+      if (typeof value === 'string') return subjectToken(value, new Map([[id, '<AAPL>']]));
       return value;
     }),
   );

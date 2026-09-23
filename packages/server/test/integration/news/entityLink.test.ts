@@ -27,6 +27,16 @@
  * ×0.90 ambiguity modifier actually runs, because `GAP` is short enough that `MIN_NAME_LENGTH`
  * would have caught it even if the modifier were dead code.
  *
+ * **The ambiguous headline nobody enumerated is named too.** `GAP` and `WORLD` are on the
+ * dictionary's 253-word ambiguous list, so a matcher could pass both of those rows while still
+ * being wrong about every ordinary English word that is not on it. `Outlook Group Corp` is the
+ * control for that: a real issuer whose name is a real word, on no list, which the recorded feeds
+ * reach through `"clouding the outlook for the island nation's recovery"` — `normName` drops the
+ * leading article, `THE OUTLOOK` becomes the key `OUTLOOK`, and two stories about Sri Lanka's GDP
+ * and a Carlyle conference filed under a Wisconsin printing company at 0.9215. `Glencore Plc` and
+ * `Vodacom Group Ltd.` in the same run are the other side of it: those still link, because a
+ * corporate legal form is a second signal and `the` is not.
+ *
  * WP-15 owns the seed and it does not exist: every issuer, instrument, listing, identifier and topic
  * here is created inside this file's own rolled-back transaction, and nothing depends on a literal
  * instrument id.
@@ -36,10 +46,13 @@ import { describe, expect, it } from 'vitest';
 
 import { runNewsRss } from '../../../src/ingest/jobs/newsRss.js';
 import {
+  AMBIGUOUS_MODIFIER,
   BASE_CONFIDENCE,
+  clearsFloor,
   LINK_THRESHOLD,
   LINK_THRESHOLD_STORED,
   linkHeadline,
+  scoreLink,
 } from '../../../src/news/entityLink.js';
 import { buildNewsDict } from '../../../src/refdata/newsDict.js';
 import { identifierRepository } from '../../../src/refdata/identifiers.js';
@@ -86,6 +99,20 @@ const APPLE_HEADLINE_LIKE = 'Apple AirPods 5%';
  * two-token exact name, which is what a story that is actually about a company reads like.
  */
 const GM_HEADLINE_LIKE = 'GM to Offer Apple CarPlay%';
+/**
+ * bbg-rss-econ. Its summary ends "…clouding the outlook for the island nation's recovery", which
+ * reaches the key `OUTLOOK` through the two-token surface `THE OUTLOOK` and is nobody's idea of a
+ * story about a printing company.
+ */
+const OUTLOOK_HEADLINE_LIKE = 'Sri Lanka%Growth Misses Forecast%';
+/** bbg-rss-tech. The second one: "…and the outlook for credit with Ian Fujiyama…". */
+const OUTLOOK_HEADLINE_LIKE_2 = 'Inside Carlyle%Global Investment Conference%';
+/**
+ * bbg-rss-markets. Its summary opens "Glencore Plc accused Radiant World and associated
+ * companies…", so one story carries both sides of the rule: `GLENCORE PLC` links because `PLC` is
+ * a corporate form, and `RADIANT WORLD` does not because `WORLD` is one bare word.
+ */
+const GLENCORE_HEADLINE_LIKE = 'Glencore Faces $2 Billion Suit%';
 
 function context(t: TestDb): NewsJobContext {
   return { tx: t.db, clock, replay: store, log: {} };
@@ -169,6 +196,18 @@ async function seedIssuer(
   return { issuerId, instrumentId };
 }
 
+/**
+ * One `issuer_aliases` row — the `name_alias` path, whose base of 0.90 is the only way to land a
+ * candidate exactly on the floor without a single penalty being applied to it.
+ */
+async function seedAlias(t: TestDb, issuerId: number, alias: string): Promise<void> {
+  await t.client.query(
+    `INSERT INTO issuer_aliases (issuer_id, alias, kind) VALUES ($1, $2, 'brand')
+       ON CONFLICT (issuer_id, alias) DO NOTHING`,
+    [issuerId, alias],
+  );
+}
+
 /** The feed topics §11.3.2 matcher 5 needs, created idempotently. */
 async function seedTopics(t: TestDb): Promise<void> {
   const codes: [string, string][] = [
@@ -247,6 +286,11 @@ describe('entity linking is precision-first over the recorded stories', () => {
     const aerkomm = await seedIssuer(t, { name: 'Aerkomm Inc', cik: AERKOMM_CIK });
     const gap = await seedIssuer(t, { name: 'The Gap Inc', ticker: 'GPS' });
     const world = await seedIssuer(t, { name: 'World Holdings Inc', ticker: 'WRLD' });
+    // Real issuers whose whole name is an ordinary English word, on no ambiguous-word list.
+    const outlook = await seedIssuer(t, { name: 'Outlook Group Corp', ticker: 'OUTL' });
+    const budget = await seedIssuer(t, { name: 'Budget Group Inc', ticker: 'BD' });
+    // …and one whose name is not a word, to keep the run's true positives in the picture.
+    const glencore = await seedIssuer(t, { name: 'Glencore plc', ticker: 'GLEN' });
 
     const run = await runNewsRss(context(t));
     expect(run.errors).toEqual([]);
@@ -312,6 +356,43 @@ describe('entity linking is precision-first over the recorded stories', () => {
     expect(appleStory.headline).toContain('AirPods');
     expect(links.filter((l) => Number(l.news_id) === appleStory.newsId && l.method !== 'feed_topic'))
       .toEqual([]);
+
+    // ── 4b · an ordinary English word that is NOT on the 253-word list ──────────────────────
+    //
+    // This is the case the enumeration could never have covered, and it is not hypothetical: with
+    // the word list carrying precision, these two recorded stories — Sri Lanka's GDP and a Carlyle
+    // conference — were filed under `Outlook Group Corp` at 0.9215 each, because their summaries
+    // say "clouding the outlook" and "the outlook for credit". `normName` drops the leading
+    // article, so the two-token surface `THE OUTLOOK` normalises to the one-token key `OUTLOOK`,
+    // which took neither the single-token modifier (the surface is two tokens) nor the ambiguity
+    // modifier (the word is on no list). Ambiguity decided on the key, structurally, is what
+    // refuses them.
+    const outlookStory = await headlineRow(t, OUTLOOK_HEADLINE_LIKE);
+    const outlookStory2 = await headlineRow(t, OUTLOOK_HEADLINE_LIKE_2);
+    expect(outlookStory.summary).toContain('the outlook');
+    expect(outlookStory2.summary).toContain('the outlook');
+    expect(links.filter((l) => Number(l.entity_id) === outlook.issuerId)).toEqual([]);
+    expect(links.filter((l) => Number(l.entity_id) === outlook.instrumentId)).toEqual([]);
+    // The bare-word form of the same class, for good measure: "UK Budget to Be Based on a Single
+    // Set of Economic Forecasts" names a real issuer and no part of that story is about it.
+    expect(links.filter((l) => Number(l.entity_id) === budget.issuerId)).toEqual([]);
+
+    // ── 4c · …and the story that IS about a company still links ─────────────────────────────
+    //
+    // Same story as the `Radiant World` case above — "Glencore Plc accused Radiant World and
+    // associated companies of sending falsified invoices" — so the two halves of the rule are
+    // decided on one recorded sentence. `GLENCORE PLC` is a one-token key too; what separates it
+    // from `THE OUTLOOK` and `RADIANT WORLD` is the corporate form the writer put there.
+    const glencoreStory = await headlineRow(t, GLENCORE_HEADLINE_LIKE);
+    expect(glencoreStory.summary).toContain('Glencore Plc');
+    const glencoreLink = links.find(
+      (l) =>
+        Number(l.news_id) === glencoreStory.newsId && Number(l.entity_id) === glencore.issuerId,
+    );
+    expect(glencoreLink).toBeDefined();
+    expect(glencoreLink!.method).toBe('name_exact');
+    // 0.95 (name_exact) × 0.97 (summary only). No ambiguity penalty: `Plc` is the second signal.
+    expect(Math.round(glencoreLink!.confidence * 1e4) / 1e4).toBe(0.9215);
 
     // ── 5 · the control: a two-token exact name in a story that IS about that company ───────
     //
@@ -390,6 +471,14 @@ describe('linkHeadline, the pure matcher, against the run dictionary', () => {
     expect(dict.names.get('WORLD')).toBe(world.issuerId);
     expect(dict.names.get('APPLE')).toBe(apple.issuerId);
     expect(dict.isAmbiguous('WORLD')).toBe(true);
+    // The contract that replaced the list: ambiguity is a property of the shape of the surface,
+    // not of its membership of anything. One word needs corroboration whatever the word is —
+    // `APPLE` is on no list and is ambiguous; `TARGET` is on no list and is ambiguous; a surface
+    // of two tokens is not, unless data ops have said otherwise.
+    expect(dict.isAmbiguous('APPLE')).toBe(true);
+    expect(dict.isAmbiguous('TARGET')).toBe(true);
+    expect(dict.isAmbiguous('Apple Inc.')).toBe(false);
+    expect(dict.isAmbiguous('APPLE HOSPITALITY')).toBe(false);
 
     const base = { summary: null, cik: null, items8k: null, feed: 'markets' as const };
 
@@ -489,6 +578,229 @@ describe('linkHeadline, the pure matcher, against the run dictionary', () => {
     );
     expect(qualified.map((c) => c.method)).toContain('ticker_exact');
     expect(qualified.every((c) => c.confidence >= LINK_THRESHOLD)).toBe(true);
+  });
+
+  /**
+   * The mechanism, stated as the four things that corroborate and the one thing that does not.
+   *
+   * Every headline here scores 0.95 (`name_exact`, in the headline, surface of two tokens so no
+   * single-token modifier) under an enumerated ambiguous-word list, because not one of `TARGET`,
+   * `BLOCK`, `SHELL`, `SQUARE` or `OUTLOOK` is on the 253-entry list — and is written, because
+   * 0.95 ≥ 0.90. That is the defect: the word list decided precision, and a word list cannot.
+   */
+  it('refuses every one-word name the story does not say twice, list or no list', async () => {
+    await seedTopics(t);
+    const target = await seedIssuer(t, { name: 'Target Corporation', ticker: 'TGT' });
+    const block = await seedIssuer(t, { name: 'Block Inc', ticker: 'XYZ', cik: '0001512673' });
+    const shell = await seedIssuer(t, { name: 'Shell plc', ticker: 'SHEL' });
+    const square = await seedIssuer(t, { name: 'Square Enix Holdings Co', ticker: 'SQNXF' });
+    const outlook = await seedIssuer(t, { name: 'Outlook Group Corp', ticker: 'OUTL' });
+    const dict = await dictionary();
+    const base = { summary: null, cik: null, items8k: null, feed: 'markets' as const };
+
+    // None of these words is on the ambiguous-word list — which is exactly why the list was never
+    // a mechanism. Each surface here is TWO tokens (`THE TARGET`, `SHELL COMPANY`, `SQUARE ONE`,
+    // `BLOCK CORP`) and normalises to one, so the single-token modifier does not fire either.
+    for (const [headline, issuerId] of [
+      ['Fed Officials Split Over Whether to Raise the Target for Core Inflation', target.issuerId],
+      ['Prosecutors Trace the Money Through a Shell Company in Panama', shell.issuerId],
+      ['Talks Collapse and the Parties Are Back to Square One, Mediator Says', square.issuerId],
+      ['Sri Lanka’s Growth Misses Forecast as Crisis Clouds the Outlook', outlook.issuerId],
+      ['Regulators Block Merger of Two Regional Utilities', block.issuerId],
+      ['Fed’s New Inflation Target Draws Criticism From Economists', target.issuerId],
+    ] as const) {
+      const links = linkHeadline({ ...base, headline, sourceId: 'bbg.rss' }, dict);
+      expect(
+        links.filter((c) => c.entityId === issuerId || c.method !== 'feed_topic'),
+        headline,
+      ).toEqual([]);
+    }
+
+    // ── the same names, corroborated — the recall side of the same rule ─────────────────────
+    //
+    // A corporate legal form is the name-side qualifier: no English sentence writes "Inc" or "Plc"
+    // after a noun by accident, and `core/text/normName.ts` strips it, so the surface carries a
+    // signal the key cannot. 0.95 = name_exact, in the headline, two-token surface.
+    const withForm = linkHeadline(
+      { ...base, headline: 'Shell Plc Lifts Dividend After a Record Quarter', sourceId: 'bbg.rss' },
+      dict,
+    );
+    const shellIssuer = withForm.find((c) => c.entityKind === 'issuer');
+    expect(shellIssuer).toBeDefined();
+    expect(shellIssuer!.entityId).toBe(shell.issuerId);
+    expect(shellIssuer!.method).toBe('name_exact');
+    expect(shellIssuer!.confidence).toBe(0.95);
+    expect(clearsFloor(shellIssuer!.confidence)).toBe(true);
+
+    // A marked ticker for the same issuer: the ticker wins the row outright at 1.00, and the point
+    // is that the story now says "Target" twice, in two different ways.
+    const withTicker = linkHeadline(
+      { ...base, headline: 'Target ($TGT) Cuts Its Full-Year Outlook', sourceId: 'bbg.rss' },
+      dict,
+    );
+    const targetIssuer = withTicker.find(
+      (c) => c.entityKind === 'issuer' && c.entityId === target.issuerId,
+    );
+    expect(targetIssuer).toBeDefined();
+    expect(targetIssuer!.method).toBe('ticker_exact');
+    expect(targetIssuer!.confidence).toBe(1);
+
+    // A CIK on the story is the filer's own identity claim; the bare name in the headline is
+    // corroborated by it and the row is written at the CIK's 1.00.
+    const withCik = linkHeadline(
+      {
+        ...base,
+        headline: 'Block Reports Fourth-Quarter Results',
+        cik: '0001512673',
+        feed: '8-K',
+        sourceId: 'sec.atom',
+      },
+      dict,
+    );
+    const blockIssuer = withCik.find(
+      (c) => c.entityKind === 'issuer' && c.entityId === block.issuerId,
+    );
+    expect(blockIssuer).toBeDefined();
+    expect(blockIssuer!.method).toBe('cik');
+    expect(blockIssuer!.confidence).toBe(1);
+    // …and the same headline with no CIK is the first case again: nothing.
+    expect(
+      linkHeadline(
+        { ...base, headline: 'Block Reports Fourth-Quarter Results', sourceId: 'bbg.rss' },
+        dict,
+      ).filter((c) => c.method !== 'feed_topic'),
+    ).toEqual([]);
+  });
+
+  /**
+   * `(BOOT)` is a ticker mark and a parenthesised gloss, and nothing in the three characters says
+   * which. The two headlines below differ in one thing — the exchange qualifier — so the test
+   * isolates the variable the rule is about.
+   */
+  it('requires the exchange qualifier before a parenthesised ticker is a ticker', async () => {
+    await seedTopics(t);
+    const boot = await seedIssuer(t, { name: 'Boot Barn Holdings Inc', ticker: 'BOOT' });
+    const allstate = await seedIssuer(t, { name: 'Allstate Corp', ticker: 'ALL' });
+    const dict = await dictionary();
+    const base = { summary: null, cik: null, items8k: null, feed: 'markets' as const };
+    expect(dict.lookupTicker('BOOT')?.issuerId).toBe(boot.issuerId);
+    // The ticker is one token, so the dictionary calls it ambiguous — no list consulted, and BOOT
+    // is on none of them anyway.
+    expect(dict.isAmbiguous('BOOT')).toBe(true);
+
+    const unqualified = linkHeadline(
+      {
+        ...base,
+        headline: 'Army Contract for the Standard Combat Boot (BOOT) Goes to One Supplier',
+        sourceId: 'bbg.rss',
+      },
+      dict,
+    );
+    expect(unqualified.filter((c) => c.method === 'ticker_exact')).toEqual([]);
+    expect(unqualified.filter((c) => c.entityId === boot.issuerId)).toEqual([]);
+
+    for (const headline of [
+      'Army Contract for the Standard Combat Boot (BOOT US) Goes to One Supplier',
+      'Army Contract for the Standard Combat Boot BOOT:US Goes to One Supplier',
+      'Army Contract for the Standard Combat Boot $BOOT Goes to One Supplier',
+    ]) {
+      const qualified = linkHeadline({ ...base, headline, sourceId: 'bbg.rss' }, dict);
+      const issuer = qualified.find((c) => c.entityKind === 'issuer');
+      expect(issuer, headline).toBeDefined();
+      expect(issuer!.method).toBe('ticker_exact');
+      // The mark is its own corroboration and takes no single-token discount: the full 1.00.
+      expect(issuer!.confidence).toBe(1);
+      expect(qualified.some((c) => c.entityKind === 'instrument' && c.confidence === 1)).toBe(true);
+    }
+
+    // The other direction, and the reason the rule is "qualified", not "on a list": `ALL` is on
+    // the 253-word ambiguous list, and a list-driven rule refused `$ALL` outright — but `$ALL` is
+    // a cashtag, not a gloss. No English sentence writes it. The mark decides.
+    const cashtag = linkHeadline(
+      { ...base, headline: '$ALL Raises Its Full-Year Guidance', sourceId: 'bbg.rss' },
+      dict,
+    );
+    const allIssuer = cashtag.find((c) => c.entityKind === 'issuer');
+    expect(allIssuer).toBeDefined();
+    expect(allIssuer!.entityId).toBe(allstate.issuerId);
+    expect(allIssuer!.method).toBe('ticker_exact');
+    expect(allIssuer!.confidence).toBe(1);
+
+    // The unqualified form is not dead: it is one ambiguous surface like any other, so a story
+    // that names the issuer some other way writes it — at 1.00 × 0.95, the one-token discount the
+    // matcher used to skip for every ticker mark.
+    const corroborated = linkHeadline(
+      { ...base, headline: 'Boot Barn Holdings (BOOT) Lifts Guidance', sourceId: 'bbg.rss' },
+      dict,
+    );
+    const instrument = corroborated.find((c) => c.entityKind === 'instrument');
+    expect(instrument).toBeDefined();
+    expect(instrument!.method).toBe('ticker_exact');
+    expect(instrument!.confidence).toBe(0.95);
+  });
+
+  /**
+   * The boundary, asserted on both sides.
+   *
+   * `name_alias` has base 0.90, and an alias in a headline earns no modifier at all, so it lands on
+   * the floor exactly — it is the only candidate class that can. The floor is **inclusive**: this
+   * one is written, and the same alias in the summary (× 0.97 = 0.873) is not. The reasoning is in
+   * `news/entityLink.ts`'s header under "Where the boundary sits"; the short form is that NEWS-02
+   * says "below 0.9", that 0.900 is not below 0.900, and that nothing is allowed to *arrive* at
+   * 0.900 by being discounted — the ambiguity rule refuses instead of multiplying by 0.90, which
+   * is what made an ambiguous marked ticker land on the floor and pass.
+   */
+  it('writes a candidate that lands exactly on 0.900 and refuses the one below it', async () => {
+    await seedTopics(t);
+    const ww = await seedIssuer(t, { name: 'WW International Inc', ticker: 'WW' });
+    await seedAlias(t, ww.issuerId, 'Weight Watchers');
+    const dict = await dictionary();
+    const base = { summary: null, cik: null, items8k: null, feed: 'markets' as const };
+
+    expect(dict.aliases.get('WEIGHT WATCHERS')).toBe(ww.issuerId);
+    expect(dict.isAmbiguous('WEIGHT WATCHERS')).toBe(false);
+
+    const onTheFloor = linkHeadline(
+      { ...base, headline: 'Weight Watchers Raises Its Full-Year Guidance', sourceId: 'bbg.rss' },
+      dict,
+    );
+    const issuer = onTheFloor.find((c) => c.entityKind === 'issuer');
+    expect(issuer).toBeDefined();
+    expect(issuer!.method).toBe('name_alias');
+    expect(issuer!.confidence).toBe(LINK_THRESHOLD);
+    expect(issuer!.confidence).toBe(0.9);
+
+    // One modifier below it — the same alias, in the summary only — and it is gone.
+    expect(
+      linkHeadline(
+        {
+          ...base,
+          headline: 'Weight-Loss Stocks Rally on Demand',
+          summary: 'Analysts pointed to Weight Watchers as the swing factor.',
+          sourceId: 'bbg.rss',
+        },
+        dict,
+      ).filter((c) => c.method === 'name_alias'),
+    ).toEqual([]);
+
+    // The boundary itself, in both directions, in the type the column stores.
+    expect(clearsFloor(LINK_THRESHOLD)).toBe(true);
+    expect(clearsFloor(0.899999)).toBe(false);
+    expect(clearsFloor(0.873)).toBe(false);
+    expect(LINK_THRESHOLD_STORED).toBeLessThan(LINK_THRESHOLD);
+
+    // And the reason the boundary had to be decided rather than inherited: §11.3.3's ×0.90
+    // modifier applied to a base of 1.00 lands ON an inclusive floor, so as a *discount* it could
+    // never refuse the ambiguous marked ticker it exists for. That is why it is a refusal.
+    expect(
+      scoreLink(BASE_CONFIDENCE.ticker_exact, {
+        inHeadline: true,
+        singleToken: false,
+        ambiguousUncorroborated: true,
+      }),
+    ).toBe(LINK_THRESHOLD);
+    expect(BASE_CONFIDENCE.ticker_exact * AMBIGUOUS_MODIFIER).toBeCloseTo(LINK_THRESHOLD, 12);
+    expect(clearsFloor(BASE_CONFIDENCE.ticker_exact * AMBIGUOUS_MODIFIER)).toBe(true);
   });
 
   it('corroboration rescues an ambiguous name when a second method names the same issuer', async () => {

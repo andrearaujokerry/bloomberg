@@ -21,7 +21,7 @@ import cookie from '@fastify/cookie';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { expectGolden } from './golden.js';
+import { expectGolden, subjectToken } from './golden.js';
 
 import { FunctionRegistry } from '@terminal/core';
 import { NI } from '@terminal/core/functions/manifests/NI';
@@ -372,11 +372,9 @@ function normalise(payload: NiPayload): unknown {
   return JSON.parse(
     JSON.stringify(payload, (_key, value: unknown) => {
       if (typeof value === 'number' && tokens.has(value)) return tokens.get(value);
-      if (typeof value === 'string') {
-        let out = value;
-        for (const [id, token] of tokens) out = out.split(String(id)).join(token);
-        return out;
-      }
+      // Only a subject string carries an id (`subjectToken`); substituting anywhere in any string
+      // made the golden a function of the sequence values this run drew.
+      if (typeof value === 'string') return subjectToken(value, tokens);
       return value;
     }),
   );

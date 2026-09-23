@@ -24,7 +24,7 @@ import {
   type MessagingService,
 } from '../../../src/messaging/service.js';
 import { testClock } from '../../../src/test/clock.js';
-import { asUser, withTxDb } from '../../../src/test/db.js';
+import { asAppRole, asUser, withTxDb } from '../../../src/test/db.js';
 
 const t = withTxDb();
 
@@ -523,5 +523,97 @@ describe('MSG-03 — the pure policy functions', () => {
     expect(canMessage(me, null, room)).toBe('NOT_A_MEMBER');
     // canJoin never reports NOT_A_MEMBER: membership is what is being asked for.
     expect(canJoin(me, room)).toBe('OK');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// MSG-02 — the supervisory queue, under the role the server connects as
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+
+describe('MSG-02 — the review queue is scoped to the room’s own firms, under terminal_app', () => {
+  /**
+   * `surveillance_hits` is proved cross-firm in `chain.test.ts`; this is the other table 0015
+   * scoped by role alone. `message_reviews_compliance` was `USING (app_role() = 'compliance')`
+   * with no firm predicate at all, so any compliance officer of any firm on the platform read —
+   * and could clear — every other firm's supervisory queue, for messages in rooms their firm has
+   * nobody in. 0017 §17.d scopes both through the message's room.
+   *
+   * Every assertion runs as `terminal_app`. The migration owner is a superuser locally and
+   * bypasses RLS entirely, so the same statements pass under it whether or not a policy exists.
+   */
+  it('keeps one firm’s flagged messages out of another firm’s review queue', async () => {
+    const demo = await createFirm('Demo Capital');
+    const rival = await createFirm('Rival Partners LLP');
+    const alice = await createUser(demo, { desk: 'Equities PM' });
+    const demoCompliance = await createUser(demo, { desk: 'Compliance', role: 'compliance' });
+    const rivalCompliance = await createUser(rival, { desk: 'Compliance', role: 'compliance' });
+
+    await asUser(t, alice.userId, demo.firmId);
+    const msg = service();
+    const room = await msg.createRoom({
+      kind: 'group',
+      name: 'Desk chat',
+      createdBy: alice.userId,
+      memberUserIds: [],
+      firmId: demo.firmId,
+    });
+    const sent = await msg.send({
+      roomId: room.roomId,
+      senderUserId: alice.userId,
+      body: 'keep this off the record',
+      clientMsgId: randomUUID(),
+    });
+
+    // Demo's own compliance officer flags it. The WITH CHECK admits them because their firm is in
+    // the room, which is the same predicate the USING clause reads by.
+    await asUser(t, demoCompliance.userId, demo.firmId, 'compliance');
+    await asAppRole(t);
+    await t.client.query(
+      `INSERT INTO message_reviews (message_id, flagged_by, status, note)
+       VALUES ($1, 'manual', 'open', 'escalate to the desk head')`,
+      [sent.messageId],
+    );
+    const own = await t.client.query<{ n: string }>(
+      `SELECT count(*)::text AS n FROM message_reviews WHERE message_id = $1`,
+      [sent.messageId],
+    );
+    expect(Number(own.rows[0]!.n)).toBe(1);
+
+    // The rival's compliance officer is a compliance officer too, and that used to be the whole
+    // test the policy applied. Their firm has nobody in this room.
+    await asUser(t, rivalCompliance.userId, rival.firmId, 'compliance');
+    await asAppRole(t);
+    const rivalRead = await t.client.query<{ n: string }>(
+      `SELECT count(*)::text AS n FROM message_reviews WHERE message_id = $1`,
+      [sent.messageId],
+    );
+    expect(Number(rivalRead.rows[0]!.n)).toBe(0);
+
+    // …and they cannot open a review of their own on it either, which is what would let a rival
+    // firm's queue name another firm's messages.
+    const refused = await t
+      .savepoint(() =>
+        t.client.query(
+          `INSERT INTO message_reviews (message_id, flagged_by, status)
+           VALUES ($1, 'manual', 'open')`,
+          [sent.messageId],
+        ),
+      )
+      .then(
+        () => null,
+        (err: unknown) => err,
+      );
+    const code = (refused as { code?: string } | null)?.code;
+    expect(code).toBe('42501');
+
+    // The demo officer still sees their own queue: this is a firm predicate, not the queue going
+    // dark for everybody.
+    await asUser(t, demoCompliance.userId, demo.firmId, 'compliance');
+    await asAppRole(t);
+    const still = await t.client.query<{ note: string | null }>(
+      `SELECT note FROM message_reviews WHERE message_id = $1`,
+      [sent.messageId],
+    );
+    expect(still.rows.map((r) => r.note)).toEqual(['escalate to the desk head']);
   });
 });

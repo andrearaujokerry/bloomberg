@@ -1355,6 +1355,107 @@ describe('the payload and its meta must agree', () => {
     expect((out.data as { rows: number }).rows).toBe(20);
   });
 
+  /**
+   * A resolver that cites provenance row 901 and builds its payload around the idx it got back.
+   * Used by the per-cell tests: the payload *does* cite something, which is precisely the case the
+   * aggregate rule cannot judge.
+   */
+  const citing = (payload: (idx: number) => unknown): AnyModule =>
+    ({
+      resolve: (ctx: ResolveContext) =>
+        Promise.resolve(
+          payload(
+            ctx.prov.add({
+              sourceId: SOURCE,
+              provenanceId: 901,
+              capturedAt: new Date(TEST_NOW),
+              sourceTs: null,
+              st: 'live',
+              tier: 'delayed',
+            }),
+          ),
+        ),
+    }) as AnyModule;
+
+  it('refuses a cell showing a price at provIdx -1 even when the payload cites elsewhere', async () => {
+    // The hole the aggregate rule leaves: one citation in `composite` would excuse the line cell,
+    // and `Ctrl+I` on that 330.20 answers nothing. Each cell is judged on its own idx (DATA-10).
+    const h = harness();
+    h.setModule(
+      'FIX',
+      citing((idx) => ({
+        variant: 'equity',
+        composite: { PX_LAST: { v: 330.27, st: 'live', provIdx: idx } },
+        lines: [{ subject: 'l:7', cells: { PX_LAST: { v: 330.2, st: 'live', provIdx: -1 } } }],
+      })),
+    );
+    const err = await expectError(run(h, 'FIX', { security: SECURITY }), 'INTERNAL', 500);
+    expect(String(err.message)).toContain('lines[0].cells.PX_LAST');
+    expect(String(err.message)).toContain('DATA-10');
+    // The cited cell is not among the violations — only the uncited one is.
+    expect(String(err.message)).not.toContain('composite.PX_LAST');
+  });
+
+  it('refuses a cell that carries a number with no provIdx at all', async () => {
+    const h = harness();
+    h.setModule(
+      'FIX',
+      citing((idx) => ({
+        variant: 'equity',
+        stats: { vol30d: { v: 21.36, st: 'closed' }, high52w: { v: 260.1, st: 'closed', provIdx: idx } },
+      })),
+    );
+    const err = await expectError(run(h, 'FIX', { security: SECURITY }), 'INTERNAL', 500);
+    expect(String(err.message)).toContain('stats.vol30d');
+  });
+
+  it('allows provIdx -1 on the cells §0.4 rule 1 reserves it for: pending and denied', async () => {
+    const h = harness();
+    h.setModule(
+      'FIX',
+      citing((idx) => ({
+        variant: 'equity',
+        composite: { PX_LAST: { v: 330.27, st: 'live', provIdx: idx } },
+        lines: [
+          // pending: never polled, nothing denied, no reason to give
+          { subject: 'l:7', cells: { PX_LAST: { v: null, st: 'blank', provIdx: -1 } } },
+          // denied: the null is explained by `r`, and §12.3 puts the reason in meta
+          { subject: 'l:8', cells: { PX_LAST: { v: null, st: 'blank', r: 'NO_FIRM_ENTITLEMENT', provIdx: -1 } } },
+        ],
+      })),
+    );
+    const out = await run(h, 'FIX', { security: SECURITY });
+    expect((out.data as { lines: { cells: { PX_LAST: { v: null } } }[] }).lines[0]?.cells.PX_LAST.v).toBeNull();
+  });
+
+  it('leaves a cited series alone — an array `v` is cited by its block, not per point', async () => {
+    const h = harness();
+    h.setModule(
+      'FIX',
+      citing((idx) => ({
+        variant: 'equity',
+        series: { v: [1.5, 2.5, 3.5], st: 'closed', provIdx: idx },
+      })),
+    );
+    const out = await run(h, 'FIX', { security: SECURITY });
+    expect((out.data as { series: { v: number[] } }).series.v).toEqual([1.5, 2.5, 3.5]);
+  });
+
+  it('warns rather than throws on an uncited cell when strictVariant is off (production)', async () => {
+    const h = harness({ strictVariant: false });
+    h.setModule(
+      'FIX',
+      citing((idx) => ({
+        variant: 'equity',
+        composite: { PX_LAST: { v: 330.27, st: 'live', provIdx: idx } },
+        lines: [{ subject: 'l:7', cells: { PX_LAST: { v: 330.2, st: 'live', provIdx: -1 } } }],
+      })),
+    );
+    const out = await run(h, 'FIX', { security: SECURITY });
+    expect((out.data as { variant: string }).variant).toBe('equity');
+    expect(h.warnings.map((w) => w.code)).toContain('PAYLOAD_META_MISMATCH');
+  });
+
   it('refuses a null cell with nothing in meta to explain it (§1.3 rule 6)', async () => {
     const h = harness();
     h.setModule('FIX', {

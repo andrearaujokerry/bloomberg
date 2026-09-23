@@ -781,9 +781,12 @@ describe('SecurityResolver (REF-01, REF-02, REF-03)', () => {
     expect(dict.lookupCik('320193')).toBe(f.appleIssuerId);
     expect(dict.lookupCik('0000320193')).toBe(f.appleIssuerId);
 
-    // The ×0.90 list, and the floor that drops a short name.
+    // Ambiguity, and the floor that drops a short name. The rule is structural, not a list: one
+    // word always needs corroboration (`GAP` is on the curated list, `APPLE` is on no list and is
+    // ambiguous all the same), and two tokens are ambiguous only if data ops said so.
     expect(dict.isAmbiguous('GAP')).toBe(true);
-    expect(dict.isAmbiguous('Apple')).toBe(false);
+    expect(dict.isAmbiguous('Apple')).toBe(true);
+    expect(dict.isAmbiguous('Apple Inc.')).toBe(false);
     expect(dict.lookupName('IBM')).toBeNull();
   });
 
