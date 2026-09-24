@@ -1,0 +1,99 @@
+{
+  "variant": "default",
+  "rows": [
+    {
+      "instrumentId": "<BTC>",
+      "key": "BTC Crypto",
+      "name": "Bitcoin",
+      "coingeckoId": "bitcoin",
+      "px": {
+        "v": 75828,
+        "st": "live",
+        "ts": 1789497688000,
+        "provIdx": 1,
+        "live": {
+          "subject": "q:<BTC>",
+          "field": "PX_LAST"
+        }
+      },
+      "chg24hPct": {
+        "v": -4.2174,
+        "st": "live",
+        "ts": 1789497688000,
+        "provIdx": 1,
+        "live": {
+          "subject": "q:<BTC>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "asOf": "2026-09-15T18:41:28.000Z"
+    },
+    {
+      "instrumentId": "<ETH>",
+      "key": "ETH Crypto",
+      "name": "Ethereum",
+      "coingeckoId": "ethereum",
+      "px": {
+        "v": 2386.91,
+        "st": "live",
+        "ts": 1789497688000,
+        "provIdx": 1,
+        "live": {
+          "subject": "q:<ETH>",
+          "field": "PX_LAST"
+        }
+      },
+      "chg24hPct": {
+        "v": -6.0013,
+        "st": "live",
+        "ts": 1789497688000,
+        "provIdx": 1,
+        "live": {
+          "subject": "q:<ETH>",
+          "field": "CHG_PCT_1D"
+        }
+      },
+      "asOf": "2026-09-15T18:41:28.000Z"
+    },
+    {
+      "instrumentId": "<SOL>",
+      "key": "SOL Crypto",
+      "name": "Solana",
+      "coingeckoId": "solana",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": 0
+      },
+      "chg24hPct": {
+        "v": null,
+        "st": "blank",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": 0
+      },
+      "asOf": "2026-09-15T18:41:28.000Z"
+    },
+    {
+      "instrumentId": "<XRP>",
+      "key": "XRP Crypto",
+      "name": "XRP",
+      "coingeckoId": "ripple",
+      "px": {
+        "v": null,
+        "st": "blank",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": 0
+      },
+      "chg24hPct": {
+        "v": null,
+        "st": "blank",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": 0
+      },
+      "asOf": "2026-09-15T18:41:28.000Z"
+    }
+  ],
+  "source": "coingecko.simple",
+  "caveat": "CONTEXT_ONLY_NOT_EXCHANGE_DATA"
+}

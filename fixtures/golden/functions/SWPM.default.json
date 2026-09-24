@@ -1,0 +1,517 @@
+{
+  "variant": "default",
+  "trade": {
+    "side": "pay",
+    "notional": 10000000,
+    "currency": "USD",
+    "tenor": "5Y",
+    "tradeDate": "2026-09-15",
+    "effective": "2026-09-17",
+    "maturity": "2031-09-17",
+    "valuationDate": "2026-09-15",
+    "fixedRate": {
+      "v": 3.4499538185367995,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "fixedRateSource": "par",
+    "stub": "none"
+  },
+  "conventions": {
+    "fixedFreq": "annual",
+    "fixedDayCount": "ACT/360",
+    "floatIndex": "SOFR",
+    "floatFreq": "annual",
+    "floatDayCount": "ACT/360",
+    "compounding": "daily",
+    "observationShift": 0,
+    "paymentLagDays": 2,
+    "bdc": "modified_following",
+    "calendarId": "SIFMA",
+    "spotLagDays": 2,
+    "discounting": "SOFR_OIS (single curve)"
+  },
+  "curve": {
+    "id": "SOFR_OIS",
+    "date": "2026-09-14",
+    "requestedDate": null,
+    "buildId": "<BUILD>",
+    "method": "ois_bootstrap",
+    "interpolation": "monotone_convex",
+    "engine": {
+      "name": "curve.ois.bootstrap",
+      "version": "1.0.0",
+      "inputsHash": "797ce24005586a2c3e4e928014369a7c754876672c8a5adce9110a226061a2f6"
+    },
+    "provIdx": 0,
+    "caveats": [
+      "PROXY_CURVE",
+      "NO_OIS_SWAP_QUOTES_SOURCE"
+    ]
+  },
+  "fixing": {
+    "rateCode": "SOFR",
+    "effectiveDate": "2026-09-14",
+    "rate": {
+      "v": 3.62,
+      "st": "closed",
+      "provIdx": 1
+    },
+    "provIdx": 1,
+    "usedForRealised": false
+  },
+  "legs": [
+    {
+      "kind": "fixed",
+      "payReceive": "pay",
+      "periods": [
+        {
+          "n": 1,
+          "start": "2026-09-17",
+          "end": "2027-09-17",
+          "paymentDate": "2027-09-21",
+          "days": 365,
+          "accrualFactor": 1.0138888888888888,
+          "rate": {
+            "v": 3.4499538185367995,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 0,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 349786.98437942547,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.9658471106874712,
+          "pv": {
+            "v": 337840.7482189517,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 2,
+          "start": "2027-09-17",
+          "end": "2028-09-18",
+          "paymentDate": "2028-09-20",
+          "days": 367,
+          "accrualFactor": 1.0194444444444444,
+          "rate": {
+            "v": 3.4499538185367995,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 0,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 351703.6253897237,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.9342270487454677,
+          "pv": {
+            "v": 328571.0399809231,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 3,
+          "start": "2028-09-18",
+          "end": "2029-09-17",
+          "paymentDate": "2029-09-19",
+          "days": 364,
+          "accrualFactor": 1.011111111111111,
+          "rate": {
+            "v": 3.4499538185367995,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 0,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 348828.6638742764,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.9027998088901237,
+          "pv": {
+            "v": 314922.4510810939,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 4,
+          "start": "2029-09-17",
+          "end": "2030-09-17",
+          "paymentDate": "2030-09-19",
+          "days": 365,
+          "accrualFactor": 1.0138888888888888,
+          "rate": {
+            "v": 3.4499538185367995,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 0,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 349786.98437942547,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.8719052166554899,
+          "pv": {
+            "v": 304981.0963986134,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 5,
+          "start": "2030-09-17",
+          "end": "2031-09-17",
+          "paymentDate": "2031-09-19",
+          "days": 365,
+          "accrualFactor": 1.0138888888888888,
+          "rate": {
+            "v": 3.4499538185367995,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 0,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 349786.98437942547,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.8414322579723221,
+          "pv": {
+            "v": 294322.05207570933,
+            "st": "closed",
+            "provIdx": 0
+          }
+        }
+      ],
+      "pv": {
+        "v": 1580637.3877552915,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "accrued": {
+        "v": 0,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "dv01": {
+        "v": 4581.618974904639,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "nextPaymentDate": "2027-09-21",
+      "nextCashflow": {
+        "v": 349786.98437942547,
+        "st": "closed",
+        "provIdx": 0
+      }
+    },
+    {
+      "kind": "float",
+      "payReceive": "receive",
+      "periods": [
+        {
+          "n": 1,
+          "start": "2026-09-17",
+          "end": "2027-09-17",
+          "paymentDate": "2027-09-21",
+          "days": 365,
+          "accrualFactor": 1.0138888888888888,
+          "rate": {
+            "v": 3.41917706561059,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 249,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 346666.5635966293,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.9658471106874712,
+          "pv": {
+            "v": 334826.8988217589,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 2,
+          "start": "2027-09-17",
+          "end": "2028-09-18",
+          "paymentDate": "2028-09-20",
+          "days": 367,
+          "accrualFactor": 1.0194444444444444,
+          "rate": {
+            "v": 3.3387074101039684,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 250,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 340362.672085599,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.9342270487454677,
+          "pv": {
+            "v": 317976.0146456505,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 3,
+          "start": "2028-09-18",
+          "end": "2029-09-17",
+          "paymentDate": "2029-09-19",
+          "days": 364,
+          "accrualFactor": 1.011111111111111,
+          "rate": {
+            "v": 3.442384875799684,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 248,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 348063.3596641902,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.9027998088901237,
+          "pv": {
+            "v": 314231.5345864853,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 4,
+          "start": "2029-09-17",
+          "end": "2030-09-17",
+          "paymentDate": "2030-09-19",
+          "days": 365,
+          "accrualFactor": 1.0138888888888888,
+          "rate": {
+            "v": 3.494517867797712,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 249,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 354305.2838183791,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.8719052166554899,
+          "pv": {
+            "v": 308920.6252498487,
+            "st": "closed",
+            "provIdx": 0
+          }
+        },
+        {
+          "n": 5,
+          "start": "2030-09-17",
+          "end": "2031-09-17",
+          "paymentDate": "2031-09-19",
+          "days": 365,
+          "accrualFactor": 1.0138888888888888,
+          "rate": {
+            "v": 3.571393671556624,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "realisedDays": 0,
+          "projectedDays": 249,
+          "isCurrent": false,
+          "cashflow": {
+            "v": 362099.6361439355,
+            "st": "closed",
+            "provIdx": 0
+          },
+          "df": 0.8414322579723221,
+          "pv": {
+            "v": 304682.3144515479,
+            "st": "closed",
+            "provIdx": 0
+          }
+        }
+      ],
+      "pv": {
+        "v": 1580637.3877552915,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "accrued": {
+        "v": 0,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "dv01": {
+        "v": null,
+        "st": "na",
+        "provIdx": -1
+      },
+      "nextPaymentDate": "2027-09-21",
+      "nextCashflow": {
+        "v": 346666.5635966293,
+        "st": "closed",
+        "provIdx": 0
+      }
+    }
+  ],
+  "results": {
+    "parRatePct": {
+      "v": 3.4499538185367995,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "fixedRatePct": {
+      "v": 3.4499538185367995,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "npv": {
+      "v": 0,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "pvFixed": {
+      "v": 1580637.3877552915,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "pvFloat": {
+      "v": 1580637.3877552915,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "annuityPv01": {
+      "v": 4581.618974904639,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "dv01": {
+      "v": 4737.785575467898,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "dv01Per1mm": {
+      "v": 473.7785575467897,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "marketValuePctNotional": {
+      "v": 0,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "accrued": {
+      "v": 0,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "breakEvenRatePct": {
+      "v": 3.4499538185367995,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "effectiveDurationYears": {
+      "v": 4.737785575467898,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "keyRateDurations": [
+      {
+        "tenor": "2Y",
+        "krd": 0.1846645330535248,
+        "dv01": 184.6645330535248
+      },
+      {
+        "tenor": "5Y",
+        "krd": 4.485818441781215,
+        "dv01": 4485.818441781215
+      },
+      {
+        "tenor": "10Y",
+        "krd": 0.06617501531308517,
+        "dv01": 66.17501531308517
+      },
+      {
+        "tenor": "30Y",
+        "krd": 0,
+        "dv01": 0
+      }
+    ],
+    "spreads": {
+      "treasuryTenor": "5Y",
+      "treasuryYieldPct": {
+        "v": 3.81,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "swapSpreadBp": {
+        "v": -36.004618146320055,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "curveProvIdx": 2
+    }
+  },
+  "engines": [
+    {
+      "name": "curve.ois.bootstrap",
+      "version": "1.0.0"
+    },
+    {
+      "name": "swap.ois",
+      "version": "1.0.0"
+    },
+    {
+      "name": "swap.ois",
+      "version": "1.0.0"
+    },
+    {
+      "name": "swap.ois",
+      "version": "1.0.0"
+    },
+    {
+      "name": "swap.ois",
+      "version": "1.0.0"
+    },
+    {
+      "name": "swap.ois",
+      "version": "1.0.0"
+    },
+    {
+      "name": "swap.ois",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,443 @@
+{
+  "variant": "default",
+  "curve": {
+    "id": "UST_PAR",
+    "name": "US Treasury par yield curve",
+    "currency": "USD",
+    "kind": "par",
+    "dayCount": "ACT/ACT",
+    "compounding": "semiannual",
+    "sourceId": "treasury.yieldcurve",
+    "provIdx": 0,
+    "date": "2026-09-14",
+    "requestedDate": null,
+    "availableDates": [
+      "2026-09-14",
+      "2026-09-11"
+    ]
+  },
+  "build": {
+    "buildId": "<BUILD>",
+    "method": "bills+par_bootstrap",
+    "interpolation": "monotone_convex",
+    "engine": {
+      "name": "curve.bootstrap",
+      "version": "1.0.0",
+      "inputsHash": "0840bcd473a202d8202d114eef82f7ef9143cc9f959c6fb0afb20e65561d053b"
+    },
+    "caveats": [],
+    "cached": false
+  },
+  "inputs": [
+    {
+      "tenor": "6M",
+      "tenorDays": 182,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 3.95,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "1Y",
+      "tenorDays": 365,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 3.9,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "2Y",
+      "tenorDays": 730,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 3.76,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "3Y",
+      "tenorDays": 1096,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 3.78,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "5Y",
+      "tenorDays": 1826,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 3.81,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "7Y",
+      "tenorDays": 2557,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 3.95,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "10Y",
+      "tenorDays": 3653,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 4.07,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "20Y",
+      "tenorDays": 7305,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 4.55,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    },
+    {
+      "tenor": "30Y",
+      "tenorDays": 10958,
+      "quoteType": "par_yield",
+      "value": {
+        "v": 4.66,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "instrument": null,
+      "maturityDate": null,
+      "proxy": false,
+      "proxyOf": null,
+      "provIdx": 0
+    }
+  ],
+  "nodes": [
+    {
+      "tenor": "6M",
+      "t": 0.5,
+      "days": 182,
+      "par": 3.949999999999978,
+      "zero": 3.949999999999987,
+      "df": 0.9806325079676392,
+      "fwd3m": 3.8811846865300037,
+      "fwd1y": 3.7299721744114667,
+      "isInput": true
+    },
+    {
+      "tenor": "1Y",
+      "t": 1,
+      "days": 365,
+      "par": 3.8999999999999986,
+      "zero": 3.899512621262069,
+      "df": 0.9621163963655037,
+      "fwd3m": 3.662716809663502,
+      "fwd1y": 3.614845330658456,
+      "isInput": true
+    },
+    {
+      "tenor": "2Y",
+      "t": 2,
+      "days": 730,
+      "par": 3.759999999999988,
+      "zero": 3.7571292626957575,
+      "df": 0.9282580619756918,
+      "fwd3m": 3.7852614390335937,
+      "fwd1y": 3.8224099852121274,
+      "isInput": true
+    },
+    {
+      "tenor": "3Y",
+      "t": 3,
+      "days": 1096,
+      "par": 3.7799999999999985,
+      "zero": 3.778887180063384,
+      "df": 0.8937681132857556,
+      "fwd3m": 3.834996292945103,
+      "fwd1y": 3.8349962929450587,
+      "isInput": true
+    },
+    {
+      "tenor": "5Y",
+      "t": 5,
+      "days": 1826,
+      "par": 3.8100000000000014,
+      "zero": 3.811396914169185,
+      "df": 0.8279713329074506,
+      "fwd3m": 4.209782155789243,
+      "fwd1y": 4.327949610982174,
+      "isInput": true
+    },
+    {
+      "tenor": "7Y",
+      "t": 7,
+      "days": 2557,
+      "par": 3.950000000000002,
+      "zero": 3.96613146115663,
+      "df": 0.7596387575671782,
+      "fwd3m": 4.379017534772478,
+      "fwd1y": 4.379017534772434,
+      "isInput": true
+    },
+    {
+      "tenor": "10Y",
+      "t": 10,
+      "days": 3653,
+      "par": 4.070000000000001,
+      "zero": 4.101385410199265,
+      "df": 0.6663169485807184,
+      "fwd3m": 4.7783373995178735,
+      "fwd1y": 5.097916553305248,
+      "isInput": true
+    },
+    {
+      "tenor": "20Y",
+      "t": 20,
+      "days": 7305,
+      "par": 4.550000000000001,
+      "zero": 4.709684857417296,
+      "df": 0.39415245701671897,
+      "fwd3m": 5.223630697906856,
+      "fwd1y": 5.21363705888831,
+      "isInput": true
+    },
+    {
+      "tenor": "30Y",
+      "t": 30,
+      "days": 10958,
+      "par": 4.659999999999999,
+      "zero": 4.851158906075881,
+      "df": 0.23740738579100823,
+      "fwd3m": null,
+      "fwd1y": null,
+      "isInput": true
+    }
+  ],
+  "compare": [
+    {
+      "date": "2026-09-11",
+      "buildId": "<BUILD>",
+      "provIdx": 0,
+      "nodes": [
+        {
+          "tenor": "6M",
+          "t": 0.5,
+          "par": 3.929999999999987,
+          "zero": 3.929999999999989,
+          "df": 0.9807286814102879
+        },
+        {
+          "tenor": "1Y",
+          "t": 1,
+          "par": 3.8800000000000106,
+          "zero": 3.879515120643129,
+          "df": 0.9623051437910931
+        },
+        {
+          "tenor": "2Y",
+          "t": 2,
+          "par": 3.7399999999999975,
+          "zero": 3.7371479766202143,
+          "df": 0.9286222669099534
+        },
+        {
+          "tenor": "3Y",
+          "t": 3,
+          "par": 3.7500000000000027,
+          "zero": 3.748537316918643,
+          "df": 0.8945672113427426
+        },
+        {
+          "tenor": "5Y",
+          "t": 5,
+          "par": 3.779999999999998,
+          "zero": 3.781309483694262,
+          "df": 0.8291946093627257
+        },
+        {
+          "tenor": "7Y",
+          "t": 7,
+          "par": 3.919999999999999,
+          "zero": 3.93581111968504,
+          "df": 0.7612214462251219
+        },
+        {
+          "tenor": "10Y",
+          "t": 10,
+          "par": 4.03,
+          "zero": 4.05903280409996,
+          "df": 0.6690883006760573
+        },
+        {
+          "tenor": "20Y",
+          "t": 20,
+          "par": 4.500000000000001,
+          "zero": 4.653184110928121,
+          "df": 0.3985286840613038
+        },
+        {
+          "tenor": "30Y",
+          "t": 30,
+          "par": 4.620000000000002,
+          "zero": 4.814138404334001,
+          "df": 0.23999586985766852
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "tenor": "6M",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 1.9999999999991136,
+          "zeroBp": 1.9999999999997797
+        }
+      ]
+    },
+    {
+      "tenor": "1Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 1.9999999999988027,
+          "zeroBp": 1.9997500618940123
+        }
+      ]
+    },
+    {
+      "tenor": "2Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 1.9999999999990248,
+          "zeroBp": 1.998128607554328
+        }
+      ]
+    },
+    {
+      "tenor": "3Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 2.999999999999581,
+          "zeroBp": 3.034986314474075
+        }
+      ]
+    },
+    {
+      "tenor": "5Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 3.0000000000003357,
+          "zeroBp": 3.008743047492324
+        }
+      ]
+    },
+    {
+      "tenor": "7Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 3.0000000000002913,
+          "zeroBp": 3.032034147159024
+        }
+      ]
+    },
+    {
+      "tenor": "10Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 4.000000000000092,
+          "zeroBp": 4.2352606099305135
+        }
+      ]
+    },
+    {
+      "tenor": "20Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 4.999999999999982,
+          "zeroBp": 5.650074648917425
+        }
+      ]
+    },
+    {
+      "tenor": "30Y",
+      "vsCompare": [
+        {
+          "date": "2026-09-11",
+          "parBp": 3.999999999999737,
+          "zeroBp": 3.7020501741880096
+        }
+      ]
+    }
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

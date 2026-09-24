@@ -1,0 +1,422 @@
+{
+  "variant": "default",
+  "mode": "curve",
+  "curve": {
+    "id": "UST_PAR",
+    "name": "US Treasury par yield curve",
+    "currency": "USD",
+    "kind": "par",
+    "dayCount": "ACT/ACT",
+    "compounding": "semiannual",
+    "sourceId": "treasury.yieldcurve",
+    "provIdx": 0,
+    "date": "2026-09-14",
+    "requestedDate": null,
+    "availableDates": [
+      "2026-09-14",
+      "2026-09-11",
+      "2026-09-08",
+      "2026-09-04"
+    ]
+  },
+  "snapshots": [
+    {
+      "id": "CUR",
+      "label": "09-14",
+      "requested": "2026-09-15",
+      "date": "2026-09-14",
+      "buildId": null,
+      "provIdx": 0,
+      "points": [
+        {
+          "tenor": "3M",
+          "tenorDays": 91,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.99,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "2Y",
+          "tenorDays": 730,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.76,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "5Y",
+          "tenorDays": 1826,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.81,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "10Y",
+          "tenorDays": 3653,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.07,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "30Y",
+          "tenorDays": 10958,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.66,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "PREV",
+      "label": "09-11",
+      "requested": "PREV",
+      "date": "2026-09-11",
+      "buildId": null,
+      "provIdx": 0,
+      "points": [
+        {
+          "tenor": "3M",
+          "tenorDays": 91,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.97,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "2Y",
+          "tenorDays": 730,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.74,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "5Y",
+          "tenorDays": 1826,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.78,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "10Y",
+          "tenorDays": 3653,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.03,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "30Y",
+          "tenorDays": 10958,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.62,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "1W",
+      "label": "09-04",
+      "requested": "1W",
+      "date": "2026-09-04",
+      "buildId": null,
+      "provIdx": 0,
+      "points": [
+        {
+          "tenor": "2Y",
+          "tenorDays": 730,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.7,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "5Y",
+          "tenorDays": 1826,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.74,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "10Y",
+          "tenorDays": 3653,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.99,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "30Y",
+          "tenorDays": 10958,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.58,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "tenor": "3M",
+      "tenorDays": 91,
+      "current": {
+        "v": 3.99,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": [
+        {
+          "id": "PREV",
+          "label": "09-11",
+          "date": "2026-09-11",
+          "bp": {
+            "v": 2.0000000000000018,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "id": "1W",
+          "label": "09-04",
+          "date": "2026-09-04",
+          "bp": {
+            "v": null,
+            "st": "na",
+            "provIdx": -1
+          }
+        }
+      ]
+    },
+    {
+      "tenor": "2Y",
+      "tenorDays": 730,
+      "current": {
+        "v": 3.76,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": [
+        {
+          "id": "PREV",
+          "label": "09-11",
+          "date": "2026-09-11",
+          "bp": {
+            "v": 1.9999999999999574,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "id": "1W",
+          "label": "09-04",
+          "date": "2026-09-04",
+          "bp": {
+            "v": 5.999999999999961,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    },
+    {
+      "tenor": "5Y",
+      "tenorDays": 1826,
+      "current": {
+        "v": 3.81,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": [
+        {
+          "id": "PREV",
+          "label": "09-11",
+          "date": "2026-09-11",
+          "bp": {
+            "v": 3.000000000000025,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "id": "1W",
+          "label": "09-04",
+          "date": "2026-09-04",
+          "bp": {
+            "v": 6.999999999999984,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    },
+    {
+      "tenor": "10Y",
+      "tenorDays": 3653,
+      "current": {
+        "v": 4.07,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": [
+        {
+          "id": "PREV",
+          "label": "09-11",
+          "date": "2026-09-11",
+          "bp": {
+            "v": 4.0000000000000036,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "id": "1W",
+          "label": "09-04",
+          "date": "2026-09-04",
+          "bp": {
+            "v": 8.000000000000007,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    },
+    {
+      "tenor": "30Y",
+      "tenorDays": 10958,
+      "current": {
+        "v": 4.66,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": [
+        {
+          "id": "PREV",
+          "label": "09-11",
+          "date": "2026-09-11",
+          "bp": {
+            "v": 4.0000000000000036,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "id": "1W",
+          "label": "09-04",
+          "date": "2026-09-04",
+          "bp": {
+            "v": 8.000000000000007,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    }
+  ],
+  "spreads": [
+    {
+      "id": "2s10s",
+      "label": "10Y − 2Y",
+      "legs": [
+        "2Y",
+        "10Y"
+      ],
+      "current": {
+        "v": 31.00000000000005,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": [
+        {
+          "id": "PREV",
+          "label": "09-11",
+          "date": "2026-09-11",
+          "bp": {
+            "v": 2.000000000000046,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "id": "1W",
+          "label": "09-04",
+          "date": "2026-09-04",
+          "bp": {
+            "v": 2.000000000000046,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    }
+  ],
+  "history": null,
+  "caveats": [],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

@@ -1,0 +1,215 @@
+{
+  "variant": "default",
+  "mode": "history",
+  "curve": {
+    "id": "UST_PAR",
+    "name": "US Treasury par yield curve",
+    "currency": "USD",
+    "kind": "par",
+    "dayCount": "ACT/ACT",
+    "compounding": "semiannual",
+    "sourceId": "treasury.yieldcurve",
+    "provIdx": 0,
+    "date": "2026-09-14",
+    "requestedDate": null,
+    "availableDates": [
+      "2026-09-14",
+      "2026-09-11",
+      "2026-09-08",
+      "2026-09-04"
+    ]
+  },
+  "snapshots": [
+    {
+      "id": "CUR",
+      "label": "09-14",
+      "requested": "2026-09-15",
+      "date": "2026-09-14",
+      "buildId": null,
+      "provIdx": 0,
+      "points": [
+        {
+          "tenor": "3M",
+          "tenorDays": 91,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.99,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "2Y",
+          "tenorDays": 730,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.76,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "5Y",
+          "tenorDays": 1826,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 3.81,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "10Y",
+          "tenorDays": 3653,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.07,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        },
+        {
+          "tenor": "30Y",
+          "tenorDays": 10958,
+          "quoteType": "par_yield",
+          "value": {
+            "v": 4.66,
+            "st": "closed",
+            "provIdx": 0,
+            "ts": null
+          }
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "tenor": "3M",
+      "tenorDays": 91,
+      "current": {
+        "v": 3.99,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": []
+    },
+    {
+      "tenor": "2Y",
+      "tenorDays": 730,
+      "current": {
+        "v": 3.76,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": []
+    },
+    {
+      "tenor": "5Y",
+      "tenorDays": 1826,
+      "current": {
+        "v": 3.81,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": []
+    },
+    {
+      "tenor": "10Y",
+      "tenorDays": 3653,
+      "current": {
+        "v": 4.07,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": []
+    },
+    {
+      "tenor": "30Y",
+      "tenorDays": 10958,
+      "current": {
+        "v": 4.66,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": []
+    }
+  ],
+  "spreads": [
+    {
+      "id": "2s10s",
+      "label": "10Y − 2Y",
+      "legs": [
+        "2Y",
+        "10Y"
+      ],
+      "current": {
+        "v": 31.00000000000005,
+        "st": "closed",
+        "provIdx": 0,
+        "ts": null
+      },
+      "vs": []
+    }
+  ],
+  "history": {
+    "range": "5Y",
+    "from": "2021-09-14",
+    "to": "2026-09-14",
+    "series": [
+      {
+        "tenor": "10Y",
+        "source": "econ_series",
+        "seriesCode": "DGS10",
+        "sourceId": "fred.csv",
+        "provIdx": 1,
+        "unit": "pct",
+        "obs": [
+          {
+            "d": "2026-09-04",
+            "v": 3.99
+          },
+          {
+            "d": "2026-09-08",
+            "v": 4.01
+          },
+          {
+            "d": "2026-09-09",
+            "v": 4.02
+          },
+          {
+            "d": "2026-09-10",
+            "v": 4.04
+          },
+          {
+            "d": "2026-09-11",
+            "v": 4.03
+          },
+          {
+            "d": "2026-09-14",
+            "v": 4.07
+          }
+        ],
+        "coverage": {
+          "first": "2026-09-04",
+          "last": "2026-09-14",
+          "n": 6
+        },
+        "truncated": true
+      }
+    ],
+    "spreadSeries": []
+  },
+  "caveats": [
+    "NO_LONG_HISTORY_FOR_TENOR"
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

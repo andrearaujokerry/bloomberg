@@ -1,0 +1,153 @@
+{
+  "variant": "govt",
+  "instrument": {
+    "instrumentId": "<BILL>",
+    "key": "912797VE4 Govt",
+    "name": "US Treasury Bill 4WK 29-Sep-2026",
+    "cusip": "912797VE4",
+    "securityType": "bill",
+    "termLabel": "4WK",
+    "onTheRun": true
+  },
+  "terms": {
+    "provIdx": 0,
+    "couponRate": null,
+    "couponFreq": 0,
+    "dayCount": "ACT/360",
+    "issueDate": "2026-09-01",
+    "datedDate": "2026-09-01",
+    "maturityDate": "2026-09-29",
+    "firstCouponDate": null,
+    "businessDayConv": "following",
+    "calendarId": "SIFMA",
+    "settlementDays": 1,
+    "minDenomination": 100,
+    "amountOutstanding": null,
+    "knownAt": "<KNOWNAT>"
+  },
+  "settlement": {
+    "date": "2026-09-16",
+    "valuationDate": "2026-09-15",
+    "daysToMaturity": 13,
+    "yearsToMaturity": 0.03561643835616438,
+    "rule": "T+1 SIFMA"
+  },
+  "inputs": {
+    "mode": "curve",
+    "source": "curve",
+    "curveId": "UST_PAR",
+    "curveDate": "2026-09-14",
+    "curveProvIdx": 1,
+    "face": 1000000
+  },
+  "results": {
+    "kind": "bill",
+    "discountRatePct": {
+      "v": 3.6900000000000004,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "investmentYieldPct": {
+      "v": 3.7462418672878703,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "price": {
+      "v": 99.86675000000001,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "moneyMarketYieldPct": {
+      "v": 3.6949234855442006,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "daysToMaturity": 13,
+    "dollarDiscount": {
+      "v": 1332.4999999998965,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "dv01": {
+      "v": 3.552158378693494,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "modifiedDuration": {
+      "v": 0.0355689794520548,
+      "st": "closed",
+      "provIdx": 2,
+      "ts": null
+    },
+    "spreads": {
+      "interpolatedCurveYieldPct": {
+        "v": 3.95,
+        "st": "closed",
+        "provIdx": 1,
+        "ts": null
+      },
+      "toCurveBp": {
+        "v": -20.375813271212984,
+        "st": "closed",
+        "provIdx": 1,
+        "ts": null
+      },
+      "zSpreadBp": null,
+      "benchmark": null
+    },
+    "conventions": {
+      "dayCount": "ACT/360",
+      "compounding": "simple",
+      "settlementDays": 1,
+      "currency": "USD",
+      "calendar": "SIFMA",
+      "businessDayConvention": "following",
+      "discountBasisDays": 360,
+      "investmentBasisDays": 365,
+      "investmentYieldBranchDays": 182
+    }
+  },
+  "cashflows": [
+    {
+      "date": "2026-09-29",
+      "kind": "maturity",
+      "days": 13,
+      "coupon": 0,
+      "principal": 1000000,
+      "total": 1000000,
+      "df": null,
+      "pv": null,
+      "fromCurve": false
+    }
+  ],
+  "curve": {
+    "id": "UST_PAR",
+    "date": "2026-09-14",
+    "interpolation": "monotone_convex",
+    "quoteInterpolation": "linear_zero",
+    "quoteExtrapolation": "flat_quote",
+    "buildId": "<BUILD>",
+    "provIdx": 1
+  },
+  "engines": [
+    {
+      "name": "curve.bootstrap",
+      "version": "1.0.0"
+    },
+    {
+      "name": "curve.interp",
+      "version": "1.0.0"
+    },
+    {
+      "name": "bill",
+      "version": "1.0.0"
+    }
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

@@ -1,0 +1,5476 @@
+{
+  "variant": "underlying",
+  "underlying": {
+    "instrumentId": "<AAPL>",
+    "key": "AAPL US Equity",
+    "name": "Apple Inc",
+    "px": {
+      "v": 330.3,
+      "st": "stale",
+      "ts": 1789496727000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_LAST"
+      }
+    },
+    "chg": {
+      "v": -2.78,
+      "st": "stale",
+      "ts": 1789496727000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_NET_1D"
+      }
+    },
+    "chgPct": {
+      "v": -0.8346,
+      "st": "stale",
+      "ts": 1789496727000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "CHG_PCT_1D"
+      }
+    },
+    "iv30Pct": {
+      "v": 24.427,
+      "st": "stale",
+      "ts": 1789496727000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "IVOL_30D"
+      }
+    },
+    "volume": {
+      "v": 16557466,
+      "st": "stale",
+      "ts": 1789496727000,
+      "provIdx": 0,
+      "live": {
+        "subject": "q:<AAPL>",
+        "field": "PX_VOLUME"
+      }
+    },
+    "subject": "q:<AAPL>",
+    "provIdx": 0,
+    "captureTs": "2026-09-15T18:40:39.000Z"
+  },
+  "expiries": [
+    {
+      "expiry": "2026-09-16",
+      "days": 1,
+      "contractCount": 94,
+      "isSelected": true,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-09-18",
+      "days": 3,
+      "contractCount": 214,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2026-09-21",
+      "days": 4,
+      "contractCount": 92,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-09-23",
+      "days": 6,
+      "contractCount": 92,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-09-25",
+      "days": 8,
+      "contractCount": 156,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-09-28",
+      "days": 9,
+      "contractCount": 90,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-09-30",
+      "days": 11,
+      "contractCount": 60,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-10-02",
+      "days": 13,
+      "contractCount": 142,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-10-09",
+      "days": 18,
+      "contractCount": 122,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-10-16",
+      "days": 23,
+      "contractCount": 158,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2026-10-23",
+      "days": 28,
+      "contractCount": 122,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-10-30",
+      "days": 33,
+      "contractCount": 122,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2026-11-20",
+      "days": 48,
+      "contractCount": 162,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2026-12-18",
+      "days": 67,
+      "contractCount": 184,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2027-01-15",
+      "days": 85,
+      "contractCount": 194,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2027-02-19",
+      "days": 108,
+      "contractCount": 160,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2027-03-19",
+      "days": 128,
+      "contractCount": 154,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2027-04-16",
+      "days": 147,
+      "contractCount": 98,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2027-06-17",
+      "days": 190,
+      "contractCount": 160,
+      "isSelected": false,
+      "isWeekly": true
+    },
+    {
+      "expiry": "2027-09-17",
+      "days": 253,
+      "contractCount": 162,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2027-12-17",
+      "days": 317,
+      "contractCount": 208,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2028-01-21",
+      "days": 340,
+      "contractCount": 148,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2028-03-17",
+      "days": 379,
+      "contractCount": 122,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2028-12-15",
+      "days": 568,
+      "contractCount": 146,
+      "isSelected": false,
+      "isWeekly": false
+    },
+    {
+      "expiry": "2029-01-19",
+      "days": 590,
+      "contractCount": 148,
+      "isSelected": false,
+      "isWeekly": false
+    }
+  ],
+  "selected": {
+    "expiry": "2026-09-16",
+    "expiryTs": "2026-09-16T20:00:00.000Z",
+    "days": 1,
+    "years": 0.002889142567224759,
+    "contractCount": 94,
+    "atmStrike": 330,
+    "atmIvPct": {
+      "v": 27.979999999999997,
+      "st": "live",
+      "provIdx": 0
+    },
+    "forward": null,
+    "putCallVolumeRatio": {
+      "v": 0.7526167288613816,
+      "st": "live",
+      "provIdx": 0
+    },
+    "putCallOiRatio": {
+      "v": 0.9230701351876037,
+      "st": "live",
+      "provIdx": 0
+    },
+    "totals": {
+      "callVolume": {
+        "v": 186779,
+        "st": "live",
+        "provIdx": 0
+      },
+      "putVolume": {
+        "v": 140573,
+        "st": "live",
+        "provIdx": 0
+      },
+      "callOi": {
+        "v": 56662,
+        "st": "live",
+        "provIdx": 0
+      },
+      "putOi": {
+        "v": 52303,
+        "st": "live",
+        "provIdx": 0
+      }
+    }
+  },
+  "rows": [
+    {
+      "strike": 305,
+      "isAtm": false,
+      "moneynessPct": 8.295081967213115,
+      "call": {
+        "instrumentId": "<AAPL260916C00305000>",
+        "key": "AAPL 9/16/26 C305 Equity",
+        "occSymbol": "AAPL260916C00305000",
+        "subject": "q:<AAPL260916C00305000>",
+        "bid": {
+          "v": 24.6,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 26.95,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 126,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 71,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 25.775,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 24.55,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T17:24:20.000Z",
+        "chg": {
+          "v": -5.050000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -17.06081081081081,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 29.6,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 25,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 96.1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9926,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0019,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0037,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.022,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0083,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 25.3377,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00305000>",
+        "key": "AAPL 9/16/26 P305 Equity",
+        "occSymbol": "AAPL260916P00305000",
+        "subject": "q:<AAPL260916P00305000>",
+        "bid": {
+          "v": 0.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 194,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 103,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.025,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T17:49:25.000Z",
+        "chg": {
+          "v": -0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -71.42857142857143,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.07,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 1099,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3826,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 60.12,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0074,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0019,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0037,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0249,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0251,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 307.5,
+      "isAtm": false,
+      "moneynessPct": 7.41463414634147,
+      "call": {
+        "instrumentId": "<AAPL260916C00307500>",
+        "key": "AAPL 9/16/26 C307.5 Equity",
+        "occSymbol": "AAPL260916C00307500",
+        "subject": "q:<AAPL260916C00307500>",
+        "bid": {
+          "v": 21.9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 23.75,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 119,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 36,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 22.825,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 22.34,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T14:17:52.000Z",
+        "chg": {
+          "v": -4.835000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -17.792088316467346,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 27.175,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 7,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 50.339999999999996,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9904,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0025,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0047,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0287,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0083,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 22.8445,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00307500>",
+        "key": "AAPL 9/16/26 P307.5 Equity",
+        "occSymbol": "AAPL260916P00307500",
+        "subject": "q:<AAPL260916P00307500>",
+        "bid": {
+          "v": 0.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.04,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 126,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 255,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.035,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.04,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:15:01.000Z",
+        "chg": {
+          "v": -0.045000000000000005,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -52.94117647058824,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.085,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 974,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 899,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 56.95,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0096,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0025,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0047,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0313,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0315,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 310,
+      "isAtm": false,
+      "moneynessPct": 6.548387096774189,
+      "call": {
+        "instrumentId": "<AAPL260916C00310000>",
+        "key": "AAPL 9/16/26 C310 Equity",
+        "occSymbol": "AAPL260916C00310000",
+        "subject": "q:<AAPL260916C00310000>",
+        "bid": {
+          "v": 20.15,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 20.7,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 73,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 74,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 20.424999999999997,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 19.6,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T15:15:34.000Z",
+        "chg": {
+          "v": -5.199999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -20.967741935483865,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 24.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 4,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 151,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 60.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9873,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0035,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.006,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0374,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0084,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 20.3533,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00310000>",
+        "key": "AAPL 9/16/26 P310 Equity",
+        "occSymbol": "AAPL260916P00310000",
+        "subject": "q:<AAPL260916P00310000>",
+        "bid": {
+          "v": 0.04,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 88,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 284,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.045,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:11:43.000Z",
+        "chg": {
+          "v": -0.045,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -47.36842105263158,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.095,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 670,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 625,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 53.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0127,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0035,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.006,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0398,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0401,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 312.5,
+      "isAtm": false,
+      "moneynessPct": 5.696000000000012,
+      "call": {
+        "instrumentId": "<AAPL260916C00312500>",
+        "key": "AAPL 9/16/26 C312.5 Equity",
+        "occSymbol": "AAPL260916C00312500",
+        "subject": "q:<AAPL260916C00312500>",
+        "bid": {
+          "v": 17.1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 18.65,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 120,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 32,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 17.875,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 16.81,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T15:11:59.000Z",
+        "chg": {
+          "v": -4.515000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -21.172332942555695,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 21.325,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 24,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 49.35,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9829,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0048,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0078,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0491,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0084,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 17.8651,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00312500>",
+        "key": "AAPL 9/16/26 P312.5 Equity",
+        "occSymbol": "AAPL260916P00312500",
+        "subject": "q:<AAPL260916P00312500>",
+        "bid": {
+          "v": 0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.06,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 112,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 281,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.055,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.06,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:18:59.000Z",
+        "chg": {
+          "v": -0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -45.45454545454546,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.11,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 448,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1846,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 48.54,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0171,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0048,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0078,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0512,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0516,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 315,
+      "isAtm": false,
+      "moneynessPct": 4.857142857142871,
+      "call": {
+        "instrumentId": "<AAPL260916C00315000>",
+        "key": "AAPL 9/16/26 C315 Equity",
+        "occSymbol": "AAPL260916C00315000",
+        "subject": "q:<AAPL260916C00315000>",
+        "bid": {
+          "v": 15.25,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 16.1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 67,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 210,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 15.675,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 15.13,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T16:48:15.000Z",
+        "chg": {
+          "v": -3.5699999999999985,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -19.09090909090908,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 18.7,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 303,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1008,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 60.67,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9765,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.007,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0102,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0653,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0084,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 15.3814,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00315000>",
+        "key": "AAPL 9/16/26 P315 Equity",
+        "occSymbol": "AAPL260916P00315000",
+        "subject": "q:<AAPL260916P00315000>",
+        "bid": {
+          "v": 0.06,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.07,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 361,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 271,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.065,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.07,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:18:53.000Z",
+        "chg": {
+          "v": -0.05499999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -43.99999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.125,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 811,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 6006,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 43.61,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0235,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.007,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0102,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0671,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0676,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 317.5,
+      "isAtm": false,
+      "moneynessPct": 4.031496062992135,
+      "call": {
+        "instrumentId": "<AAPL260916C00317500>",
+        "key": "AAPL 9/16/26 C317.5 Equity",
+        "occSymbol": "AAPL260916C00317500",
+        "subject": "q:<AAPL260916C00317500>",
+        "bid": {
+          "v": 12.25,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 13.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 307,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 248,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 13.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 12.55,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T16:24:52.000Z",
+        "chg": {
+          "v": -4.649999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -27.034883720930225,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 17.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 17,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 146,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 47.77,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9665,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0104,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0137,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0897,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0084,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 12.906,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00317500>",
+        "key": "AAPL 9/16/26 P317.5 Equity",
+        "occSymbol": "AAPL260916P00317500",
+        "subject": "q:<AAPL260916P00317500>",
+        "bid": {
+          "v": 0.08,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.09,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 175,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 36,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.08499999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.09,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:19:20.000Z",
+        "chg": {
+          "v": -0.05499999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -37.93103448275862,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.145,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 1658,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1443,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 39.12,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0335,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0104,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0137,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0912,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0003,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.092,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 320,
+      "isAtm": false,
+      "moneynessPct": 3.2187500000000036,
+      "call": {
+        "instrumentId": "<AAPL260916C00320000>",
+        "key": "AAPL 9/16/26 C320 Equity",
+        "occSymbol": "AAPL260916C00320000",
+        "subject": "q:<AAPL260916C00320000>",
+        "bid": {
+          "v": 10.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 10.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 114,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 204,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 10.524999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 9.9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T17:54:46.000Z",
+        "chg": {
+          "v": -4.6,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -31.72413793103448,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 14.5,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 455,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3023,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 39.21,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9486,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0163,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0194,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.1338,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0083,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 10.4504,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00320000>",
+        "key": "AAPL 9/16/26 P320 Equity",
+        "occSymbol": "AAPL260916P00320000",
+        "subject": "q:<AAPL260916P00320000>",
+        "bid": {
+          "v": 0.13,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.14,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 293,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 126,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.135,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.13,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:11.000Z",
+        "chg": {
+          "v": -0.06,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -31.57894736842105,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.19,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 5485,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3090,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 35.620000000000005,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0514,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0163,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0194,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.1349,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0005,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.136,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 322.5,
+      "isAtm": false,
+      "moneynessPct": 2.4186046511627923,
+      "call": {
+        "instrumentId": "<AAPL260916C00322500>",
+        "key": "AAPL 9/16/26 C322.5 Equity",
+        "occSymbol": "AAPL260916C00322500",
+        "subject": "q:<AAPL260916C00322500>",
+        "bid": {
+          "v": 7.9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 8.35,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 86,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 240,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 8.125,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 8.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:22:01.000Z",
+        "chg": {
+          "v": -3.6500000000000004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -30.801687763713083,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 11.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 233,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 932,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 34.96,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.9123,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0271,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0292,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.2306,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.008,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 8.048,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00322500>",
+        "key": "AAPL 9/16/26 P322.5 Equity",
+        "occSymbol": "AAPL260916P00322500",
+        "subject": "q:<AAPL260916P00322500>",
+        "bid": {
+          "v": 0.23,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.24,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 168,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 124,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.235,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.23,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:36.000Z",
+        "chg": {
+          "v": -0.04500000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -16.36363636363637,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.275,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 9079,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 2729,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 32.48,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.0877,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0271,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0292,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.2315,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0008,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.2334,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 325,
+      "isAtm": false,
+      "moneynessPct": 1.6307692307692356,
+      "call": {
+        "instrumentId": "<AAPL260916C00325000>",
+        "key": "AAPL 9/16/26 C325 Equity",
+        "occSymbol": "AAPL260916C00325000",
+        "subject": "q:<AAPL260916C00325000>",
+        "bid": {
+          "v": 5.7,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 5.9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 91,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 153,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 5.800000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 5.83,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:05.000Z",
+        "chg": {
+          "v": -3.6449999999999996,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -38.46965699208443,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 9.475,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 1469,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 2673,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 30.709999999999997,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.8384,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0448,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0446,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.4569,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0074,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 5.7762,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00325000>",
+        "key": "AAPL 9/16/26 P325 Equity",
+        "occSymbol": "AAPL260916P00325000",
+        "subject": "q:<AAPL260916P00325000>",
+        "bid": {
+          "v": 0.45,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.46,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 93,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 98,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.455,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.46,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:20.000Z",
+        "chg": {
+          "v": 0.040000000000000036,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 9.523809523809534,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.42,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 34270,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3935,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 30.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.1616,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0448,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0446,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.4575,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0015,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.4612,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 327.5,
+      "isAtm": false,
+      "moneynessPct": 0.854961832061063,
+      "call": {
+        "instrumentId": "<AAPL260916C00327500>",
+        "key": "AAPL 9/16/26 C327.5 Equity",
+        "occSymbol": "AAPL260916C00327500",
+        "subject": "q:<AAPL260916C00327500>",
+        "bid": {
+          "v": 3.75,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 3.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 42,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 3.775,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 3.75,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:39.000Z",
+        "chg": {
+          "v": -3.5250000000000004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -48.453608247422686,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 7.275,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 4886,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 826,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 28.51,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.7089,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0659,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.062,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.9326,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0063,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 3.7645,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00327500>",
+        "key": "AAPL 9/16/26 P327.5 Equity",
+        "occSymbol": "AAPL260916P00327500",
+        "subject": "q:<AAPL260916P00327500>",
+        "bid": {
+          "v": 0.94,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.96,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 98,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 182,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.95,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.94,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:25.000Z",
+        "chg": {
+          "v": 0.21999999999999997,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 30.555555555555557,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.72,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 31484,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 2753,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 28.76,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.2911,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0659,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.062,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.9329,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0026,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.9493,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 330,
+      "isAtm": true,
+      "moneynessPct": 0.09090909090909705,
+      "call": {
+        "instrumentId": "<AAPL260916C00330000>",
+        "key": "AAPL 9/16/26 C330 Equity",
+        "occSymbol": "AAPL260916C00330000",
+        "subject": "q:<AAPL260916C00330000>",
+        "bid": {
+          "v": 2.16,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 2.18,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 37,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 46,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 2.17,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 2.19,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:31.000Z",
+        "chg": {
+          "v": -3.0850000000000004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -58.48341232227489,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 5.275,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 34852,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 6436,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 27.939999999999998,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.528,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.079,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0717,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -1.4368,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0047,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 2.1617,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00330000>",
+        "key": "AAPL 9/16/26 P330 Equity",
+        "occSymbol": "AAPL260916P00330000",
+        "subject": "q:<AAPL260916P00330000>",
+        "bid": {
+          "v": 1.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 1.87,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 66,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 90,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 1.86,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 1.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:37.000Z",
+        "chg": {
+          "v": 0.6100000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 49.193548387096776,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 1.24,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 34948,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 5415,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 28.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.4721,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0791,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0717,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -1.437,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0042,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 1.8463,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 332.5,
+      "isAtm": false,
+      "moneynessPct": -0.6616541353383409,
+      "call": {
+        "instrumentId": "<AAPL260916C00332500>",
+        "key": "AAPL 9/16/26 C332.5 Equity",
+        "occSymbol": "AAPL260916C00332500",
+        "subject": "q:<AAPL260916C00332500>",
+        "bid": {
+          "v": 1.06,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 1.07,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 4,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 84,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 1.065,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 1.07,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:33.000Z",
+        "chg": {
+          "v": -2.5300000000000002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -70.27777777777777,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 3.6,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 44771,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 4470,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 27.27,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.3328,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0736,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0656,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -1.0323,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.003,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 1.066,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00332500>",
+        "key": "AAPL 9/16/26 P332.5 Equity",
+        "occSymbol": "AAPL260916P00332500",
+        "subject": "q:<AAPL260916P00332500>",
+        "bid": {
+          "v": 3.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 3.3,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 110,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 111,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 3.25,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 3.23,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:15.000Z",
+        "chg": {
+          "v": 1.1600000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 56.038647342995176,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 2.07,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 6352,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 2265,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 27.27,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.668,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.074,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0655,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -1.0331,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0056,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 3.2512,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 335,
+      "isAtm": false,
+      "moneynessPct": -1.4029850746268613,
+      "call": {
+        "instrumentId": "<AAPL260916C00335000>",
+        "key": "AAPL 9/16/26 C335 Equity",
+        "occSymbol": "AAPL260916C00335000",
+        "subject": "q:<AAPL260916C00335000>",
+        "bid": {
+          "v": 0.45,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.46,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 142,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 99,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.455,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.46,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:35.000Z",
+        "chg": {
+          "v": -1.795,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -79.6008869179601,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 2.255,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 49614,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 8252,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 27.26,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.1761,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0523,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0471,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.4552,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0016,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.459,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00335000>",
+        "key": "AAPL 9/16/26 P335 Equity",
+        "occSymbol": "AAPL260916P00335000",
+        "subject": "q:<AAPL260916P00335000>",
+        "bid": {
+          "v": 5,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 5.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 160,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 112,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 5.1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 5.15,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:39.000Z",
+        "chg": {
+          "v": 1.9000000000000004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 58.461538461538474,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 3.25,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 1094,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3226,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 26.279999999999998,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.8264,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0532,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0467,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.4594,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0054,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 5.1476,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 337.5,
+      "isAtm": false,
+      "moneynessPct": -2.1333333333333315,
+      "call": {
+        "instrumentId": "<AAPL260916C00337500>",
+        "key": "AAPL 9/16/26 C337.5 Equity",
+        "occSymbol": "AAPL260916C00337500",
+        "subject": "q:<AAPL260916C00337500>",
+        "bid": {
+          "v": 0.19,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 145,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 214,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.195,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.19,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:07.000Z",
+        "chg": {
+          "v": -1.1300000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -85.60606060606061,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 1.32,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 23279,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3097,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 28.449999999999996,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0838,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0301,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0284,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.188,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0007,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.1896,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00337500>",
+        "key": "AAPL 9/16/26 P337.5 Equity",
+        "occSymbol": "AAPL260916P00337500",
+        "subject": "q:<AAPL260916P00337500>",
+        "bid": {
+          "v": 7.15,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 7.55,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 86,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 82,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 7.35,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 7.45,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:40.000Z",
+        "chg": {
+          "v": 2.6500000000000004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 55.20833333333335,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 4.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 473,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1348,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 26.810000000000002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.9205,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0307,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.027,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.1998,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0044,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 7.3859,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 340,
+      "isAtm": false,
+      "moneynessPct": -2.8529411764705803,
+      "call": {
+        "instrumentId": "<AAPL260916C00340000>",
+        "key": "AAPL 9/16/26 C340 Equity",
+        "occSymbol": "AAPL260916C00340000",
+        "subject": "q:<AAPL260916C00340000>",
+        "bid": {
+          "v": 0.08,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.09,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 146,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 377,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.08499999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.09,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:17.000Z",
+        "chg": {
+          "v": -0.645,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -87.75510204081633,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.735,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 13546,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 7477,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 30.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0401,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0159,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0161,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0837,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0844,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00340000>",
+        "key": "AAPL 9/16/26 P340 Equity",
+        "occSymbol": "AAPL260916P00340000",
+        "subject": "q:<AAPL260916P00340000>",
+        "bid": {
+          "v": 8.95,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 10.75,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 373,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 195,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 9.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 9.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:39.000Z",
+        "chg": {
+          "v": 3.125000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 46.81647940074909,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 6.675,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 80,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 542,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 33.650000000000006,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.9644,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0158,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0143,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.1035,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0028,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 9.7888,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 342.5,
+      "isAtm": false,
+      "moneynessPct": -3.56204379562044,
+      "call": {
+        "instrumentId": "<AAPL260916C00342500>",
+        "key": "AAPL 9/16/26 C342.5 Equity",
+        "occSymbol": "AAPL260916C00342500",
+        "subject": "q:<AAPL260916C00342500>",
+        "bid": {
+          "v": 0.04,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 48,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 424,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.045,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:20:26.000Z",
+        "chg": {
+          "v": -0.34,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -87.17948717948718,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.39,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 6146,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 3705,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 32.57,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0207,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0085,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0093,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.042,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0423,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00342500>",
+        "key": "AAPL 9/16/26 P342.5 Equity",
+        "occSymbol": "AAPL260916P00342500",
+        "subject": "q:<AAPL260916P00342500>",
+        "bid": {
+          "v": 11.3,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 13.4,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 161,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 71,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 12.350000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 12.15,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T13:48:04.000Z",
+        "chg": {
+          "v": 3.5999999999999996,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 42.10526315789473,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 8.55,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 30,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 40.19,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.9832,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0081,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.008,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0678,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0017,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 12.2528,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 345,
+      "isAtm": false,
+      "moneynessPct": -4.2608695652173845,
+      "call": {
+        "instrumentId": "<AAPL260916C00345000>",
+        "key": "AAPL 9/16/26 C345 Equity",
+        "occSymbol": "AAPL260916C00345000",
+        "subject": "q:<AAPL260916C00345000>",
+        "bid": {
+          "v": 0.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 0.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 67,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 343,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 0.025,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 0.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:25:11.000Z",
+        "chg": {
+          "v": -0.175,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -85.36585365853658,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.205,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 3556,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 4969,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 35.08,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0111,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0046,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0055,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0223,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0225,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00345000>",
+        "key": "AAPL 9/16/26 P345 Equity",
+        "occSymbol": "AAPL260916P00345000",
+        "subject": "q:<AAPL260916P00345000>",
+        "bid": {
+          "v": 13.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 14.95,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 164,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 38,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 14.375,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 13.7,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T13:58:46.000Z",
+        "chg": {
+          "v": 2.799999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 25.68807339449539,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 10.9,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 10,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 27,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "delta": {
+          "v": -0.9918,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0041,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0041,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0529,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0009,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 14.7378,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 347.5,
+      "isAtm": false,
+      "moneynessPct": -4.949640287769785,
+      "call": {
+        "instrumentId": "<AAPL260916C00347500>",
+        "key": "AAPL 9/16/26 C347.5 Equity",
+        "occSymbol": "AAPL260916C00347500",
+        "subject": "q:<AAPL260916C00347500>",
+        "bid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "ask": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "askSize": {
+          "v": 1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "last": {
+          "v": 0.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:20:37.000Z",
+        "chg": {
+          "v": -0.08,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -80,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 1011,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1718,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 33.58,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0059,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0025,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0032,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0116,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0117,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00347500>",
+        "key": "AAPL 9/16/26 P347.5 Equity",
+        "occSymbol": "AAPL260916P00347500",
+        "subject": "q:<AAPL260916P00347500>",
+        "bid": {
+          "v": 16.35,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 17.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 151,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 71,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 17.075000000000003,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 17.45,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T14:58:59.000Z",
+        "chg": {
+          "v": 3.924999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 29.020332717190378,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 13.525,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 5,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 32,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "delta": {
+          "v": -0.9962,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0457,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0005,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 17.2305,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 350,
+      "isAtm": false,
+      "moneynessPct": -5.628571428571427,
+      "call": {
+        "instrumentId": "<AAPL260916C00350000>",
+        "key": "AAPL 9/16/26 C350 Equity",
+        "occSymbol": "AAPL260916C00350000",
+        "subject": "q:<AAPL260916C00350000>",
+        "bid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "ask": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "askSize": {
+          "v": 83,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "last": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T18:24:43.000Z",
+        "chg": {
+          "v": -0.04,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -80,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.05,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 769,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 2915,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 37.84,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.003,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0013,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0017,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0058,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0058,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00350000>",
+        "key": "AAPL 9/16/26 P350 Equity",
+        "occSymbol": "AAPL260916P00350000",
+        "subject": "q:<AAPL260916P00350000>",
+        "bid": {
+          "v": 18.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 20.1,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 162,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 42,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 19.475,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 19.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T14:58:59.000Z",
+        "chg": {
+          "v": 4.050000000000001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 25.632911392405067,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 15.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 7,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 5,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "delta": {
+          "v": -0.9984,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0009,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0423,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0003,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 19.7271,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 352.5,
+      "isAtm": false,
+      "moneynessPct": -6.297872340425526,
+      "call": {
+        "instrumentId": "<AAPL260916C00352500>",
+        "key": "AAPL 9/16/26 C352.5 Equity",
+        "occSymbol": "AAPL260916C00352500",
+        "subject": "q:<AAPL260916C00352500>",
+        "bid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "ask": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "askSize": {
+          "v": 38,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "last": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T17:45:59.000Z",
+        "chg": {
+          "v": -0.019999999999999997,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -66.66666666666666,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.03,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 124,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1101,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 42.02,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0015,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0007,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0029,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0029,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00352500>",
+        "key": "AAPL 9/16/26 P352.5 Equity",
+        "occSymbol": "AAPL260916P00352500",
+        "subject": "q:<AAPL260916P00352500>",
+        "bid": {
+          "v": 21.3,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 23.8,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 120,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 34,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 22.55,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "lastTs": null,
+        "chg": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "chgPct": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "prevClose": {
+          "v": 18.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 76.2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.9993,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0409,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 22.2256,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      }
+    },
+    {
+      "strike": 355,
+      "isAtm": false,
+      "moneynessPct": -6.957746478873239,
+      "call": {
+        "instrumentId": "<AAPL260916C00355000>",
+        "key": "AAPL 9/16/26 C355 Equity",
+        "occSymbol": "AAPL260916C00355000",
+        "subject": "q:<AAPL260916C00355000>",
+        "bid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "ask": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "askSize": {
+          "v": 72,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": null,
+          "st": "na",
+          "r": "FIELD_UNKNOWN",
+          "provIdx": -1
+        },
+        "last": {
+          "v": 0.01,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T14:46:00.000Z",
+        "chg": {
+          "v": -0.004999999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": -33.33333333333333,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 0.015,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 80,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 1923,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 46.129999999999995,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": 0.0008,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0004,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0006,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0016,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 0.0016,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": false,
+        "provIdx": 0
+      },
+      "put": {
+        "instrumentId": "<AAPL260916P00355000>",
+        "key": "AAPL 9/16/26 P355 Equity",
+        "occSymbol": "AAPL260916P00355000",
+        "subject": "q:<AAPL260916P00355000>",
+        "bid": {
+          "v": 23.6,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ask": {
+          "v": 25.85,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "bidSize": {
+          "v": 174,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "askSize": {
+          "v": 82,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "mid": {
+          "v": 24.725,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "last": {
+          "v": 25.5,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "lastTs": "2026-09-15T14:27:16.000Z",
+        "chg": {
+          "v": 4.949999999999999,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "chgPct": {
+          "v": 24.087591240875916,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "prevClose": {
+          "v": 20.55,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "volume": {
+          "v": 2,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "openInterest": {
+          "v": 0,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivPct": {
+          "v": 41.010000000000005,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "delta": {
+          "v": -0.9997,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "gamma": {
+          "v": 0.0002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "vega": {
+          "v": 0.0002,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theta": {
+          "v": -0.0404,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "rho": {
+          "v": -0.0001,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "theo": {
+          "v": 24.7251,
+          "st": "live",
+          "provIdx": 0,
+          "ts": 1789497639000
+        },
+        "ivSuspect": true,
+        "provIdx": 0
+      }
+    }
+  ],
+  "smile": {
+    "points": [
+      {
+        "strike": 305,
+        "moneynessPct": 8.295081967213115,
+        "callIvPct": null,
+        "putIvPct": 60.12,
+        "oiTotal": 3851
+      },
+      {
+        "strike": 307.5,
+        "moneynessPct": 7.41463414634147,
+        "callIvPct": null,
+        "putIvPct": 56.95,
+        "oiTotal": 908
+      },
+      {
+        "strike": 310,
+        "moneynessPct": 6.548387096774189,
+        "callIvPct": 60.8,
+        "putIvPct": 53.02,
+        "oiTotal": 776
+      },
+      {
+        "strike": 312.5,
+        "moneynessPct": 5.696000000000012,
+        "callIvPct": 49.35,
+        "putIvPct": 48.54,
+        "oiTotal": 1870
+      },
+      {
+        "strike": 315,
+        "moneynessPct": 4.857142857142871,
+        "callIvPct": 60.67,
+        "putIvPct": 43.61,
+        "oiTotal": 7014
+      },
+      {
+        "strike": 317.5,
+        "moneynessPct": 4.031496062992135,
+        "callIvPct": 47.77,
+        "putIvPct": 39.12,
+        "oiTotal": 1589
+      },
+      {
+        "strike": 320,
+        "moneynessPct": 3.2187500000000036,
+        "callIvPct": 39.21,
+        "putIvPct": 35.620000000000005,
+        "oiTotal": 6113
+      },
+      {
+        "strike": 322.5,
+        "moneynessPct": 2.4186046511627923,
+        "callIvPct": 34.96,
+        "putIvPct": 32.48,
+        "oiTotal": 3661
+      },
+      {
+        "strike": 325,
+        "moneynessPct": 1.6307692307692356,
+        "callIvPct": 30.709999999999997,
+        "putIvPct": 30.03,
+        "oiTotal": 6608
+      },
+      {
+        "strike": 327.5,
+        "moneynessPct": 0.854961832061063,
+        "callIvPct": 28.51,
+        "putIvPct": 28.76,
+        "oiTotal": 3579
+      },
+      {
+        "strike": 330,
+        "moneynessPct": 0.09090909090909705,
+        "callIvPct": 27.939999999999998,
+        "putIvPct": 28.02,
+        "oiTotal": 11851
+      },
+      {
+        "strike": 332.5,
+        "moneynessPct": -0.6616541353383409,
+        "callIvPct": 27.27,
+        "putIvPct": 27.27,
+        "oiTotal": 6735
+      },
+      {
+        "strike": 335,
+        "moneynessPct": -1.4029850746268613,
+        "callIvPct": 27.26,
+        "putIvPct": 26.279999999999998,
+        "oiTotal": 11478
+      },
+      {
+        "strike": 337.5,
+        "moneynessPct": -2.1333333333333315,
+        "callIvPct": 28.449999999999996,
+        "putIvPct": 26.810000000000002,
+        "oiTotal": 4445
+      },
+      {
+        "strike": 340,
+        "moneynessPct": -2.8529411764705803,
+        "callIvPct": 30.03,
+        "putIvPct": 33.650000000000006,
+        "oiTotal": 8019
+      },
+      {
+        "strike": 342.5,
+        "moneynessPct": -3.56204379562044,
+        "callIvPct": 32.57,
+        "putIvPct": 40.19,
+        "oiTotal": 3735
+      },
+      {
+        "strike": 345,
+        "moneynessPct": -4.2608695652173845,
+        "callIvPct": 35.08,
+        "putIvPct": null,
+        "oiTotal": 4996
+      },
+      {
+        "strike": 347.5,
+        "moneynessPct": -4.949640287769785,
+        "callIvPct": 33.58,
+        "putIvPct": null,
+        "oiTotal": 1750
+      },
+      {
+        "strike": 350,
+        "moneynessPct": -5.628571428571427,
+        "callIvPct": 37.84,
+        "putIvPct": null,
+        "oiTotal": 2920
+      },
+      {
+        "strike": 352.5,
+        "moneynessPct": -6.297872340425526,
+        "callIvPct": 42.02,
+        "putIvPct": null,
+        "oiTotal": 1101
+      },
+      {
+        "strike": 355,
+        "moneynessPct": -6.957746478873239,
+        "callIvPct": 46.129999999999995,
+        "putIvPct": null,
+        "oiTotal": 1923
+      }
+    ],
+    "svi": {
+      "a": -0.0028286197352296043,
+      "b": 0.029129221139708,
+      "rho": -0.42115883177404734,
+      "m": -0.047622199911013095,
+      "sigma": 0.11477113973200602,
+      "rmse": 0.0059170890964827865,
+      "n": 17
+    },
+    "sviSource": "fit",
+    "sviUnavailableReason": "SURFACE_STORE_NOT_IMPLEMENTED"
+  },
+  "captureTs": "2026-09-15T18:40:39.000Z",
+  "delayMin": 15,
+  "caveats": [
+    "DELAYED_15MIN",
+    "PROVIDER_GREEKS_CBOE",
+    "NO_OPRA_DEPTH",
+    "DEEP_ITM_IV_UNRELIABLE",
+    "SURFACE_NOT_STORED"
+  ]
+}

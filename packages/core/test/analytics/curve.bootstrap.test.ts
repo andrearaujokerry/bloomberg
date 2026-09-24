@@ -569,3 +569,82 @@ describe('fixtures/golden/analytics/curve/bootstrap.json', () => {
     expect(inputs.curveId).toBe('UST_PAR');
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// Par quotes shorter than one coupon period (the Treasury's 1M … 4M)
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * The Treasury publishes fourteen par tenors and five of them mature before the first semiannual
+ * coupon date. They used to raise — "a 1-month tenor is not a whole number of 2/yr coupon periods"
+ * — which is a bootstrap that never succeeds on the data `ingest/jobs/treasuryCurves.ts` writes.
+ * They are money-market points: one payment, simple interest, `df = 1/(1 + y·t)`, known outright.
+ */
+describe('curve.bootstrap — a par quote shorter than one coupon period', () => {
+  const CURVE_DATE = '2026-09-15';
+  const SHORT: readonly ParQuote[] = [
+    { tenor: '1M', parRate: 4.02 },
+    { tenor: '1.5M', parRate: 4.0, days: 45 },
+    { tenor: '2M', parRate: 3.99 },
+    { tenor: '3M', parRate: 3.98 },
+    { tenor: '4M', parRate: 3.97 },
+  ];
+  const COUPON: readonly ParQuote[] = [
+    { tenor: '6M', parRate: 3.95 },
+    { tenor: '1Y', parRate: 3.9 },
+    { tenor: '2Y', parRate: 3.76 },
+    { tenor: '5Y', parRate: 3.81 },
+    { tenor: '10Y', parRate: 4.07 },
+    { tenor: '30Y', parRate: 4.66 },
+  ];
+  const inputs: ParBootstrapInputs = {
+    curveId: 'UST_PAR',
+    curveDate: CURVE_DATE,
+    parQuotes: [...SHORT, ...COUPON],
+    dayCount: 'ACT/ACT',
+    compounding: 'semiannual',
+    interpolation: 'monotone_convex',
+  };
+  const result = build(inputs, '2026-09-15T20:00:00Z');
+
+  it('builds the whole published grid rather than raising on the short end', () => {
+    expect(result.outputs.nodes).toHaveLength(SHORT.length + COUPON.length);
+    const times = result.outputs.nodes.map((n) => n.t);
+    expect(times).toEqual([...times].sort((a, b) => a - b));
+    const dfs = result.outputs.nodes.map((n) => n.df);
+    for (let i = 1; i < dfs.length; i += 1) expect(dfs[i]!).toBeLessThan(dfs[i - 1]!);
+  });
+
+  it('prices each short quote as simple interest over its own year fraction', () => {
+    for (let i = 0; i < SHORT.length; i += 1) {
+      const quote = SHORT[i]!;
+      const node = result.outputs.nodes[i]!;
+      expect(node.df).toBeCloseTo(1 / (1 + (quote.parRate / 100) * node.t), 15);
+    }
+  });
+
+  it('still reprices every coupon quote to exactly 100 with the short end in the curve', () => {
+    for (const quote of COUPON) {
+      const schedule = parScheduleOf(CURVE_DATE, quote.tenor, 2, 'ACT/ACT');
+      expect(
+        parBondPrice(result.outputs.curve, schedule, quote.parRate / 100),
+        `${quote.tenor} must reprice to par`,
+      ).toBeCloseTo(100, 8);
+    }
+  });
+
+  it('reads `1.5M` from the days it carries, since the label cannot say what it means', () => {
+    const node = result.outputs.nodes[1]!;
+    expect(node.t).toBeCloseTo(45 / (181 * 2), 6); // ICMA: 45 days into a 181-day period.
+    expect(() =>
+      build({ ...inputs, parQuotes: [{ tenor: '1.5M', parRate: 4 }, ...COUPON] }, '2026-09-15T20:00:00Z'),
+    ).toThrow(/is not a whole number of months or years, so it must carry its `days`/);
+  });
+
+  it('still raises on a tenor longer than one period that is not a whole number of them', () => {
+    // A 9M par bond pays a coupon in between: it is a different instrument, not a stub.
+    expect(() =>
+      build({ ...inputs, parQuotes: [...COUPON, { tenor: '9M', parRate: 3.94 }] }, '2026-09-15T20:00:00Z'),
+    ).toThrow(/9-month tenor is not a whole number of 2\/yr coupon periods/);
+  });
+});

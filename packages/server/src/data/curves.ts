@@ -716,6 +716,11 @@ export async function buildCurve(
   return { ...hydrate(written, definition), curve: result.outputs.curve, cached: false };
 }
 
+/** `'1M'`, `'6M'`, `'10Y'` — a label `curve.bootstrap` can turn into a maturity by itself. */
+function isWholeMonthTenor(tenor: string): boolean {
+  return /^\s*\d{1,4}\s*[MY]\s*$/i.test(tenor);
+}
+
 /** Points → `ParBootstrapInputs`, recording what was actually consumed. */
 function parInputsOf(
   definition: CurveDefinition,
@@ -730,7 +735,15 @@ function parInputsOf(
     if (BILL_QUOTES.has(point.quoteType)) {
       bills.push({ tenor: point.tenor, days: point.tenorDays, discountRate: point.value });
     } else if (PAR_QUOTES.has(point.quoteType)) {
-      parQuotes.push({ tenor: point.tenor, parRate: point.value });
+      // `days` travels only for a tenor whose label cannot say what it means — the Treasury's
+      // `1.5M`. Every other quote's maturity comes from the label, which keeps `inputs_hash` (and
+      // so every stored build and every golden that cites one) byte-identical to what it was
+      // before short par tenors could bootstrap at all.
+      parQuotes.push(
+        isWholeMonthTenor(point.tenor)
+          ? { tenor: point.tenor, parRate: point.value }
+          : { tenor: point.tenor, parRate: point.value, days: point.tenorDays },
+      );
     } else {
       continue;
     }

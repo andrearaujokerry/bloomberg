@@ -142,32 +142,50 @@ PORT_WEIGHT
   .trim()
   .split(/\s+/);
 
-/** Every id the design names, from any of the five sources. */
+/**
+ * WP-11's Tier 3 econ additions (FUNCTIONS_TIER3 FED L1806, SWPM L1161, WIRP L597,
+ * `field_class 'econ'`). None of the five harvested lists above names them: they are the New York
+ * Fed's *published* SOFR averages and index, which arrive on the `SOFRAI` row of `nyfed.rates` and
+ * are stored on `rate_fixings.avg_30d` / `avg_90d` / `avg_180d` / `index_value`. The daily fixing
+ * itself (`RATE`, `RATE_P*`, `RATE_VOLUME_BN`) is already declared in WP-06's subject list and
+ * lives in `defs/price.ts`; these four are statistics the publisher computes from the fixing
+ * history rather than fixings, so they are `econ` and are named here rather than harvested — the
+ * same reason WP-10's portfolio ids are named above.
+ */
+const WP11_ECON_FIELD_IDS: readonly string[] = `
+RATE_AVG_180D RATE_AVG_30D RATE_AVG_90D RATE_INDEX
+`
+  .trim()
+  .split(/\s+/);
+
+/** Every id the design names, from any of the six sources. */
 const DESIGNED_FIELD_IDS: readonly string[] = [
   ...CONTRACTS_FIELD_IDS,
   ...WP02_ANALYTIC_FIELD_IDS,
   ...WP03_REFERENCE_FIELD_IDS,
   ...WP06_SUBJECT_FIELD_IDS,
   ...WP10_PORTFOLIO_FIELD_IDS,
+  ...WP11_ECON_FIELD_IDS,
 ];
 
 /**
  * The dictionary's total size: CONTRACTS §4.3's 94, WP-02's 68 analytics, WP-03's 95 reference,
- * WP-06's 42 subject and WP-10's 8 portfolio fields.
+ * WP-06's 42 subject, WP-10's 8 portfolio and WP-11's 4 econ fields.
  */
-const FIELD_COUNT = 307;
+const FIELD_COUNT = 311;
 
 // ---------------------------------------------------------------------------------------------
 // 1. Every field id in CONTRACTS §4.3 resolves
 // ---------------------------------------------------------------------------------------------
 
 describe('field dictionary — CONTRACTS §4.3 coverage', () => {
-  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics, 95 in WP-03 reference, 42 in WP-06 subjects and 8 in WP-10 portfolio', () => {
+  it('declares 94 ids in CONTRACTS §4.3, 68 in WP-02 analytics, 95 in WP-03 reference, 42 in WP-06 subjects, 8 in WP-10 portfolio and 4 in WP-11 econ', () => {
     expect(CONTRACTS_FIELD_IDS).toHaveLength(94);
     expect(WP02_ANALYTIC_FIELD_IDS).toHaveLength(68);
     expect(WP03_REFERENCE_FIELD_IDS).toHaveLength(95);
     expect(WP06_SUBJECT_FIELD_IDS).toHaveLength(42);
     expect(WP10_PORTFOLIO_FIELD_IDS).toHaveLength(8);
+    expect(WP11_ECON_FIELD_IDS).toHaveLength(4);
     expect(new Set(DESIGNED_FIELD_IDS).size).toBe(FIELD_COUNT);
   });
 

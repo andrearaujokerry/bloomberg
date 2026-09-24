@@ -832,17 +832,21 @@ export const analyticFields: readonly FieldDef[] = [
     definition:
       'Price sensitivity in years to a 1 bp bump of the 2-year node of the pricing curve’s zero ' +
       'curve, with a triangular kernel peaking at 2y and the issue’s z-spread held fixed. The key-' +
-      'rate durations sum to DUR_ADJ_MID.',
+      'rate kernels are a partition of unity, so the key-rate durations sum to the curve’s ' +
+      'parallel-shift duration, which is DUR_ADJ_MID only approximately — within about 2 % on a ' +
+      'Treasury, because a shift of the continuous zero and a derivative in flat-yield space are ' +
+      'not the same measurement. A KRD that reproduced DUR_ADJ_MID exactly would be an algebraic ' +
+      'slice of it and would carry no curve-twist information.',
     type: 'number',
     unit: 'years',
     decimals: 4,
     fieldClass: 'analytic',
     assetClasses: ['govt', 'rate'],
-    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    sources: engine('core/functions/manifests/YAS.ts#bondKrdEngine'),
     updateFreq: 'daily',
     pit: true,
     derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 2y',
-    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 1.871103, asOf: '2026-08-15' },
+    example: { ref: 'T 4.25 08/15/36 Govt', value: 0.2599, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
@@ -850,17 +854,19 @@ export const analyticFields: readonly FieldDef[] = [
     label: 'Key-rate duration (5y)',
     definition:
       'Price sensitivity in years to a 1 bp triangular bump of the 5-year node of the zero curve, ' +
-      'the issue’s z-spread held fixed. Zero for a bond with no cash flow near 5 years.',
+      'the issue’s z-spread held fixed. Small, and possibly negative, for a bond with no cash ' +
+      'flow near 5 years: the bumped node still moves the interpolated forwards the bond does ' +
+      'discount on, which is exactly the curve information a yield-space decomposition loses.',
     type: 'number',
     unit: 'years',
     decimals: 4,
     fieldClass: 'analytic',
     assetClasses: ['govt', 'rate'],
-    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    sources: engine('core/functions/manifests/YAS.ts#bondKrdEngine'),
     updateFreq: 'daily',
     pit: true,
     derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 5y',
-    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0, asOf: '2026-08-15' },
+    example: { ref: 'T 4.25 08/15/36 Govt', value: 0.8249, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
@@ -874,11 +880,11 @@ export const analyticFields: readonly FieldDef[] = [
     decimals: 4,
     fieldClass: 'analytic',
     assetClasses: ['govt', 'rate'],
-    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    sources: engine('core/functions/manifests/YAS.ts#bondKrdEngine'),
     updateFreq: 'daily',
     pit: true,
     derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 10y',
-    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0, asOf: '2026-08-15' },
+    example: { ref: 'T 4.25 08/15/36 Govt', value: 7.0956, asOf: '2026-09-15' },
     since: SINCE,
   },
   {
@@ -892,11 +898,11 @@ export const analyticFields: readonly FieldDef[] = [
     decimals: 4,
     fieldClass: 'analytic',
     assetClasses: ['govt', 'rate'],
-    sources: engine('core/analytics/bond/risk.ts#keyRateDurations'),
+    sources: engine('core/functions/manifests/YAS.ts#bondKrdEngine'),
     updateFreq: 'daily',
     pit: true,
     derivation: '−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 30y',
-    example: { ref: 'TESTING §7.3 bond.discount.2y', value: 0, asOf: '2026-08-15' },
+    example: { ref: 'T 4.25 08/15/36 Govt', value: -0.012, asOf: '2026-09-15' },
     since: SINCE,
   },
   {

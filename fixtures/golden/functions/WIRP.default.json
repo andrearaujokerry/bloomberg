@@ -1,0 +1,490 @@
+{
+  "variant": "default",
+  "asOfDate": "2026-09-15",
+  "current": {
+    "rateCode": "EFFR",
+    "effectiveDate": "2026-09-14",
+    "rate": {
+      "v": 3.63,
+      "st": "closed",
+      "provIdx": 0,
+      "live": {
+        "subject": "r:EFFR",
+        "field": "RATE"
+      }
+    },
+    "targetFrom": {
+      "v": 3.5,
+      "st": "closed",
+      "provIdx": 0,
+      "live": {
+        "subject": "r:EFFR",
+        "field": "TARGET_FROM"
+      }
+    },
+    "targetTo": {
+      "v": 3.75,
+      "st": "closed",
+      "provIdx": 0,
+      "live": {
+        "subject": "r:EFFR",
+        "field": "TARGET_TO"
+      }
+    },
+    "targetMid": {
+      "v": 3.625,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "provIdx": 0
+  },
+  "basis": {
+    "appliedBp": {
+      "v": 0.9999999999999876,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "source": "derived",
+    "observations": 5,
+    "window": {
+      "from": "2026-09-08",
+      "to": "2026-09-14"
+    },
+    "formula": "mean(EFFR − SOFR) over stored fixings"
+  },
+  "curve": {
+    "id": "SOFR_OIS",
+    "date": "2026-09-14",
+    "requestedDate": null,
+    "buildId": "<BUILD>",
+    "method": "ois_bootstrap",
+    "interpolation": "monotone_convex",
+    "sourceId": "internal.derived",
+    "provIdx": 1,
+    "caveats": [
+      "PROXY_CURVE",
+      "NO_OIS_SWAP_QUOTES_SOURCE"
+    ]
+  },
+  "meetings": [
+    {
+      "meetingDate": "2026-01-28",
+      "statementAt": "2026-01-28T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": true,
+      "daysAhead": -230,
+      "t": -0.6301369863013698,
+      "impliedOvernightPct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedReferencePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "stepChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoves": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "outcomes": [],
+      "vsCompare": null,
+      "decisionBp": 0,
+      "provIdx": 2
+    },
+    {
+      "meetingDate": "2026-03-18",
+      "statementAt": "2026-03-18T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": true,
+      "daysAhead": -181,
+      "t": -0.4958904109589041,
+      "impliedOvernightPct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedReferencePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "stepChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoves": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "outcomes": [],
+      "vsCompare": null,
+      "decisionBp": -25,
+      "provIdx": 2
+    },
+    {
+      "meetingDate": "2026-04-29",
+      "statementAt": "2026-04-29T18:00:00.000Z",
+      "hasSep": false,
+      "isPast": true,
+      "daysAhead": -139,
+      "t": -0.38082191780821917,
+      "impliedOvernightPct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedReferencePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "stepChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoves": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "outcomes": [],
+      "vsCompare": null,
+      "decisionBp": 0,
+      "provIdx": 2
+    },
+    {
+      "meetingDate": "2026-06-17",
+      "statementAt": "2026-06-17T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": true,
+      "daysAhead": -90,
+      "t": -0.2465753424657534,
+      "impliedOvernightPct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedReferencePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "stepChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoves": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "outcomes": [],
+      "vsCompare": null,
+      "decisionBp": -25,
+      "provIdx": 2
+    },
+    {
+      "meetingDate": "2026-07-29",
+      "statementAt": "2026-07-29T18:00:00.000Z",
+      "hasSep": false,
+      "isPast": true,
+      "daysAhead": -48,
+      "t": -0.13150684931506848,
+      "impliedOvernightPct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedReferencePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "stepChangeBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoves": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "outcomes": [],
+      "vsCompare": null,
+      "decisionBp": -25,
+      "provIdx": 2
+    },
+    {
+      "meetingDate": "2026-09-16",
+      "statementAt": "2026-09-16T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": false,
+      "daysAhead": 1,
+      "t": 0.0027397260273972603,
+      "impliedOvernightPct": {
+        "v": 3.5430578955346625,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "impliedReferencePct": {
+        "v": 3.5530578955346623,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "cumChangeBp": {
+        "v": -7.194210446533761,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "stepChangeBp": {
+        "v": -7.194210446533761,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "impliedMoves": {
+        "v": -0.28776841786135043,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "outcomes": [
+        {
+          "moves": 0,
+          "bp": 0,
+          "rangeFrom": 3.5,
+          "rangeTo": 3.75,
+          "probPct": {
+            "v": 71.22315821386496,
+            "st": "closed",
+            "provIdx": 1
+          }
+        },
+        {
+          "moves": -1,
+          "bp": -25,
+          "rangeFrom": 3.25,
+          "rangeTo": 3.5,
+          "probPct": {
+            "v": 28.776841786135044,
+            "st": "closed",
+            "provIdx": 1
+          }
+        }
+      ],
+      "vsCompare": null,
+      "decisionBp": null,
+      "provIdx": 1
+    },
+    {
+      "meetingDate": "2026-10-28",
+      "statementAt": "2026-10-28T18:00:00.000Z",
+      "hasSep": false,
+      "isPast": false,
+      "daysAhead": 43,
+      "t": 0.1178082191780822,
+      "impliedOvernightPct": {
+        "v": 3.4240627758096283,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "impliedReferencePct": {
+        "v": 3.434062775809628,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "cumChangeBp": {
+        "v": -19.09372241903719,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "stepChangeBp": {
+        "v": -11.899511972503428,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "impliedMoves": {
+        "v": -0.7637488967614875,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "outcomes": [
+        {
+          "moves": 0,
+          "bp": 0,
+          "rangeFrom": 3.5,
+          "rangeTo": 3.75,
+          "probPct": {
+            "v": 23.62511032385125,
+            "st": "closed",
+            "provIdx": 1
+          }
+        },
+        {
+          "moves": -1,
+          "bp": -25,
+          "rangeFrom": 3.25,
+          "rangeTo": 3.5,
+          "probPct": {
+            "v": 76.37488967614875,
+            "st": "closed",
+            "provIdx": 1
+          }
+        }
+      ],
+      "vsCompare": null,
+      "decisionBp": null,
+      "provIdx": 1
+    },
+    {
+      "meetingDate": "2026-12-09",
+      "statementAt": "2026-12-09T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": false,
+      "daysAhead": 85,
+      "t": 0.2328767123287671,
+      "impliedOvernightPct": {
+        "v": 3.3535907601865818,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "impliedReferencePct": {
+        "v": 3.3635907601865815,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "cumChangeBp": {
+        "v": -26.14092398134184,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "stepChangeBp": {
+        "v": -7.04720156230465,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "impliedMoves": {
+        "v": -1.0456369592536736,
+        "st": "closed",
+        "provIdx": 1
+      },
+      "outcomes": [
+        {
+          "moves": -1,
+          "bp": -25,
+          "rangeFrom": 3.25,
+          "rangeTo": 3.5,
+          "probPct": {
+            "v": 95.43630407463264,
+            "st": "closed",
+            "provIdx": 1
+          }
+        },
+        {
+          "moves": -2,
+          "bp": -50,
+          "rangeFrom": 3,
+          "rangeTo": 3.25,
+          "probPct": {
+            "v": 4.5636959253673615,
+            "st": "closed",
+            "provIdx": 1
+          }
+        }
+      ],
+      "vsCompare": null,
+      "decisionBp": null,
+      "provIdx": 1
+    }
+  ],
+  "terminal": {
+    "meetingDate": "2026-12-09",
+    "ratePct": {
+      "v": 3.3635907601865815,
+      "st": "closed",
+      "provIdx": 1
+    },
+    "cumChangeBp": {
+      "v": -26.14092398134184,
+      "st": "closed",
+      "provIdx": 1
+    }
+  },
+  "model": {
+    "engine": {
+      "name": "wirp.policypath",
+      "version": "1.0.0",
+      "inputsHash": "1fd816f982720804dfae45d7b1df0006eb07ec196cf1ecb3126312542b747365"
+    },
+    "stepBp": 25,
+    "probabilityModel": "two_point_interpolation",
+    "caveats": [
+      "NO_FUTURES_SOURCE",
+      "POINT_MASS_PROBABILITY_MODEL",
+      "PROXY_CURVE",
+      "NO_OIS_SWAP_QUOTES_SOURCE",
+      "FOMC_CALENDAR_HORIZON"
+    ]
+  }
+}

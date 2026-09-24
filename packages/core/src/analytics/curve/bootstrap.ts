@@ -47,7 +47,7 @@
 import type { Calendar, IsoDate } from '../../calendars/calendar.js';
 import { addDays, addMonths, daysBetween, getCalendar } from '../../calendars/calendar.js';
 import { SIFMA } from '../../calendars/sifma.js';
-import { addTenor, parseTenor } from '../../calendars/tenor.js';
+import { addTenor, parseTenor, tryParseTenor } from '../../calendars/tenor.js';
 import type { BusinessDayConvention } from '../../daycount/businessDay.js';
 import { adjustDate, businessDayConvention, settlementDate } from '../../daycount/businessDay.js';
 import type { DayCountId } from '../../daycount/conventions.js';
@@ -337,6 +337,50 @@ function tenorMonths(tenor: string): number {
   }
 }
 
+/**
+ * The maturity of a par quote that matures **before the first coupon date**, or `null` when the
+ * quote is an ordinary coupon bond and the schedule path handles it.
+ *
+ * The maturity comes from the tenor label — `addMonths`, exactly as `couponDates` derives every
+ * other par node's maturity, so the short end and the coupon end measure time the same way — except
+ * for a label that is not whole months (`'1.5M'`), where `quote.days` is the only thing that says
+ * what the tenor means and the quote must carry it.
+ */
+function stubMaturity(
+  curveDate: IsoDate,
+  quote: ParQuote,
+  monthsPerPeriod: number,
+): IsoDate | null {
+  const firstCoupon = addMonths(curveDate, monthsPerPeriod);
+  if (quote.days !== undefined) {
+    if (!Number.isInteger(quote.days) || quote.days <= 0) {
+      throw new RangeError(
+        `curve.bootstrap: par quote ${quote.tenor} needs a positive whole number of days`,
+      );
+    }
+    const maturity = addDays(curveDate, quote.days);
+    return maturity < firstCoupon ? maturity : null;
+  }
+  const parsed = tryParseTenor(quote.tenor);
+  if (parsed === undefined) {
+    throw new RangeError(
+      `curve.bootstrap: par quote ${quote.tenor} is not a whole number of months or years, so it ` +
+        'must carry its `days`',
+    );
+  }
+  if (parsed.unit === 'D' || parsed.unit === 'W') {
+    // A day or week tenor is never a whole number of coupon periods: it is a money-market point or
+    // it is nothing, and `tenorMonths` would only raise on it.
+    const days = parsed.unit === 'W' ? parsed.n * 7 : parsed.n;
+    if (days <= 0) return null;
+    const maturity = addDays(curveDate, days);
+    return maturity < firstCoupon ? maturity : null;
+  }
+  const months = parsed.unit === 'Y' ? parsed.n * 12 : parsed.n;
+  if (months <= 0 || months >= monthsPerPeriod) return null;
+  return addMonths(curveDate, months);
+}
+
 /** The unadjusted coupon dates of a par bond, `curveDate` excluded, maturity included. */
 function couponDates(curveDate: IsoDate, months: number, frequency: number): IsoDate[] {
   const monthsPerPeriod = 12 / frequency;
@@ -449,10 +493,20 @@ export interface BillQuote {
 
 /** A par coupon quote: the yield at which the bond of that tenor trades at exactly 100. */
 export interface ParQuote {
-  /** `'1Y'`, `'2Y'`, `'10Y'` — a whole number of coupon periods. */
+  /**
+   * `'1Y'`, `'2Y'`, `'10Y'` — a whole number of coupon periods — or a tenor **shorter than one**
+   * coupon period (`'1M'`, `'2M'`, `'3M'`, `'4M'`), which is bootstrapped as a money-market point.
+   */
   readonly tenor: string;
   /** Par yield in **percent** (`4.00` is 4.00 %). */
   readonly parRate: number;
+  /**
+   * Actual days to maturity, needed **only** when the tenor label cannot express the maturity as
+   * whole months — the Treasury's `1.5M` point is the one case in this system. Every other par
+   * quote takes its maturity from the label, exactly as the coupon schedule does, so passing this
+   * where it is not needed would change `inputs_hash` for no gain.
+   */
+  readonly days?: number;
 }
 
 /** `curve.bootstrap` inputs — exactly what `curve_builds.inputs` stores (ANAL-08). */
@@ -503,6 +557,17 @@ const DEFAULT_PAR_FREQUENCY = 2;
  * Each bill contributes a node outright — its discount factor is `1 − d·days/360`, the price it is
  * quoted at. Each par bond contributes a node solved so that the bond, discounted on the curve
  * being built, is worth exactly 100.
+ *
+ * **Par quotes shorter than one coupon period are money-market points.** The Treasury publishes
+ * fourteen par tenors and five of them — `1M`, `1.5M`, `2M`, `3M`, `4M` — mature before the first
+ * semiannual coupon date, so there is no coupon bond to solve: the instrument is a single payment
+ * at maturity and its quote is simple interest on it, `df = 1 / (1 + y·t)` on the curve's own year
+ * fraction. Treating them as coupon bonds is what made `couponDates` raise on "a 1-month tenor is
+ * not a whole number of 2/yr coupon periods", and that raise took the whole build down: every
+ * screen that prices off `UST_PAR` (CRVF, YAS's curve mode, SRCH's analytics block, GC) fell back
+ * to terms-only on the output of this system's own ingest job, which writes all fourteen tenors.
+ * A tenor of one period or more that is *not* a whole number of them still raises — a 9M par bond
+ * has a coupon in between and simple interest would be a different instrument, not a stub.
  */
 export const parCurveBootstrapEngine = defineEngine<ParBootstrapInputs, CurveBuildOutputs>(
   'curve.bootstrap',
@@ -542,7 +607,28 @@ export const parCurveBootstrapEngine = defineEngine<ParBootstrapInputs, CurveBui
       instruments.push({ id: bill.tenor, t, knownDf: df, guess: df, residual: () => 0 });
     }
 
+    const monthsPerPeriod = 12 / frequency;
     for (const quote of inputs.parQuotes) {
+      // A quote that matures before the first coupon date: one payment, simple interest, no
+      // schedule to solve. Known outright, like a bill, so the sweep never touches it.
+      const stub = stubMaturity(curveDate, quote, monthsPerPeriod);
+      if (stub !== null) {
+        const rate = fromPercent(quote.parRate, `par quote ${quote.tenor}`);
+        const t = timeOf(stub);
+        if (!(t > 0)) {
+          throw new RangeError(
+            `curve.bootstrap: par quote ${quote.tenor} matures on the curve date ${curveDate}`,
+          );
+        }
+        const df = 1 / (1 + rate * t);
+        if (!(df > 0) || !Number.isFinite(df)) {
+          throw new RangeError(
+            `curve.bootstrap: par quote ${quote.tenor} prices to a non-positive df`,
+          );
+        }
+        instruments.push({ id: quote.tenor, t, knownDf: df, guess: df, residual: () => 0 });
+        continue;
+      }
       const months = tenorMonths(quote.tenor);
       const dates = couponDates(curveDate, months, frequency);
       const times = dates.map(timeOf);

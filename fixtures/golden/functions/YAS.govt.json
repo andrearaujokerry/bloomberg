@@ -1,0 +1,412 @@
+{
+  "variant": "govt",
+  "instrument": {
+    "instrumentId": "<10Y>",
+    "key": "T 4.25 08/15/36 Govt",
+    "name": "US Treasury Note 4.25% 15-Aug-2036",
+    "cusip": "91282CLN9",
+    "securityType": "note",
+    "termLabel": "10Y",
+    "onTheRun": true
+  },
+  "terms": {
+    "provIdx": 0,
+    "couponRate": 4.25,
+    "couponFreq": 2,
+    "dayCount": "ACT/ACT",
+    "issueDate": "2026-08-15",
+    "datedDate": "2026-08-15",
+    "maturityDate": "2036-08-15",
+    "firstCouponDate": null,
+    "businessDayConv": "following",
+    "calendarId": "SIFMA",
+    "settlementDays": 1,
+    "minDenomination": 100,
+    "amountOutstanding": null,
+    "knownAt": "<KNOWNAT>"
+  },
+  "settlement": {
+    "date": "2026-09-16",
+    "valuationDate": "2026-09-15",
+    "daysToMaturity": 3621,
+    "yearsToMaturity": 9.92054794520548,
+    "rule": "T+1 SIFMA"
+  },
+  "inputs": {
+    "mode": "curve",
+    "source": "curve",
+    "curveId": "UST_PAR",
+    "curveDate": "2026-09-14",
+    "curveProvIdx": 1,
+    "face": 1000000
+  },
+  "results": {
+    "kind": "coupon",
+    "yieldPct": {
+      "v": 4.066496350364964,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "cleanPrice": {
+      "v": 101.48182523791138,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "dirtyPrice": {
+      "v": 101.85139045530268,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "accrued": {
+      "v": 0.3695652173913043,
+      "st": "closed",
+      "provIdx": 0,
+      "ts": null
+    },
+    "accruedDays": 32,
+    "daysInPeriod": 184,
+    "macaulayDuration": {
+      "v": 8.178207275539037,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "modifiedDuration": {
+      "v": 8.015237603234727,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "convexity": {
+      "v": 76.45508116245605,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "dv01": {
+      "v": 816.3630947190846,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "dv01Per100": {
+      "v": 0.08163630947190846,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "yieldValueOf32nd": {
+      "v": 0.38279535420146976,
+      "st": "closed",
+      "provIdx": 1,
+      "ts": null
+    },
+    "keyRateDurations": [
+      {
+        "tenor": "2Y",
+        "krd": 0.2598618603657223
+      },
+      {
+        "tenor": "5Y",
+        "krd": 0.8249036050040586
+      },
+      {
+        "tenor": "10Y",
+        "krd": 7.095647585989121
+      },
+      {
+        "tenor": "30Y",
+        "krd": -0.012038715890427008
+      }
+    ],
+    "spreads": {
+      "interpolatedCurveYieldPct": {
+        "v": 4.066496350364964,
+        "st": "closed",
+        "provIdx": 1,
+        "ts": null
+      },
+      "toCurveBp": {
+        "v": 0,
+        "st": "closed",
+        "provIdx": 1,
+        "ts": null
+      },
+      "zSpreadBp": {
+        "v": 0.06186843032055131,
+        "st": "closed",
+        "provIdx": 1,
+        "ts": null
+      },
+      "benchmark": null
+    },
+    "conventions": {
+      "dayCount": "ACT/ACT",
+      "compounding": "semiannual",
+      "frequency": 2,
+      "businessDayConvention": "following",
+      "currency": "USD"
+    }
+  },
+  "cashflows": [
+    {
+      "date": "2027-02-15",
+      "kind": "coupon",
+      "days": 152,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.983680346172763,
+      "pv": 20903.207356171213,
+      "fromCurve": true
+    },
+    {
+      "date": "2027-08-15",
+      "kind": "coupon",
+      "days": 333,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.9652681917112528,
+      "pv": 20511.94907386412,
+      "fromCurve": true
+    },
+    {
+      "date": "2028-02-15",
+      "kind": "coupon",
+      "days": 517,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.9478161715875363,
+      "pv": 20141.093646235146,
+      "fromCurve": true
+    },
+    {
+      "date": "2028-08-15",
+      "kind": "coupon",
+      "days": 699,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.9312258336858524,
+      "pv": 19788.548965824364,
+      "fromCurve": true
+    },
+    {
+      "date": "2029-02-15",
+      "kind": "coupon",
+      "days": 883,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.9136756120357953,
+      "pv": 19415.60675576065,
+      "fromCurve": true
+    },
+    {
+      "date": "2029-08-15",
+      "kind": "coupon",
+      "days": 1064,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.8967190215766417,
+      "pv": 19055.279208503638,
+      "fromCurve": true
+    },
+    {
+      "date": "2030-02-15",
+      "kind": "coupon",
+      "days": 1248,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.8796134017644501,
+      "pv": 18691.784787494566,
+      "fromCurve": true
+    },
+    {
+      "date": "2030-08-15",
+      "kind": "coupon",
+      "days": 1429,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.8632889601140166,
+      "pv": 18344.89040242285,
+      "fromCurve": true
+    },
+    {
+      "date": "2031-02-15",
+      "kind": "coupon",
+      "days": 1613,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.8468210449873712,
+      "pv": 17994.94720598164,
+      "fromCurve": true
+    },
+    {
+      "date": "2031-08-15",
+      "kind": "coupon",
+      "days": 1794,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.8308499948475471,
+      "pv": 17655.562390510375,
+      "fromCurve": true
+    },
+    {
+      "date": "2032-02-15",
+      "kind": "coupon",
+      "days": 1978,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.8134854194122549,
+      "pv": 17286.56516251042,
+      "fromCurve": true
+    },
+    {
+      "date": "2032-08-15",
+      "kind": "coupon",
+      "days": 2160,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.796217896740922,
+      "pv": 16919.630305744595,
+      "fromCurve": true
+    },
+    {
+      "date": "2033-02-15",
+      "kind": "coupon",
+      "days": 2344,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.7789216501070235,
+      "pv": 16552.085064774248,
+      "fromCurve": true
+    },
+    {
+      "date": "2033-08-15",
+      "kind": "coupon",
+      "days": 2525,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.7624592283456217,
+      "pv": 16202.258602344462,
+      "fromCurve": true
+    },
+    {
+      "date": "2034-02-15",
+      "kind": "coupon",
+      "days": 2709,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.745896321488419,
+      "pv": 15850.296831628904,
+      "fromCurve": true
+    },
+    {
+      "date": "2034-08-15",
+      "kind": "coupon",
+      "days": 2890,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.7301318863453807,
+      "pv": 15515.30258483934,
+      "fromCurve": true
+    },
+    {
+      "date": "2035-02-15",
+      "kind": "coupon",
+      "days": 3074,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.7142712265521326,
+      "pv": 15178.263564232817,
+      "fromCurve": true
+    },
+    {
+      "date": "2035-08-15",
+      "kind": "coupon",
+      "days": 3255,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.6991658591662836,
+      "pv": 14857.274507283526,
+      "fromCurve": true
+    },
+    {
+      "date": "2036-02-15",
+      "kind": "coupon",
+      "days": 3439,
+      "coupon": 21250,
+      "principal": 0,
+      "total": 21250,
+      "df": 0.6838997254924322,
+      "pv": 14532.869166714183,
+      "fromCurve": true
+    },
+    {
+      "date": "2036-08-15",
+      "kind": "maturity",
+      "days": 3621,
+      "coupon": 21250,
+      "principal": 1000000,
+      "total": 1021250,
+      "df": 0.6689023147810881,
+      "pv": 683116.4889701862,
+      "fromCurve": true
+    }
+  ],
+  "curve": {
+    "id": "UST_PAR",
+    "date": "2026-09-14",
+    "interpolation": "monotone_convex",
+    "quoteInterpolation": "linear_zero",
+    "quoteExtrapolation": "flat_quote",
+    "buildId": "<BUILD>",
+    "provIdx": 1
+  },
+  "engines": [
+    {
+      "name": "curve.bootstrap",
+      "version": "1.0.0"
+    },
+    {
+      "name": "curve.interp",
+      "version": "1.0.0"
+    },
+    {
+      "name": "bond.price",
+      "version": "1.0.0"
+    },
+    {
+      "name": "bond.risk",
+      "version": "1.0.0"
+    },
+    {
+      "name": "bond.zspread",
+      "version": "1.0.0"
+    },
+    {
+      "name": "bond.krd",
+      "version": "1.0.0"
+    }
+  ],
+  "asOf": "2026-09-15T18:41:28.000Z"
+}

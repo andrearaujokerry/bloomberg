@@ -1,0 +1,362 @@
+{
+  "variant": "default",
+  "universe": {
+    "market": "UST",
+    "label": "US Treasuries (govt_terms, as of 2026-09-15)",
+    "size": 14,
+    "coverage": "SEED_UNIVERSE_ONLY",
+    "provIdx": 0
+  },
+  "filters": [
+    {
+      "field": "securityTypes",
+      "label": "Type bill",
+      "matched": 7,
+      "unavailableReason": null
+    },
+    {
+      "field": "couponTypes",
+      "label": "Coupon type fixed, zero",
+      "matched": 13,
+      "unavailableReason": null
+    },
+    {
+      "field": "onTheRun",
+      "label": "On-the-run only",
+      "matched": 11,
+      "unavailableReason": null
+    }
+  ],
+  "pricing": {
+    "basis": "curve_derived_no_market_quotes",
+    "curveId": "UST_PAR",
+    "curveDate": "2026-09-14",
+    "interpolation": "monotone_convex",
+    "buildId": "<BUILD>",
+    "settlement": "2026-09-16",
+    "settlementRule": "T+1 SIFMA",
+    "provIdx": 1,
+    "engine": {
+      "name": "curve.bootstrap",
+      "version": "1.0.0",
+      "inputsHash": "0840bcd473a202d8202d114eef82f7ef9143cc9f959c6fb0afb20e65561d053b"
+    }
+  },
+  "columns": [
+    {
+      "id": "CUSIP",
+      "label": "CUSIP",
+      "fmt": "text",
+      "sortable": true,
+      "fieldId": "ID_CUSIP"
+    },
+    {
+      "id": "MATURITY",
+      "label": "Maturity",
+      "fmt": "date",
+      "sortable": true,
+      "fieldId": "MATURITY"
+    },
+    {
+      "id": "DISC_RATE",
+      "label": "Disc %",
+      "fmt": "pct",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "DISC_RATE"
+    },
+    {
+      "id": "BEY",
+      "label": "BEY %",
+      "fmt": "pct",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "BEY"
+    }
+  ],
+  "rows": [
+    {
+      "instrumentId": "<BILL_4WK>",
+      "key": "B 09/29/26 Govt",
+      "name": "US Treasury Bill 4WK 29-Sep-2026",
+      "cusip": "912797VE4",
+      "securityType": "bill",
+      "termLabel": "4WK",
+      "onTheRun": true,
+      "maturityDate": "2026-09-29",
+      "issueDate": "2026-09-01",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 85000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VE4",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2026-09-29",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "DISC_RATE": {
+          "v": 3.6900000000000004,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.7462418672878703,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_4WK>",
+      "rank": 1
+    },
+    {
+      "instrumentId": "<BILL_8WK>",
+      "key": "B 11/10/26 Govt",
+      "name": "US Treasury Bill 8WK 10-Nov-2026",
+      "cusip": "912797VF1",
+      "securityType": "bill",
+      "termLabel": "8WK",
+      "onTheRun": true,
+      "maturityDate": "2026-11-10",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 72000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VF1",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2026-11-10",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "DISC_RATE": {
+          "v": 3.72,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.7932248277712266,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_8WK>",
+      "rank": 2
+    },
+    {
+      "instrumentId": "<BILL_13WK>",
+      "key": "B 12/15/26 Govt",
+      "name": "US Treasury Bill 13WK 15-Dec-2026",
+      "cusip": "912797VG9",
+      "securityType": "bill",
+      "termLabel": "13WK",
+      "onTheRun": true,
+      "maturityDate": "2026-12-15",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 91000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VG9",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2026-12-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "DISC_RATE": {
+          "v": 3.9,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.993099385677053,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_13WK>",
+      "rank": 3
+    },
+    {
+      "instrumentId": "<BILL_17WK>",
+      "key": "B 01/12/27 Govt",
+      "name": "US Treasury Bill 17WK 12-Jan-2027",
+      "cusip": "912797VH7",
+      "securityType": "bill",
+      "termLabel": "17WK",
+      "onTheRun": true,
+      "maturityDate": "2027-01-12",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 64000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VH7",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2027-01-12",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "DISC_RATE": {
+          "v": 3.8900000000000006,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.994965811297263,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_17WK>",
+      "rank": 4
+    },
+    {
+      "instrumentId": "<BILL_26WK>",
+      "key": "B 03/16/27 Govt",
+      "name": "US Treasury Bill 26WK 16-Mar-2027",
+      "cusip": "912797VJ3",
+      "securityType": "bill",
+      "termLabel": "26WK",
+      "onTheRun": true,
+      "maturityDate": "2027-03-16",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 88000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VJ3",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2027-03-16",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "DISC_RATE": {
+          "v": 3.88,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 4.012157159159279,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_26WK>",
+      "rank": 5
+    },
+    {
+      "instrumentId": "<BILL_52WK>",
+      "key": "B 09/14/27 Govt",
+      "name": "US Treasury Bill 52WK 14-Sep-2027",
+      "cusip": "912797VK0",
+      "securityType": "bill",
+      "termLabel": "52WK",
+      "onTheRun": true,
+      "maturityDate": "2027-09-14",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 56000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VK0",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2027-09-14",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "DISC_RATE": {
+          "v": 3.7000000000000006,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.8597322841118316,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_52WK>",
+      "rank": 6
+    }
+  ],
+  "counts": {
+    "universe": 14,
+    "afterFilters": 6,
+    "returned": 6,
+    "excludedNoTerms": 0,
+    "excludedNotPriced": 0
+  },
+  "facets": {
+    "securityType": [
+      {
+        "value": "bill",
+        "count": 6
+      }
+    ],
+    "maturityBucket": [
+      {
+        "value": "0-1Y",
+        "count": 6
+      }
+    ],
+    "onTheRun": [
+      {
+        "value": "true",
+        "count": 6
+      },
+      {
+        "value": "false",
+        "count": 0
+      }
+    ]
+  },
+  "savedSearch": null,
+  "notes": [
+    "NO_BOND_PRICE_SOURCE",
+    "SEED_UNIVERSE_ONLY",
+    "CURVE_DATE_BEFORE_VALUATION"
+  ]
+}

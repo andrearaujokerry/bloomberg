@@ -11,12 +11,16 @@ import * as BTMM from './BTMM/Screen.js';
 import * as CACS from './CACS/Screen.js';
 import * as CF from './CF/Screen.js';
 import * as CN from './CN/Screen.js';
+import * as CRVF from './CRVF/Screen.js';
+import * as CRYP from './CRYP/Screen.js';
 import * as DES from './DES/Screen.js';
 import * as ECO from './ECO/Screen.js';
 import * as EE from './EE/Screen.js';
 import * as EQS from './EQS/Screen.js';
 import * as FA from './FA/Screen.js';
+import * as FED from './FED/Screen.js';
 import * as FXC from './FXC/Screen.js';
+import * as GC from './GC/Screen.js';
 import * as GIP from './GIP/Screen.js';
 import * as GP from './GP/Screen.js';
 import * as HDS from './HDS/Screen.js';
@@ -26,27 +30,37 @@ import * as MEMB from './MEMB/Screen.js';
 import * as MSG from './MSG/Screen.js';
 import * as N from './N/Screen.js';
 import * as NI from './NI/Screen.js';
+import * as OMON from './OMON/Screen.js';
+import * as OVML from './OVML/Screen.js';
 import * as PORT from './PORT/Screen.js';
 import * as Q from './Q/Screen.js';
 import * as QM from './QM/Screen.js';
 import * as RV from './RV/Screen.js';
 import * as SECF from './SECF/Screen.js';
+import * as SRCH from './SRCH/Screen.js';
+import * as SWPM from './SWPM/Screen.js';
 import * as TOP from './TOP/Screen.js';
 import * as W from './W/Screen.js';
 import * as WB from './WB/Screen.js';
 import * as WEI from './WEI/Screen.js';
+import * as WIRP from './WIRP/Screen.js';
+import * as YAS from './YAS/Screen.js';
 
 export {
   BTMM,
   CACS,
   CF,
   CN,
+  CRVF,
+  CRYP,
   DES,
   ECO,
   EE,
   EQS,
   FA,
+  FED,
   FXC,
+  GC,
   GIP,
   GP,
   HDS,
@@ -56,15 +70,21 @@ export {
   MSG,
   N,
   NI,
+  OMON,
+  OVML,
   PORT,
   Q,
   QM,
   RV,
   SECF,
+  SRCH,
+  SWPM,
   TOP,
   W,
   WB,
   WEI,
+  WIRP,
+  YAS,
 };
 
 /** Every module the glob matched, keyed by its file (or directory) name. */
@@ -73,12 +93,16 @@ export const screenModules = {
   CACS,
   CF,
   CN,
+  CRVF,
+  CRYP,
   DES,
   ECO,
   EE,
   EQS,
   FA,
+  FED,
   FXC,
+  GC,
   GIP,
   GP,
   HDS,
@@ -88,13 +112,19 @@ export const screenModules = {
   MSG,
   N,
   NI,
+  OMON,
+  OVML,
   PORT,
   Q,
   QM,
   RV,
   SECF,
+  SRCH,
+  SWPM,
   TOP,
   W,
   WB,
   WEI,
+  WIRP,
+  YAS,
 } as const;

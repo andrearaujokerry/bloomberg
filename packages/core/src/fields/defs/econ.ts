@@ -118,6 +118,86 @@ export const econFields: readonly FieldDef[] = [
     since: SINCE,
   },
 
+  // ── WP-11 Tier 3: the NY Fed's published SOFR averages and index (FUNCTIONS_TIER3 FED L1806,
+  //    SWPM L1161, WIRP L597). The daily fixing itself is `RATE` and lives in `price.ts` with
+  //    field_class 'price'; these four are not fixings. The New York Fed *computes and publishes*
+  //    them from the fixing history — compounded 30/90/180-day averages and a cumulative index —
+  //    so they are published statistics of a rate, which is what field_class 'econ' names, and
+  //    they arrive on the same `nyfed.rates` payload under `SOFRAI` (PROVIDERS §9.1). They are
+  //    stored on `rate_fixings.avg_30d` / `avg_90d` / `avg_180d` / `index_value`.
+  {
+    id: 'RATE_AVG_30D',
+    label: 'SOFR 30-day average',
+    definition:
+      'Compounded average of the overnight rate over the previous 30 calendar days, in percent, ' +
+      'as the publisher computes it. It is not a mean of the RATE column: the publisher compounds ' +
+      'daily and carries the rate over non-business days, so recomputing it from RATE is wrong by ' +
+      'a basis point or two and must never be done here.',
+    type: 'number',
+    unit: 'pct',
+    decimals: 5,
+    fieldClass: 'econ',
+    assetClasses: ['rate'],
+    sources: [src('rate', 'nyfed.rates', 'rates', 'refRates[].average30day')],
+    updateFreq: 'daily',
+    pit: true,
+    example: { ref: 'SOFR Index', value: 3.6485, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RATE_AVG_90D',
+    label: 'SOFR 90-day average',
+    definition:
+      'Compounded average of the overnight rate over the previous 90 calendar days, in percent, ' +
+      'as the publisher computes it (see RATE_AVG_30D on why it is never recomputed).',
+    type: 'number',
+    unit: 'pct',
+    decimals: 5,
+    fieldClass: 'econ',
+    assetClasses: ['rate'],
+    sources: [src('rate', 'nyfed.rates', 'rates', 'refRates[].average90day')],
+    updateFreq: 'daily',
+    pit: true,
+    example: { ref: 'SOFR Index', value: 3.64603, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RATE_AVG_180D',
+    label: 'SOFR 180-day average',
+    definition:
+      'Compounded average of the overnight rate over the previous 180 calendar days, in percent, ' +
+      'as the publisher computes it (see RATE_AVG_30D on why it is never recomputed).',
+    type: 'number',
+    unit: 'pct',
+    decimals: 5,
+    fieldClass: 'econ',
+    assetClasses: ['rate'],
+    sources: [src('rate', 'nyfed.rates', 'rates', 'refRates[].average180day')],
+    updateFreq: 'daily',
+    pit: true,
+    example: { ref: 'SOFR Index', value: 3.65767, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+  {
+    id: 'RATE_INDEX',
+    label: 'SOFR index',
+    definition:
+      'Cumulative compounded value of the overnight rate since the index base date, a level and ' +
+      'not a rate: the compounded return between two dates is the ratio of the two index values. ' +
+      'Published to eight decimals, and eight decimals is what a floating-rate coupon needs, so ' +
+      'it is carried as decimal text end to end and never through a float.',
+    type: 'number',
+    unit: null,
+    decimals: 8,
+    fieldClass: 'econ',
+    assetClasses: ['rate'],
+    sources: [src('rate', 'nyfed.rates', 'rates', 'refRates[].index')],
+    updateFreq: 'daily',
+    pit: true,
+    example: { ref: 'SOFR Index', value: 1.25884091, asOf: '2026-09-15' },
+    since: SINCE,
+  },
+
   // ── Harvested id kept for coverage (see reference.ts for why) ────────────────────────────────
   {
     id: 'ECO_',

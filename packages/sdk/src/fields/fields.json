@@ -4528,23 +4528,23 @@
           "assetClass": "*",
           "sourceId": "internal.derived",
           "endpoint": "analytics",
-          "providerPath": "core/analytics/bond/risk.ts#keyRateDurations"
+          "providerPath": "core/functions/manifests/YAS.ts#bondKrdEngine"
         }
       ],
       "updateFreq": "daily",
       "pit": true,
       "derivation": "−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 10y",
       "example": {
-        "ref": "TESTING §7.3 bond.discount.2y",
-        "value": 0,
-        "asOf": "2026-08-15"
+        "ref": "T 4.25 08/15/36 Govt",
+        "value": 7.0956,
+        "asOf": "2026-09-15"
       },
       "since": "2026.09.1"
     },
     {
       "id": "KRD_2Y",
       "label": "Key-rate duration (2y)",
-      "definition": "Price sensitivity in years to a 1 bp bump of the 2-year node of the pricing curve’s zero curve, with a triangular kernel peaking at 2y and the issue’s z-spread held fixed. The key-rate durations sum to DUR_ADJ_MID.",
+      "definition": "Price sensitivity in years to a 1 bp bump of the 2-year node of the pricing curve’s zero curve, with a triangular kernel peaking at 2y and the issue’s z-spread held fixed. The key-rate kernels are a partition of unity, so the key-rate durations sum to the curve’s parallel-shift duration, which is DUR_ADJ_MID only approximately — within about 2 % on a Treasury, because a shift of the continuous zero and a derivative in flat-yield space are not the same measurement. A KRD that reproduced DUR_ADJ_MID exactly would be an algebraic slice of it and would carry no curve-twist information.",
       "type": "number",
       "unit": "years",
       "decimals": 4,
@@ -4558,16 +4558,16 @@
           "assetClass": "*",
           "sourceId": "internal.derived",
           "endpoint": "analytics",
-          "providerPath": "core/analytics/bond/risk.ts#keyRateDurations"
+          "providerPath": "core/functions/manifests/YAS.ts#bondKrdEngine"
         }
       ],
       "updateFreq": "daily",
       "pit": true,
       "derivation": "−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 2y",
       "example": {
-        "ref": "TESTING §7.3 bond.discount.2y",
-        "value": 1.871103,
-        "asOf": "2026-08-15"
+        "ref": "T 4.25 08/15/36 Govt",
+        "value": 0.2599,
+        "asOf": "2026-09-15"
       },
       "since": "2026.09.1"
     },
@@ -4588,23 +4588,23 @@
           "assetClass": "*",
           "sourceId": "internal.derived",
           "endpoint": "analytics",
-          "providerPath": "core/analytics/bond/risk.ts#keyRateDurations"
+          "providerPath": "core/functions/manifests/YAS.ts#bondKrdEngine"
         }
       ],
       "updateFreq": "daily",
       "pit": true,
       "derivation": "−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 30y",
       "example": {
-        "ref": "TESTING §7.3 bond.discount.2y",
-        "value": 0,
-        "asOf": "2026-08-15"
+        "ref": "T 4.25 08/15/36 Govt",
+        "value": -0.012,
+        "asOf": "2026-09-15"
       },
       "since": "2026.09.1"
     },
     {
       "id": "KRD_5Y",
       "label": "Key-rate duration (5y)",
-      "definition": "Price sensitivity in years to a 1 bp triangular bump of the 5-year node of the zero curve, the issue’s z-spread held fixed. Zero for a bond with no cash flow near 5 years.",
+      "definition": "Price sensitivity in years to a 1 bp triangular bump of the 5-year node of the zero curve, the issue’s z-spread held fixed. Small, and possibly negative, for a bond with no cash flow near 5 years: the bumped node still moves the interpolated forwards the bond does discount on, which is exactly the curve information a yield-space decomposition loses.",
       "type": "number",
       "unit": "years",
       "decimals": 4,
@@ -4618,16 +4618,16 @@
           "assetClass": "*",
           "sourceId": "internal.derived",
           "endpoint": "analytics",
-          "providerPath": "core/analytics/bond/risk.ts#keyRateDurations"
+          "providerPath": "core/functions/manifests/YAS.ts#bondKrdEngine"
         }
       ],
       "updateFreq": "daily",
       "pit": true,
       "derivation": "−(P⁺ − P⁻) / (2 × P × 0.0001) for a ±1 bp triangular bump at 5y",
       "example": {
-        "ref": "TESTING §7.3 bond.discount.2y",
-        "value": 0,
-        "asOf": "2026-08-15"
+        "ref": "T 4.25 08/15/36 Govt",
+        "value": 0.8249,
+        "asOf": "2026-09-15"
       },
       "since": "2026.09.1"
     },
@@ -7614,6 +7614,118 @@
         "ref": "c:UST_PAR",
         "value": "4.31,4.28,4.19,4.02,3.88,3.91,4.12,4.63",
         "asOf": "2026-09-15T18:41:28Z"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_AVG_180D",
+      "label": "SOFR 180-day average",
+      "definition": "Compounded average of the overnight rate over the previous 180 calendar days, in percent, as the publisher computes it (see RATE_AVG_30D on why it is never recomputed).",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 5,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].average180day"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 3.65767,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_AVG_30D",
+      "label": "SOFR 30-day average",
+      "definition": "Compounded average of the overnight rate over the previous 30 calendar days, in percent, as the publisher computes it. It is not a mean of the RATE column: the publisher compounds daily and carries the rate over non-business days, so recomputing it from RATE is wrong by a basis point or two and must never be done here.",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 5,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].average30day"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 3.6485,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_AVG_90D",
+      "label": "SOFR 90-day average",
+      "definition": "Compounded average of the overnight rate over the previous 90 calendar days, in percent, as the publisher computes it (see RATE_AVG_30D on why it is never recomputed).",
+      "type": "number",
+      "unit": "pct",
+      "decimals": 5,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].average90day"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 3.64603,
+        "asOf": "2026-09-15"
+      },
+      "since": "2026.09.1"
+    },
+    {
+      "id": "RATE_INDEX",
+      "label": "SOFR index",
+      "definition": "Cumulative compounded value of the overnight rate since the index base date, a level and not a rate: the compounded return between two dates is the ratio of the two index values. Published to eight decimals, and eight decimals is what a floating-rate coupon needs, so it is carried as decimal text end to end and never through a float.",
+      "type": "number",
+      "unit": null,
+      "decimals": 8,
+      "fieldClass": "econ",
+      "assetClasses": [
+        "rate"
+      ],
+      "sources": [
+        {
+          "assetClass": "rate",
+          "sourceId": "nyfed.rates",
+          "endpoint": "rates",
+          "providerPath": "refRates[].index"
+        }
+      ],
+      "updateFreq": "daily",
+      "pit": true,
+      "example": {
+        "ref": "SOFR Index",
+        "value": 1.25884091,
+        "asOf": "2026-09-15"
       },
       "since": "2026.09.1"
     },

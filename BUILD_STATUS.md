@@ -17,7 +17,8 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-08 | Function runner, REST routes, export, search, observability | merged |
 | WP-09 | Tier 1 functions, news, messaging, alerts | merged, with open defects below |
 | WP-10 | Tier 2 functions, fundamentals ingest, portfolios | merged |
-| WP-11 … WP-15 | Tier 3 screens, SDK client, web shell, seed and verification | not started |
+| WP-11 | Tier 3 functions, curve/rate/econ ingest | merged |
+| WP-12 … WP-15 | Web shell and renderer, SDK client, seed and verification | not started |
 
 3,643 tests across 176 files.
 
@@ -130,6 +131,24 @@ Two things worth keeping in mind. `HDS` and `PORT` carried a hand-written except
 patched the symptom. And one textual substitution survives deliberately, in `MSG`, because that
 payload quotes ids inside free text (`"W 41"`, `"portfolio #7"`) where a key rule cannot reach; it is
 the documented exception, not an oversight.
+
+### Two rate conventions were decided in WP-11, not defaulted into
+
+Both are live choices someone may want to revisit, so they are recorded rather than buried in a
+diff. Numbers for the alternatives are in the WP-11 commit message.
+
+- **Key-rate bumps are applied in log-discount space**, so one basis point is the same perturbation
+  whatever basis a curve quotes its zeros on. `UST_PAR` stores semiannual and `SOFR_OIS` stores
+  simple, and a "1 bp zero bump" on a simple-compounded curve at 30y is about four times smaller a
+  move — bumping each curve on its own basis would tighten three of four bonds but make `KRD_30Y`
+  mean different things on `YAS` and `SWPM`, which is the defect that fix existed to close.
+- **`YAS` uses a central ±1 bp bump, `SWPM` a one-sided one.** Same operator, same kernel, same
+  shared module, different estimator of the same derivative. `SWPM`'s header records the one-sided
+  choice and its goldens are pinned to it; aligning them is a two-line change plus a golden.
+
+Related and still true: the two screens' key-rate durations are sensitivities to **different
+curves** (`UST_PAR`, `SOFR_OIS`). They now measure the same quantity the same way, so they compose
+as hedge ratios, but they were never additive and still are not.
 
 ### `quote_ticks` has two writers (latent, not yet firing)
 

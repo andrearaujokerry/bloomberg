@@ -1,0 +1,850 @@
+{
+  "variant": "default",
+  "asOfDate": "2026-09-15",
+  "policy": {
+    "targetFrom": {
+      "v": 3.5,
+      "st": "closed",
+      "provIdx": 0,
+      "live": {
+        "subject": "r:EFFR",
+        "field": "TARGET_FROM"
+      }
+    },
+    "targetTo": {
+      "v": 3.75,
+      "st": "closed",
+      "provIdx": 0,
+      "live": {
+        "subject": "r:EFFR",
+        "field": "TARGET_TO"
+      }
+    },
+    "effectiveDate": "2026-09-14",
+    "lastChange": {
+      "meetingDate": "2026-07-29",
+      "decisionBp": -25
+    },
+    "nextMeeting": {
+      "meetingDate": "2026-09-16",
+      "statementAt": "2026-09-16T18:00:00.000Z",
+      "hasSep": true,
+      "businessDaysAway": 1
+    },
+    "iorb": {
+      "v": null,
+      "st": "na",
+      "provIdx": -1
+    },
+    "discountPrimary": {
+      "v": null,
+      "st": "na",
+      "provIdx": -1
+    },
+    "provIdx": 0
+  },
+  "rates": [
+    {
+      "rateCode": "EFFR",
+      "name": "Effective Federal Funds Rate",
+      "instrumentId": null,
+      "subject": "r:EFFR",
+      "effectiveDate": "2026-09-14",
+      "rate": {
+        "v": 3.63,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE_P1"
+        }
+      },
+      "p25": {
+        "v": 3.62,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE_P25"
+        }
+      },
+      "p75": {
+        "v": 3.63,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE_P75"
+        }
+      },
+      "p99": {
+        "v": 3.64,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE_P99"
+        }
+      },
+      "volumeBn": {
+        "v": 91,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:EFFR",
+          "field": "RATE_VOLUME_BN"
+        }
+      },
+      "chg1dBp": {
+        "v": 6.000000000000005,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "spreadToMidBp": {
+        "v": 0.49999999999998934,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "provIdx": 0
+    },
+    {
+      "rateCode": "SOFR",
+      "name": "Secured Overnight Financing Rate",
+      "instrumentId": null,
+      "subject": "r:SOFR",
+      "effectiveDate": "2026-09-14",
+      "rate": {
+        "v": 3.62,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.57,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE_P1"
+        }
+      },
+      "p25": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE_P25"
+        }
+      },
+      "p75": {
+        "v": 3.67,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE_P75"
+        }
+      },
+      "p99": {
+        "v": 3.7,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE_P99"
+        }
+      },
+      "volumeBn": {
+        "v": 2861,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:SOFR",
+          "field": "RATE_VOLUME_BN"
+        }
+      },
+      "chg1dBp": {
+        "v": -2.0000000000000018,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "spreadToMidBp": {
+        "v": -0.49999999999998934,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "provIdx": 0
+    },
+    {
+      "rateCode": "OBFR",
+      "name": "Overnight Bank Funding Rate",
+      "instrumentId": null,
+      "subject": "r:OBFR",
+      "effectiveDate": "2026-09-14",
+      "rate": {
+        "v": 3.63,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.53,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE_P1"
+        }
+      },
+      "p25": {
+        "v": 3.62,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE_P25"
+        }
+      },
+      "p75": {
+        "v": 3.63,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE_P75"
+        }
+      },
+      "p99": {
+        "v": 3.7,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE_P99"
+        }
+      },
+      "volumeBn": {
+        "v": 226,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:OBFR",
+          "field": "RATE_VOLUME_BN"
+        }
+      },
+      "chg1dBp": {
+        "v": 2.9999999999999805,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "spreadToMidBp": {
+        "v": 0.49999999999998934,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "provIdx": 0
+    },
+    {
+      "rateCode": "TGCR",
+      "name": "Tri-Party General Collateral Rate",
+      "instrumentId": null,
+      "subject": "r:TGCR",
+      "effectiveDate": "2026-09-14",
+      "rate": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.53,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE_P1"
+        }
+      },
+      "p25": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE_P25"
+        }
+      },
+      "p75": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE_P75"
+        }
+      },
+      "p99": {
+        "v": 3.63,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE_P99"
+        }
+      },
+      "volumeBn": {
+        "v": 1155,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:TGCR",
+          "field": "RATE_VOLUME_BN"
+        }
+      },
+      "chg1dBp": {
+        "v": 1.000000000000023,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "spreadToMidBp": {
+        "v": -2.499999999999991,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "provIdx": 0
+    },
+    {
+      "rateCode": "BGCR",
+      "name": "Broad General Collateral Rate",
+      "instrumentId": null,
+      "subject": "r:BGCR",
+      "effectiveDate": "2026-09-14",
+      "rate": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE"
+        }
+      },
+      "p1": {
+        "v": 3.53,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE_P1"
+        }
+      },
+      "p25": {
+        "v": 3.6,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE_P25"
+        }
+      },
+      "p75": {
+        "v": 3.61,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE_P75"
+        }
+      },
+      "p99": {
+        "v": 3.66,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE_P99"
+        }
+      },
+      "volumeBn": {
+        "v": 1183,
+        "st": "closed",
+        "provIdx": 0,
+        "live": {
+          "subject": "r:BGCR",
+          "field": "RATE_VOLUME_BN"
+        }
+      },
+      "chg1dBp": {
+        "v": 1.000000000000023,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "spreadToMidBp": {
+        "v": -2.499999999999991,
+        "st": "closed",
+        "provIdx": 0
+      },
+      "provIdx": 0
+    }
+  ],
+  "sofrAverages": {
+    "effectiveDate": "2026-09-15",
+    "avg30d": {
+      "v": 3.6485,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "avg90d": {
+      "v": 3.64603,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "avg180d": {
+      "v": 3.65767,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "indexValue": {
+      "v": 1.25884091,
+      "st": "closed",
+      "provIdx": 0
+    },
+    "provIdx": 0
+  },
+  "history": [
+    {
+      "date": "2026-09-14",
+      "effr": 3.63,
+      "sofr": 3.62,
+      "obfr": 3.63,
+      "tgcr": 3.6,
+      "bgcr": 3.6,
+      "targetFrom": 3.5,
+      "targetTo": 3.75
+    },
+    {
+      "date": "2026-09-11",
+      "effr": 3.57,
+      "sofr": 3.64,
+      "obfr": 3.6,
+      "tgcr": 3.59,
+      "bgcr": 3.59,
+      "targetFrom": 3.5,
+      "targetTo": 3.75
+    }
+  ],
+  "h15": {
+    "curveDate": "2026-09-11",
+    "priorDate": "2026-09-10",
+    "provIdx": 1,
+    "rows": [
+      {
+        "tenor": "1M",
+        "tenorDays": 30,
+        "yieldPct": {
+          "v": 3.93,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 2.0000000000000018,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      {
+        "tenor": "3M",
+        "tenorDays": 91,
+        "yieldPct": {
+          "v": 3.9,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 2.0000000000000018,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      {
+        "tenor": "1Y",
+        "tenorDays": 365,
+        "yieldPct": {
+          "v": 3.84,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 2.9999999999999805,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      {
+        "tenor": "2Y",
+        "tenorDays": 730,
+        "yieldPct": {
+          "v": 3.76,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 1.9999999999999574,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      {
+        "tenor": "5Y",
+        "tenorDays": 1826,
+        "yieldPct": {
+          "v": 3.81,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 3.000000000000025,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      {
+        "tenor": "10Y",
+        "tenorDays": 3653,
+        "yieldPct": {
+          "v": 4.96,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 4.0000000000000036,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      {
+        "tenor": "30Y",
+        "tenorDays": 10958,
+        "yieldPct": {
+          "v": 5.35,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "chg1dBp": {
+          "v": 4.0000000000000036,
+          "st": "closed",
+          "provIdx": 1
+        }
+      }
+    ]
+  },
+  "meetings": [
+    {
+      "meetingDate": "2026-01-28",
+      "statementAt": "2026-01-28T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": true,
+      "isNext": false,
+      "decisionBp": 0,
+      "impliedRatePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumulativeMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-03-18",
+      "statementAt": "2026-03-18T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": true,
+      "isNext": false,
+      "decisionBp": -25,
+      "impliedRatePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumulativeMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-04-29",
+      "statementAt": "2026-04-29T18:00:00.000Z",
+      "hasSep": false,
+      "isPast": true,
+      "isNext": false,
+      "decisionBp": 0,
+      "impliedRatePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumulativeMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-06-17",
+      "statementAt": "2026-06-17T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": true,
+      "isNext": false,
+      "decisionBp": -25,
+      "impliedRatePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumulativeMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-07-29",
+      "statementAt": "2026-07-29T18:00:00.000Z",
+      "hasSep": false,
+      "isPast": true,
+      "isNext": false,
+      "decisionBp": -25,
+      "impliedRatePct": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "impliedMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "cumulativeMoveBp": {
+        "v": null,
+        "st": "na",
+        "r": "NOT_IN_UNIVERSE",
+        "provIdx": -1
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-09-16",
+      "statementAt": "2026-09-16T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": false,
+      "isNext": true,
+      "decisionBp": null,
+      "impliedRatePct": {
+        "v": 3.5430578955346625,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "impliedMoveBp": {
+        "v": -7.694210446533775,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "cumulativeMoveBp": {
+        "v": -7.694210446533775,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-10-28",
+      "statementAt": "2026-10-28T18:00:00.000Z",
+      "hasSep": false,
+      "isPast": false,
+      "isNext": false,
+      "decisionBp": null,
+      "impliedRatePct": {
+        "v": 3.4240627758096283,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "impliedMoveBp": {
+        "v": -11.899511972503428,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "cumulativeMoveBp": {
+        "v": -19.593722419037203,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    },
+    {
+      "meetingDate": "2026-12-09",
+      "statementAt": "2026-12-09T18:00:00.000Z",
+      "hasSep": true,
+      "isPast": false,
+      "isNext": false,
+      "decisionBp": null,
+      "impliedRatePct": {
+        "v": 3.3535907601865818,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "impliedMoveBp": {
+        "v": -7.04720156230465,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "cumulativeMoveBp": {
+        "v": -26.640923981341853,
+        "st": "closed",
+        "provIdx": 2
+      },
+      "hikeProbPct": null,
+      "cutProbPct": null,
+      "provIdx": 3
+    }
+  ],
+  "path": {
+    "engine": {
+      "name": "wirp.policypath",
+      "version": "1.0.0",
+      "inputsHash": "491745f3913729cfe1421f8f3bf7691339d3b5bed1464b6e3cdf9ceffb7b72bf"
+    },
+    "curveId": "SOFR_OIS",
+    "curveDate": "2026-09-14",
+    "buildId": "<BUILD>",
+    "spotRatePct": {
+      "v": 3.62,
+      "st": "closed",
+      "provIdx": 2
+    },
+    "caveats": [
+      "PROXY_CURVE",
+      "NO_FUTURES_SOURCE"
+    ]
+  },
+  "balanceSheet": null,
+  "press": [
+    {
+      "newsId": "<NEWS0>",
+      "headline": "Federal Reserve Board announces the appointment of a new general counsel",
+      "summary": null,
+      "category": "Other Announcements",
+      "publishedAt": "2026-09-09T14:00:00.000Z",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/fed-4.htm",
+      "kind": "press_release",
+      "isCorrection": false,
+      "provIdx": 4
+    },
+    {
+      "newsId": "<NEWS1>",
+      "headline": "Agencies finalise rule on bank capital requirements",
+      "summary": null,
+      "category": "Banking and Consumer Regulatory Policy",
+      "publishedAt": "2026-09-02T14:00:00.000Z",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/fed-3.htm",
+      "kind": "press_release",
+      "isCorrection": false,
+      "provIdx": 4
+    },
+    {
+      "newsId": "<NEWS2>",
+      "headline": "Minutes of the Federal Open Market Committee, July 28-29, 2026",
+      "summary": null,
+      "category": "Monetary Policy",
+      "publishedAt": "2026-08-19T18:00:00.000Z",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/fed-2.htm",
+      "kind": "fed_release",
+      "isCorrection": false,
+      "provIdx": 4
+    },
+    {
+      "newsId": "<NEWS3>",
+      "headline": "Federal Reserve issues FOMC statement",
+      "summary": null,
+      "category": "Monetary Policy",
+      "publishedAt": "2026-07-29T18:00:00.000Z",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/fed-1.htm",
+      "kind": "press_release",
+      "isCorrection": false,
+      "provIdx": 4
+    }
+  ]
+}

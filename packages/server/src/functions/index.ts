@@ -11,12 +11,16 @@ import * as BTMM from './BTMM/resolve.js';
 import * as CACS from './CACS/resolve.js';
 import * as CF from './CF/resolve.js';
 import * as CN from './CN/resolve.js';
+import * as CRVF from './CRVF/resolve.js';
+import * as CRYP from './CRYP/resolve.js';
 import * as DES from './DES/resolve.js';
 import * as ECO from './ECO/resolve.js';
 import * as EE from './EE/resolve.js';
 import * as EQS from './EQS/resolve.js';
 import * as FA from './FA/resolve.js';
+import * as FED from './FED/resolve.js';
 import * as FXC from './FXC/resolve.js';
+import * as GC from './GC/resolve.js';
 import * as GIP from './GIP/resolve.js';
 import * as GP from './GP/resolve.js';
 import * as HDS from './HDS/resolve.js';
@@ -26,27 +30,37 @@ import * as MEMB from './MEMB/resolve.js';
 import * as MSG from './MSG/resolve.js';
 import * as N from './N/resolve.js';
 import * as NI from './NI/resolve.js';
+import * as OMON from './OMON/resolve.js';
+import * as OVML from './OVML/resolve.js';
 import * as PORT from './PORT/resolve.js';
 import * as Q from './Q/resolve.js';
 import * as QM from './QM/resolve.js';
 import * as RV from './RV/resolve.js';
 import * as SECF from './SECF/resolve.js';
+import * as SRCH from './SRCH/resolve.js';
+import * as SWPM from './SWPM/resolve.js';
 import * as TOP from './TOP/resolve.js';
 import * as W from './W/resolve.js';
 import * as WB from './WB/resolve.js';
 import * as WEI from './WEI/resolve.js';
+import * as WIRP from './WIRP/resolve.js';
+import * as YAS from './YAS/resolve.js';
 
 export {
   BTMM,
   CACS,
   CF,
   CN,
+  CRVF,
+  CRYP,
   DES,
   ECO,
   EE,
   EQS,
   FA,
+  FED,
   FXC,
+  GC,
   GIP,
   GP,
   HDS,
@@ -56,15 +70,21 @@ export {
   MSG,
   N,
   NI,
+  OMON,
+  OVML,
   PORT,
   Q,
   QM,
   RV,
   SECF,
+  SRCH,
+  SWPM,
   TOP,
   W,
   WB,
   WEI,
+  WIRP,
+  YAS,
 };
 
 /** Every module the glob matched, keyed by its file (or directory) name. */
@@ -73,12 +93,16 @@ export const functionModules = {
   CACS,
   CF,
   CN,
+  CRVF,
+  CRYP,
   DES,
   ECO,
   EE,
   EQS,
   FA,
+  FED,
   FXC,
+  GC,
   GIP,
   GP,
   HDS,
@@ -88,13 +112,19 @@ export const functionModules = {
   MSG,
   N,
   NI,
+  OMON,
+  OVML,
   PORT,
   Q,
   QM,
   RV,
   SECF,
+  SRCH,
+  SWPM,
   TOP,
   W,
   WB,
   WEI,
+  WIRP,
+  YAS,
 } as const;

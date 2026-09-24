@@ -1,0 +1,1343 @@
+{
+  "variant": "default",
+  "universe": {
+    "market": "UST",
+    "label": "US Treasuries (govt_terms, as of 2026-09-15)",
+    "size": 14,
+    "coverage": "SEED_UNIVERSE_ONLY",
+    "provIdx": 0
+  },
+  "filters": [
+    {
+      "field": "securityTypes",
+      "label": "Type bill, note, bond, tips",
+      "matched": 14,
+      "unavailableReason": null
+    },
+    {
+      "field": "couponTypes",
+      "label": "Coupon type fixed, zero, inflation_linked",
+      "matched": 14,
+      "unavailableReason": null
+    }
+  ],
+  "pricing": {
+    "basis": "curve_derived_no_market_quotes",
+    "curveId": "UST_PAR",
+    "curveDate": "2026-09-14",
+    "interpolation": "monotone_convex",
+    "buildId": "<BUILD>",
+    "settlement": "2026-09-16",
+    "settlementRule": "T+1 SIFMA",
+    "provIdx": 1,
+    "engine": {
+      "name": "curve.bootstrap",
+      "version": "1.0.0",
+      "inputsHash": "0840bcd473a202d8202d114eef82f7ef9143cc9f959c6fb0afb20e65561d053b"
+    }
+  },
+  "columns": [
+    {
+      "id": "CUSIP",
+      "label": "CUSIP",
+      "fmt": "text",
+      "sortable": true,
+      "fieldId": "ID_CUSIP"
+    },
+    {
+      "id": "SECURITY_TYP",
+      "label": "Type",
+      "fmt": "text",
+      "sortable": true,
+      "fieldId": "SECURITY_TYP"
+    },
+    {
+      "id": "TERM_LABEL",
+      "label": "Term",
+      "fmt": "text",
+      "sortable": true
+    },
+    {
+      "id": "CPN",
+      "label": "Cpn %",
+      "fmt": "pct",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "CPN"
+    },
+    {
+      "id": "MATURITY",
+      "label": "Maturity",
+      "fmt": "date",
+      "sortable": true,
+      "fieldId": "MATURITY"
+    },
+    {
+      "id": "MTY_YEARS",
+      "label": "Yrs",
+      "fmt": "px",
+      "sortable": true,
+      "decimals": 2
+    },
+    {
+      "id": "YLD_YTM_MID",
+      "label": "Yld %",
+      "fmt": "pct",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "YLD_YTM_MID"
+    },
+    {
+      "id": "DISC_RATE",
+      "label": "Disc %",
+      "fmt": "pct",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "DISC_RATE"
+    },
+    {
+      "id": "BEY",
+      "label": "BEY %",
+      "fmt": "pct",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "BEY"
+    },
+    {
+      "id": "PX_CLEAN_MID",
+      "label": "Clean px",
+      "fmt": "px",
+      "sortable": true,
+      "decimals": 6,
+      "fieldId": "PX_CLEAN_MID"
+    },
+    {
+      "id": "DUR_ADJ_MID",
+      "label": "Mod dur",
+      "fmt": "px",
+      "sortable": true,
+      "decimals": 3,
+      "fieldId": "DUR_ADJ_MID"
+    },
+    {
+      "id": "DV01",
+      "label": "DV01",
+      "fmt": "ccy",
+      "sortable": true,
+      "decimals": 2,
+      "fieldId": "DV01"
+    }
+  ],
+  "rows": [
+    {
+      "instrumentId": "<BILL_4WK>",
+      "key": "B 09/29/26 Govt",
+      "name": "US Treasury Bill 4WK 29-Sep-2026",
+      "cusip": "912797VE4",
+      "securityType": "bill",
+      "termLabel": "4WK",
+      "onTheRun": true,
+      "maturityDate": "2026-09-29",
+      "issueDate": "2026-09-01",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 85000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VE4",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "4WK",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2026-09-29",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.03561643835616438,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.7462418672878703,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.6900000000000004,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.7462418672878703,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 99.86675000000001,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.0355689794520548,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 3.552158378693494,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_4WK>",
+      "rank": 1
+    },
+    {
+      "instrumentId": "<BILL_CMB>",
+      "key": "B 10/27/26 Govt",
+      "name": "US Treasury Cash Management Bill 27-Oct-2026",
+      "cusip": "912797CM0",
+      "securityType": "bill",
+      "termLabel": "42D",
+      "onTheRun": false,
+      "maturityDate": "2026-10-27",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": null,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797CM0",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "42D",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2026-10-27",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.11232876712328767,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.771280654946027,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.703928571428571,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.771280654946027,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 99.5781636904762,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.11185492359752122,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 11.138307891579679,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_CMB>",
+      "rank": 2
+    },
+    {
+      "instrumentId": "<BILL_8WK>",
+      "key": "B 11/10/26 Govt",
+      "name": "US Treasury Bill 8WK 10-Nov-2026",
+      "cusip": "912797VF1",
+      "securityType": "bill",
+      "termLabel": "8WK",
+      "onTheRun": true,
+      "maturityDate": "2026-11-10",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 72000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VF1",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "8WK",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2026-11-10",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.1506849315068493,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.7932248277712266,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.72,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.7932248277712266,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 99.43166666666666,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.14982853881278538,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 14.897701328386603,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_8WK>",
+      "rank": 3
+    },
+    {
+      "instrumentId": "<BILL_13WK>",
+      "key": "B 12/15/26 Govt",
+      "name": "US Treasury Bill 13WK 15-Dec-2026",
+      "cusip": "912797VG9",
+      "securityType": "bill",
+      "termLabel": "13WK",
+      "onTheRun": true,
+      "maturityDate": "2026-12-15",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 91000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VG9",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "13WK",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2026-12-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.2465753424657534,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.993099385677053,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.9,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.993099385677053,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 99.02499999999999,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.2441712328767123,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 24.179056335616437,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_13WK>",
+      "rank": 4
+    },
+    {
+      "instrumentId": "<BILL_17WK>",
+      "key": "B 01/12/27 Govt",
+      "name": "US Treasury Bill 17WK 12-Jan-2027",
+      "cusip": "912797VH7",
+      "securityType": "bill",
+      "termLabel": "17WK",
+      "onTheRun": true,
+      "maturityDate": "2027-01-12",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 64000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VH7",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "17WK",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2027-01-12",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.3232876712328767,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.994965811297263,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.8900000000000006,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.994965811297263,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 98.72494444444445,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.3191655738203958,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 31.509603543997812,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_17WK>",
+      "rank": 5
+    },
+    {
+      "instrumentId": "<BILL_26WK>",
+      "key": "B 03/16/27 Govt",
+      "name": "US Treasury Bill 26WK 16-Mar-2027",
+      "cusip": "912797VJ3",
+      "securityType": "bill",
+      "termLabel": "26WK",
+      "onTheRun": true,
+      "maturityDate": "2027-03-16",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 88000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VJ3",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "26WK",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2027-03-16",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.4958904109589041,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 4.012157159159279,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.88,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 4.012157159159279,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 98.04922222222223,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.486216691019787,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 47.673168385952664,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_26WK>",
+      "rank": 6
+    },
+    {
+      "instrumentId": "<BILL_52WK>",
+      "key": "B 09/14/27 Govt",
+      "name": "US Treasury Bill 52WK 14-Sep-2027",
+      "cusip": "912797VK0",
+      "securityType": "bill",
+      "termLabel": "52WK",
+      "onTheRun": true,
+      "maturityDate": "2027-09-14",
+      "issueDate": "2026-09-15",
+      "couponRate": null,
+      "couponFreq": 0,
+      "dayCount": "ACT/360",
+      "isCallable": false,
+      "amountOutstanding": 56000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912797VK0",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bill",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "52WK",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "MATURITY": {
+          "v": "2027-09-14",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 0.9945205479452055,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.8597322841118316,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DISC_RATE": {
+          "v": 3.7000000000000006,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "BEY": {
+          "v": 3.8597322841118316,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "PX_CLEAN_MID": {
+          "v": 96.26916666666666,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DUR_ADJ_MID": {
+          "v": 0.9577562776564166,
+          "st": "closed",
+          "provIdx": 2
+        },
+        "DV01": {
+          "v": 92.20239871975186,
+          "st": "closed",
+          "provIdx": 2
+        }
+      },
+      "subject": "q:<BILL_52WK>",
+      "rank": 7
+    },
+    {
+      "instrumentId": "<NOTE_2Y>",
+      "key": "T 3.75 08/31/28 Govt",
+      "name": "US Treasury Note 3.75% 31-Aug-2028",
+      "cusip": "91282CLV6",
+      "securityType": "note",
+      "termLabel": "2Y",
+      "onTheRun": true,
+      "maturityDate": "2028-08-31",
+      "issueDate": "2026-08-31",
+      "couponRate": 3.75,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 69000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "91282CLV6",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "note",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "2Y",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": 3.75,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2028-08-31",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 1.9589041095890412,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.765753424657534,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": 99.96915729301148,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DUR_ADJ_MID": {
+          "v": 1.8661146829605728,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DV01": {
+          "v": 186.86321304386507,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "subject": "q:<NOTE_2Y>",
+      "rank": 8
+    },
+    {
+      "instrumentId": "<NOTE_5Y>",
+      "key": "T 3.875 08/31/31 Govt",
+      "name": "US Treasury Note 3.875% 31-Aug-2031",
+      "cusip": "91282CLW4",
+      "securityType": "note",
+      "termLabel": "5Y",
+      "onTheRun": true,
+      "maturityDate": "2031-08-31",
+      "issueDate": "2026-08-31",
+      "couponRate": 3.875,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 70000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "91282CLW4",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "note",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "5Y",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": 3.875,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2031-08-31",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 4.958904109589041,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.8093424657534247,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": 100.29251194471479,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DUR_ADJ_MID": {
+          "v": 4.464814465351257,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DV01": {
+          "v": 448.5521500774298,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "subject": "q:<NOTE_5Y>",
+      "rank": 9
+    },
+    {
+      "instrumentId": "<NOTE_OLD>",
+      "key": "T 4.00 05/15/34 Govt",
+      "name": "US Treasury Note 4.00% 15-May-2034",
+      "cusip": "91282CJK8",
+      "securityType": "note",
+      "termLabel": null,
+      "onTheRun": false,
+      "maturityDate": "2034-05-15",
+      "issueDate": "2024-05-15",
+      "couponRate": 4,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 42000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "91282CJK8",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "note",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "CPN": {
+          "v": 4,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2034-05-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 7.6657534246575345,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 3.976386861313869,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": 100.15033697705267,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DUR_ADJ_MID": {
+          "v": 6.4602823410601555,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DV01": {
+          "v": 655.7067904924626,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "subject": "q:<NOTE_OLD>",
+      "rank": 10
+    },
+    {
+      "instrumentId": "<TIPS_10Y>",
+      "key": "TII 1.75 01/15/36 Govt",
+      "name": "US Treasury Inflation-Indexed Note 1.75% 15-Jan-2036",
+      "cusip": "91282CLT6",
+      "securityType": "tips",
+      "termLabel": "10Y TIPS",
+      "onTheRun": false,
+      "maturityDate": "2036-01-15",
+      "issueDate": "2026-01-15",
+      "couponRate": 1.75,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 18000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "91282CLT6",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "tips",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "10Y TIPS",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": 1.75,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2036-01-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 9.336986301369864,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": null,
+          "st": "na",
+          "r": "NOT_IN_UNIVERSE",
+          "provIdx": -1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "r": "NOT_IN_UNIVERSE",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "r": "NOT_IN_UNIVERSE",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": null,
+          "st": "na",
+          "r": "NOT_IN_UNIVERSE",
+          "provIdx": -1
+        },
+        "DUR_ADJ_MID": {
+          "v": null,
+          "st": "na",
+          "r": "NOT_IN_UNIVERSE",
+          "provIdx": -1
+        },
+        "DV01": {
+          "v": null,
+          "st": "na",
+          "r": "NOT_IN_UNIVERSE",
+          "provIdx": -1
+        }
+      },
+      "subject": "q:<TIPS_10Y>",
+      "rank": 11
+    },
+    {
+      "instrumentId": "<NOTE_10Y>",
+      "key": "T 4.25 08/15/36 Govt",
+      "name": "US Treasury Note 4.25% 15-Aug-2036",
+      "cusip": "91282CLM6",
+      "securityType": "note",
+      "termLabel": "10Y",
+      "onTheRun": true,
+      "maturityDate": "2036-08-15",
+      "issueDate": "2026-08-15",
+      "couponRate": 4.25,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 42000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "91282CLM6",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "note",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "10Y",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": 4.25,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2036-08-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 9.92054794520548,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 4.066496350364964,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": 101.48182523791138,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DUR_ADJ_MID": {
+          "v": 8.015237603234727,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DV01": {
+          "v": 816.3630947190846,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "subject": "q:<NOTE_10Y>",
+      "rank": 12
+    },
+    {
+      "instrumentId": "<BOND_20Y>",
+      "key": "T 4.50 08/15/46 Govt",
+      "name": "US Treasury Bond 4.50% 15-Aug-2046",
+      "cusip": "912810UE6",
+      "securityType": "bond",
+      "termLabel": "20Y",
+      "onTheRun": true,
+      "maturityDate": "2046-08-15",
+      "issueDate": "2026-08-15",
+      "couponRate": 4.5,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 26000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912810UE6",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bond",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "20Y",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": 4.5,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2046-08-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 19.926027397260274,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 4.5457940854326395,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": 99.40058126251883,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DUR_ADJ_MID": {
+          "v": 12.98719822265453,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DV01": {
+          "v": 1296.0169994340158,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "subject": "q:<BOND_20Y>",
+      "rank": 13
+    },
+    {
+      "instrumentId": "<BOND_30Y>",
+      "key": "T 4.75 08/15/56 Govt",
+      "name": "US Treasury Bond 4.75% 15-Aug-2056",
+      "cusip": "912810UF3",
+      "securityType": "bond",
+      "termLabel": "30Y",
+      "onTheRun": true,
+      "maturityDate": "2056-08-15",
+      "issueDate": "2026-08-15",
+      "couponRate": 4.75,
+      "couponFreq": 2,
+      "dayCount": "ACT/ACT",
+      "isCallable": false,
+      "amountOutstanding": 24000000000,
+      "termsProvIdx": 0,
+      "cells": {
+        "CUSIP": {
+          "v": "912810UF3",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "SECURITY_TYP": {
+          "v": "bond",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "TERM_LABEL": {
+          "v": "30Y",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "CPN": {
+          "v": 4.75,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MATURITY": {
+          "v": "2056-08-15",
+          "st": "closed",
+          "provIdx": 0
+        },
+        "MTY_YEARS": {
+          "v": 29.934246575342467,
+          "st": "closed",
+          "provIdx": 0
+        },
+        "YLD_YTM_MID": {
+          "v": 4.659036408431426,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DISC_RATE": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "BEY": {
+          "v": null,
+          "st": "na",
+          "provIdx": -1
+        },
+        "PX_CLEAN_MID": {
+          "v": 101.4561647355938,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DUR_ADJ_MID": {
+          "v": 15.923943698726152,
+          "st": "closed",
+          "provIdx": 1
+        },
+        "DV01": {
+          "v": 1622.1595362312335,
+          "st": "closed",
+          "provIdx": 1
+        }
+      },
+      "subject": "q:<BOND_30Y>",
+      "rank": 14
+    }
+  ],
+  "counts": {
+    "universe": 14,
+    "afterFilters": 14,
+    "returned": 14,
+    "excludedNoTerms": 0,
+    "excludedNotPriced": 1
+  },
+  "facets": {
+    "securityType": [
+      {
+        "value": "bill",
+        "count": 7
+      },
+      {
+        "value": "note",
+        "count": 4
+      },
+      {
+        "value": "bond",
+        "count": 2
+      },
+      {
+        "value": "tips",
+        "count": 1
+      }
+    ],
+    "maturityBucket": [
+      {
+        "value": "0-1Y",
+        "count": 7
+      },
+      {
+        "value": "1-3Y",
+        "count": 1
+      },
+      {
+        "value": "3-7Y",
+        "count": 1
+      },
+      {
+        "value": "7-10Y",
+        "count": 3
+      },
+      {
+        "value": "10-20Y",
+        "count": 1
+      },
+      {
+        "value": "20Y+",
+        "count": 1
+      }
+    ],
+    "onTheRun": [
+      {
+        "value": "true",
+        "count": 11
+      },
+      {
+        "value": "false",
+        "count": 3
+      }
+    ]
+  },
+  "savedSearch": null,
+  "notes": [
+    "NO_BOND_PRICE_SOURCE",
+    "SEED_UNIVERSE_ONLY",
+    "CURVE_DATE_BEFORE_VALUATION",
+    "TIPS_FRN_NOT_PRICED"
+  ]
+}
