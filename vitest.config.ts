@@ -183,7 +183,11 @@ export default defineConfig({
           name: 'web',
           root: 'packages/web',
           environment: 'jsdom',
-          include: ['test/**/*.test.{ts,tsx}'],
+          // `*.bench.ts` is included for the same reason it is in `core`: `test/shell/
+          // autocomplete.bench.ts` is a WP-12 acceptance row (WORKPLAN L1407) that ASSERTS the
+          // 80 ms p95 and 16 ms keystroke budgets rather than printing them, so it must run with
+          // the suite. Vitest's own `bench()` blocks are unaffected by `include`.
+          include: ['test/**/*.test.{ts,tsx}', 'test/**/*.bench.{ts,tsx}'],
           setupFiles: ['test/setup.tsx'],
           testTimeout: 10_000,
         },

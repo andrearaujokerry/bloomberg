@@ -1,0 +1,306 @@
+/* packages/web/src/screen/widgets/widgets.css — layout and state presentation for the widget set.
+ *
+ * Colour lives in `theme/tokens.css` (WP-01's, not edited here); this file only arranges things and
+ * gives the states their non-colour distinctions. The `[data-st='stale']::after` glyph is in
+ * tokens.css, which is why no widget writes a `·` into a stale cell's text. */
+
+/* ── the non-colour state marks ─────────────────────────────────────────────────────────────── */
+
+/* `closed` had no mark of any kind: no glyph, no label, no border. It was separated from `live`
+ * only by a step in grey — #f2f2f2 against #cfcfcf in dark, which is 1.39:1, and #111111 against
+ * #444444 in light, which is 1.95:1. Both are under the 3:1 floor a non-text distinction has to
+ * clear, and both fail outright for a user who cannot tell the two greys apart at all. On a screen
+ * that mixes an instrument still trading with one whose exchange has closed — which is most of
+ * them — an official close read as a live price, and TERM-12 exists to stop exactly that.
+ *
+ * So `closed` gets a mark of its own, the way `stale` has one. A thin trailing bar, distinct from
+ * stale's `·` so the two can never be confused, and set in `--c-closed` so it inherits the state's
+ * colour. CLIENT §12.1's table lists no per-cell glyph for `closed` and puts the distinction in a
+ * `CLOSED` panel-header badge instead — but that badge reports the *worst* state in the panel, so
+ * it cannot tell one closed cell from the live cell beside it. This is the per-cell half of the
+ * same statement, and the token values it would otherwise need are WP-01's to change.
+ *
+ * The pseudo-element is why `CellView.tsx` must not also write either mark into the cell's text. */
+[data-st='closed']::after {
+  content: ' ▏';
+}
+
+/* ── empty nodes ────────────────────────────────────────────────────────────────────────────── */
+
+/* Every list-shaped node — kv, table, list, badges, tabs — is exactly one tab stop in every state,
+ * including empty, and says out loud that it is empty. A node whose tab stop existed only when it
+ * had rows dropped out of the keyboard order the moment there was nothing in it, so `Tab`, the
+ * arrow keys, `Ctrl+I` and `ctx.focus(id)` all stopped reaching a node the spec still contains.
+ * DES on a government bond was the live case: `identifiers: []`, a caption and five column headers
+ * that nothing could ever land on. */
+.widget__empty {
+  margin: 0;
+  padding: 0 1ch;
+  color: var(--c-muted);
+  font-style: italic;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.screen__head {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  padding: 0 1ch;
+}
+.screen__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--c-label);
+}
+.screen__subtitle {
+  margin: 0;
+  color: var(--c-muted);
+}
+.screen__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+.screen__footer {
+  border-top: 1px solid var(--c-grid-line);
+  color: var(--c-muted);
+  padding: 0 1ch;
+}
+.screen__footer ul {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.screen__footer li {
+  display: inline;
+}
+.screen__footer li + li::before {
+  content: ' · ';
+}
+
+.split {
+  height: 100%;
+  min-height: 0;
+  gap: 1px;
+}
+.split__pane {
+  overflow: auto;
+}
+
+/* ── cells ─────────────────────────────────────────────────────────────────────────────────── */
+
+.cell {
+  font-variant-numeric: tabular-nums;
+}
+.cell__reason {
+  margin-left: 0.5ch;
+  font-size: 0.85em;
+  color: var(--c-blocked);
+  border: 1px solid currentColor;
+  padding: 0 0.4ch;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── key/value ─────────────────────────────────────────────────────────────────────────────── */
+
+.kv__title {
+  color: var(--c-label);
+}
+.kv__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2ch;
+  break-inside: avoid;
+}
+.kv__label {
+  color: var(--c-label);
+}
+
+/* ── table ─────────────────────────────────────────────────────────────────────────────────── */
+
+.table__caption {
+  color: var(--c-label);
+}
+.table__row {
+  display: flex;
+  gap: 2ch;
+}
+.table__row:nth-child(even) {
+  background: var(--c-bg-row-alt);
+}
+.table__th {
+  flex: 1 1 0;
+  color: var(--c-label);
+}
+.table__td {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* ── tabs ──────────────────────────────────────────────────────────────────────────────────── */
+
+.tabs__strip {
+  display: flex;
+  gap: 2ch;
+  border-bottom: 1px solid var(--c-grid-line);
+}
+.tabs__tab {
+  cursor: pointer;
+  color: var(--c-muted);
+  padding: 0 1ch;
+}
+.tabs__tab[aria-selected='true'] {
+  color: var(--c-label);
+  box-shadow: inset 0 -2px 0 var(--c-label);
+}
+.tabs__key {
+  margin-left: 0.5ch;
+  font-size: 0.8em;
+  color: var(--c-muted);
+}
+
+/* ── list ──────────────────────────────────────────────────────────────────────────────────── */
+
+.list__item {
+  display: flex;
+  gap: 1ch;
+  align-items: baseline;
+  cursor: pointer;
+}
+.list__secondary,
+.list__ts {
+  color: var(--c-muted);
+}
+.list__empty {
+  color: var(--c-muted);
+}
+
+/* ── badges ────────────────────────────────────────────────────────────────────────────────── */
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1ch;
+}
+.badge {
+  border: 1px solid currentColor;
+  padding: 0 0.6ch;
+  font-size: 0.85em;
+}
+.badge[data-tone='info'] {
+  color: var(--c-info);
+}
+.badge[data-tone='ok'] {
+  color: var(--c-ok);
+}
+.badge[data-tone='warn'] {
+  color: var(--c-warn);
+}
+.badge[data-tone='error'] {
+  color: var(--c-error);
+}
+.badge[data-tone='stale'] {
+  color: var(--c-stale);
+}
+.badge[data-tone='blocked'] {
+  color: var(--c-blocked);
+}
+
+/* ── forms ─────────────────────────────────────────────────────────────────────────────────── */
+
+.form__field {
+  display: flex;
+  gap: 1ch;
+  align-items: baseline;
+}
+.form__label {
+  color: var(--c-label);
+  min-width: 18ch;
+}
+.form__input {
+  border-bottom: 1px solid var(--c-grid-line);
+  min-width: 12ch;
+}
+.form__unit {
+  color: var(--c-muted);
+}
+.form__submit {
+  cursor: pointer;
+  color: var(--c-label);
+  border: 1px solid currentColor;
+  padding: 0 1ch;
+}
+
+/* ── the two placeholders (WP-13's grid, WP-14's chart) ────────────────────────────────────── */
+
+.pending {
+  border: 1px dashed var(--c-pending);
+  padding: 1ch;
+  color: var(--c-muted);
+}
+.pending__head {
+  margin: 0;
+  color: var(--c-warn);
+}
+.pending__body,
+.pending__note {
+  margin: 0;
+}
+.pending__note {
+  color: var(--c-pending);
+  font-style: italic;
+}
+
+/* ── provenance panel (DATA-10) ────────────────────────────────────────────────────────────── */
+
+.prov {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 42ch;
+  max-width: 100%;
+  background: var(--c-bg-panel);
+  border: 1px solid var(--c-focus);
+  padding: 1ch;
+  z-index: 10;
+}
+.prov__title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--c-label);
+}
+.prov__dl {
+  display: grid;
+  grid-template-columns: 14ch 1fr;
+  gap: 0 1ch;
+  margin: 0;
+}
+.prov__dl dt {
+  color: var(--c-label);
+}
+.prov__dl dd {
+  margin: 0;
+}
+.prov__pending {
+  color: var(--c-pending);
+}

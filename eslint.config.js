@@ -269,6 +269,20 @@ export default tseslint.config(
         { name: 'XMLHttpRequest', message: 'all IO goes through @terminal/sdk — API-05' },
         { name: 'EventSource', message: 'all IO goes through @terminal/sdk — API-05' },
       ],
+      // `no-restricted-globals` matches a BARE identifier only, so it never sees `window.fetch()`,
+      // `globalThis.fetch()` or `new self.WebSocket()`. That is the whole boundary written as a
+      // rule people are told to trust, with a hole in it — and a guard nobody can rely on is worse
+      // than no guard, because the reviewer stops looking. WP-12's audit found it while confirming
+      // there is currently no breach to find. These selectors close the qualified forms.
+      'no-restricted-syntax': [
+        'error',
+        ...['fetch', 'WebSocket', 'XMLHttpRequest', 'EventSource'].flatMap((api) =>
+          ['window', 'globalThis', 'self', 'top', 'parent'].map((host) => ({
+            selector: `MemberExpression[object.name='${host}'][property.name='${api}']`,
+            message: `all IO goes through @terminal/sdk — API-05 (${host}.${api} is the same call as a bare ${api})`,
+          })),
+        ),
+      ],
     },
   },
   {

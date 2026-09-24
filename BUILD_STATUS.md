@@ -18,7 +18,8 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-09 | Tier 1 functions, news, messaging, alerts | merged, with open defects below |
 | WP-10 | Tier 2 functions, fundamentals ingest, portfolios | merged |
 | WP-11 | Tier 3 functions, curve/rate/econ ingest | merged |
-| WP-12 … WP-15 | Web shell and renderer, SDK client, seed and verification | not started |
+| WP-12 | Web shell, keyboard, command line, screen renderer | merged |
+| WP-13 … WP-15 | LiveGrid and SDK live client, charts, seed and verification | not started |
 
 3,643 tests across 176 files.
 
@@ -149,6 +150,23 @@ diff. Numbers for the alternatives are in the WP-11 commit message.
 Related and still true: the two screens' key-rate durations are sensitivities to **different
 curves** (`UST_PAR`, `SOFR_OIS`). They now measure the same quantity the same way, so they compose
 as hedge ratios, but they were never additive and still are not.
+
+### Two WP-12 findings left open, both deliberate
+
+- **`na` and `stale` share the `·` glyph.** One mark, two meanings in one grid. The fix the audit
+  wanted is in `theme/tokens.css`, which WORKPLAN L1340 puts outside WP-12, and `CLIENT.md` §12.1
+  specifies `·` for both as explicitly as it specifies anything. Changing either needs the design
+  document changed first, so it is a decision rather than a patch.
+- **The chart cites one provenance index per canvas.** A multi-series chart now cites an index only
+  when every series agrees on one, and cites nothing otherwise, which is honest but coarse. The
+  per-series answer arrives with WP-14's `ChartCanvas`, and the props contract records that it must
+  set the index per focused series.
+
+Also closed here, found in passing rather than by either audit: `no-restricted-globals` matches a
+BARE identifier only, so `window.fetch()`, `globalThis.fetch()` and `new self.WebSocket()` linted
+clean in `packages/web/src` — the browser IO boundary written as a rule people are told to trust,
+with a hole in it. There was no breach to find; a `no-restricted-syntax` companion now closes the
+qualified forms (proved with a throwaway probe: three violations caught).
 
 ### `quote_ticks` has two writers (latent, not yet firing)
 
