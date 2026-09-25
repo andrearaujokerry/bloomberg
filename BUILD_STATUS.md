@@ -19,9 +19,10 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-10 | Tier 2 functions, fundamentals ingest, portfolios | merged |
 | WP-11 | Tier 3 functions, curve/rate/econ ingest | merged |
 | WP-12 | Web shell, keyboard, command line, screen renderer | merged |
-| WP-13 … WP-15 | LiveGrid and SDK live client, charts, seed and verification | not started |
+| WP-13 | LiveGrid, SDK live client, subscriptions, quote cache, realtime bridge | merged, with the wiring gap below |
+| WP-14 … WP-15 | Charts and studies, seed and verification | not started |
 
-3,643 tests across 176 files.
+5,040 tests across 234 files.
 
 The suite runs with no network access: the replay store is a wall, and a fixture miss throws rather
 than falling through to a provider (FEED-08, QA-02).
@@ -167,6 +168,64 @@ BARE identifier only, so `window.fetch()`, `globalThis.fetch()` and `new self.We
 clean in `packages/web/src` — the browser IO boundary written as a rule people are told to trust,
 with a hole in it. There was no breach to find; a `no-restricted-syntax` companion now closes the
 qualified forms (proved with a throwaway probe: three violations caught).
+
+### Nothing renders `LiveGrid` yet, and no work package owns the wiring
+
+WP-13 builds the grid, and the grid is reachable from no screen in the running app. The chain is
+`App.tsx` → `Shell` → `PanelGrid` → `Panel` → `ScreenRenderer` → `screen/widgets/Grid.tsx` →
+`registry.LiveGrid`, and it is broken in two places:
+
+- `App.tsx` still renders `ShellPlaceholder`, not the real `<Shell/>`. Its own comment says so. That
+  makes WP-12's shell unreachable too, so this is not something WP-13 introduced.
+- Nothing anywhere in `packages/web/src` ever constructs a `WidgetRegistry`. `ScreenRenderer`
+  defaults `widgets = {}`, `Grid.tsx` reads `registry.LiveGrid`, finds `undefined`, and draws the
+  `data-pending="LiveGrid"` placeholder on every `grid` node of all 38 screens.
+
+An empty registry was the correct WP-12 state — `registry.ts` says so explicitly, and the
+placeholder names what it is waiting for rather than impersonating a grid. WP-13 is the package that
+should have filled it, and could not: `WORKPLAN.md` L1723 assigns `src/App.tsx` to WP-01 and L1725
+gives WP-13 only `grid/**` and `rt/**`, so the two construction sites are both outside it. No later
+package claims the handoff either — WP-14 adds `ChartCanvas` to the same unbuilt registry, and
+WP-15's integration checkpoints I9 and I10 *assume* it exists.
+
+**This needs assigning before the app can be run at all**, and it is one file: whoever mounts the
+real `Shell` builds `{ LiveGrid, ChartCanvas, custom }` and passes it down. The components on both
+ends are finished and tested against each other's contracts; only the constructor is missing.
+
+### `widgets/Grid.tsx` passes 14 of `LiveGridProps`' 21 members, and that is correct
+
+The audit read the omission as a defect. It is not: `rowHeight`, `liveSortThrottleMs`,
+`onSortChange`, `onGroupChange`, `onColumnsChange`, `onSelectionChange` and `onFocusCell` are all
+optional in CLIENT.md §10.2 with stated defaults, and the `ScreenSpec` `grid` node
+(`screen/types.ts` L81-95) carries no field for any of them — so the renderer has nothing to pass
+and spreading `undefined` under `exactOptionalPropertyTypes` would say less than absence does.
+`onFocusCell` is not on the `Ctrl+I` path either; provenance is answered by reading `data-prov-idx`
+off the focused element, which `LiveGrid` writes per cell. Persisting a user's sort or column order
+across a screen redraw is a `ScreenSpec` feature nobody has specified, not a missing prop.
+
+### Both WP-13 blockers were states that reached no reader
+
+Worth keeping, because neither was a crash and both passed their own tests:
+
+- **The gap grey was invisible.** On a detected sequence gap `wsBridge` greys the screen by calling
+  `setSubjectStatus(subject, 'stale')`, but the registry mapped only `shed`→stale and `gone`→blank,
+  so every other status wrote nothing. Between a gap and its healing snap, every cell still rendered
+  `data-st='live'`, the live colour, the live glyph and the accessible name "…, live" — about numbers
+  the client had just refused to update. The one failure this protocol cannot repair silently was
+  the one it did not show. The registry now mirrors `QuoteCache`'s own split, and the grey is
+  reversible: a resync snap that restates identical prices reports no changed fields, so a grey that
+  only new values could lift would have stayed for the session.
+- **The flash leaked a listener per tick.** `trigger()` attached an `animationend` listener with
+  `{once: true}`, which self-removes only when it *fires* — and every early-clear path removes the
+  class, which cancels the animation, so it never fires. Measured: 300 deltas on one cell left 300
+  listeners and 0 removals. Because `addEventListener` scans for duplicates, the tick path was
+  quadratic in ticks per cell. One permanent listener per element replaces it, and drift over three
+  rounds went from 2.53× to 1.0×.
+
+The second one is the third time in this build an acceptance test was shaped so it could not fail:
+`frame-budget.bench.ts` asserted only round 1's p95, and round 1 is the fast round — round 3 was at
+8.3 ms against an 8 ms budget while the file passed. It now asserts every round. The budget itself
+was not touched.
 
 ### `quote_ticks` has two writers (latent, not yet firing)
 

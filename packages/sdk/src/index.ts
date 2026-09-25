@@ -54,7 +54,7 @@ export type {
   VersionEvent,
 } from './client/rest.js';
 
-// ── Live (WP-13 stubs: the signatures are final, the bodies throw NOT_IMPLEMENTED) ────────────
+// ── Live (WP-13: one socket, the prev-chain rule, ref-counted subscriptions) ──────────────────
 export { LiveClient, QuoteCache } from './client/ws.js';
 export { SubscriptionRegistry } from './client/subscriptions.js';
 export type {
