@@ -354,7 +354,30 @@ export class CellRegistry {
     const latest = this.#latest.get(cell.subject);
     const status = this.#status.get(cell.subject) ?? null;
     if (latest !== undefined) {
-      this.#write(cell, latest, this.#now(), status, false);
+      // NOT `#write`. `#write`'s first line is the no-op skip — "the view says what `cell.last`
+      // already says, so the DOM is already right" — and on a FIRST paint that premise is false:
+      // `LiveGrid` renders no text into a live cell (the registry owns it), so the element is
+      // EMPTY and the payload's value is in `cell.last` only. When the arriving view restates the
+      // payload's own number, the skip fires and nothing is ever written.
+      //
+      // Measured on the seeded workspace: `W · Core`'s SPX row, subject `q:37367`, field
+      // `PX_LAST`. The payload carries 7,585.75 and the snapshot restates 7,585.75, so the cell
+      // rendered as `<div role="gridcell" data-prov-idx="1" data-col="PX_LAST"
+      // data-subject="q:37367"></div>` — empty, and with no `data-st` either, because `#write`
+      // sets that attribute only when the state CHANGES and React does not render it for a live
+      // cell. Intermittent by construction: the same row painted 7,585.75 whenever the cell
+      // happened to register before the frame arrived. `reseed`'s own docstring describes this
+      // family of bug ("the no-op skip rule then suppressed the correction"); this is the first
+      // paint's instance of it.
+      //
+      // So the view is ADOPTED into the cell and painted unconditionally, which is exactly what
+      // the `latest === undefined` branch does with the payload. No flash and no `stats.writes`:
+      // nothing moved, a cell appeared.
+      cell.last = latest.f[cell.fieldId] ?? null;
+      cell.lastTs = latest.fts[cell.fieldId] ?? null;
+      cell.st = fieldState(latest, cell.fieldId, cell.st);
+      cell.reason = latest.r[cell.fieldId];
+      this.#paintSeed(cell, status);
     } else {
       // No frame has arrived for this subject, so the payload's own values are the only truth there
       // is — and from this moment the registry is the ONLY writer of this element's content, so it
@@ -537,10 +560,13 @@ export class CellRegistry {
   }
 
   /**
-   * Paint a cell from the values it was registered with — its payload seed — and nothing else.
+   * Paint a cell from the values it now holds, unconditionally.
    *
-   * No flash and no `cell.last` change: this is not an update, it is the first paint of a cell whose
-   * subject no frame has arrived for. Every static screen in the application goes through here.
+   * No flash and no `cell.last` change: this is not an update, it is a FIRST paint — of a cell whose
+   * subject no frame has arrived for (the payload's seed, which is every static screen in the
+   * application) or of one that `register` has just adopted the newest view into. Unconditional is
+   * the point: a first paint has nothing on screen to compare against, so the no-op skip that makes
+   * `#write` cheap on the tick path would leave the element blank. See `register`.
    */
   #paintSeed(cell: CellRef, status: string | null): void {
     const presentation = this.#presentationOf(cell);

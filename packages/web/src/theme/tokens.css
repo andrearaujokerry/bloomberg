@@ -131,6 +131,32 @@ body {
   overflow: hidden; /* panels scroll, the document never does */
 }
 
+/*
+ * The viewport chain. `Shell.tsx`'s root is `height: 100%` (CLIENT §3.1: the shell is the window,
+ * the panels scroll inside it), and a percentage height resolves against a parent that has one —
+ * so with no rule anywhere above it the 100% fell through to `auto` and the terminal became a band
+ * the height of its own content at the top of a black page.
+ *
+ * Measured in Chrome at 1280 × 720 on `pm@demo.terminal`'s seeded workspace, before this rule:
+ * shell 337 px, `[data-testid="panel-grid"]` 318 px with `grid-template-rows: 156px 156px`, so each
+ * of the four panels was 156 px and every screen inside one was a sliver — `.screen__body` 42 px,
+ * and the chart host inside `p3` measured 635 × 0 with its canvas sized 635 × 1. The panels drew
+ * the right data at the wrong size, which is why no assertion about content caught it; the guard is
+ * `smoke.spec.ts`'s "the shell fills the window" test, which reads these boxes back.
+ *
+ * `min-height: 0` on `#root` for the same reason `Shell.tsx` carries it: a flex column whose
+ * children scroll must be allowed to be shorter than their content.
+ */
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  min-height: 0;
+}
+
 *,
 *::before,
 *::after {

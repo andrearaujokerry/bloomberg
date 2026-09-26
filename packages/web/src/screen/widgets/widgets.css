@@ -96,6 +96,41 @@
   overflow: auto;
 }
 
+/* ── the chart's host chain (TERM-10) ──────────────────────────────────────────────────────── */
+
+/*
+ * A chart contributes NO intrinsic height, so its hosts have to be given one.
+ *
+ * `ChartCanvas.tsx` paints onto two `position: absolute; inset: 0` canvases and sets its own root to
+ * `height: 100%` (`HOST_STYLE`), which means every pixel of a chart comes from the box its host
+ * resolves to. `Custom.tsx`'s `.custom-host` and `widgets.tsx`'s `.chart-host` had no rule at all,
+ * so both were `height: auto`, both collapsed to zero around their absolutely-positioned content,
+ * and `.chart` resolved 100% of zero.
+ *
+ * Measured in Chrome on `AAPL US Equity GP` — a payload carrying 243 daily bars, `High 340.08`,
+ * `Low 245.27` in its own summary — the chart host was 635 × 0 and `canvas.chart__base` was sized
+ * 635 × 1. One pixel of a year of Apple. Nothing in the DOM was wrong, which is why the two specs
+ * that name this panel (`smoke.spec.ts`, `panels.spec.ts#expectUntouched`) were green throughout:
+ * they read the kv rows beside the canvas, not the canvas.
+ *
+ * `flex: 1 1 auto` + `min-height: 0` so that a chart sharing a `.split--col` with a kv block takes
+ * the space the split gave its pane rather than the space its content asks for (zero), and
+ * `position: relative` on the host because the canvases position against it.
+ */
+.custom-host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.chart-host {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
 /* ── cells ─────────────────────────────────────────────────────────────────────────────────── */
 
 .cell {

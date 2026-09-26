@@ -21,9 +21,9 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-12 | Web shell, keyboard, command line, screen renderer | merged |
 | WP-13 | LiveGrid, SDK live client, subscriptions, quote cache, realtime bridge | merged, with the wiring gap below |
 | WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged, with the dead-module and gap findings below |
-| WP-15 | Seed, fixtures, replay harness, parity, composition root | **part 1 merged** — e2e specs and traceability are part 2 |
+| WP-15 | Seed, fixtures, replay harness, parity, composition root, e2e | **merged** — part 2 added the 8 Playwright specs and regenerated `docs/TRACEABILITY.md` |
 
-5,914 tests across 254 files. The suite is nine vitest projects; `server-seed` owns its own
+5,915 tests across 254 files, plus 39 Playwright tests that `npm test` does not run. The suite is nine vitest projects; `server-seed` owns its own
 database and is the only one that seeds (see below), and `packages/e2e` is Playwright and is not
 run by `npm test` at all.
 
@@ -333,15 +333,101 @@ shows, so every seeded Treasury attributed itself to a path containing a person'
 branch of the classifier was **removed** rather than left as dead tolerance, so a module that reaches
 for `pathToFileURL` again fails the DATA-10 walk instead of passing quietly.
 
-### What part 1 does not cover
+### What part 2 demonstrated, and the defects it recorded
 
-`npm test` excludes `packages/e2e` from vitest entirely, so a green suite is not a demonstrated UI.
-`packages/e2e/tests/` still holds only `smoke.spec.ts`, and that spec was written against the WP-01
-scaffold: it asserts `aria-label === 'Command line'` where the real one is `Command line p1`, and
-`getByTestId('panel-frame')`, which the real shell does not render. The five specs of WP-15's
-acceptance table — command-line, autocomplete, panels, live-grid, export — are part 2, along with
-regenerating `docs/TRACEABILITY.md` against real code (it still opens by saying `packages/` does not
-exist yet).
+`npm test` excludes `packages/e2e` from vitest entirely, so a green vitest suite is still not a
+demonstrated UI — `npm run test:e2e` is the separate ask. It now passes: **39 tests, run twice with
+identical results, 30 green and 9 expected failures, 3.3 min a run** (Google Chrome, plant and app
+on their own slot, `bloomberg_e2e_17` copied from `bloomberg_seed_test` in ~1 s by
+`packages/e2e/fixtures/database.ts`). `smoke.spec.ts` was rewritten against the real shell —
+`Command line p1`, no `panel-frame` — and every spec asserts SEEDED values: `330.27` with its
+`data-prov-idx`, `CIK 0000320193`, `7,585.75`, `31 rows` of WEI, a CSV compared cell for cell with
+the grid on screen. Drop the seed and the suite fails on its first universe assertion.
+
+Four product defects were found while writing them and fixed in `packages/web` (all four invisible
+to 254 green vitest files, because each needed the composed app in a real browser): a live cell whose
+snapshot restated its payload value was painted EMPTY, because `CellRegistry.register` routed a first
+paint through `#write`'s no-op skip; `html, body, #root` had no height, so the whole terminal was a
+337 px band and every panel a 156 px sliver; `.chart-host` / `.custom-host` had no height rule, so a
+year of Apple drew into a canvas 1 px tall; and `Panel.tsx` handed screens `frame.params` raw, so a
+restored WEI frame — which stores only the keys the user set — blanked the page on
+`params.regions is not iterable` (regression test added in `web/test/shell/panels.test.tsx`).
+
+The nine expected failures are `test.fail()`, never `test.skip()`: each one RUNS on every suite, its
+assertion is the one the product should satisfy and is not weakened by a millisecond, and the day it
+is fixed Playwright reports "expected to fail but passed" so neither the fix nor the record can rot.
+
+| Spec | What it records |
+| --- | --- |
+| `smoke.spec.ts:632` | **DEFECT** `App.tsx#onRestored` (L1135) re-runs a restored frame as `"<security> <fn>"`; the dispatcher resolves that display as a REF, so the adapter at L664 pushes a frame with `security: null` — which is then persisted. The SECOND load of the terminal restores GP with no instrument (TERM-05). |
+| `panels.spec.ts:371` | **DEFECT** the same line drops the frame's `params`, so a panel saved as `W Core` (5 rows) comes back on the manifest defaults (`W · S&P 500 Top 25`, 25 rows) (TERM-05). |
+| `help.spec.ts:345` | **DEFECT** `Shell.tsx` L113-123 restores the workspace in an effect keyed on `onRestored`, whose identity changes whenever the HELP overlay opens (`onHelp` → `dispatchDeps` → `onRestored`). Opening HELP therefore re-restores the workspace, and the ticket captures a screen the user never asked about (TERM-09, and a TERM-05 defect in its own right). |
+| `help.spec.ts:398` | **GAP** `App.tsx#PanelOverlay` closes the dialog from `onOpened`, so `TicketDialog`'s "Ticket N opened / MSG room M" confirmation never paints. The ticket IS created (`201 {ticketId, roomId}`) and the user is told nothing (TERM-09). |
+| `live-grid.spec.ts:454` | **DEFECT** `cellRegistry.ts#restyle` returns on its first line because `setStateSource()` is never called by any product file, so the client's 1 s staleness sweep never reaches a cell — the client-side twin of the server's skipped startup step 9. A dead feed leaves a `live` number on screen (TERM-12). |
+| `entitlement.spec.ts:367` | **DEFECT** a value withheld by the eod grant arrives as `st: 'closed', r: 'TIER_EOD'`, not `blank`, and `CellView` prints `.cell__reason` only for `blank` — so a withheld price and a missing price are the same em dash, which is the thing the rule exists to prevent (ENTL-05). |
+| `export.spec.ts:472` | **GAP** nothing in the UI invokes `ScreenCtx.export()` and the window keyboard dispatcher that would bind `Ctrl+P` is not attached (`App.tsx` L56-69). The export path is proven cell-for-cell by the test above it; the gesture is missing (FUNC-03). |
+| `autocomplete.spec.ts:454` | **FINDING** `timings.autocompleteP95Ms` is a hard-coded `0` (`routes/status.ts` L460) and `perf/marks.ts` does not exist, so the channel WP-15's acceptance row names carries nothing. The budget is measured by the spec instead: p95 5.3 ms keystroke → rows, 15.7 ms keystroke → painted frame, over 84 measured keystrokes. |
+| `smoke.spec.ts:508` | **SEED GAP + SUBSCRIPTION GAP** `bars_daily` has no SPX row, so `GP · SPX Index` — the first chart every seeded user sees — draws an empty canvas; and retargeting that panel at a security with history blanks a correct cell two panels away. Both halves measured below. The chart itself is proved green on AAPL (243 bars, `High 340.08`) by the test above it. |
+
+### The default desk's chart panel plots nothing, and the obvious fix makes it worse
+
+Two halves, and the second cost a suite run to learn, so it is written down properly.
+
+**The data.** `bars_daily` holds AAPL with 1,255 closes and nine FX pairs with one row each. SPX has
+none, so `GP · SPX Index` — p3 of every seeded workspace — returns `primary.t[]`/`primary.c[]` empty
+and the panel says so honestly (`no bars in window`, `Bars 0`, legend `S&P 500 —`). No capture can
+fix it: `yahoo-chart-SPX-5d-5m.json` is five-minute intraday and the seed may not invent history.
+Note also that the two assertions which named that panel were satisfied by the quote row *beside* the
+empty canvas, so deleting every bar in the universe would not have turned either red — a third
+instance of a test that cannot fail, now replaced by an assertion on `.chart-host[data-chart-state]`.
+
+**Why it was not simply pointed at AAPL.** Tried, measured, reverted. Retargeting p3 draws the chart
+and **blanks a correct number two panels away.** `ChartCanvas` is the only thing in the application
+that subscribes anything — `state/subscriptions.ts#acquire` has no product caller, so no grid subject
+is ever subscribed — and it subscribes `fields: ['PX_LAST']`. A `sub` makes the server REPLACE its
+field mask and answer with a fresh `snap`, so the moment the chart subscribes `q:85` the cache holds
+an AAPL view with no `CHG_PCT_1D`, and `W · Core`'s Apple row — correct at `-0.84%` from its payload —
+renders `— unavailable`. Two specs caught it: `smoke.spec.ts`'s seeded-values test, and
+`live-grid.spec.ts`'s TERM-08 flash, whose injected snapshot stopped reaching a cell no longer masked
+for it. The SDK is not at fault: `SubscriptionManager#desiredFields` unions correctly across holders,
+and its comment already explains why a narrowing is never re-sent. There is simply only one holder.
+
+So the order of work is: wire grid subscriptions so the union of fields is what the server is told,
+**then** retarget the panel. The other way round trades an empty canvas for a wrong cell, and a wrong
+cell is worse. Both halves are recorded in `smoke.spec.ts`'s own header beside the `test.fail`.
+
+### One performance finding was raised and then refuted
+
+Worth recording so nobody re-opens it. The auditor read `timings.fnLaunchP95Ms` and reported WEI over
+the 500 ms first-paint budget at p95 589 ms. That column is `go → payload`, not `go → first paint`,
+and measured directly in the browser over four runs of six launches WEI came out p95 439–465 ms —
+inside budget every time. The plant's figure is a different quantity, not a larger version of the
+same one. `command-line.spec.ts` now measures the budgeted quantity and asserts it.
+
+### Four more found while driving the terminal, none in WP-15's own code
+
+- **Two panels of the default workspace draw on top of themselves.** WEI's three regional grids clip
+  each row to about one line, so rows collide with the next region's header, and `W · Core` paints
+  its watchlist-picker pane through the Security/Name/Last columns. Confirmed pre-existing by
+  screenshotting with part 2's CSS reverted: a WP-12 split/virtualiser layout defect nothing had
+  looked at, because until part 1 no test had ever rendered the shell at window size.
+- **WEI refuses to render when its quotes are absent, and calls it `ARG_PARSE`.** Deleting the seeded
+  `md_lines` for AAPL/SPX/VIX/BUK100P makes the panel print `ARG_PARSE: WEI: numbers with no
+  provenance and no engine: historySessions (DATA-10)`. The guard firing is correct — the screen
+  refuses to print an uncited number — but nothing was parsed, so the code sends the next reader to
+  the wrong file.
+- **The quota strip never refreshes.** `state/session.ts` exports `setQuotas` and nothing calls it,
+  so the strip is seeded once at page load and frozen for the session although `GET /usage/quota`
+  answers. This is why the counter test reloads the page instead of watching the strip move.
+- **`packages/e2e/tests/perf.spec.ts` does not exist**, though TESTING §17 names it as the measurer
+  for the keystroke and launch budgets. Both budgets ARE measured — the keystroke one in
+  `autocomplete.spec.ts`, the launch one in `command-line.spec.ts`, which is where CLIENT §16.1 puts
+  it. The document and the tree need reconciling, not a third file.
+
+Two composition-root gaps are recorded in the specs' own headers rather than here, because neither
+has a spec that can fail on it: no grid subject is ever subscribed (`state/subscriptions.ts#acquire`
+has no product caller, so the only `sub` frame the app sends is `ChartCanvas`'s and `subs 0/10,000`
+is literally true), and the five deferred startup steps still make `/health` report `degraded`.
 
 Also open, each recorded where it can be acted on: the window keyboard dispatcher is built but never
 attached, so five documented keys are dead and TERM-06/TERM-07 are now `partial`; `Composer` (MSG,

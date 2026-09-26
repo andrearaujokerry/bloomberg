@@ -48,6 +48,11 @@ import { selectCanGoBack, selectCanGoForward, selectFrame, usePanelsStore } from
 /* Ports                                                                                            */
 /* ---------------------------------------------------------------------------------------------- */
 
+/** The one thing this file needs from a manifest's zod object: {@link Panel}'s `screenParams`. */
+interface ParamsSchema {
+  safeParse(value: unknown): { success: true; data: unknown } | { success: false };
+}
+
 /** The screen registry, injectable so a test can render one screen instead of importing 38. */
 export type AnyScreenProps = ScreenProps<Record<string, unknown>, unknown>;
 export type AnyScreen = (props: AnyScreenProps) => ScreenSpec;
@@ -364,11 +369,40 @@ export function Panel({
   const entry = code === null ? undefined : screens[code];
   const manifest = code === null ? undefined : registry.get(code);
 
+  /**
+   * The frame's params AS THE MANIFEST DEFINES THEM — defaults applied.
+   *
+   * `FunctionScreen<Params, Payload>` declares `Params` as the OUTPUT of the manifest's zod object,
+   * so a screen is entitled to read `params.regions` for a key the manifest gives a `.default()`.
+   * This seam was handing it `frame.params` raw, and a frame carries whatever was stored: a restored
+   * workspace frame holds only the keys the user actually set. TypeScript could not see the lie
+   * because `frame.params` is `Record<string, unknown>` widened into `AnyScreenProps`.
+   *
+   * Found by loading the real application as a seeded user: the four restored panels each ran their
+   * function and answered 200, and then the page went blank on `TypeError: params.regions is not
+   * iterable` out of WEI's skeleton branch, which draws the region headers before the payload lands.
+   * Every screen test passes a params object it built itself, so none of them could see it.
+   *
+   * `safeParse` rather than `parse`: a frame whose stored params no longer satisfy a changed
+   * manifest should render the screen's own error path, not replace the panel with a blank page.
+   */
+  const screenParams = useMemo<Record<string, unknown>>(() => {
+    if (frame === undefined) return {};
+    // One narrowing at the boundary: a manifest is generic in its own zod object, so `params`
+    // reaches this file as `any`. `ParamsSchema` is the only shape the seam uses.
+    const schema = manifest?.params as ParamsSchema | undefined;
+    if (schema === undefined) return frame.params;
+    const parsed = schema.safeParse(frame.params);
+    return parsed.success && typeof parsed.data === 'object' && parsed.data !== null
+      ? (parsed.data as Record<string, unknown>)
+      : frame.params;
+  }, [frame, manifest]);
+
   const spec: ScreenSpec | null = useMemo(() => {
     if (entry === undefined || frame === undefined) return null;
     const props: AnyScreenProps = {
       payload: frame.payload,
-      params: frame.params,
+      params: screenParams,
       instrument: frame.instrument ?? null,
       meta: frame.meta,
       live: NO_LIVE_VIEW,
@@ -384,7 +418,7 @@ export function Panel({
           }),
     };
     return entry.Screen(props);
-  }, [entry, frame, ctx]);
+  }, [entry, frame, ctx, screenParams]);
 
   /** `instruments.currency` / `price_decimals` — what a `ccy` or `px` cell cannot carry itself. */
   const formatCtx = useMemo<CellFormatContextValue>(() => {

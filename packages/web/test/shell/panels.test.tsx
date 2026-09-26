@@ -676,3 +676,39 @@ describe('the workspace', () => {
     expect(screen.getByTestId('workspace-conflict')).toHaveTextContent('R reload theirs');
   });
 });
+
+describe('a frame carries the params that were STORED, not the params a manifest defaults', () => {
+  /**
+   * A restored workspace frame holds only the keys the user actually set — `pushFrame` stores what
+   * the dispatcher was given, and `GET /workspace` returns that. `FunctionScreen<Params, Payload>`
+   * declares `Params` as the OUTPUT of the manifest's zod object, so a screen is entitled to read a
+   * key the manifest gives a `.default()`. `Panel` is the seam that has to reconcile the two.
+   *
+   * It did not, and the whole suite was blind to it because `launchOf` above pre-parses
+   * (`manifests[code].params.parse({})`) — every test here hands the screen a shape the real restore
+   * path never produces. Loading the running application as a seeded user is what found it: the four
+   * restored panels each ran their function and answered 200, then the page went blank on
+   * `TypeError: params.regions is not iterable` from WEI's skeleton branch.
+   */
+  it('renders a restored WEI frame whose stored params omit a defaulted key', () => {
+    render(<Shell />);
+    act(() => {
+      // Deliberately RAW and partial: no `regions`, exactly as a workspace round-trip returns it.
+      usePanelsStore.getState().pushFrame('p1', {
+        security: null,
+        fn: 'WEI',
+        traceId: 'restored-wei-0001',
+        params: {},
+        instrument: null,
+      });
+    });
+
+    // The skeleton branch draws before any payload arrives, which is where it used to throw.
+    const panel = screen.getByTestId('panel-body-p1');
+    expect(within(panel).getByText(/WEI/)).toBeInTheDocument();
+    // The manifest's default is three regions; the skeleton draws a header per region.
+    for (const region of ['AMERICAS', 'EMEA', 'APAC']) {
+      expect(within(panel).getByText(region)).toBeInTheDocument();
+    }
+  });
+});
