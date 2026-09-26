@@ -1,0 +1,66 @@
+{
+  "sourceId": "fed.fomc",
+  "sourceUrl": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+  "spec": "DATA_MODEL.md §18 module 11 — fomc_meetings 8; DATA_MODEL.md L2082 \"from fed.fomc calendar page (curated fixture for 2026)\".",
+  "note": "Hand-curated because no fed.fomc capture exists in fixtures/providers/raw: the 2026 calendar page was never recorded, and a fixture miss is a wall (FEED-08), so the eight meetings are transcribed from the published Federal Reserve calendar instead of fetched. fomc_meetings.provenance_id is therefore NULL for these rows, which the column permits (0009_econ_curves.sql) precisely for a curated source — WIRP's policy-path nodes are dates, not values, and DATA-10 constrains seeded *values*.",
+  "statementTimeEt": "14:00",
+  "meetings": [
+    {
+      "meetingDate": "2026-01-28",
+      "firstDay": "2026-01-27",
+      "statementAt": "2026-01-28T19:00:00Z",
+      "hasSep": false,
+      "tzNote": "EST (UTC-5)"
+    },
+    {
+      "meetingDate": "2026-03-18",
+      "firstDay": "2026-03-17",
+      "statementAt": "2026-03-18T18:00:00Z",
+      "hasSep": true,
+      "tzNote": "EDT (UTC-4); DST began 2026-03-08"
+    },
+    {
+      "meetingDate": "2026-04-29",
+      "firstDay": "2026-04-28",
+      "statementAt": "2026-04-29T18:00:00Z",
+      "hasSep": false,
+      "tzNote": "EDT (UTC-4)"
+    },
+    {
+      "meetingDate": "2026-06-17",
+      "firstDay": "2026-06-16",
+      "statementAt": "2026-06-17T18:00:00Z",
+      "hasSep": true,
+      "tzNote": "EDT (UTC-4)"
+    },
+    {
+      "meetingDate": "2026-07-29",
+      "firstDay": "2026-07-28",
+      "statementAt": "2026-07-29T18:00:00Z",
+      "hasSep": false,
+      "tzNote": "EDT (UTC-4)"
+    },
+    {
+      "meetingDate": "2026-09-16",
+      "firstDay": "2026-09-15",
+      "statementAt": "2026-09-16T18:00:00Z",
+      "hasSep": true,
+      "tzNote": "EDT (UTC-4)"
+    },
+    {
+      "meetingDate": "2026-10-28",
+      "firstDay": "2026-10-27",
+      "statementAt": "2026-10-28T18:00:00Z",
+      "hasSep": false,
+      "tzNote": "EDT (UTC-4)"
+    },
+    {
+      "meetingDate": "2026-12-09",
+      "firstDay": "2026-12-08",
+      "statementAt": "2026-12-09T19:00:00Z",
+      "hasSep": true,
+      "tzNote": "EST (UTC-5); DST ended 2026-11-01"
+    }
+  ],
+  "decisionNote": "decision_bp is deliberately absent from every row. The column is \"filled after the meeting\" (0009_econ_curves.sql) and no recorded fixture carries an FOMC decision, so the seed writes NULL rather than a plausible -25. WIRP reads the nodes; it does not read a number we invented."
+}

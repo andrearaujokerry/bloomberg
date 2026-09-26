@@ -21,9 +21,11 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-12 | Web shell, keyboard, command line, screen renderer | merged |
 | WP-13 | LiveGrid, SDK live client, subscriptions, quote cache, realtime bridge | merged, with the wiring gap below |
 | WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged, with the dead-module and gap findings below |
-| WP-15 | Seed, fixtures, replay harness, e2e and traceability | not started |
+| WP-15 | Seed, fixtures, replay harness, parity, composition root | **part 1 merged** — e2e specs and traceability are part 2 |
 
-5,522 tests across 244 files.
+5,914 tests across 254 files. The suite is nine vitest projects; `server-seed` owns its own
+database and is the only one that seeds (see below), and `packages/e2e` is Playwright and is not
+run by `npm test` at all.
 
 The suite runs with no network access: the replay store is a wall, and a fixture miss throws rather
 than falling through to a provider (FEED-08, QA-02).
@@ -227,6 +229,129 @@ The second one is the third time in this build an acceptance test was shaped so 
 `frame-budget.bench.ts` asserted only round 1's p95, and round 1 is the fast round — round 3 was at
 8.3 ms against an 8 ms budget while the file passed. It now asserts every round. The budget itself
 was not touched.
+
+### The application could not start, and nothing could see it
+
+`src/index.ts` exits 1 rather than serve behind a pending migration (ARCHITECTURE §12.1 step 2), and
+`db/client.ts#pendingMigrations()` counted rows in drizzle's `drizzle.__drizzle_migrations` — a table
+`scripts/migrate.ts` never creates. The migrator applies each file itself and records
+`schema_meta('migration:<filename>')`. So on a database migrated by the only mechanism this
+repository has, the check reported all nineteen files pending and **the server refused to boot**.
+
+Latent since WP-01 and invisible for fourteen packages, because every integration test opens a pool
+directly through `withTxDb` and never calls it: 254 green test files could not see it. WP-15's
+Playwright specs are the first thing that boots the real process. The comparison is now by NAME
+against `schema_meta`, which is also strictly stronger — the positional `files.slice(applied)` read
+"nothing pending" for a migration applied out of order or deleted from the middle of the ledger.
+
+Verified by booting the real process: `GET /api/v1/health` → 200, `migrationsPending: 0`, `db: true`,
+`plant: true`.
+
+### Five startup steps still say "a later work package's", so the server runs degraded
+
+Booting it also showed what has not been wired. `src/index.ts` skips, by number:
+
+| Step | What is skipped | Owed by |
+| --- | --- | --- |
+| 3 | the field dictionary and its field-id validation | WP-03/WP-11 |
+| 4 | calendars and the function-registry consistency check | WP-08 |
+| 5 | the universe search snapshot and its ETag | WP-09 |
+| 8 | the ingest leader lock and the scheduler | WP-07 |
+| 9 | the usage-event and DQ writers, and the 1 s staleness sweep | WP-08/WP-13 |
+
+All five packages are merged; the process that runs them still defers to them, and `/health`
+therefore reports `status: "degraded"` with `scheduler: false`. This is the server-side twin of the
+composition-root gap WP-15 part 1 closed on the client, and it is the next thing to assign: at least
+step 5 and step 9 bear directly on WP-15's own acceptance rows (the autocomplete spec's server
+fallback, and the live-grid spec's staleness badge).
+
+### The seed and the test suite wanted opposite databases
+
+`globalSetup` has always called `runSeed()` (TESTING §4.2 step 5). That was harmless for thirteen
+packages because only `seed/licences.ts` existed and the runner skips what it cannot find — so the
+step wrote 33 licence rows. WP-15 wrote the other twelve modules and it began writing the real
+universe into `bloomberg_test`: 41,455 instruments, 36,188 md lines, 160 news items.
+
+Two legitimate contracts then collided. `volumes.test.ts` can only assert §18's row counts against a
+database that has them; ~145 ingest and function tests written across WP-05…WP-11 assert what their
+own job inserted into an empty table. Against a seeded one the job correctly inserts nothing, which
+is idempotency working — and `ingest/marketDataJobs.test.ts` failed all 8 tests with SQLSTATE 23P01,
+because it writes an `md_lines` version valid from 2020 while the seed holds one from 2026 and
+`md_lines_symbol_excl` refuses two open-ended ranges for one key. Not a count to adjust.
+
+Resolved by separating the databases, not by rewriting the tests: the seed is gated on
+`SEED_TEST_DB` and runs for one project, `server-seed`, which owns `bloomberg_seed_test`. Module 1
+still runs everywhere, because `assert_source_known` gates every write in the schema — found by
+breaking it. `globalSetup` also now reads `DATABASE_URL_TEST`/`DATABASE_URL` from the **calling
+project** rather than the ambient environment: it runs in the vitest main process, where a project's
+`test.env` does not apply, so it had been migrating one database while the tests read another. Both
+deviations are recorded in that file's header and in the `server-seed` comment in `vitest.config.ts`.
+
+### `DES` told the user there were no facts for a CIK whose facts were in the table
+
+The seed wrote zero `fin_statements` rows with `period_type = 'TTM'`, though the module header and
+§18 both claim Q/FY/TTM and the CHECK constraint permits it: `secCompanyFacts.ts#periodTypeOf` could
+only ever return `'Q'` or `'FY'`. Three screens depend on TTM — `DES` requests it, `RV` defaults to
+it, `EQS` reads the newest TTM row per issuer — so on the flagship seeded security `DES` blanked four
+fields and emitted `unavailable { reason: 'NO_SOURCE', detail: 'no XBRL facts ingested for CIK
+0000320193' }`. 25,116 facts for that exact CIK were in the table. A wrong reason code is worse than
+a blank cell, and `AAPL US Equity DES <GO>` is the first thing WP-15's e2e specs drive.
+
+Fixed at the cause — a TTM roll-up beside the existing Q4 derivation, 260 rows, flows summed over
+four quarters only when all four report, instants carried from the anchor, share counts excluded
+because four weighted averages do not add, and provenance citing all four source quarters. Nothing
+had asserted `fin_statements` at all, which is why it shipped; `volumes.test.ts` now asserts it
+grouped by `period_type`, because a total would have hidden a missing third and did.
+
+### `db:seed` was not idempotent, and its test could not see it
+
+Every re-run inserted 20 `provenance` rows and 9 `ingest_runs` rows and rewrote all four
+`quote_snapshots` state blobs to cite the new ids — measured 56 → 76 → 96 over three runs. In
+`PROVIDER_MODE=replay` no exchange happened, so ten runs would leave 200 rows asserting 200 provider
+round-trips that never occurred, in the table DATA-10 exists to make trustworthy.
+
+`idempotent.test.ts` could not observe it because it ran five of the nine modules — omitting exactly
+the two that still had the bug its own header said it was written to catch. It now runs all nine,
+pinned against `SEED_ORDER` so a tenth cannot escape, and compares an md5 digest of every table with
+wall-clock columns excluded by their DEFAULT rather than by a name list — which is the instrument
+that catches a row rewritten in place, as no count can.
+
+Two more findings came out of making it idempotent, both tests that could not fail: `bars.test.ts`
+compared the two snapshot states with `provenanceId` **masked out**, hiding precisely the rows the
+seed rewrote on every run; and its `eod_snapshots` flag assertion passed only because its own setup
+re-ran the Cboe legs and rewrote the rows — it was checking its own artefact, not the seed's. Once
+the legs became idempotent it read the seeded rows and disagreed, correctly: BUK100P publishes a real
+close (1059.4557), so nothing stood in for it.
+
+### Provenance pointed at the seeding developer's home directory
+
+`seedFileProvenance` stored `file:///Users/<name>/Desktop/bloomberg/fixtures/seed/treasuries.json`
+as `request_url`. That breaks the determinism WP-15 claims — two checkouts at different paths produce
+different provenance bytes for the same fixture — and `request_url` is what the `Ctrl+I` popover
+shows, so every seeded Treasury attributed itself to a path containing a person's home directory. Now
+`seed://treasuries.json`, matching the convention the universe module already used, and the `file:`
+branch of the classifier was **removed** rather than left as dead tolerance, so a module that reaches
+for `pathToFileURL` again fails the DATA-10 walk instead of passing quietly.
+
+### What part 1 does not cover
+
+`npm test` excludes `packages/e2e` from vitest entirely, so a green suite is not a demonstrated UI.
+`packages/e2e/tests/` still holds only `smoke.spec.ts`, and that spec was written against the WP-01
+scaffold: it asserts `aria-label === 'Command line'` where the real one is `Command line p1`, and
+`getByTestId('panel-frame')`, which the real shell does not render. The five specs of WP-15's
+acceptance table — command-line, autocomplete, panels, live-grid, export — are part 2, along with
+regenerating `docs/TRACEABILITY.md` against real code (it still opens by saying `packages/` does not
+exist yet).
+
+Also open, each recorded where it can be acted on: the window keyboard dispatcher is built but never
+attached, so five documented keys are dead and TERM-06/TERM-07 are now `partial`; `Composer` (MSG,
+FXC) and `Sparkline` (DES, ECO, EE) have no registered component; `secFrames.ts#comparableName`
+raises 834 false `reconcile_mismatch` events because it replaces punctuation before removing
+corporate suffixes, so `L.P.` becomes two tokens its own pattern no longer matches; nine
+`provenance` rows are intra-run duplicates, because a module cites a capture to hang an md line on
+and the ingest job that reads it inserts its own row; and `fn-parity.test.ts` carries four
+green-with-known-defect census tables naming five resolvers that answer 500 on the seeded universe
+and twenty exports refused 403 for a field with no `field_licence` row.
 
 ### `chart/scales.ts` is 761 lines that nothing draws with
 

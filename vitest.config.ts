@@ -12,6 +12,13 @@ import { defineConfig } from 'vitest/config';
 const TEST_DATABASE_URL =
   process.env.DATABASE_URL_TEST ?? 'postgres://localhost:5432/bloomberg_test';
 
+/**
+ * The `server-seed` project's own database. Separate from `bloomberg_test` on purpose — see that
+ * project's comment below and the second DEVIATION in `packages/server/test/globalSetup.ts`.
+ */
+const SEED_DATABASE_URL =
+  process.env.DATABASE_URL_SEED_TEST ?? 'postgres://localhost:5432/bloomberg_seed_test';
+
 export default defineConfig({
   test: {
     projects: [
@@ -87,6 +94,11 @@ export default defineConfig({
           exclude: [
             'test/integration/ingest/partitions.test.ts',
             'test/integration/functions/**/*.test.ts',
+            // The seed suites need the opposite starting state from everything else here: a
+            // database with the whole §18 universe in it, where these files need their own tables
+            // empty so that "my job inserted N rows" means something. They run in `server-seed`
+            // below, against their own database. See the second DEVIATION in test/globalSetup.ts.
+            'test/integration/seed/**/*.test.ts',
           ],
           setupFiles: ['test/setup.int.ts'],
           globalSetup: ['test/globalSetup.ts'],
@@ -149,6 +161,51 @@ export default defineConfig({
           sequence: { groupOrder: 2 },
           testTimeout: 30_000,
           hookTimeout: 60_000,
+        },
+      },
+      {
+        test: {
+          // `server-seed`: the suites that assert the seed itself (TESTING §4.2 step 6,
+          // DATA_MODEL §18), and the ONLY project whose `globalSetup` runs the thirteen-module seed.
+          //
+          // It owns its own database. That is the whole point rather than a detail: `volumes.test.ts`
+          // can only assert §18's row counts against a database that HAS them, and the ~145 ingest
+          // and function tests in the projects above can only assert what their own job inserted
+          // against tables that DO NOT. One database cannot be both, and the collision is not a
+          // matter of counts — `ingest/marketDataJobs.test.ts` writes an `md_lines` version valid
+          // from 2020 where the seed holds one from 2026, and `md_lines_symbol_excl` correctly
+          // refuses two open-ended ranges for one (source, symbol), so all 8 of its tests fail with
+          // 23P01. Separate databases, and neither side has to lie.
+          //
+          // `SEED_TEST_DB=1` is what switches the seed on in the shared `globalSetup`; unset, that
+          // step is skipped, which is what keeps this package from adding 167 s to every other
+          // project's run. One worker: the seed is one long transaction per module and there is
+          // nothing here to parallelise. `hookTimeout` is generous because a COLD seed is ~170 s —
+          // a warm one is under a second, because module two onwards are idempotent.
+          name: 'server-seed',
+          root: 'packages/server',
+          environment: 'node',
+          include: ['test/integration/seed/**/*.test.ts'],
+          setupFiles: ['test/setup.int.ts'],
+          globalSetup: ['test/globalSetup.ts'],
+          env: {
+            // BOTH names, and that is not redundancy: `src/test/db.ts#testDatabaseUrl()` prefers
+            // `DATABASE_URL_TEST` over `DATABASE_URL`, and the former is set ambiently (by `.env`
+            // and by globalSetup's own defaults) to `bloomberg_test`. Setting only `DATABASE_URL`
+            // here sent globalSetup to the seed database while every test in this project read the
+            // other one — and the DATA-10 suites PASSED against the empty database they found,
+            // because "every seeded value resolves to a fixture" is vacuously true with no values.
+            DATABASE_URL: SEED_DATABASE_URL,
+            DATABASE_URL_TEST: SEED_DATABASE_URL,
+            PROVIDER_MODE: 'replay',
+            SEED_TEST_DB: '1',
+          },
+          pool: 'forks',
+          fileParallelism: false,
+          maxWorkers: 1,
+          sequence: { groupOrder: 2 },
+          testTimeout: 60_000,
+          hookTimeout: 300_000,
         },
       },
       {

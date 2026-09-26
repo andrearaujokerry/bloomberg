@@ -11,12 +11,20 @@
  *     transaction start instant, so it is *identical* for every row this file writes whether the
  *     second run inserted 25,116 rows or none. `fact_id` comes from an identity sequence that
  *     moves the moment anything is inserted, so it is the column that can tell the two apart.
- *  2. **357 `fin_statements` rows, one per (period, filing).** 363 `(period, filing)` pairs exist
- *     and six of them collide on the primary key — two filings of the same date reporting the same
- *     period, which the key `(issuer_id, period_end, period_type, filed_at, mapping_version)`
+ *  2. **617 `fin_statements` rows, one per (period, filing).** 628 `(period, filing)` pairs exist —
+ *     363 reported (73 FY, 290 Q, six of which collide) plus 265 four-trailing-quarters roll-ups —
+ *     and eleven of them collide on the primary key: two filings of the same date reporting the
+ *     same period, which the key `(issuer_id, period_end, period_type, filed_at, mapping_version)`
  *     cannot hold twice. The first in accession order wins, deterministically; the second is a
  *     conflict, not an error. The second run inserts nothing at all, proved by `count(*)` and by
  *     an md5 digest of every row's content in a fixed order.
+ *  2a. **The TTM third is a row, not a claim.** DATA_MODEL §18 row 10 asks this job for
+ *     `Q/FY/TTM`, and `DES/resolve.ts` reads `{ periodType: 'TTM', periods: 1 }` to fill
+ *     `epsTtmDil`, `revenueTtm`, `netIncomeTtm` and `peTtm`. The table held zero TTM rows through
+ *     WP-10 to WP-14 and nothing noticed, because no test asserted `fin_statements` by
+ *     `period_type` at all — DES blanked the four cells and reported `NO_SOURCE / no XBRL facts
+ *     ingested` for a CIK with 25,116 facts stored. The count, the four-quarter sum identity and
+ *     the absence of a summed share count are all asserted below.
  *  3. **`mapping_version` is `'std-map/2026.09'` on every row**, and it is in the primary key: a
  *     re-standardisation under a new mapping adds rows beside these rather than overwriting them.
  *  4. **Point-in-time correctness.** Apple restated the June 2009 quarter under ASU 2009-13. The
@@ -110,8 +118,34 @@ const storedFacts: StoredFact[] = (() => {
 const built: StatementRow[] = buildStatements(storedFacts, 42);
 
 const FACT_COUNT = 25_116;
-const STATEMENT_PAIRS = 363;
-const STATEMENT_ROWS = 357;
+/** The `(period, filing)` pairs the 73 annual and 290 quarterly REPORTED periods make. */
+const REPORTED_PAIRS = 363;
+/** The four-trailing-quarters roll-ups `deriveTtm` adds on top of them — one per quarter anchor. */
+const TTM_PAIRS = 265;
+const STATEMENT_PAIRS = REPORTED_PAIRS + TTM_PAIRS;
+/** …of which eleven are a second view of a `(period, type, filing-date)` another row already holds. */
+const STATEMENT_ROWS = 617;
+
+/**
+ * The rows that actually reach the table: the first of each primary key, in build order.
+ *
+ * `insertStatements` inserts in array order with `ON CONFLICT DO NOTHING`, and `buildStatements`
+ * sorts on `(period_end, period_type, filed_at)` over an array built in accession order, so the
+ * first of two rows sharing a key is the one from the earlier accession and it is the one that
+ * lands. Deriving the landed set here rather than asserting a bare count is what lets the file say
+ * things about the rows in the table without a database in the way.
+ */
+function landed(rows: readonly StatementRow[]): StatementRow[] {
+  const seen = new Set<string>();
+  const out: StatementRow[] = [];
+  for (const row of rows) {
+    const key = `${row.periodEnd}|${row.periodType}|${row.filedAt}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(row);
+  }
+  return out;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // 1. The standardisation, with no database in the way
@@ -131,6 +165,8 @@ describe('secCompanyFacts — the standardisation (PROVIDERS §7.3.1)', () => {
     expect(built).toHaveLength(STATEMENT_PAIRS);
     expect(built.filter((r) => r.periodType === 'FY')).toHaveLength(73);
     expect(built.filter((r) => r.periodType === 'Q')).toHaveLength(290);
+    expect(built.filter((r) => r.periodType === 'TTM')).toHaveLength(TTM_PAIRS);
+    expect(landed(built)).toHaveLength(STATEMENT_ROWS);
     // The whole point: a period reported by several filings exists several times over.
     const june2009 = built.filter((r) => r.periodEnd === '2009-06-27' && r.periodType === 'Q');
     expect(june2009.map((r) => [r.filedAt, r.values.get('NET_INC')])).toEqual([
@@ -148,8 +184,15 @@ describe('secCompanyFacts — the standardisation (PROVIDERS §7.3.1)', () => {
     expect(FIN_STATEMENTS_ENGINE).toBe('secCompanyFacts');
     expect(FIN_STATEMENTS_ENGINE_VERSION).toBe('fin-statements/1.0.0');
     expect(built.every((r) => /^[0-9a-f]{64}$/.test(r.inputsHash))).toBe(true);
-    // The hash is a function of the inputs, so two rows built from different facts differ.
-    expect(new Set(built.map((r) => r.inputsHash)).size).toBe(STATEMENT_PAIRS);
+    // The hash is a function of the inputs, so two rows built from different facts differ — and the
+    // property that matters is about the rows that LAND. Of the eleven pairs that share a primary
+    // key, ten differ in `as_reported` and therefore in hash; one pair (the TTM ending 2014-06-28,
+    // filed 2015-01-28 by two accessions of the same day) read identical facts through identical
+    // windows, so it hashes identically as well. That is the hash doing its job — same inputs, same
+    // digest — and it costs nothing, because the primary key admits one of the two. So the
+    // assertion is on the landed set, where a duplicate hash WOULD mean two rows in the table
+    // claiming to have been built from the same inputs.
+    expect(new Set(landed(built).map((r) => r.inputsHash)).size).toBe(STATEMENT_ROWS);
   });
 
   it('is deterministic: the same facts build byte-identical rows', () => {
@@ -190,6 +233,65 @@ describe('secCompanyFacts — the standardisation (PROVIDERS §7.3.1)', () => {
     expect(q4?.values.get('TOT_ASSETS')).toBe(359_241_000_000);
     expect(q4?.asReported.TOT_ASSETS?.concept).toBe('Assets');
     expect(q4?.asReported.TOT_ASSETS?.fact_id).toEqual(expect.any(Number));
+  });
+
+  it('rolls the four trailing quarters into a TTM row (DATA_MODEL §18 row 10)', () => {
+    // Before this existed the table held 0 TTM rows, and DES — which asks for exactly
+    // `{ periodType: 'TTM', periods: 1 }` — answered `NO_SOURCE / no XBRL facts ingested for CIK
+    // 0000320193` on an issuer with 25,116 facts in `xbrl_facts`. The count is the first assertion
+    // because a blank screen is what zero looks like from the outside.
+    const ttm = built.filter((r) => r.periodType === 'TTM');
+    expect(ttm).toHaveLength(TTM_PAIRS);
+
+    const newest = ttm.filter((r) => r.periodEnd === '2026-06-27').at(-1);
+    expect(newest?.filedAt).toBe('2026-07-31');
+    expect(newest?.fiscalPeriod).toBe('Q3');
+    expect(newest?.derivedQ4).toBe(false);
+
+    // The four quarters it was built from, taken the way `deriveTtm` takes them: newest version of
+    // each period end that was already public when the anchor was filed. The first of them is the
+    // DERIVED Q4 of fiscal 2025, which is why the roll-up has to run after `deriveQ4` — a TTM
+    // window that ends one quarter after a fiscal year end reaches back across it.
+    const window = ['2025-09-27', '2025-12-27', '2026-03-28', '2026-06-27'].map((end) =>
+      built
+        .filter((r) => r.periodType === 'Q' && r.periodEnd === end && r.filedAt <= '2026-07-31')
+        .reduce((a, b) => (b.filedAt > a.filedAt ? b : a)),
+    );
+    expect(window.map((q) => q.derivedQ4)).toEqual([true, false, false, false]);
+
+    // The identity, not just the number: a flow column is the sum of the four, computed here from
+    // the same rows the builder read rather than restated as a literal.
+    const sum = (item: string): number =>
+      window.reduce((total, q) => total + (q.values.get(item) ?? Number.NaN), 0);
+    expect(newest?.values.get('REVENUE')).toBe(sum('REVENUE'));
+    expect(newest?.values.get('NET_INC')).toBe(sum('NET_INC'));
+    expect(newest?.values.get('REVENUE')).toBe(466_823_000_000);
+    expect(newest?.values.get('NET_INC')).toBe(128_930_000_000);
+    // Per-share flows are additive over sub-periods, which is what makes DES's `peTtm` answerable.
+    expect(newest?.values.get('EPS_DIL')).toBeCloseTo(8.71, 10);
+    expect(newest?.values.get('DPS')).toBeCloseTo(1.05, 10);
+    expect(newest?.asReported.REVENUE?.concept).toMatch(/^computed:TTM\(4Q\):/);
+    expect(newest?.asReported.REVENUE?.fact_id).toBeNull();
+
+    // The balance sheet at the anchor quarter's end IS the TTM balance sheet: one instant, carried
+    // across as reported with its real `fact_id`, never summed over four dates.
+    expect(newest?.values.get('TOT_ASSETS')).toBe(383_266_000_000);
+    expect(newest?.asReported.TOT_ASSETS?.concept).toBe('Assets');
+    expect(newest?.asReported.TOT_ASSETS?.fact_id).toEqual(expect.any(Number));
+
+    // Nothing invented, twice over. A weighted-average share count does not add up over four
+    // quarters, so it is absent; and NO TTM row anywhere carries a cash flow, because a 10-Q files
+    // cash flow year-to-date and so no window of four quarters has four quarterly CFO durations in
+    // it. A three-quarter total under a twelve-month label is the number this guard refuses.
+    expect(newest?.values.has('SHARES_DIL')).toBe(false);
+    expect(newest?.values.has('CFO')).toBe(false);
+    expect(ttm.filter((r) => r.values.has('CFO'))).toHaveLength(0);
+    expect(ttm.filter((r) => r.values.has('SHARES_DIL'))).toHaveLength(0);
+
+    // Every quarter that went in is cited (DATA-10). One capture supplied all four here, so the
+    // union is one id — the assertion is that it is the union, not the anchor's alone.
+    const expectedProv = [...new Set(window.flatMap((q) => q.provenanceIds))].sort((a, b) => a - b);
+    expect(newest?.provenanceIds).toEqual(expectedProv);
   });
 
   it('leaves a line with no fact absent, never zero', () => {

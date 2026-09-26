@@ -36,6 +36,7 @@ import { bindingApplies, formatCombo, parseCombo } from '../keyboard/keymap.js';
 import type { KeyRegion } from '../keyboard/keymap.js';
 import { collectFocusNodes } from '../keyboard/focus.js';
 import { ScreenRenderer } from '../screen/ScreenRenderer.js';
+import type { ScreenHandle } from '../screen/ScreenRenderer.js';
 import type { LiveView, ScreenCtx, ScreenProps, ScreenSpec } from '../screen/types.js';
 import type { CellFormatContextValue } from '../screen/widgets/CellView.js';
 import type { ScreenActions, WidgetRegistry } from '../screen/widgets/registry.js';
@@ -298,6 +299,18 @@ export function Panel({
   const canGoForward = usePanelsStore(selectCanGoForward(panelId));
 
   const bodyRef = useRef<HTMLDivElement | null>(null);
+  /**
+   * The rendered screen's own handle (`ScreenRenderer`'s `ScreenHandle`).
+   *
+   * `ScreenCtx.provenance(idx)` is a COMMAND — "open the provenance panel for this index" (DATA-10,
+   * `screen/types.ts` L43) — and the component that owns that panel is the renderer below. Without
+   * this ref the command was delegated up to `PanelActions.provenance`, which is the NOTIFICATION
+   * the renderer itself already fires when it opens, so a screen calling `ctx.provenance(idx)`
+   * programmatically — a source link on a value — got silence while `Ctrl+I` on the same value
+   * worked. The panel answers it here, which is what this file's header already claimed ("`focus` is
+   * DOM, `provenance` is the renderer's own panel").
+   */
+  const screenRef = useRef<ScreenHandle | null>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
 
   const slotProps: PanelSlotProps = { panelId, ordinal, focused, frame };
@@ -336,7 +349,9 @@ export function Panel({
       },
       prompt: (kind, opts) => actions.prompt(panelId, kind, opts),
       provenance: (provIdx) => {
-        actions.provenance(panelId, provIdx);
+        // Open it. The renderer then fires `ScreenActions.provenance` on its way, which is the
+        // telemetry notification — so this stays one event, not two, and never a loop.
+        screenRef.current?.openProvenance(provIdx);
       },
       openUrl: (url) => {
         actions.openUrl(url);
@@ -391,11 +406,14 @@ export function Panel({
       openUrl: (url) => {
         ctx.openUrl(url);
       },
+      // NOT `ctx.provenance`: this is the renderer telling the shell that a provenance panel was
+      // opened (`screen/widgets/registry.ts` L31), and `ctx.provenance` now opens one. Routing the
+      // notification through the command would re-enter `openProvenance` on every open.
       provenance: (provIdx) => {
-        ctx.provenance(provIdx);
+        actions.provenance(panelId, provIdx);
       },
     }),
-    [ctx],
+    [actions, ctx, panelId],
   );
 
   // The footer's hints follow the element that actually has focus, which is what the dispatcher
@@ -491,6 +509,7 @@ export function Panel({
       <div style={S.body} ref={bodyRef} data-testid={`panel-body-${panelId}`}>
         {spec !== null ? (
           <ScreenRenderer
+            ref={screenRef}
             spec={spec}
             meta={frame?.meta}
             actions={screenActions}

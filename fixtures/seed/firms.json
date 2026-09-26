@@ -1,0 +1,38 @@
+{
+  "spec": "DATA_MODEL.md §18 module 12 — firms 2 (`Demo Capital` 5 seats, `Other Desk` for the isolation tests).",
+  "note": "Two firms, not one, because every firm-scoped guarantee in this system is unfalsifiable against a single tenant: an RLS policy that forgets its firm predicate, a watchlist listed by firm, a room scoped to a firm and an ENTL-06 declaration all pass trivially when there is only one firm id in the database. `Other Desk` exists so those tests have somebody to be excluded.",
+  "leiNote": "`lei` is null on both rows. A LEI is a registered identifier that resolves to a real legal entity in GLEIF; minting a syntactically valid one for a demo firm would put a fabricated identifier into a column readers are entitled to trust (DATA-10's spirit, REF-04). Absent is the honest value.",
+  "firms": [
+    {
+      "key": "demo",
+      "name": "Demo Capital",
+      "lei": null,
+      "contractRef": "DEMO-2026-01",
+      "seatCount": 5,
+      "retentionDays": 2557,
+      "dataResidency": "us",
+      "status": "active",
+      "seatCountNote": "5 is the contracted seat count of DATA_MODEL §18, not a count of the seeded users (six of the seven live here). ENTL-06 reconciles declarations against this number, so deriving it from the user table would make the reconciliation compare a value with itself and always agree.",
+      "policy": {
+        "permittedCounterpartyFirms": [],
+        "disclaimer": "Messages are archived and monitored.",
+        "ethicalWalls": [{ "deskA": "Newsroom", "deskB": "Equities PM" }]
+      }
+    },
+    {
+      "key": "other",
+      "name": "Other Desk",
+      "lei": null,
+      "contractRef": null,
+      "seatCount": 1,
+      "retentionDays": 2557,
+      "dataResidency": "us",
+      "status": "active",
+      "policy": {
+        "permittedCounterpartyFirms": [],
+        "disclaimer": "Messages are archived and monitored.",
+        "ethicalWalls": []
+      }
+    }
+  ]
+}

@@ -6,7 +6,11 @@ This is the BRIEF §7 deliverable and milestone I13 of [WORKPLAN.md](./WORKPLAN.
 ## How to read this
 
 The repository currently contains the design spine and the work plan; `packages/` does not exist
-yet. A status here therefore grades **the design and its assigned test**, not running code:
+yet. A status here therefore grades **the design and its assigned test**, not running code — with one
+exception, added by WP-15 once there was an application to run: [Running-application
+gaps](#running-application-gaps-wp-15) grades what the composed app actually does, and the three rows
+it corrects (TERM-06, TERM-07, MSG-01) say so in their notes. This paragraph is what WP-15's
+regeneration of this file has to replace, since fourteen packages now exist.
 
 | Status | Means |
 | --- | --- |
@@ -124,8 +128,8 @@ DATA_MODEL.md, API.md, FUNCTIONS.md, CLIENT.md §11.11/§18, parts/PROVIDERS.a-b
 | TERM-03 | implemented | `web/src/command/dispatch.ts` context rules over `PanelContext`: function-only applies to the panel's current security, security-only reloads the panel's current function | `packages/web/test/command/dispatch.test.ts` (the FUNCTIONS §2.5 context-rule table); `packages/e2e/tests/command-line.spec.ts` | Context is per panel, not per session, so four panels hold four securities. |
 | TERM-04 | implemented | `shell/PanelGrid.tsx` 1/2/4 layouts, per-panel frame stack with back/forward and its own command line; one WebSocket for the whole session (`rt/wsBridge.ts`) | `packages/web/test/shell/panels.test.tsx`; `packages/e2e/tests/panels.spec.ts` | API §6.3 closes a second socket with `4003`, so the single-connection rule is enforced server-side too. |
 | TERM-05 | partial | `workspaces.layout` jsonb (panels, frame stacks, monitors, chart settings, focus) + `version` optimistic concurrency; `PUT /workspaces/:workspaceId` returns 409 on a stale version | `packages/web/test/shell/panels.test.tsx` (409 surfaces); `packages/e2e/tests/panels.spec.ts` (persistence across reload) | Gap, stated by CLIENT §18.8: grid column widths outside `MonitorSpec.columns` live in `localStorage`, and theme/density are per device (§18.1) — "not 'the desk back on any machine' in the strict TERM-05 sense". |
-| TERM-06 | implemented | `keyboard/{keymap,dispatcher,focus}.ts`; the `ScreenRenderer` keyboard-operability contract (CLIENT §5.4) covering every `Node` kind; chart keyboard map (CLIENT §11.9); grid keyboard map | `packages/web/test/keyboard/keymap.test.ts`; `packages/web/test/screen/renderer.test.tsx` ("every Node kind keyboard-operable"); `packages/web/test/grid/LiveGrid.keyboard.test.tsx` | A mouse-only affordance fails the renderer test, which is the point. |
-| TERM-07 | implemented | Reserved global keys GO / CANCEL / MENU / HELP / PRINT / PAGE FWD/BACK (CLIENT §5.2), each with an on-screen key-bar equivalent | `packages/web/test/keyboard/keymap.test.ts` (reserved keys, Escape priority, yellow keys, typing-anywhere routing) | CLIENT §18.6: `F11` (Curncy) is not interceptable on macOS Chrome; the key bar is the guaranteed path for that one key. |
+| TERM-06 | partial | `keyboard/{keymap,dispatcher,focus}.ts`; the `ScreenRenderer` keyboard-operability contract (CLIENT §5.4) covering every `Node` kind; chart keyboard map (CLIENT §11.9); grid keyboard map | `packages/web/test/keyboard/keymap.test.ts`; `packages/web/test/screen/renderer.test.tsx` ("every Node kind keyboard-operable"); `packages/web/test/grid/LiveGrid.keyboard.test.tsx` | A mouse-only affordance fails the renderer test, which is the point. **Gap (WP-15, measured in real Chrome):** the window-level `keyboard/dispatcher.ts` is never attached, so `F1`, `PRINT`/`Ctrl+P`, `PAGE FWD`/`BACK`, the `Alt+n` panel chords and TERM-06's type-anywhere routing do nothing at all — zero requests, no focus move. See [Running-application gaps (WP-15)](#running-application-gaps-wp-15). Every region's own keys work at the element, which is why the terminal feels usable until a global key is pressed. |
+| TERM-07 | partial | Reserved global keys GO / CANCEL / MENU / HELP / PRINT / PAGE FWD/BACK (CLIENT §5.2), each with an on-screen key-bar equivalent | `packages/web/test/keyboard/keymap.test.ts` (reserved keys, Escape priority, yellow keys, typing-anywhere routing) | CLIENT §18.6: `F11` (Curncy) is not interceptable on macOS Chrome; the key bar is the guaranteed path for that one key. **Gap (WP-15):** the reserved keys are mapped and unit-tested but not BOUND — the dispatcher is unattached (TERM-06) — and `KeyBar.tsx` was never written, so there is no on-screen equivalent either. `GO`, `CANCEL` and the yellow keys work because `CommandLine.tsx` owns them at the element; `HELP` is reachable as a command, `PAGE` from a screen's own control, and `PRINT` only from a screen's own control (FUNC-03 has no key path). |
 | TERM-08 | implemented | `web/src/grid/**` — `LiveGrid.tsx`, `GridModel.ts`, `virtualiser.ts`, `cellRegistry.ts`, `flash.ts`, `sort.ts`, `group.ts`; imperative DOM cell updates outside React, cells keyed `(subject, fieldId)` | `packages/web/test/grid/LiveGrid.flash.test.tsx`; `packages/web/test/grid/LiveGrid.raf.test.tsx`; `packages/web/test/grid.frame-budget.test.ts` (2,000 cells, 5,000 changes/s); `packages/e2e/tests/live-grid.spec.ts` | [High effort] — its own work package (WP-13) as ARCHITECTURE §13 prescribes. A delta touches only the cells that changed. |
 | TERM-09 | partial | `HelpSpec` per manifest; one press opens the context overlay, two presses open `TicketDialog` → `help_tickets` (with `screen_state`, `trace_id`) and a `rooms.kind='helpdesk'` room | `packages/server/test/integration/functions/HELP.test.ts`; `packages/e2e/tests/help.spec.ts` | The software half is complete and tested. Gap quoted from BRIEF §1 non-goals: "24/7 human helpdesk (TERM-09 second press opens a ticket record instead)" — a ticket record, not a live analyst. |
 | TERM-10 | partial | `WorkspaceLayout.windows[{windowId, screen, bounds, panelIds}]` (API L622); CLIENT §7.4 Web Locks leader + BroadcastChannel relay, one WebSocket per session; `devicePixelRatio`-aware canvas | `packages/web/test/shell/panels.test.tsx` (layout round-trip) | Gap: browser windows, not OS-level windows; and CLIENT §18.2 states multi-window has no e2e coverage — two windows sharing `navigator.locks` needs a persistent Playwright context, which is not in the v1 e2e set. |
@@ -197,7 +201,7 @@ DATA_MODEL.md, API.md, FUNCTIONS.md, CLIENT.md §11.11/§18, parts/PROVIDERS.a-b
 
 | ID | status | where | test | note |
 | --- | --- | --- | --- | --- |
-| MSG-01 | partial | `rooms` (`dm group firm helpdesk`), `room_members` with roles, `messages` with per-room `seq` and idempotent `client_msg_id`, `message_reads`; `users` directory with `desk` and `role`; people appear in autocomplete as `Candidate.kind='person'` | `packages/server/test/integration/messaging/chain.test.ts`; `packages/server/test/integration/messaging/policy.test.ts` | Person-to-person and multi-party chat with a directory. Gap: the "verified global directory of users, firms and desk roles" is **two seeded firms and seven users** — REQUIREMENTS §SCOPE calls this a cold-start problem, not an engineering one, and nothing in v1 changes that. |
+| MSG-01 | partial | `rooms` (`dm group firm helpdesk`), `room_members` with roles, `messages` with per-room `seq` and idempotent `client_msg_id`, `message_reads`; `users` directory with `desk` and `role`; people appear in autocomplete as `Candidate.kind='person'` | `packages/server/test/integration/messaging/chain.test.ts`; `packages/server/test/integration/messaging/policy.test.ts` | Person-to-person and multi-party chat with a directory. Gap: the "verified global directory of users, firms and desk roles" is **two seeded firms and seven users** — REQUIREMENTS §SCOPE calls this a cold-start problem, not an engineering one, and nothing in v1 changes that. Second gap (WP-15): **MSG has no message composer in the running application** — the `Composer` custom widget does not exist, so the screen's central node draws the WP-12 placeholder. Pinned by `packages/web/test/app/App.test.tsx` ("leaves MSG and FXC on the WP-12 placeholder"), which is an INVERTED assertion and fails the day a `Composer` is registered. |
 | MSG-02 | implemented | `messages_worm` trigger (app role has no UPDATE/DELETE grant); `messages_chain` hash chain `hash = sha256(prev_hash \|\| room_id \|\| seq \|\| sender \|\| sent_at \|\| body \|\| attachments)`; `surveillance_lexicon` / `surveillance_hits`; `message_reviews` (`lexicon \| random_sample \| manual`); `legal_holds`; `GET /api/v1/admin/export/messages?room&from&to` | `packages/server/test/integration/messaging/chain.test.ts` (the chain verifies over a room; an attempted UPDATE is blocked by the WORM trigger; a broken chain is detectable) | [SEC 17a-4 / FINRA 3110]. "Non-rewriteable non-erasable" is enforced by trigger plus role grants on Postgres, not by WORM storage media — a deployment note, not a design gap. |
 | MSG-03 | implemented | `firms.policy {permittedCounterpartyFirms, disclaimer, ethicalWalls}`; `rooms.retention_days` (floor 7 years, never lowered), `rooms.disclaimer`, `rooms.wall_tag` enforced in `messaging/service.ts`; `users.desk` is the ethical-wall unit | `packages/server/test/integration/messaging/policy.test.ts` (ethical wall blocks a cross-desk room join; external-firm policy enforced; retention floor cannot be lowered) | All four clauses — retention, permitted counterparties, disclaimers, ethical walls — have a column and an assertion. |
 | MSG-04 | partial | `messages.attachments jsonb` — `[{kind:'security'\|'chart'\|'function'\|'portfolio'\|'watchlist', ref, params}]`, documented as rendered live within the recipient's entitlements; `POST /messages` schema in API §5.10 | — (no named test) | The shape, the route and the entitlement rule are specified, but **no acceptance test in WORKPLAN §2 or TESTING asserts that a shared attachment re-renders under the recipient's own entitlements** rather than the sender's. That assertion is the whole requirement. |
@@ -320,8 +324,8 @@ the licensing critical path that gates the original sequence does not exist here
 
 | Status | Count | Share |
 | --- | --- | --- |
-| implemented | 66 | 41.8 % |
-| partial | 65 | 41.1 % |
+| implemented | 64 | 40.5 % |
+| partial | 67 | 42.4 % |
 | out-of-scope | 27 | 17.1 % |
 | **total** | **158** | **100 %** |
 
@@ -336,7 +340,7 @@ Per subsystem:
 | BUS | 6 | 2 | 0 | 8 |
 | STOR | 3 | 4 | 0 | 7 |
 | ENTL | 6 | 0 | 0 | 6 |
-| TERM | 10 | 3 | 0 | 13 |
+| TERM | 8 | 5 | 0 | 13 |
 | FUNC | 3 | 1 | 0 | 4 |
 | CHRT | 2 | 5 | 0 | 7 |
 | ANAL | 2 | 5 | 2 | 9 |
@@ -367,6 +371,29 @@ The 27 out-of-scope rows split into three groups: **seventeen** whose id BRIEF �
 ruled out by the BRIEF §1 wedge or build/buy sentences without naming the id (ANAL-05, ANAL-06,
 NEWS-05, BIZ-01..04); and **three** ruled out for a reason BRIEF §1 does not state at all — REG-02,
 REG-08 and OPS-01, whose notes say so explicitly rather than borrowing a quote.
+
+## Running-application gaps (WP-15)
+
+Three gaps that only a running application can show, recorded here because the rows above would
+otherwise read as complete. Each is measured against the composed app (`packages/web/src/App.tsx`),
+not inferred from a comment, and each has a test that fails the day it is closed or re-opened.
+
+| Gap | Where it shows | Evidence | Pinned by |
+| --- | --- | --- | --- |
+| **The window keyboard dispatcher is not attached** (TERM-06, TERM-07, FUNC-03) | `F1` opens no overlay; `Ctrl+P` issues no `/functions/:code/csv`; `PageDown` issues no `/page`; `Alt+1` does not move the panel focus; a printable key pressed on a `gridcell` does not reach the command line | Five keys driven in real Chrome on QM with a `role="gridcell"` focused: zero `/api/v1` requests, focus unmoved, command draft still `''` | — (no test; `keyboard/dispatcher.ts` is unit-tested against a fake host, which is exactly why an unattached dispatcher stayed green) |
+| **`Composer` is not in the `WidgetRegistry`** (MSG-01) | MSG has no message composer and FXC no editor grid: one `[data-pending="Composer"]` where the widget should be | `widgets.tsx` header states the reason — two unrelated prop shapes (a currency matrix; a message draft with attachments and a send gate) and no component for either in the repo | `packages/web/test/app/App.test.tsx` — "leaves MSG and FXC on the WP-12 placeholder" (inverted) |
+| **`Sparkline` is not in the `WidgetRegistry`** (CHRT-01 shape, no requirement of its own) | DES (`rate` variant), ECO and EE leave a placeholder where a small series would be drawn | The node passes `{ points: [{t, v}], fmt }` with no `provIdx` on any point, and every `ChartSeries` in a `ChartSpec` carries a mandatory one: DATA-10 forbids drawing a number whose source cannot be named. Closing it means the three screens passing the provenance index they already hold for the series they plot, not a change to `widgets.tsx` | — (no test; the screens' specs are asserted, the registry's omission is not) |
+
+What the first row needs, stated once so it is not re-derived: `keyboard/dispatcher.ts` is complete,
+but `KeyboardHost.region()`, `screenBindings()`, `capturesTypedText()` and `screenAction()` all need
+the focus model `keyboard/focus.ts` defines, and the only place a `FocusState` and
+`collectFocusNodes(spec.body)` both exist is `shell/Panel.tsx`, which keeps them in private component
+state. So `Panel` must publish its focus and its merged bindings (a callback prop, or a focus slice on
+`state/panels.ts`) before the composition root can build a host at all. Re-deriving the focused node's
+KIND from the DOM is not an alternative: it is a second focus model, disagreeing with the first at
+exactly the moments the first was written to get right. The remaining decision, which is a design
+decision and not a wiring one, is what stage 4 (`regionKey`) does when the grid, the chart, the form
+and the command line already answer their own keys at the element.
 
 ## Highest-risk partials
 

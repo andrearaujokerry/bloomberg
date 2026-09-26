@@ -1,0 +1,143 @@
+{
+  "spec": "DATA_MODEL.md §18 module 12 — entitlement_grants 8, quota_limits 2, surveillance_lexicon 12.",
+  "grantShapeNote": "The column set is entitlements/licenceRegistry.ts#GrantRow: a NULL `sourceId`, `assetClass` or `fieldClass` means \"every one of them\", and the three usage booleans are what rule 2 and rules 4-5 of entitlements/evaluator.ts test. `maxTier` is a ceiling, never a floor — the effective tier is min(licence.max_tier, firm grant, user grant), so a `realtime` grant on a 15-minute source still serves delayed.",
+  "countNote": "§18 fixes the total at 8 and the evaluator needs BOTH a firm grant (rule 4) and a user grant (rule 5) for any field to be served, so eight rows cannot cover two firms and seven users. Two firm rows plus six user rows is the split, and `compliance@demo` is the user without a market-data grant: a compliance officer's remit here is the MSG supervisory archive, the surveillance queue and the review queue, none of which is governed by entitlement_grants (they are governed by users.role and the RLS policies of 0015/0017.d). Giving that seat a grant would also enlarge the ENTL-06 monthly declaration by a seat that reads no priced data, which is the opposite of what a declaration is for. The visible consequence is deliberate and testable: `compliance@demo` gets NO_USER_ENTITLEMENT on PX_LAST.",
+  "grants": [
+    {
+      "subjectKind": "firm",
+      "subject": "demo",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": null,
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": true,
+      "usageApi": true,
+      "contractRef": "DEMO-2026-01",
+      "note": "The firm contract (evaluator rule 4): every source at the delayed tier, with display, export and API all permitted. Nothing here grants realtime — no v1 source's licence allows it, so a realtime firm grant would be a promise the licence ceiling silently breaks."
+    },
+    {
+      "subjectKind": "firm",
+      "subject": "other",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": "news",
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": false,
+      "usageApi": false,
+      "contractRef": null,
+      "note": "Other Desk contracts for news and nothing else. Because rule 4 is an intersection, this single row is what makes every priced field deny for every user of that firm regardless of their own grant — which is the property reporter@newsco's SEC-06 wall needs to rest on something other than application code."
+    },
+    {
+      "subjectKind": "user",
+      "subject": "pm",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": null,
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": true,
+      "usageApi": true,
+      "contractRef": "DEMO-2026-01",
+      "note": "API.md L1405 entitlementSummary: defaultTier delayed, exportAllowed true, apiAllowed true."
+    },
+    {
+      "subjectKind": "user",
+      "subject": "analyst",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": null,
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": true,
+      "usageApi": true,
+      "contractRef": "DEMO-2026-01",
+      "note": "Research seat: the same shape as the PM, because EQS/FA screening and CSV extraction are the same usages."
+    },
+    {
+      "subjectKind": "user",
+      "subject": "rates",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": null,
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": true,
+      "usageApi": false,
+      "contractRef": "DEMO-2026-01",
+      "note": "Display and export, no API: the rates desk works on screens, and an unused API seat is a seat the ENTL-06 declaration should not count."
+    },
+    {
+      "subjectKind": "user",
+      "subject": "dataops",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": null,
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": false,
+      "usageApi": true,
+      "contractRef": "DEMO-2026-01",
+      "note": "API but not export: data ops drive the ingest and status surfaces programmatically and have no business extracting licensed values to a file."
+    },
+    {
+      "subjectKind": "user",
+      "subject": "eod",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": null,
+      "maxTier": "eod",
+      "usageDisplay": true,
+      "usageExport": false,
+      "usageApi": false,
+      "contractRef": null,
+      "note": "The ENTL-05 seat, and the two things about it are both load-bearing for packages/e2e/tests/entitlement.spec.ts. `maxTier: 'eod'` makes min(cap, firm, user) = eod, and the tier is then a property of THIS GRANT rather than of any field: the evaluator returns decision 'downgrade' with reason NOT_ENTITLED_TIER and effectiveTier 'eod' on every price field of the source \u2014 PX_OFFICIAL_CLOSE and PX_CLOSE_1D exactly like PX_BID \u2014 whenever a screen asks for realtime or delayed, and 'allow'/OK when it asks for eod itself. Nothing comes back null; a downgrade still serves a value, at the tier the seat may have. TIER_EOD is a real ReasonCode but it belongs to the plant gate one stage later, which is what blanks the intraday cells of a read this evaluator has already downgraded \u2014 blaming the evaluator for it sends the next reader to the wrong stage. `usageExport: false` makes PRINT fail rule 5, NO_USER_ENTITLEMENT, on the export usage: rules 2 and 4 both pass, because the demo firm grant does permit export and it is the user grant that does not \u2014 so the refusal carries a ReasonCode the screen can show instead of a bare 403. Asserted end to end over these rows in test/integration/seed/entitlements.test.ts."
+    },
+    {
+      "subjectKind": "user",
+      "subject": "reporter",
+      "sourceId": null,
+      "assetClass": null,
+      "fieldClass": "news",
+      "maxTier": "delayed",
+      "usageDisplay": true,
+      "usageExport": false,
+      "usageApi": false,
+      "contractRef": null,
+      "note": "The SEC-06 newsroom wall, stated as data: `fieldClass: 'news'` is the whole grant, so N, TOP and NI serve and every price, fundamental and analytic field denies at rule 5 with NO_USER_ENTITLEMENT. news carries no latency tier, which is why FUNCTIONS_TIER1 L1220 can say TIER_EOD never applies on a news screen."
+    }
+  ],
+  "quotaNote": "Two rows, one per subject kind, so that API-06's per-user and per-firm ceilings are both exercised by the seeded desk rather than only the table default. The firm row restates the documented defaults (API.md L1407); the pm row raises concurrentSubscriptions to the 10 000 that same example reports, because a four-panel workspace with a 500-row monitor open subscribes to far more than 2 000 subjects and a demo that trips its own quota on the first screen teaches the wrong thing.",
+  "quotaLimits": [
+    {
+      "subjectKind": "firm",
+      "subject": "demo",
+      "dailyUniqueInstruments": 500,
+      "monthlyDataPoints": 2000000,
+      "concurrentSubscriptions": 2000
+    },
+    {
+      "subjectKind": "user",
+      "subject": "pm",
+      "dailyUniqueInstruments": 500,
+      "monthlyDataPoints": 2000000,
+      "concurrentSubscriptions": 10000
+    }
+  ],
+  "lexiconNote": "Twelve global terms (firm_id NULL), MSG-02. Each `pattern` is a POSIX regular expression matched case-insensitively by messaging/surveillance.ts, and each is anchored on word boundaries so that a term inside an ordinary word does not fire — the cost of a lexicon is false positives in a compliance officer's queue, and a queue nobody trusts is not read. Severity 3 is conduct that must be reviewed today, 2 is reviewed in the daily sweep, 1 is recorded for pattern analysis.",
+  "surveillanceLexicon": [
+    { "pattern": "\\yinside information\\y", "severity": 3, "note": "MAR/insider dealing: the phrase itself, in either direction." },
+    { "pattern": "\\ynon[- ]?public\\y", "severity": 3, "note": "MNPI by another name." },
+    { "pattern": "\\yfront[- ]?run(ning|s)?\\y", "severity": 3, "note": "Front running." },
+    { "pattern": "\\ymark(ing)? the close\\y", "severity": 3, "note": "Closing-price manipulation." },
+    { "pattern": "\\y(wash|matched) trade(s)?\\y", "severity": 3, "note": "Wash / matched trades." },
+    { "pattern": "\\yspoof(ing|ed)?\\y", "severity": 3, "note": "Layering and spoofing." },
+    { "pattern": "\\yguarantee(d|ing)? (a )?(return|profit)\\y", "severity": 2, "note": "Unsuitable assurance to a client." },
+    { "pattern": "\\y(off|outside) (the )?(record|channel|system)\\y", "severity": 2, "note": "Attempt to move the conversation off the archived channel (REG-01)." },
+    { "pattern": "\\ydon'?t (put|write) (that|this) in writing\\y", "severity": 2, "note": "As above, said plainly." },
+    { "pattern": "\\y(delete|destroy|shred) (the|this|that|those) (message|email|note|file)s?\\y", "severity": 2, "note": "Records destruction (SEC 17a-4)." },
+    { "pattern": "\\ychinese wall\\y", "severity": 1, "note": "Ethical-wall discussion: recorded, not escalated — the phrase is as often compliant as not (MSG-03)." },
+    { "pattern": "\\y(tip|tipped|tipping) (him|her|them|you)\\y", "severity": 1, "note": "Weak tipping signal; severity 1 because 'tipping point' and similar make this the noisiest term on the list." }
+  ]
+}

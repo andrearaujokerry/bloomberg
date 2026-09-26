@@ -10,3 +10,10 @@ playwright-report/
 test-results/
 *.tsbuildinfo
 .vite/
+
+# `npm run replay:run` writes its replayed state log beside the golden it is compared against, so
+# that `replay:diff --actual` can find it. It is scratch: the golden is `expected.ndjson` and it is
+# only ever written by `replay:run --accept` (the golden-update protocol). Ignoring the scratch file
+# is what keeps an ordinary developer run from dirtying a committed session directory — and keeps a
+# mistyped `--accept` from being the thing that promotes it.
+fixtures/sessions/*/actual.ndjson

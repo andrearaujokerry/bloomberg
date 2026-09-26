@@ -1,0 +1,38 @@
+{
+  "name": "cboe-aapl-poll",
+  "startAt": "2026-09-15T18:41:28.000Z",
+  "endOffsetMs": 30500,
+  "notes": "The one recorded Cboe poll (TESTING §8). fixtures/providers/raw/cboe-quote-AAPL.json is a single observation with one seqno 15972883317, so this is the only fixture-derived session on disk: no second observation of any quote source exists, which is why the other four sessions are generated rather than recorded. The session polls that one capture three times at the cboe.quotes cadence, which is exactly what a 15 s poller sees between two source updates: the first poll is a new version and the next two are stale-sequence drops that touch ts.cap and publish nothing (FEED-02). The reference subscriber holds the composite and the two derived change fields, so core/quote/derive.ts is in the replayed path.",
+  "provenance": [
+    {
+      "provenanceId": 1,
+      "sourceId": "cboe.quotes",
+      "requestKey": "696cdefae49367f64a62c7734cbb8759cb5ac177cafd2c1050d3889392dc4a26"
+    }
+  ],
+  "lines": [
+    {
+      "providerSymbol": "AAPL",
+      "mdLineId": 1,
+      "instrumentId": 1,
+      "assetClass": "equity",
+      "tier": "delayed",
+      "intrinsicDelayMin": 15,
+      "expectedIntervalMs": 15000,
+      "priority": 10
+    }
+  ],
+  "subscribers": [
+    {
+      "id": "grid",
+      "conflationMs": 250,
+      "subjects": [
+        {
+          "subject": "q:1",
+          "fields": ["PX_LAST", "PX_BID", "PX_ASK", "PX_VOLUME", "CHG_NET_1D", "CHG_PCT_1D"],
+          "tier": "delayed"
+        }
+      ]
+    }
+  ]
+}

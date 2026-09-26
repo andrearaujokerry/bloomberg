@@ -1,0 +1,126 @@
+{
+  "spec": "DATA_MODEL.md §18 module 13 — workspaces (the default 4-panel WEI / TOP / GP SPX / W \"Core\" per user, 7 rows), watchlists MAG7 / \"S&P 500 Top 25\" / Core, portfolio \"Demo Long\" with 12 lots and positions.",
+  "layoutNote": "`layout` is API.md §5.7's WorkspaceLayout and seed/workspaces.ts parses it with the wire schema (@terminal/sdk/wire/rest/workspaces) before writing, so a layout this fixture gets wrong is a seed failure rather than a 500 on somebody's first morning — the same guarantee http/routes/workspaces.ts gives DEFAULT_WORKSPACE_LAYOUT at module load.",
+  "panelNote": "The W panel names its list as `{ watchlist: { name: 'Core' } }`. W's own param schema accepts a name reference as well as an id (packages/core/src/functions/manifests/W.ts#WWatchlistRef), so the layout needs no id substitution and stays valid whatever `watchlist_id` the sequence hands out — which also means a layout written into bloomberg_dev is still correct after a reset.",
+  "gpNote": "The GP panel's `security` is resolved at seed time from ticker `SPX` on exch_code `INDEX`. When seed/universe.ts has not run, no such instrument exists; the panel is then written with `security: null` and a warning, because REF-01 forbids carrying a bare ticker in a frame and a frame that names an instrument id nothing resolves to is worse than a frame with none.",
+  "workspaceName": "default",
+  "layout": {
+    "schema": 1,
+    "mode": "4",
+    "panels": [
+      { "id": "p1", "frameStack": [{ "security": null, "fn": "WEI", "params": {} }], "index": 0, "history": ["WEI"] },
+      { "id": "p2", "frameStack": [{ "security": null, "fn": "TOP", "params": {} }], "index": 0, "history": ["TOP"] },
+      {
+        "id": "p3",
+        "frameStack": [{ "security": { "ticker": "SPX", "exchCode": "INDEX", "display": "SPX Index" }, "fn": "GP", "params": { "range": "1Y" } }],
+        "index": 0,
+        "history": ["SPX Index GP RANGE=1Y"]
+      },
+      {
+        "id": "p4",
+        "frameStack": [{ "security": null, "fn": "W", "params": { "watchlist": { "name": "Core" }, "view": "grid" } }],
+        "index": 0,
+        "history": ["W Core"]
+      }
+    ],
+    "focus": "p1",
+    "monitors": [],
+    "chart": { "defaultRange": "1Y", "defaultType": "line", "studies": [] },
+    "conflationMs": 250,
+    "windows": []
+  },
+  "watchlistNote": "Every list is `shared_scope: 'firm'` and owned by a Demo Capital user, which is what makes the tenant-isolation assertion meaningful: a firm-shared list is the widest scope a watchlist has, and Other Desk must still not see it (FUNCTIONS_TIER1 W.rls.test.ts, PORT-07/SEC-05). `watchlists.name` is unique per owner, so the three lists are owned by two different users only where that reads naturally.",
+  "watchlists": [
+    {
+      "key": "mag7",
+      "name": "MAG7",
+      "owner": "pm",
+      "sharedScope": "firm",
+      "columns": [
+        { "id": "PX_LAST" },
+        { "id": "CHG_PCT_1D", "decimals": 2 },
+        { "id": "PX_VOLUME" },
+        { "id": "CUR_MKT_CAP" }
+      ],
+      "sort": [{ "col": "CUR_MKT_CAP", "dir": "desc" }],
+      "groupBy": null,
+      "tickers": [
+        { "ticker": "AAPL", "exchCode": "US" },
+        { "ticker": "MSFT", "exchCode": "US" },
+        { "ticker": "NVDA", "exchCode": "US" },
+        { "ticker": "GOOGL", "exchCode": "US" },
+        { "ticker": "AMZN", "exchCode": "US" },
+        { "ticker": "META", "exchCode": "US" },
+        { "ticker": "TSLA", "exchCode": "US" }
+      ]
+    },
+    {
+      "key": "core",
+      "name": "Core",
+      "owner": "pm",
+      "sharedScope": "firm",
+      "columns": [
+        { "id": "PX_LAST" },
+        { "id": "CHG_PCT_1D", "decimals": 2 },
+        { "id": "c1", "formula": "PX_LAST/PX_CLOSE_1D-1", "label": "Chg", "decimals": 4 }
+      ],
+      "sort": [],
+      "groupBy": null,
+      "itemsNote": "Cross-asset on purpose — an equity, an index, a G10 pair and a benchmark govt — so that the monitor's per-asset-class field resolution is exercised by the default screen rather than only by a test. The last row is a CHRT-07 formula row, which is the one watchlist_items shape whose instrument_id is NULL.",
+      "items": [
+        { "ticker": "AAPL", "exchCode": "US" },
+        { "ticker": "MSFT", "exchCode": "US" },
+        { "ticker": "SPX", "exchCode": "INDEX" },
+        { "ticker": "EURUSD", "exchCode": "FX" },
+        { "formula": "RATIO(AAPL US Equity, SPX Index)", "label": "AAPL / SPX" }
+      ]
+    },
+    {
+      "key": "sp500top25",
+      "name": "S&P 500 Top 25",
+      "owner": "analyst",
+      "sharedScope": "firm",
+      "columns": [
+        { "id": "PX_LAST" },
+        { "id": "CHG_PCT_1D", "decimals": 2 },
+        { "id": "CUR_MKT_CAP" }
+      ],
+      "sort": [],
+      "groupBy": null,
+      "derivedFrom": {
+        "kind": "etf_holdings",
+        "etfTicker": "SPY",
+        "etfExchCode": "US",
+        "limit": 25,
+        "orderBy": "weight_desc"
+      },
+      "derivedNote": "The members are NOT listed here. \"Top 25\" is an ordering by index weight and the weights are a recorded fact — the SPY N-PORT and SSGA holdings files that seed/universe.ts writes into etf_holdings — so the list is built by reading the latest as_of_date for SPY and taking the 25 largest weights. Hand-copying 25 tickers would put a stale, unprovenanced ranking in a fixture; reading the holdings means the list is whatever the recorded file says. When etf_holdings is empty the watchlist is created with no items and a warning, because an empty list is visibly empty whereas a guessed one is not."
+    }
+  ],
+  "portfolioNote": "`lots` and `positions` carry no provenance_id column: they are the user's own book, source `internal.user`, and this fixture IS their source (DATA_MODEL §19 — confidential, not personal data, RLS-isolated by firm). Quantities and costs are curated demo values, which is why they sit in fixtures/seed rather than being derived from a capture. `as_of_date` is the recorded world's date, 2026-09-15, so PORT values against the seeded bars_daily instead of against a date no bar exists for.",
+  "portfolios": [
+    {
+      "key": "demolong",
+      "name": "Demo Long",
+      "firm": "demo",
+      "owner": "pm",
+      "baseCurrency": "USD",
+      "benchmark": { "ticker": "SPX", "exchCode": "INDEX" },
+      "asOfDate": "2026-09-15",
+      "lots": [
+        { "ticker": "AAPL", "exchCode": "US", "openDate": "2024-02-14", "quantity": 4500, "unitCost": 184.32, "currency": "USD" },
+        { "ticker": "MSFT", "exchCode": "US", "openDate": "2024-03-06", "quantity": 1800, "unitCost": 402.11, "currency": "USD" },
+        { "ticker": "NVDA", "exchCode": "US", "openDate": "2024-05-23", "quantity": 6200, "unitCost": 94.77, "currency": "USD" },
+        { "ticker": "GOOGL", "exchCode": "US", "openDate": "2024-07-01", "quantity": 3100, "unitCost": 181.45, "currency": "USD" },
+        { "ticker": "AMZN", "exchCode": "US", "openDate": "2024-08-19", "quantity": 2700, "unitCost": 176.28, "currency": "USD" },
+        { "ticker": "META", "exchCode": "US", "openDate": "2024-10-11", "quantity": 900, "unitCost": 583.94, "currency": "USD" },
+        { "ticker": "TSLA", "exchCode": "US", "openDate": "2025-01-08", "quantity": 1400, "unitCost": 394.62, "currency": "USD" },
+        { "ticker": "JPM", "exchCode": "US", "openDate": "2025-02-20", "quantity": 1650, "unitCost": 268.03, "currency": "USD" },
+        { "ticker": "XOM", "exchCode": "US", "openDate": "2025-03-14", "quantity": 2400, "unitCost": 112.57, "currency": "USD" },
+        { "ticker": "UNH", "exchCode": "US", "openDate": "2025-04-29", "quantity": 700, "unitCost": 431.18, "currency": "USD" },
+        { "ticker": "JNJ", "exchCode": "US", "openDate": "2025-06-10", "quantity": 1900, "unitCost": 155.74, "currency": "USD" },
+        { "ticker": "V", "exchCode": "US", "openDate": "2025-08-05", "quantity": 1200, "unitCost": 349.86, "currency": "USD" }
+      ]
+    }
+  ]
+}

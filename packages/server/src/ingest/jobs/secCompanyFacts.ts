@@ -453,7 +453,12 @@ export interface AsReportedEntry {
 export interface StatementRow {
   issuerId: number;
   periodEnd: string;
-  periodType: 'Q' | 'FY';
+  /**
+   * `'TTM'` is not a period any filing reports — it is the four-trailing-quarters roll-up
+   * {@link deriveTtm} builds, and the CHECK constraint on `fin_statements.period_type` admits it
+   * alongside the two reported types (DATA_MODEL §18 row 10).
+   */
+  periodType: 'Q' | 'FY' | 'TTM';
   filedAt: string;
   mappingVersion: string;
   fiscalYear: number | null;
@@ -545,7 +550,7 @@ export async function readMappedFacts(tx: Tx, cik: string): Promise<StoredFact[]
 interface PeriodKey {
   start: string | null;
   end: string;
-  type: 'Q' | 'FY';
+  type: 'Q' | 'FY' | 'TTM';
 }
 
 /**
@@ -593,6 +598,9 @@ export function buildStatements(facts: readonly StoredFact[], issuerId: number):
   }
 
   rows.push(...deriveQ4(rows, byAccession));
+  // After `deriveQ4`, not before: a fiscal year's fourth quarter is a quarter like any other once
+  // it has been derived, and a TTM window that ended at a year end would otherwise never find one.
+  rows.push(...deriveTtm(rows));
   rows.sort((a, b) =>
     a.periodEnd < b.periodEnd
       ? -1
@@ -830,6 +838,179 @@ function deriveQ4(
         annual.filedAt,
         asReported,
         true,
+      ),
+    });
+  }
+  return derived;
+}
+
+/** A trailing-twelve-months window is four quarters, no more and no fewer. */
+const TTM_QUARTERS = 4;
+
+/**
+ * How far apart the oldest and newest ends of a valid TTM window may be.
+ *
+ * Four consecutive quarters put about 273 days between the first quarter's end and the fourth's,
+ * and a 52/53-week fiscal calendar moves that by a week either way. The band is deliberately
+ * narrower than four quarter-lengths: its job is to reject a window with a HOLE in it — three
+ * quarters plus one from two years earlier, which is what a gap in the capture produces — because
+ * summing those four would put a number under a twelve-month label that covers no twelve months.
+ */
+const TTM_SPAN_MIN_DAYS = 240;
+const TTM_SPAN_MAX_DAYS = 310;
+
+/**
+ * `TTM = Q(t) + Q(t−1) + Q(t−2) + Q(t−3)`, at the knowledge state of the filing that reported the
+ * newest of the four.
+ *
+ * DATA_MODEL §18 row 10 asks this job for `fin_statements (AAPL Q/FY/TTM)` and three screens read
+ * the row rather than computing it: `DES/resolve.ts` asks for `{ periodType: 'TTM', periods: 1 }`
+ * and fills `epsTtmDil`, `revenueTtm`, `netIncomeTtm` and `peTtm` from it, `RV.ts` DEFAULTS to TTM,
+ * and `EQS/resolve.ts` screens on the newest TTM row per issuer. Until this existed the table held
+ * no TTM row at all, so all three read nothing — and DES did worse than blank the four cells: it
+ * emitted `unavailable { reason: 'NO_SOURCE', detail: 'no XBRL facts ingested for CIK …' }` on an
+ * issuer whose 25,116 facts were sitting in `xbrl_facts`. A false reason code costs more than a
+ * blank cell, because it sends the reader to the ingest job instead of to the standardiser.
+ *
+ * The rules are the ones {@link deriveQ4} already establishes, for the same reasons:
+ *
+ *  - **Flows sum; instants carry across.** Revenue over the trailing year is the sum of four
+ *    quarters. Total assets over the trailing year is not the sum of anything — the balance sheet
+ *    at the anchor quarter's end *is* the TTM balance sheet, the same instant, the same facts and
+ *    the same `fact_id`s, so it is carried rather than differenced or added.
+ *  - **Point-in-time.** Each prior quarter is taken at its newest version whose `filed_at` is at or
+ *    before the anchor's, so the row is one a reader could have produced on the anchor filing's
+ *    day. A TTM assembled from a restatement filed six months later is a number nobody ever saw,
+ *    and it would make the PIT read return a twelve-month total that never existed.
+ *  - **Nothing is invented.** A flow item is summed only when all four quarters report it, so a
+ *    10-Q's absent quarterly cash flow (a 10-Q files cash flow year-to-date) leaves `cfo`, `capex`
+ *    and `fcf` NULL rather than putting a three-quarter total under a twelve-month label.
+ *  - **`SHARES_DIL` is excluded**, exactly as in `deriveQ4`: the sum of four weighted-average share
+ *    counts is not a share count. The per-share flows (`EPS_BASIC`, `EPS_DIL`, `DPS`) *are*
+ *    additive over sub-periods, which is what makes `epsTtmDil` — and therefore DES's `peTtm` —
+ *    answerable without a share count at all.
+ *
+ * A row is emitted only when at least one flow item summed completely. Without that guard the row
+ * would be the anchor's balance sheet wearing a TTM label with every trailing total NULL: a row
+ * that exists, satisfies `periods: 1`, and tells the screen nothing — which is the same lie as the
+ * wrong reason code, one layer down.
+ */
+function deriveTtm(rows: readonly StatementRow[]): StatementRow[] {
+  const quarters = rows.filter((r) => r.periodType === 'Q');
+  const derived: StatementRow[] = [];
+
+  for (const anchor of quarters) {
+    // The quarters before the anchor, each at its newest version already public when the anchor was
+    // filed, keyed on `period_end` so a restatement REPLACES its own period rather than adding a
+    // fifth quarter to the window. The accession tie-break is `<` to match `insertStatements`,
+    // where two filings of the same date reporting the same period collide on the primary key and
+    // the first in accession order is the one that lands.
+    const priorByEnd = new Map<string, StatementRow>();
+    for (const q of quarters) {
+      if (q.periodEnd >= anchor.periodEnd) continue;
+      if (q.filedAt > anchor.filedAt) continue;
+      const best = priorByEnd.get(q.periodEnd);
+      if (
+        best === undefined ||
+        q.filedAt > best.filedAt ||
+        (q.filedAt === best.filedAt && q.accessionNo < best.accessionNo)
+      ) {
+        priorByEnd.set(q.periodEnd, q);
+      }
+    }
+    const priors = [...priorByEnd.keys()]
+      .sort()
+      .slice(-(TTM_QUARTERS - 1))
+      .map((end) => priorByEnd.get(end))
+      .filter((q): q is StatementRow => q !== undefined);
+    if (priors.length !== TTM_QUARTERS - 1) continue;
+
+    const oldest = priors[0];
+    if (oldest === undefined) continue;
+    const span = daysBetween(oldest.periodEnd, anchor.periodEnd);
+    if (span < TTM_SPAN_MIN_DAYS || span > TTM_SPAN_MAX_DAYS) continue;
+
+    const window = [...priors, anchor];
+    const values = new Map<string, number>();
+    const asReported: Record<string, AsReportedEntry> = {};
+    // Every one of the four quarters is a source of this row, so all four sets of `provenance_ids`
+    // are carried (DATA-10): citing only the anchor's would attribute a twelve-month total to the
+    // one capture that supplied a quarter of it.
+    const provenanceIds = new Set<number>();
+    for (const row of window) {
+      for (const id of row.provenanceIds) provenanceIds.add(id);
+    }
+
+    let flowsSummed = 0;
+    for (const chain of CHAINS) {
+      const item = chain.def.standardItem;
+      if (item === 'SHARES_DIL') continue;
+      if (chain.def.instant) {
+        const value = anchor.values.get(item);
+        const reported = anchor.asReported[item];
+        if (value !== undefined && reported !== undefined) {
+          values.set(item, value);
+          asReported[item] = reported;
+        }
+        continue;
+      }
+      // `FCF` is never summed: `applyComputed` rebuilds it from the summed `CFO` and `CAPEX` below
+      // so the identity `FCF = CFO − |CAPEX|` holds on this row as it does on every other.
+      // `GROSS_PROFIT` *is* summed when all four quarters tagged it, and falls back to
+      // `REVENUE − COGS` when they did not.
+      if (item === 'FCF') continue;
+      let sum = 0;
+      let complete = true;
+      for (const row of window) {
+        const quarterValue = row.values.get(item);
+        if (quarterValue === undefined) {
+          complete = false;
+          break;
+        }
+        sum += quarterValue;
+      }
+      if (!complete) continue;
+      const value = round(sum, chain.def.scale);
+      values.set(item, value);
+      asReported[item] = {
+        concept: `computed:TTM(4Q):${anchor.asReported[item]?.concept ?? item}`,
+        value,
+        fact_id: null,
+      };
+      flowsSummed += 1;
+    }
+    if (flowsSummed === 0) continue;
+    applyComputed(values, asReported);
+
+    derived.push({
+      issuerId: anchor.issuerId,
+      periodEnd: anchor.periodEnd,
+      periodType: 'TTM',
+      filedAt: anchor.filedAt,
+      mappingVersion: FIN_STATEMENTS_MAPPING_VERSION,
+      fiscalYear: anchor.fiscalYear,
+      // The anchor's own fiscal label, not the string `'TTM'`: `period_type` already says the row
+      // is a roll-up, and what a reader needs from `fiscal_period` is which quarter the trailing
+      // year ENDS on, which is the only thing that distinguishes two TTM rows of one fiscal year.
+      fiscalPeriod: anchor.fiscalPeriod,
+      accessionNo: anchor.accessionNo,
+      currency: anchor.currency,
+      // `derived_q4` names one specific derivation (`FY − (Q1+Q2+Q3)`) and this is not it; a TTM
+      // row is marked as derived by its `period_type` and by its `computed:TTM(4Q)` concepts.
+      derivedQ4: false,
+      values,
+      asReported,
+      provenanceIds: [...provenanceIds].sort((a, b) => a - b),
+      inputsHash: hashInputs(
+        anchor.issuerId,
+        // `StatementRow` carries no `period_start` (neither does `fin_statements`), so the window's
+        // opening boundary is named by the end of the quarter three back — the date the trailing
+        // year begins the day after. The hash only has to be injective over what produced the row,
+        // and `as_reported` already names every value that went in.
+        { start: oldest.periodEnd, end: anchor.periodEnd, type: 'TTM' },
+        anchor.filedAt,
+        asReported,
+        false,
       ),
     });
   }

@@ -1,0 +1,5 @@
+{"kind":"publish","tOffsetMs":0,"subject":"n:feed:econ","fields":{"NEWS_ID":9001,"HEADLINE":"FOMC statement released","PUBLISHED_AT":1789581600000},"provenanceId":1,"src":1789581600000}
+{"kind":"publish","tOffsetMs":300,"subject":"n:feed:econ","fields":{"NEWS_ID":9002,"HEADLINE":"Target range left unchanged","PUBLISHED_AT":1789581600300},"provenanceId":1,"src":1789581600300}
+{"kind":"publish","tOffsetMs":340,"subject":"n:feed:econ","fields":{"NEWS_ID":9003,"HEADLINE":"Vote recorded as unanimous","PUBLISHED_AT":1789581600340},"provenanceId":1,"src":1789581600340}
+{"kind":"publish","tOffsetMs":390,"subject":"n:feed:econ","fields":{"NEWS_ID":9004,"HEADLINE":"Press conference scheduled for 14:30 ET","PUBLISHED_AT":1789581600390},"provenanceId":1,"src":1789581600390}
+{"kind":"publish","tOffsetMs":420,"subject":"e:DFEDTARU","fields":{"ECO_VALUE":4.0,"ECO_PRIOR":4.0,"ECO_PERIOD":"2026-09","ECO_RELEASE_DT":"2026-09-16","ECO_VINTAGE":"2026-09-16T18:00:00Z"},"provenanceId":1,"src":1789581600000,"assetClass":"econ","session":"unknown"}

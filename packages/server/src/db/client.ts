@@ -249,28 +249,44 @@ export async function migrationFiles(): Promise<string[]> {
   return entries.filter((name) => name.endsWith('.sql')).sort((a, b) => a.localeCompare(b));
 }
 
+/** The `schema_meta` key prefix `scripts/migrate.ts` records each applied file under. */
+const MIGRATION_KEY_PREFIX = 'migration:';
+
 /**
- * Migrations present on disk but not recorded as applied.
+ * Migrations present on disk but not recorded as applied (ARCHITECTURE §12.1 step 2).
  *
- * Bookkeeping is drizzle's own `drizzle.__drizzle_migrations` table (created by
- * `drizzle-orm/node-postgres/migrator`, which `scripts/migrate.ts` must use). That table records a
- * hash and a timestamp but not a filename, so the comparison is positional: the first N files are
- * the N applied ones. A missing table means nothing has been applied yet.
+ * This read has to name the SAME LEDGER the migrator writes, and for fourteen packages it did not.
+ * It counted rows in drizzle's `drizzle.__drizzle_migrations` on the assumption that
+ * `scripts/migrate.ts` uses `drizzle-orm/node-postgres/migrator`; it does not. The migrator applies
+ * each file itself and records `schema_meta('migration:<filename>') = <sha256>`, and it never
+ * creates the `drizzle` schema at all. So on a database migrated by the only mechanism this
+ * repository has, the table was absent, this function returned ALL nineteen files, and
+ * `src/index.ts` — which exits 1 rather than serve behind a pending migration — refused to start.
+ *
+ * That made the server unbootable, which is why it went unnoticed: every integration test opens a
+ * pool directly through `withTxDb` and never calls this, so 254 green test files could not see it.
+ * WP-15's Playwright specs are the first thing that boots the real process, and they cannot run
+ * until this agrees with the migrator.
+ *
+ * The comparison is now BY NAME rather than positional, which is also strictly stronger: a
+ * positional `files.slice(applied)` reports the right count only if the applied set is a prefix of
+ * the directory listing, so a migration applied out of order, or one deleted from the middle of the
+ * ledger, read as "nothing pending". A missing `schema_meta` still means nothing has been applied.
  */
 export async function pendingMigrations(): Promise<string[]> {
   const files = await migrationFiles();
-  const rows = await app()
-    .pool.query<{ n: string }>(
-      `SELECT count(*)::text AS n
-         FROM information_schema.tables
-        WHERE table_schema = 'drizzle' AND table_name = '__drizzle_migrations'`,
-    )
-    .then((r) => Number(r.rows[0]?.n ?? '0'));
-  if (rows === 0) return files;
-  const applied = await app()
-    .pool.query<{ n: string }>('SELECT count(*)::text AS n FROM drizzle.__drizzle_migrations')
-    .then((r) => Number(r.rows[0]?.n ?? '0'));
-  return files.slice(applied);
+  const present = await app().pool.query<{ present: boolean }>(
+    "SELECT to_regclass('public.schema_meta') IS NOT NULL AS present",
+  );
+  if (present.rows[0]?.present !== true) return files;
+  const rows = await app().pool.query<{ key: string }>(
+    'SELECT key FROM schema_meta WHERE key LIKE $1',
+    [`${MIGRATION_KEY_PREFIX}%`],
+  );
+  const applied = new Set(
+    rows.rows.map((r) => r.key.slice(MIGRATION_KEY_PREFIX.length)).filter((name) => name !== ''),
+  );
+  return files.filter((file) => !applied.has(file));
 }
 
 /** `SELECT 1` against the application pool — the `db` field of `GET /health`. */

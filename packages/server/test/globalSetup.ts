@@ -17,6 +17,30 @@
  *      `globalSetup` module runs in a different process from the test files — also into the
  *      `provide`/`inject` channel under the same name, which is how a forked test reads them.
  *
+ * DEVIATION, the second one, and it is a decision rather than a stopgap. §4.2 step 5 seeds the test
+ * database unconditionally. That was harmless for thirteen packages because only `seed/licences.ts`
+ * existed and the runner skips a module it cannot find — so "run the seed" wrote 33 licence rows and
+ * nothing else. WP-15 wrote the other twelve modules, and the step began writing the real universe:
+ * 41,455 instruments, 36,188 md lines, 1,264 daily bars, 160 news items.
+ *
+ * Two contracts then collide, and both are legitimate:
+ *
+ *   * `test/integration/seed/volumes.test.ts` asserts the seeded volumes of DATA_MODEL §18 and can
+ *     only run against a seeded database;
+ *   * ~145 ingest and function tests written across WP-05…WP-11 assert what their own job inserted
+ *     into an EMPTY table. Against a seeded one they are not merely off by a count — the job
+ *     correctly inserts nothing, because the seed already did, which is idempotency working. Worse,
+ *     `ingest/marketDataJobs.test.ts` writes an `md_lines` version valid from 2020-01-01 while the
+ *     seed holds one from 2026-01-01, and `md_lines_symbol_excl` refuses two open-ended ranges for
+ *     one (source, symbol): all 8 of its tests fail with SQLSTATE 23P01, which is the exclusion
+ *     constraint doing its job, not a test needing a new number.
+ *
+ * So the seed is gated on `SEED_TEST_DB` and runs for ONE vitest project, `server-seed`, which owns
+ * its own database (`bloomberg_seed_test`). Everything else keeps the empty-database contract it was
+ * written against. The alternative — rewriting ~145 committed tests to assert deltas against a
+ * shared seeded database — is a much larger change that would also make every one of them depend on
+ * a 167 s seed, and it is not obviously more correct.
+ *
  * DEVIATION (recorded here rather than in the design): §4.2 step 4 also calls `ensurePartitions()`
  * from `server/src/db/partitions.ts`. That module is a later work package's and does not exist yet;
  * `0016_partitions_initial.sql` creates the partitions the fixture date range needs, so the step is
@@ -55,6 +79,35 @@ export type SeedCounts = Readonly<Record<string, number>>;
 
 function defaultEnv(key: string, value: string): void {
   if (process.env[key] === undefined || process.env[key] === '') process.env[key] = value;
+}
+
+/**
+ * The `env` the calling PROJECT declared, which is not the same thing as `process.env`.
+ *
+ * `globalSetup` runs in the vitest main process, once per project that lists it — three times in a
+ * full run today, four with `server-seed` — while a project's `test.env` is applied to its WORKERS.
+ * So a project that points `DATABASE_URL` at its own database gets it in the test files and not
+ * here, which is exactly the trap this function exists to close: read from `project.config.env`
+ * first and fall back to the ambient environment. Before this, `server-seed` migrated
+ * `bloomberg_test` (the ambient default) while its tests queried `bloomberg_seed_test`, and two of
+ * them PASSED against the empty database they found, because "every seeded value resolves to a
+ * fixture" is vacuously true when there are no seeded values.
+ */
+function projectEnv(project: TestProject): Record<string, string | undefined> {
+  const env = (project.config as { env?: Record<string, string | undefined> }).env;
+  return env ?? {};
+}
+
+/**
+ * Does this project want the thirteen-module seed in its database? (`SEED_TEST_DB=1`)
+ *
+ * Off by default, and the default is the important half. See the second DEVIATION in the header: the
+ * seed suites and the ingest-job suites want opposite starting states, and this flag is what lets one
+ * `globalSetup` serve both.
+ */
+function seedRequested(project: TestProject): boolean {
+  const flag = projectEnv(project).SEED_TEST_DB ?? process.env.SEED_TEST_DB;
+  return flag === '1' || flag === 'true';
 }
 
 /** sha256 of every migration file, concatenated in name order. */
@@ -105,7 +158,10 @@ export default async function setup(project: TestProject): Promise<void> {
   defaultEnv('SESSION_SECRET', 'test-only-session-secret-0123456789');
   defaultEnv('LOG_LEVEL', 'silent');
 
+  // The project's own database first — see `projectEnv`. `server-seed` owns one.
   const databaseUrl =
+    projectEnv(project).DATABASE_URL_TEST ??
+    projectEnv(project).DATABASE_URL ??
     process.env.DATABASE_URL_TEST ??
     process.env.DATABASE_URL ??
     'postgres://localhost:5432/bloomberg_test';
@@ -140,15 +196,26 @@ export default async function setup(project: TestProject): Promise<void> {
     await client.end();
   }
 
-  // 5. the seed. Imported lazily: it reads its connection from `server/src/config.ts`, which
-  // validates the environment the moment the module is first imported.
+  // 5. the seed — only for the project that is testing the seed (`SEED_TEST_DB`, see the DEVIATION
+  // in this file's header). Imported lazily: it reads its connection from `server/src/config.ts`,
+  // which validates the environment the moment the module is first imported.
   // `runSeed()` opens the application pool through `db/client.ts` and only drains it when
   // `seed/index.ts` was invoked as a script, so the caller closes it — an idle pg pool keeps the
   // event loop alive and vitest would wait ten seconds for the runner to exit.
+  //
+  // Module 1 (`licences`) runs EITHER WAY and that is not a convenience: it registers the 33 rows of
+  // `source_registry`, and `assert_source_known` is a trigger on every table that carries a
+  // `source_id`. Without it step 5b's own GICS row is rejected with P0001 `unknown source_id
+  // wiki.sp500`, and so is the first write of every suite below. What is gated is modules 2-13 — the
+  // ones that put the universe in the database.
   const { runSeed } = await import('../src/seed/index.js');
   const { closeDb } = await import('../src/db/client.js');
   try {
-    await runSeed({ log: () => undefined });
+    await runSeed(
+      seedRequested(project)
+        ? { log: () => undefined }
+        : { log: () => undefined, only: ['licences'] },
+    );
   } finally {
     await closeDb();
   }
@@ -168,7 +235,9 @@ export default async function setup(project: TestProject): Promise<void> {
   // normal run the row is already there and nothing is written.
   await seedSharedReference(databaseUrl);
 
-  // 6. publish the volumes the seed produced.
+  // 6. publish the volumes the seed produced. Unseeded, the snapshot is still taken and still
+  // published — the numbers are then the migrations' own (zero for every counted table), which is
+  // the truth for that database and is what a project asserting "nothing is seeded here" wants.
   const counter = new Client({ connectionString: databaseUrl });
   await counter.connect();
   let counts: SeedCounts;

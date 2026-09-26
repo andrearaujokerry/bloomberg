@@ -1,0 +1,327 @@
+{
+  "mappingVersion": "std-map/2026.09",
+  "spec": "docs/PROVIDERS.md §7.3.1 (L1430-1456) — the normative standardisation table.",
+  "note": "Hand-curated: no provider publishes this mapping, so it has no raw capture and xbrl_concept_map carries no provenance_id column. It is transcribed from PROVIDERS §7.3.1 and must stay identical to XBRL_CONCEPT_MAP in packages/server/src/providers/sec/parse.ts, which is what ingest/jobs/secCompanyFacts.ts actually builds fin_statements from; seed/fundamentals.ts refuses the seed when the two disagree, so the table in the database can never describe a standardisation the builder does not perform. 24 standard items, 40 concept rows.",
+  "rows": [
+    {
+      "standardItem": "BUYBACK",
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsForRepurchaseOfCommonStock",
+      "priority": 1,
+      "sign": -1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "CAPEX",
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "priority": 1,
+      "sign": -1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "CASH",
+      "taxonomy": "us-gaap",
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "priority": 1,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "CASH",
+      "taxonomy": "us-gaap",
+      "concept": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+      "priority": 2,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "CFO",
+      "taxonomy": "us-gaap",
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "priority": 1,
+      "sign": 1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "CFO",
+      "taxonomy": "us-gaap",
+      "concept": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
+      "priority": 2,
+      "sign": 1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "COGS",
+      "taxonomy": "us-gaap",
+      "concept": "CostOfGoodsAndServicesSold",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "COGS",
+      "taxonomy": "us-gaap",
+      "concept": "CostOfRevenue",
+      "priority": 2,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "COGS",
+      "taxonomy": "us-gaap",
+      "concept": "CostOfGoodsSold",
+      "priority": 3,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "DDA",
+      "taxonomy": "us-gaap",
+      "concept": "DepreciationDepletionAndAmortization",
+      "priority": 1,
+      "sign": 1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "DDA",
+      "taxonomy": "us-gaap",
+      "concept": "DepreciationAmortizationAndAccretionNet",
+      "priority": 2,
+      "sign": 1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "DIV_PAID",
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsOfDividendsCommonStock",
+      "priority": 1,
+      "sign": -1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "DIV_PAID",
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsOfDividends",
+      "priority": 2,
+      "sign": -1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "DPS",
+      "taxonomy": "us-gaap",
+      "concept": "CommonStockDividendsPerShareDeclared",
+      "priority": 1,
+      "sign": 1,
+      "statement": "CF"
+    },
+    {
+      "standardItem": "EPS_BASIC",
+      "taxonomy": "us-gaap",
+      "concept": "EarningsPerShareBasic",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "EPS_DIL",
+      "taxonomy": "us-gaap",
+      "concept": "EarningsPerShareDiluted",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "EQUITY",
+      "taxonomy": "us-gaap",
+      "concept": "StockholdersEquity",
+      "priority": 1,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "EQUITY",
+      "taxonomy": "us-gaap",
+      "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+      "priority": 2,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "GROSS_PROFIT",
+      "taxonomy": "us-gaap",
+      "concept": "GrossProfit",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "INT_EXP",
+      "taxonomy": "us-gaap",
+      "concept": "InterestExpense",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "INT_EXP",
+      "taxonomy": "us-gaap",
+      "concept": "InterestExpenseNonoperating",
+      "priority": 2,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "INT_EXP",
+      "taxonomy": "us-gaap",
+      "concept": "InterestIncomeExpenseNet",
+      "priority": 3,
+      "sign": -1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "LT_DEBT",
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtNoncurrent",
+      "priority": 1,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "LT_DEBT",
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebt",
+      "priority": 2,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "NET_INC",
+      "taxonomy": "us-gaap",
+      "concept": "NetIncomeLoss",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "NET_INC",
+      "taxonomy": "us-gaap",
+      "concept": "ProfitLoss",
+      "priority": 2,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "OPER_INC",
+      "taxonomy": "us-gaap",
+      "concept": "OperatingIncomeLoss",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "OPEX",
+      "taxonomy": "us-gaap",
+      "concept": "OperatingExpenses",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "OPEX",
+      "taxonomy": "us-gaap",
+      "concept": "CostsAndExpenses",
+      "priority": 2,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "PRETAX_INC",
+      "taxonomy": "us-gaap",
+      "concept": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "PRETAX_INC",
+      "taxonomy": "us-gaap",
+      "concept": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+      "priority": 2,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "REVENUE",
+      "taxonomy": "us-gaap",
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "REVENUE",
+      "taxonomy": "us-gaap",
+      "concept": "Revenues",
+      "priority": 2,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "REVENUE",
+      "taxonomy": "us-gaap",
+      "concept": "SalesRevenueNet",
+      "priority": 3,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "REVENUE",
+      "taxonomy": "us-gaap",
+      "concept": "RevenueFromContractWithCustomerIncludingAssessedTax",
+      "priority": 4,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "RND",
+      "taxonomy": "us-gaap",
+      "concept": "ResearchAndDevelopmentExpense",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "SHARES_DIL",
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "TAX",
+      "taxonomy": "us-gaap",
+      "concept": "IncomeTaxExpenseBenefit",
+      "priority": 1,
+      "sign": 1,
+      "statement": "IS"
+    },
+    {
+      "standardItem": "TOT_ASSETS",
+      "taxonomy": "us-gaap",
+      "concept": "Assets",
+      "priority": 1,
+      "sign": 1,
+      "statement": "BS"
+    },
+    {
+      "standardItem": "TOT_LIAB",
+      "taxonomy": "us-gaap",
+      "concept": "Liabilities",
+      "priority": 1,
+      "sign": 1,
+      "statement": "BS"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "fomc-release",
+  "startAt": "2026-09-16T18:00:00.000Z",
+  "endOffsetMs": 750,
+  "notes": "An FOMC statement release at 14:00 ET: four headlines and one econ observation, the news queued and the observation conflated. GENERATED, not recorded, and TESTING §8 is the record of why — the federalreserve.gov FOMC calendar page is one of the four captures still missing from fixtures/providers/raw/, so nothing on disk can be replayed into a release. THE HEADLINE TEXT AND THE ECO_* VALUES BELOW ARE SCENARIO INPUT AND NOT AN OBSERVATION of any release, meeting or decision; they exist to drive the plant and the conflator and no number here should be read as a statement about anything. What the session proves is NEWS-01 against BUS-03: the first headline pays the snapshot debt at the first flush, then three headlines land inside ONE 250 ms window and leave as THREE deltas in publication order, because a latest-value mask would keep the last one and silently drop the other two — while e:DFEDTARU in the same window is conflated as everything else is.",
+  "provenance": [
+    {
+      "provenanceId": 1,
+      "sourceId": "internal.derived",
+      "requestKey": "sim:247184634:1789581600000"
+    }
+  ],
+  "subscribers": [
+    {
+      "id": "econ-panel",
+      "conflationMs": 250,
+      "subjects": [
+        { "subject": "n:feed:econ", "fields": [], "tier": "delayed" },
+        { "subject": "e:DFEDTARU", "fields": [], "tier": "delayed" }
+      ]
+    }
+  ]
+}

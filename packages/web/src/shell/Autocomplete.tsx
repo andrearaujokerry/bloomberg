@@ -463,7 +463,10 @@ export function Autocomplete({
 }: AutocompleteProps): ReactElement | null {
   const listRef = useRef<HTMLUListElement | null>(null);
   const shown = rows.length > MAX_ROWS ? rows.slice(0, MAX_ROWS) : rows;
-  const active = Math.min(Math.max(selected, 0), Math.max(0, shown.length - 1));
+  // `selected < 0` is "nothing highlighted" and draws NO highlighted row. Clamping it to 0 showed
+  // row 0 as chosen when GO would run the typed line instead, which is what led a user to expect
+  // Enter to execute the top suggestion; Tab and ArrowDown are how a row is adopted.
+  const active = selected < 0 ? -1 : Math.min(selected, Math.max(0, shown.length - 1));
 
   // jsdom does not scroll, and a browser must: the selected row is walked with the arrows and can
   // leave the visible window of a twelve-row list in a short panel.

@@ -1,0 +1,3 @@
+{"kind":"capture","tOffsetMs":0,"providerId":"cboe.quotes","requestKey":"696cdefae49367f64a62c7734cbb8759cb5ac177cafd2c1050d3889392dc4a26","provenanceId":1,"session":"open"}
+{"kind":"capture","tOffsetMs":15000,"providerId":"cboe.quotes","requestKey":"696cdefae49367f64a62c7734cbb8759cb5ac177cafd2c1050d3889392dc4a26","provenanceId":1,"session":"open"}
+{"kind":"capture","tOffsetMs":30000,"providerId":"cboe.quotes","requestKey":"696cdefae49367f64a62c7734cbb8759cb5ac177cafd2c1050d3889392dc4a26","provenanceId":1,"session":"open"}

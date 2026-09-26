@@ -1,0 +1,167 @@
+{
+  "spec": "DATA_MODEL.md §18 module 12 — users 7, user_credentials (a password each), rooms 2, room_members, messages 6.",
+  "note": "Rooms, members and messages live in this file rather than in entitlements.json because they are facts about people; entitlements.json holds policy (grants, quotas, the surveillance lexicon). §18 names three fixtures for module 12 and does not say which of the three carries the messaging rows, so seed/users.ts documents this split as the one it reads.",
+  "passwordNote": "DEV ONLY. Every seeded account shares the password API.md L1400 uses in its login example. It is hashed with pgcrypto `crypt(password, gen_salt('bf', 12))`, which draws a random salt and is therefore NOT deterministic — so seed/users.ts inserts a credential only when the user has no live password row (ON CONFLICT … DO NOTHING on `user_credentials_password_uniq`) rather than the DO UPDATE that http/auth/password.ts#setPassword performs. A re-seed must not rotate a password, and a bcrypt hash must not be the one value that makes the idempotence acceptance row fail (DATA_MODEL §18).",
+  "webauthnNote": "No `webauthn` credential is seeded: §18 says WebAuthn is registered at first login, and a public key we minted would be a credential nobody holds the private half of. `mfa_required` is false on every row so the e2e specs can reach a screen.",
+  "password": "correct horse battery staple",
+  "verificationNote": "`person_verified_at` and `sanctions_screened_at` are set (SEC-01 onboarding evidence, REG-06 screening) with `verified_by` absent: the attestation is manual in v1 and there is no system actor at seed time. A user id pointing at whichever seeded account happened to run the seed would be evidence of nothing.",
+  "verifiedAt": "2026-01-02T14:00:00Z",
+  "users": [
+    {
+      "key": "pm",
+      "firm": "demo",
+      "email": "pm@demo.terminal",
+      "displayName": "Alex Pardo",
+      "desk": "Equities PM",
+      "role": "user",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    },
+    {
+      "key": "analyst",
+      "firm": "demo",
+      "email": "analyst@demo.terminal",
+      "displayName": "Jane Ruiz",
+      "desk": "Equity Research",
+      "role": "user",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    },
+    {
+      "key": "rates",
+      "firm": "demo",
+      "email": "rates@demo.terminal",
+      "displayName": "Ravi Sundaram",
+      "desk": "Rates",
+      "role": "user",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    },
+    {
+      "key": "compliance",
+      "firm": "demo",
+      "email": "compliance@demo.terminal",
+      "displayName": "Cora Villanueva",
+      "desk": "Compliance",
+      "role": "compliance",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    },
+    {
+      "key": "dataops",
+      "firm": "demo",
+      "email": "dataops@demo.terminal",
+      "displayName": "Dev Okonjo",
+      "desk": "Data Operations",
+      "role": "dataops",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    },
+    {
+      "key": "eod",
+      "firm": "demo",
+      "email": "eod@demo.terminal",
+      "displayName": "Eve Odell",
+      "desk": "Equities PM",
+      "role": "user",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    },
+    {
+      "key": "reporter",
+      "firm": "other",
+      "email": "reporter@newsco.terminal",
+      "displayName": "Nils Berg",
+      "desk": "Newsroom",
+      "role": "newsroom",
+      "status": "active",
+      "sanctionsStatus": "clear"
+    }
+  ],
+  "roomsNote": "No message carries an MSG-04 attachment. `messages` is WORM and hash-chained (0013, 0017.f): a row cannot be amended, so an attachment that resolves to an instrument id only after seed/universe has landed would be either permanently missing or a seventh message written by a later run — and the second of those breaks the §18 idempotence contract this package's acceptance test asserts. MSG-04 attachment rendering is covered by MSG.test.ts, which seeds its own room.",
+  "rooms": [
+    {
+      "key": "firmroom",
+      "kind": "firm",
+      "name": "Demo Capital",
+      "firm": "demo",
+      "scope": "internal",
+      "createdBy": "pm",
+      "retentionDays": 2557,
+      "disclaimer": "Messages are archived and monitored.",
+      "wallTag": null,
+      "policy": { "permittedFirms": [], "allowExternal": false },
+      "members": [
+        { "user": "pm", "role": "owner" },
+        { "user": "analyst", "role": "member" },
+        { "user": "eod", "role": "member" },
+        { "user": "compliance", "role": "supervisor" }
+      ]
+    },
+    {
+      "key": "dm",
+      "kind": "dm",
+      "name": null,
+      "firm": "demo",
+      "scope": "internal",
+      "createdBy": "pm",
+      "retentionDays": 2557,
+      "disclaimer": null,
+      "wallTag": null,
+      "policy": { "permittedFirms": [], "allowExternal": false },
+      "members": [
+        { "user": "pm", "role": "owner" },
+        { "user": "analyst", "role": "member" }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "room": "dm",
+      "sender": "analyst",
+      "sentAt": "2026-09-15T18:31:02Z",
+      "clientMsgId": "b1a9f2c4-0001-4a10-9c3e-5d0f7a1e2001",
+      "body": "morning — flagging the print on the open"
+    },
+    {
+      "room": "dm",
+      "sender": "pm",
+      "sentAt": "2026-09-15T18:33:47Z",
+      "clientMsgId": "b1a9f2c4-0002-4a10-9c3e-5d0f7a1e2002",
+      "body": "seen it. holding the position, will revisit after the close"
+    },
+    {
+      "room": "dm",
+      "sender": "analyst",
+      "sentAt": "2026-09-15T18:39:44Z",
+      "clientMsgId": "b1a9f2c4-0003-4a10-9c3e-5d0f7a1e2003",
+      "body": "ok — sending the desk the same note"
+    },
+    {
+      "room": "firmroom",
+      "sender": "pm",
+      "sentAt": "2026-09-15T18:40:11Z",
+      "clientMsgId": "b1a9f2c4-0004-4a10-9c3e-5d0f7a1e2004",
+      "body": "desk copy of the open note is on the board"
+    },
+    {
+      "room": "firmroom",
+      "sender": "eod",
+      "sentAt": "2026-09-15T18:40:58Z",
+      "clientMsgId": "b1a9f2c4-0005-4a10-9c3e-5d0f7a1e2005",
+      "body": "acknowledged — my screens are on the official close, so I will reconcile tomorrow"
+    },
+    {
+      "room": "firmroom",
+      "sender": "analyst",
+      "sentAt": "2026-09-15T18:41:28Z",
+      "clientMsgId": "b1a9f2c4-0006-4a10-9c3e-5d0f7a1e2006",
+      "body": "research follow-up lands before the bell"
+    }
+  ],
+  "readsNote": "pm has read the dm to seq 2 and nothing in the firm room, so MSG shows one unread in the dm and three in the firm room — a seeded desk with a non-zero unread count, because a screen whose every counter is zero cannot show that the counter works.",
+  "reads": [
+    { "room": "dm", "user": "pm", "lastReadSeq": 2 },
+    { "room": "dm", "user": "analyst", "lastReadSeq": 3 }
+  ]
+}

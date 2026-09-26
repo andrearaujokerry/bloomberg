@@ -271,10 +271,13 @@ export function CommandLine({
     if (input === null) return;
     const state = ac();
     input.setAttribute('aria-expanded', state.open ? 'true' : 'false');
-    if (state.open && state.rows.length > 0) {
-      const index = Math.min(Math.max(state.selected, 0), state.rows.length - 1);
+    if (state.open && state.rows.length > 0 && state.selected >= 0) {
+      const index = Math.min(state.selected, state.rows.length - 1);
       input.setAttribute('aria-activedescendant', optionId(panelId, index));
     } else {
+      // A combobox with `aria-autocomplete="list"` and no highlighted row has NO active descendant
+      // (WAI-ARIA 1.2 combobox pattern). Announcing row 0 as active while GO would run the typed
+      // text is the screen-reader form of the same lie the visual highlight told sighted users.
       input.removeAttribute('aria-activedescendant');
     }
   }, [ac, panelId]);
@@ -306,8 +309,17 @@ export function CommandLine({
   const go = useCallback((): void => {
     const text = inputRef.current?.value ?? '';
     const state = ac();
+    // `selected < 0` is "the popup is open and NOTHING in it is highlighted", and it is honoured
+    // here rather than clamped to row 0. The clamp was the defect: the shell reports a fresh list
+    // with no selection, so every GO looked like "execute the highlighted row" and `AAPL US Equity
+    // DES` was substituted-and-run as whichever row the ranking had put first. The invariant the old
+    // comment appealed to — row 0 is `parse(text)[0]`'s leading candidate, so the substitution is the
+    // identity — is NOT true of the shipped engine: for `AAPL US Equity DES` row 0 is the function
+    // `DES`, whose `insertText` is `DES`. An untouched popup must therefore yield the typed text.
     const index =
-      state.rows.length === 0 ? -1 : Math.min(Math.max(state.selected, 0), state.rows.length - 1);
+      state.selected < 0 || state.rows.length === 0
+        ? -1
+        : Math.min(state.selected, state.rows.length - 1);
     const row = state.open && index >= 0 ? state.rows[index] : undefined;
     cursor.current = -1;
     stash.current = '';
@@ -315,8 +327,7 @@ export function CommandLine({
       onGo?.(text, null);
       return;
     }
-    // Row 0 is `parse(text)[0]`'s leading candidate by construction (FUNCTIONS §3.3 L961), so for
-    // the untouched selection this substitution is the identity on the typed text.
+    // A row the user DID arrow onto is accepted into the completed span and the whole line runs.
     onGo?.(applyCandidate(text, row, state.span), { candidate: row, rank: index });
   }, [ac, onGo]);
 
@@ -472,6 +483,12 @@ export function CommandLine({
         <input
           ref={inputRef}
           className="cmd__input"
+          // The documented end-to-end handle for this input (`packages/e2e/tests/smoke.spec.ts`
+          // L20). The scaffold `App.tsx` carried it and the real command line did not, so the only
+          // committed Playwright spec stopped finding a command line the moment the composition root
+          // landed. It is per PANEL — a four-panel layout has four of them — so an e2e selector that
+          // must be unique scopes it by `[data-panel="p1"]` first.
+          data-testid="command-line"
           style={INPUT}
           type="text"
           defaultValue={defaultText}
