@@ -1,0 +1,91 @@
+{
+  "id": "OBV",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {},
+  "lines": [
+    {
+      "id": "OBV.obv",
+      "firstDefinedIndex": 0,
+      "finiteCount": 1255,
+      "sumFinite": 1062948417791.0,
+      "min": -1072679900.0,
+      "max": 3140452900.0,
+      "samples": [
+        {
+          "i": 0,
+          "y": 0.0
+        },
+        {
+          "i": 1,
+          "y": -68034100.0
+        },
+        {
+          "i": 9,
+          "y": -233950400.0
+        },
+        {
+          "i": 10,
+          "y": -159348400.0
+        },
+        {
+          "i": 13,
+          "y": -252087500.0
+        },
+        {
+          "i": 14,
+          "y": -171226400.0
+        },
+        {
+          "i": 15,
+          "y": -88005300.0
+        },
+        {
+          "i": 19,
+          "y": -222533900.0
+        },
+        {
+          "i": 20,
+          "y": -301296600.0
+        },
+        {
+          "i": 27,
+          "y": 59475300.0
+        },
+        {
+          "i": 33,
+          "y": -85910400.0
+        },
+        {
+          "i": 50,
+          "y": 747569000.0
+        },
+        {
+          "i": 200,
+          "y": -288188400.0
+        },
+        {
+          "i": 617,
+          "y": -53967900.0
+        },
+        {
+          "i": 900,
+          "y": 1180538300.0
+        },
+        {
+          "i": 1253,
+          "y": 3071076300.0
+        },
+        {
+          "i": 1254,
+          "y": 3053571691.0
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  }
+}

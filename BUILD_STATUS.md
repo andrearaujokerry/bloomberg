@@ -20,9 +20,10 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-11 | Tier 3 functions, curve/rate/econ ingest | merged |
 | WP-12 | Web shell, keyboard, command line, screen renderer | merged |
 | WP-13 | LiveGrid, SDK live client, subscriptions, quote cache, realtime bridge | merged, with the wiring gap below |
-| WP-14 … WP-15 | Charts and studies, seed and verification | not started |
+| WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged, with the dead-module and gap findings below |
+| WP-15 | Seed, fixtures, replay harness, e2e and traceability | not started |
 
-5,040 tests across 234 files.
+5,522 tests across 244 files.
 
 The suite runs with no network access: the replay store is a wall, and a fixture miss throws rather
 than falling through to a provider (FEED-08, QA-02).
@@ -226,6 +227,88 @@ The second one is the third time in this build an acceptance test was shaped so 
 `frame-budget.bench.ts` asserted only round 1's p95, and round 1 is the fast round — round 3 was at
 8.3 ms against an 8 ms budget while the file passed. It now asserts every round. The budget itself
 was not touched.
+
+### `chart/scales.ts` is 761 lines that nothing draws with
+
+WP-14 shipped three implementations of the same geometry and wired the wrong one. `scales.ts` —
+`yAxisScale`, `linearScale`, `logScale`, `tenorScale`, `slotScale`, `categoryScale`, `niceStep`,
+`timeTicks` — is imported by **no source file**; `grep -rn "from './scales"` over
+`packages/web/src/` returns nothing, and the only mentions in `renderer.ts` are three comments.
+`renderer.ts` carries a private axis builder (`buildAxes`, `padded`, `scalesFor`, `normaliserFor`)
+and `layers.ts` a third copy of the tick and label maths.
+
+So `scales.test.ts`'s 29 assertions are green about code the product never executes, and both of the
+axis blockers the audit found — a sub-pane domain computed over the whole series rather than the
+viewport, and a `valueAt` that did not invert the normaliser — were in the copy that actually draws.
+`scales.ts` had neither: its `YAxisScale` already exposes `invert(px)` and already takes the
+viewport. The module written for the job was correct and unplugged, and the duplicate rebuilt under
+deadline was not.
+
+Both repair agents verified this and neither could fix it: the one-line repair is an import in
+`renderer.ts`, and the split gave that file to the other. `fix:numeric` predicted it would fall
+through the gap and asked for it to be assigned, which is what this entry does.
+
+**Not fixed here deliberately.** Wiring `yAxisScale` into the renderer means extending it for the
+study axes (`<paneId>:y` has no `ChartSpec.yAxes` entry), the reference lines and the per-axis
+normaliser, then re-pointing a 2,000-line file that was rewritten hours earlier — a refactor of the
+two largest files in the package, at commit time, against 5,500 tests, to remove duplication rather
+than to fix a defect. That is a change worth making deliberately and on its own. Until then no
+module here should be believed because its own test is green.
+
+### A gap in a series kills four studies and used to kill the chart
+
+`ChartSeries.y` documents `NaN` as a gap, and §11.2 makes one ordinary as soon as a second calendar
+is on the chart. Measured on one 120-bar series with a single hole, before repair: **`EMA`,
+`KELTNER`, `PSAR` and `MACD` produced not one finite value after it** — the recurrence ran straight
+through the `NaN` and every later slot inherited it — and **`BB` and `STDDEV` threw a `RangeError`**
+out of `core/analytics/stats`, which validates its input and is right to.
+
+The throw was the serious half. It arrives inside `setSpec`, so one gapped series plus one Bollinger
+in a persisted study list was a dead screen — the same failure the audit's first blocker described
+for a missing column, through a different door. Three things changed:
+
+- `Renderer.computeStudies` now guards the `compute` call and records the failure on
+  `skippedStudies()`. A study is third-party code as far as the renderer is concerned, so one of
+  them failing costs its own pane and nothing else.
+- `emaSeries` re-seeds per run of finite values, the rule `wilderAverage` already states in
+  `oscillators.ts`. That restores `EMA` and, with it, `KELTNER`'s mid.
+- `KELTNER` stopped keeping a private Wilder ATR and calls the `trueRange` and `wilderAverage` that
+  `oscillators.ts` exports — its doc says it exports them for exactly this. The two studies now
+  cannot disagree about the same volatility on the same screen, which they did: after a gap the
+  `ATR` pane re-seeded and carried on while Keltner's band silently vanished for the rest of the
+  chart. The `KELTNER` golden is unchanged, because the daily capture has no gap.
+
+**Still open:** `PSAR` and `MACD` die at a gap, and `BB`/`STDDEV` still throw rather than returning
+a gapped column — now caught by the guard, so the cost is a missing pane rather than a dead chart.
+Each is the same shape of fix as `emaSeries`, in its own study.
+
+### The million-point cold frame is faster and still not inside §16.1
+
+`DownsampleCache`'s scans called `TradingDayIndex#indexAt` once per point — a `Map.get` and a bounds
+check for each of a million — where the index already exposes `indexBySlot`, the `Int32Array` behind
+it. Hoisting it out of the three loops took a million-point M4 from **23.1 ms to 18.1 ms median**
+(measured in situ, identical column count), against the ≈8 ms/million that §11.1's "~40 ms for five
+million" implies. The remaining cost is in the reduction itself, not the lookup. The 16 ms budget is
+asserted on the draw and was not relaxed; the cold figure is printed by `chart.bench.ts` with its
+own numbers.
+
+That hoist broke `chart.bench.ts`'s cache test, and the way it broke is worth keeping: the test
+counted `indexAt` calls as a proxy for slots visited, so removing the per-point call zeroed the
+instrument while every property it guarded still held. It now reads `slotsScanned()`, a tally the
+reduction owns, incremented from the scan bounds so it costs nothing on the hot path. Mutation-
+checked: making `invalidateLastColumn` rescan the whole range gives `expected 5019 to be less than
+25.1`.
+
+### The three web benches run in their own serial project
+
+`chart.bench.ts`, `grid/frame-budget.bench.ts` and `shell/autocomplete.bench.ts` assert wall-clock
+budgets, and running them beside ~240 other files made them measure the runner. CHRT-02's ten-year
+pan and zoom is 3.0–4.4 ms p95 with the machine to itself and was 9.7–19.8 ms against a 16 ms budget
+in the parallel suite, failing two rounds in five on scheduling alone — while `frame-budget.bench.ts`
+beside it drives frames to 84–103 ms, so the benches were each other's noise. They now run in
+`web-bench`, one worker, after every other project, for the same reason `server-serial` and
+`server-replay` exist. **No threshold changed.** Contention only ever inflates a p95, so this makes a
+real regression visible rather than permitting a slow one.
 
 ### `quote_ticks` has two writers (latent, not yet firing)
 

@@ -1,0 +1,143 @@
+{
+  "id": "VOL",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "n": 20
+  },
+  "lines": [
+    {
+      "id": "VOL.ma",
+      "firstDefinedIndex": 19,
+      "finiteCount": 1236,
+      "sumFinite": 79074314535.45,
+      "min": 37800500.0,
+      "max": 124268840.0,
+      "samples": [
+        {
+          "i": 19,
+          "y": 81851850.0
+        },
+        {
+          "i": 20,
+          "y": 81625920.0
+        },
+        {
+          "i": 27,
+          "y": 75956045.0
+        },
+        {
+          "i": 33,
+          "y": 72335295.0
+        },
+        {
+          "i": 50,
+          "y": 78815200.0
+        },
+        {
+          "i": 200,
+          "y": 83675835.0
+        },
+        {
+          "i": 617,
+          "y": 58077675.0
+        },
+        {
+          "i": 900,
+          "y": 79378895.0
+        },
+        {
+          "i": 1253,
+          "y": 43083045.0
+        },
+        {
+          "i": 1254,
+          "y": 42049810.45
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  },
+  "histogram": {
+    "id": "VOL.volume",
+    "firstDefinedIndex": 0,
+    "finiteCount": 1255,
+    "sumFinite": 80291708909.0,
+    "min": 17504609.0,
+    "max": 318679900.0,
+    "samples": [
+      {
+        "i": 0,
+        "y": 83281300.0
+      },
+      {
+        "i": 1,
+        "y": 68034100.0
+      },
+      {
+        "i": 9,
+        "y": 108972300.0
+      },
+      {
+        "i": 10,
+        "y": 74602000.0
+      },
+      {
+        "i": 13,
+        "y": 98322000.0
+      },
+      {
+        "i": 14,
+        "y": 80861100.0
+      },
+      {
+        "i": 15,
+        "y": 83221100.0
+      },
+      {
+        "i": 19,
+        "y": 73035900.0
+      },
+      {
+        "i": 20,
+        "y": 78762700.0
+      },
+      {
+        "i": 27,
+        "y": 58883400.0
+      },
+      {
+        "i": 33,
+        "y": 74588300.0
+      },
+      {
+        "i": 50,
+        "y": 69463600.0
+      },
+      {
+        "i": 200,
+        "y": 71051600.0
+      },
+      {
+        "i": 617,
+        "y": 136682600.0
+      },
+      {
+        "i": 900,
+        "y": 59732400.0
+      },
+      {
+        "i": 1253,
+        "y": 39223900.0
+      },
+      {
+        "i": 1254,
+        "y": 17504609.0
+      }
+    ]
+  }
+}

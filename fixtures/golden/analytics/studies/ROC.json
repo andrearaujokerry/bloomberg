@@ -1,0 +1,80 @@
+{
+  "id": "ROC",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "n": 12
+  },
+  "lines": [
+    {
+      "id": "ROC.roc",
+      "firstDefinedIndex": 12,
+      "finiteCount": 1243,
+      "sumFinite": 1174.7699909102128,
+      "min": -21.00609575573299,
+      "max": 21.378030971926123,
+      "samples": [
+        {
+          "i": 13,
+          "y": -6.48564710795222
+        },
+        {
+          "i": 14,
+          "y": -3.3890161789551176
+        },
+        {
+          "i": 15,
+          "y": -0.6576202779845164
+        },
+        {
+          "i": 19,
+          "y": -3.682278607088152
+        },
+        {
+          "i": 20,
+          "y": -3.068027519353478
+        },
+        {
+          "i": 27,
+          "y": 4.711269324933975
+        },
+        {
+          "i": 33,
+          "y": 3.6171483067105825
+        },
+        {
+          "i": 50,
+          "y": 7.64424342819261
+        },
+        {
+          "i": 200,
+          "y": 4.647482995058128
+        },
+        {
+          "i": 617,
+          "y": -3.41971365493301
+        },
+        {
+          "i": 900,
+          "y": -12.542205014153518
+        },
+        {
+          "i": 1253,
+          "y": 6.262553389938597
+        },
+        {
+          "i": 1254,
+          "y": 4.958995094855467
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  },
+  "levels": [
+    0.0
+  ]
+}

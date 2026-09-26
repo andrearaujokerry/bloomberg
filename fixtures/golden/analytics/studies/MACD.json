@@ -1,0 +1,135 @@
+{
+  "id": "MACD",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "fast": 12,
+    "slow": 26,
+    "signal": 9
+  },
+  "lines": [
+    {
+      "id": "MACD.macd",
+      "firstDefinedIndex": 25,
+      "finiteCount": 1230,
+      "sumFinite": 1212.223818679869,
+      "min": -10.640884522898176,
+      "max": 10.4243684976272,
+      "samples": [
+        {
+          "i": 27,
+          "y": 1.307150248027824
+        },
+        {
+          "i": 33,
+          "y": 1.7542303020038332
+        },
+        {
+          "i": 50,
+          "y": 3.55756077824401
+        },
+        {
+          "i": 200,
+          "y": -2.3526996238292384
+        },
+        {
+          "i": 617,
+          "y": -1.9651516730598644
+        },
+        {
+          "i": 900,
+          "y": -8.145681644782087
+        },
+        {
+          "i": 1253,
+          "y": 3.934065292029061
+        },
+        {
+          "i": 1254,
+          "y": 4.211888378974834
+        }
+      ]
+    },
+    {
+      "id": "MACD.signal",
+      "firstDefinedIndex": 33,
+      "finiteCount": 1222,
+      "sumFinite": 1195.57388463905,
+      "min": -8.347421321962008,
+      "max": 9.806533876092145,
+      "samples": [
+        {
+          "i": 33,
+          "y": 1.4732149877320322
+        },
+        {
+          "i": 50,
+          "y": 2.4494758778199603
+        },
+        {
+          "i": 200,
+          "y": -3.173359003929854
+        },
+        {
+          "i": 617,
+          "y": -1.653529921204381
+        },
+        {
+          "i": 900,
+          "y": -8.286566865627206
+        },
+        {
+          "i": 1253,
+          "y": 2.3086135583474503
+        },
+        {
+          "i": 1254,
+          "y": 2.689268522472927
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  },
+  "histogram": {
+    "id": "MACD.hist",
+    "firstDefinedIndex": 33,
+    "finiteCount": 1222,
+    "sumFinite": 5.145229453235393,
+    "min": -4.3390109345119345,
+    "max": 3.337158125178676,
+    "samples": [
+      {
+        "i": 33,
+        "y": 0.28101531427180104
+      },
+      {
+        "i": 50,
+        "y": 1.1080849004240498
+      },
+      {
+        "i": 200,
+        "y": 0.8206593801006155
+      },
+      {
+        "i": 617,
+        "y": -0.31162175185548335
+      },
+      {
+        "i": 900,
+        "y": 0.140885220845119
+      },
+      {
+        "i": 1253,
+        "y": 1.6254517336816106
+      },
+      {
+        "i": 1254,
+        "y": 1.522619856501907
+      }
+    ]
+  }
+}

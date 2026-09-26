@@ -1,0 +1,173 @@
+{
+  "id": "ADX",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "n": 14
+  },
+  "lines": [
+    {
+      "id": "ADX.adx",
+      "firstDefinedIndex": 27,
+      "finiteCount": 1228,
+      "sumFinite": 31126.555946633605,
+      "min": 9.884268520610343,
+      "max": 51.03007920779861,
+      "samples": [
+        {
+          "i": 27,
+          "y": 33.82810027316976
+        },
+        {
+          "i": 33,
+          "y": 24.06332559199993
+        },
+        {
+          "i": 50,
+          "y": 26.84976925001923
+        },
+        {
+          "i": 200,
+          "y": 20.082712413238095
+        },
+        {
+          "i": 617,
+          "y": 26.05620857141701
+        },
+        {
+          "i": 900,
+          "y": 29.771073812017136
+        },
+        {
+          "i": 1253,
+          "y": 14.42431349332207
+        },
+        {
+          "i": 1254,
+          "y": 14.525933904095362
+        }
+      ]
+    },
+    {
+      "id": "ADX.plusDI",
+      "firstDefinedIndex": 14,
+      "finiteCount": 1241,
+      "sumFinite": 31837.553723731035,
+      "min": 6.3581352734324055,
+      "max": 50.51967331991314,
+      "samples": [
+        {
+          "i": 14,
+          "y": 6.981209352897205
+        },
+        {
+          "i": 15,
+          "y": 6.3581352734324055
+        },
+        {
+          "i": 19,
+          "y": 9.227431584940417
+        },
+        {
+          "i": 20,
+          "y": 8.682772642199946
+        },
+        {
+          "i": 27,
+          "y": 24.35125864596915
+        },
+        {
+          "i": 33,
+          "y": 25.238061308957715
+        },
+        {
+          "i": 50,
+          "y": 39.25290781035455
+        },
+        {
+          "i": 200,
+          "y": 20.32522976488247
+        },
+        {
+          "i": 617,
+          "y": 15.697114105887023
+        },
+        {
+          "i": 900,
+          "y": 19.229318306450264
+        },
+        {
+          "i": 1253,
+          "y": 31.32507702643855
+        },
+        {
+          "i": 1254,
+          "y": 29.923640834290826
+        }
+      ]
+    },
+    {
+      "id": "ADX.minusDI",
+      "firstDefinedIndex": 14,
+      "finiteCount": 1241,
+      "sumFinite": 28036.237253023875,
+      "min": 6.735503332156633,
+      "max": 46.827335153605986,
+      "samples": [
+        {
+          "i": 14,
+          "y": 32.69135475955649
+        },
+        {
+          "i": 15,
+          "y": 32.111164006174235
+        },
+        {
+          "i": 19,
+          "y": 29.541462352829765
+        },
+        {
+          "i": 20,
+          "y": 32.49938477662158
+        },
+        {
+          "i": 27,
+          "y": 21.929951009955538
+        },
+        {
+          "i": 33,
+          "y": 24.14268503240929
+        },
+        {
+          "i": 50,
+          "y": 14.04354515085876
+        },
+        {
+          "i": 200,
+          "y": 28.427697949428786
+        },
+        {
+          "i": 617,
+          "y": 26.787754129228244
+        },
+        {
+          "i": 900,
+          "y": 29.7352904964072
+        },
+        {
+          "i": 1253,
+          "y": 19.794477595837243
+        },
+        {
+          "i": 1254,
+          "y": 21.73698227986787
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  }
+}

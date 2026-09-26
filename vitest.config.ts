@@ -183,13 +183,48 @@ export default defineConfig({
           name: 'web',
           root: 'packages/web',
           environment: 'jsdom',
-          // `*.bench.ts` is included for the same reason it is in `core`: `test/shell/
-          // autocomplete.bench.ts` is a WP-12 acceptance row (WORKPLAN L1407) that ASSERTS the
-          // 80 ms p95 and 16 ms keystroke budgets rather than printing them, so it must run with
-          // the suite. Vitest's own `bench()` blocks are unaffected by `include`.
-          include: ['test/**/*.test.{ts,tsx}', 'test/**/*.bench.{ts,tsx}'],
+          // The `*.bench.{ts,tsx}` files that used to be included here now run in `web-bench`
+          // below. They still run under `npm test` — they are acceptance rows, not optional — but
+          // they cannot share a machine with 240 other files and still mean anything.
+          include: ['test/**/*.test.{ts,tsx}'],
           setupFiles: ['test/setup.tsx'],
           testTimeout: 10_000,
+        },
+      },
+      {
+        test: {
+          // `web-bench`: the three web suites that ASSERT a wall-clock budget rather than print
+          // one — `chart/chart.bench.ts` (CHRT-02, WORKPLAN L1489), `grid/frame-budget.bench.ts`
+          // (NFR-02) and `shell/autocomplete.bench.ts` (TERM-02, WORKPLAN L1407). They are
+          // acceptance rows and run with the suite; what changes is only WHEN.
+          //
+          // They were running in the `web` pool beside ~240 other files, which made the budgets
+          // measure the runner instead of the code. CHRT-02's ten-year pan-and-zoom is the case
+          // that exposed it: 3.1–4.9 ms p95 when it has the machine, 9.7–19.8 ms in the full
+          // parallel suite against a 16 ms budget, failing two rounds in five on load alone. The
+          // engine did not change between those runs; the number of threads competing for a core
+          // did. `grid/frame-budget.bench.ts` is itself a 2 200-cell burst that drives frames to
+          // 84–103 ms, so the bench files were also each other's noise.
+          //
+          // NO BUDGET IS RELAXED BY THIS and none may be: every threshold is the same number it
+          // was in the `web` project. Contention only ever inflates a p95, so a slow build under
+          // this project is the code being slow, and a real regression now shows up instead of
+          // drowning in scheduling jitter. Same shape and same reason as `server-serial` and
+          // `server-replay` above: some suites cannot be run beside their neighbours at all.
+          //
+          // `groupOrder: 3` puts them in a group of their own after every other project, so
+          // nothing else is resident while they time; `fileParallelism: false` with one worker
+          // keeps the three from racing each other. `testTimeout` is 30 s because a bench file
+          // runs five rounds of real work, not because any of them is allowed to be slow.
+          name: 'web-bench',
+          root: 'packages/web',
+          environment: 'jsdom',
+          include: ['test/**/*.bench.{ts,tsx}'],
+          setupFiles: ['test/setup.tsx'],
+          fileParallelism: false,
+          maxWorkers: 1,
+          sequence: { groupOrder: 3 },
+          testTimeout: 30_000,
         },
       },
     ],

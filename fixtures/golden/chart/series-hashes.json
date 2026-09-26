@@ -1,0 +1,62 @@
+{
+  "note": "WP-14 / CHRT-01. One PNG (sha256 of the base canvas dataURL) and one chromatic-pixel count per SeriesType, drawn by packages/web/test/chart/renderer.test.ts over 120 daily bars of fixtures/providers/normalised/yahoo-chart-events.json (profile: 240 one-minute bars of yahoo-chart-AAPL-1d-1m.json; heatmap: a 12x8 grid of the same closes). Bytes come from node-canvas at devicePixelRatio 1, which is byte-stable for identical drawings; a cairo or node-canvas upgrade legitimately moves every hash and is re-recorded by deleting this file.",
+  "canvas": {
+    "width": 480,
+    "height": 320,
+    "dpr": 1
+  },
+  "recordedWith": {
+    "canvas": "3.2.3",
+    "platform": "darwin"
+  },
+  "cases": {
+    "line": {
+      "hash": "4a3f177875b0ff223419026f74d56d7a46155c9f10c388623da1ececb180a1dd",
+      "chromaticPx": 3066
+    },
+    "area": {
+      "hash": "3c8aec3d80b20337c5ccfcb6102ccfc8e95667546328c463e05391b6d6b60ebc",
+      "chromaticPx": 68491
+    },
+    "mountain": {
+      "hash": "e8f17402391aab6027bddf2a121177aa5531946d9d7aa316491ac6a70e78642f",
+      "chromaticPx": 11308
+    },
+    "candle": {
+      "hash": "054ea1770e719e833cd8689ab3d8eb71f0012b911f9ab90362f894df6883065d",
+      "chromaticPx": 6476
+    },
+    "ohlc": {
+      "hash": "c90e5d9fd33c2c6d1dc2b5b06c35ac122b3ecb0794400d3051c7e480bb5b7218",
+      "chromaticPx": 3131
+    },
+    "bar": {
+      "hash": "ac2d29d20bb4a4438df8d4d0ec4bba8395c91c301ca8e86b3c7c1ef43b1a4eb7",
+      "chromaticPx": 91137
+    },
+    "step": {
+      "hash": "df6561a63cc28b578570c99fcd59b684ef4830b887e3042c58e127fdba91a0af",
+      "chromaticPx": 3403
+    },
+    "scatter": {
+      "hash": "1cf9e1a3fe62956f7e12a7a7396e04689b26631fd370cb104a8ba30c2ee01be7",
+      "chromaticPx": 1104
+    },
+    "tick": {
+      "hash": "4c99ee7fce490d69d00dfaaf9129cc54df2401c416fd028688d8c02e00f6c41a",
+      "chromaticPx": 4612
+    },
+    "pnf": {
+      "hash": "9abe69ef2112cee060a54bebe81c313d0d5453ad0e89bbc43788579276c69ca6",
+      "chromaticPx": 2573
+    },
+    "profile": {
+      "hash": "4ba7d92747ce1f0329e21c1606feba5f837eb7b6139ff6951e86c0dcb8f428b1",
+      "chromaticPx": 464
+    },
+    "heatmap": {
+      "hash": "ce0c8c75e22b246189a62599d0bb379b081cf98f7cd5b6130c394a5c74aaec09",
+      "chromaticPx": 108093
+    }
+  }
+}

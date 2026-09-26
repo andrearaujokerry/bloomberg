@@ -112,12 +112,47 @@ function walkFixtures(dir: string, prefix = ''): string[] {
   return out;
 }
 
-const FIXTURE_FILES = walkFixtures(GOLDEN_ROOT);
+const ALL_FIXTURE_FILES = walkFixtures(GOLDEN_ROOT);
+
+/**
+ * `studies/` holds the chart engine's study goldens, not §7.1 engine cases. CLIENT.md §11.6 L887
+ * names `fixtures/golden/analytics/studies/<id>.json` as their home, so they land inside this
+ * driver's root while belonging to a different record shape entirely: one object per study, with
+ * `lines` and `params`, read by `packages/web/test/chart/studies*.test.ts`.
+ *
+ * They are partitioned out rather than filtered away, because the docblock above promises that a
+ * fixture under a directory no test opens cannot go unexercised, and a silent skip would be exactly
+ * the hole it promises not to have. {@link CHART_STUDY_FILES} is therefore asserted below: the
+ * directory must be populated and every file in it must actually have the chart-study shape, so a
+ * §7.1 case array misfiled here still fails this suite instead of disappearing from both.
+ */
+const CHART_STUDY_DIR = 'studies/';
+const CHART_STUDY_FILES = ALL_FIXTURE_FILES.filter((f) => f.startsWith(CHART_STUDY_DIR));
+const FIXTURE_FILES = ALL_FIXTURE_FILES.filter((f) => !f.startsWith(CHART_STUDY_DIR));
 
 const CASES: LoadedCase[] = FIXTURE_FILES.flatMap((file) => {
   const parsed: unknown = JSON.parse(readFileSync(join(GOLDEN_ROOT, file), 'utf8'));
   if (!Array.isArray(parsed)) throw new Error(`${file}: a golden file must be an array of cases`);
   return (parsed as GoldenCase[]).map((kase) => ({ file, kase }));
+});
+
+describe('the chart study goldens partitioned out of this driver (CLIENT.md §11.6)', () => {
+  it('is a populated directory', () => {
+    // An empty or vanished `studies/` would mean the partition above is silently excluding nothing
+    // while the web suite reads nothing either, which is the failure mode this guard exists for.
+    expect(CHART_STUDY_FILES.length).toBeGreaterThan(0);
+  });
+
+  it.each(CHART_STUDY_FILES)('%s has the chart-study record shape, not a §7.1 case array', (file) => {
+    const parsed: unknown = JSON.parse(readFileSync(join(GOLDEN_ROOT, file), 'utf8'));
+    expect(Array.isArray(parsed), `${file}: a §7.1 case array does not belong under studies/`).toBe(
+      false,
+    );
+    const record = parsed as Record<string, unknown>;
+    for (const key of ['id', 'fixture', 'bars', 'params', 'lines', 'tol']) {
+      expect(record, `${file}: missing chart-study key ${key}`).toHaveProperty(key);
+    }
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────

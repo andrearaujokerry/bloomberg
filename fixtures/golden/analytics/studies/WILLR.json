@@ -1,0 +1,81 @@
+{
+  "id": "WILLR",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "n": 14
+  },
+  "lines": [
+    {
+      "id": "WILLR.willr",
+      "firstDefinedIndex": 13,
+      "finiteCount": 1242,
+      "sumFinite": -53650.41296887293,
+      "min": -99.6539429609298,
+      "max": -0.0,
+      "samples": [
+        {
+          "i": 13,
+          "y": -92.21132265172389
+        },
+        {
+          "i": 14,
+          "y": -73.45797058047587
+        },
+        {
+          "i": 15,
+          "y": -64.64460048741331
+        },
+        {
+          "i": 19,
+          "y": -64.78270316172166
+        },
+        {
+          "i": 20,
+          "y": -71.30434494162682
+        },
+        {
+          "i": 27,
+          "y": -12.616346675624694
+        },
+        {
+          "i": 33,
+          "y": -30.135941927041806
+        },
+        {
+          "i": 50,
+          "y": -20.636631475982064
+        },
+        {
+          "i": 200,
+          "y": -31.557155468449707
+        },
+        {
+          "i": 617,
+          "y": -88.3365158926167
+        },
+        {
+          "i": 900,
+          "y": -55.57524780998057
+        },
+        {
+          "i": 1253,
+          "y": -11.210330430841374
+        },
+        {
+          "i": 1254,
+          "y": -22.027737370881884
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  },
+  "levels": [
+    -20.0,
+    -80.0
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "HVOL",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "n": 30
+  },
+  "lines": [
+    {
+      "id": "HVOL.hvol",
+      "firstDefinedIndex": 30,
+      "finiteCount": 1225,
+      "sumFinite": 32362.648259549955,
+      "min": 10.28652656876994,
+      "max": 68.72872458421212,
+      "samples": [
+        {
+          "i": 33,
+          "y": 18.83998495181675
+        },
+        {
+          "i": 50,
+          "y": 17.216245643304564
+        },
+        {
+          "i": 200,
+          "y": 38.73717018010133
+        },
+        {
+          "i": 617,
+          "y": 17.403142959556806
+        },
+        {
+          "i": 900,
+          "y": 66.82941917269338
+        },
+        {
+          "i": 1253,
+          "y": 22.34450907817341
+        },
+        {
+          "i": 1254,
+          "y": 21.76525150459603
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  }
+}

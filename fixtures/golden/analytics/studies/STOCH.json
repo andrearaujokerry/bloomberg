@@ -1,0 +1,125 @@
+{
+  "id": "STOCH",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "k": 14,
+    "d": 3,
+    "smooth": 3
+  },
+  "lines": [
+    {
+      "id": "STOCH.k",
+      "firstDefinedIndex": 15,
+      "finiteCount": 1240,
+      "sumFinite": 70453.96917147904,
+      "min": 1.3326207491141344,
+      "max": 99.76833851483958,
+      "samples": [
+        {
+          "i": 15,
+          "y": 23.228702093462307
+        },
+        {
+          "i": 19,
+          "y": 44.963685728549365
+        },
+        {
+          "i": 20,
+          "y": 37.75357379202595
+        },
+        {
+          "i": 27,
+          "y": 93.5877855782918
+        },
+        {
+          "i": 33,
+          "y": 80.48204079641333
+        },
+        {
+          "i": 50,
+          "y": 76.71061175289584
+        },
+        {
+          "i": 200,
+          "y": 58.49282610309368
+        },
+        {
+          "i": 617,
+          "y": 18.73852896296818
+        },
+        {
+          "i": 900,
+          "y": 53.950249106116814
+        },
+        {
+          "i": 1253,
+          "y": 85.62414345284587
+        },
+        {
+          "i": 1254,
+          "y": 84.21992904780278
+        }
+      ]
+    },
+    {
+      "id": "STOCH.d",
+      "firstDefinedIndex": 17,
+      "finiteCount": 1238,
+      "sumFinite": 70340.8550867889,
+      "min": 4.281552925591765,
+      "max": 99.34466127680018,
+      "samples": [
+        {
+          "i": 19,
+          "y": 47.708493340314675
+        },
+        {
+          "i": 20,
+          "y": 44.710072775970865
+        },
+        {
+          "i": 27,
+          "y": 95.44087652548734
+        },
+        {
+          "i": 33,
+          "y": 84.60919283662939
+        },
+        {
+          "i": 50,
+          "y": 82.34695688580535
+        },
+        {
+          "i": 200,
+          "y": 53.07107448925456
+        },
+        {
+          "i": 617,
+          "y": 19.031958272949964
+        },
+        {
+          "i": 900,
+          "y": 53.170241072326206
+        },
+        {
+          "i": 1253,
+          "y": 68.42638699928493
+        },
+        {
+          "i": 1254,
+          "y": 79.17943775819664
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  },
+  "levels": [
+    20.0,
+    80.0
+  ]
+}

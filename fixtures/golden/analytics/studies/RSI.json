@@ -1,0 +1,77 @@
+{
+  "id": "RSI",
+  "source": "Independent reference implementation (a Python script, not the module under test) over the raw bars of the fixture below, from the conventions CLIENT.md 11.6 states. CLIENT.md 11.6 names yahoo-chart-AAPL-max-1d.json as the study-golden capture; that capture is QUARTERLY (docs/TESTING.md L748), so a study whose parameters are periods would be labelled 'daily' and computed on quarters. The daily capture is used instead and the deviation is recorded here.",
+  "fixture": "fixtures/providers/normalised/yahoo-chart-events.json",
+  "bars": 1255,
+  "params": {
+    "n": 14
+  },
+  "lines": [
+    {
+      "id": "RSI.rsi",
+      "firstDefinedIndex": 14,
+      "finiteCount": 1241,
+      "sumFinite": 66306.17906930349,
+      "min": 17.8901425507091,
+      "max": 80.79316653807604,
+      "samples": [
+        {
+          "i": 14,
+          "y": 33.47244149146532
+        },
+        {
+          "i": 15,
+          "y": 36.03135247578265
+        },
+        {
+          "i": 19,
+          "y": 36.23686316514029
+        },
+        {
+          "i": 20,
+          "y": 35.100336134960486
+        },
+        {
+          "i": 27,
+          "y": 55.6045910602383
+        },
+        {
+          "i": 33,
+          "y": 53.13770986799975
+        },
+        {
+          "i": 50,
+          "y": 75.96303337097734
+        },
+        {
+          "i": 200,
+          "y": 47.29598644838462
+        },
+        {
+          "i": 617,
+          "y": 38.065630994231206
+        },
+        {
+          "i": 900,
+          "y": 41.55662968546839
+        },
+        {
+          "i": 1253,
+          "y": 63.31557138138918
+        },
+        {
+          "i": 1254,
+          "y": 60.039785871614114
+        }
+      ]
+    }
+  ],
+  "tol": {
+    "abs": 1e-09,
+    "rel": 1e-11
+  },
+  "levels": [
+    30.0,
+    70.0
+  ]
+}
