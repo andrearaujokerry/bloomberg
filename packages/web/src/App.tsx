@@ -106,7 +106,7 @@ import { Shell } from './shell/Shell.js';
 import { TicketDialog, collectScreenState } from './shell/TicketDialog.js';
 import type { TicketDraft, TicketSdk } from './shell/TicketDialog.js';
 
-import { executeText, runPage, runParams, sdkUsagePort } from './command/dispatch.js';
+import { executeFrame, executeText, runPage, runParams, sdkUsagePort } from './command/dispatch.js';
 import type { DispatchDeps, DispatchOutcome, DispatchSdk, PanelsPort } from './command/dispatch.js';
 import { LocalUniverseIndex } from './command/localIndex.js';
 import type { UniverseSdk } from './command/localIndex.js';
@@ -394,8 +394,13 @@ function envelopeOf(payload: unknown): RunEnvelope | null {
  * and a run that answers after the user launched something else would otherwise paint the first
  * screen's payload into the second screen's frame — a screen showing another function's numbers
  * under this function's title, with no error anywhere.
+ *
+ * Exported for `test/command/problemCodes.test.ts`, which feeds it outcomes the real dispatcher
+ * produced. The two halves of a failure's vocabulary are decided in two files — `dispatch.ts` picks
+ * the command line's word, this function picks the footer's — and a test that could only see one of
+ * them would let the other regress.
  */
-function writeOutcome(panelId: string, outcome: DispatchOutcome): void {
+export function writeOutcome(panelId: string, outcome: DispatchOutcome): void {
   const store = usePanelsStore.getState();
   const panel = store.panels[panelId];
   const frame: Frame | undefined = panel === undefined ? undefined : panel.frameStack[panel.index];
@@ -406,8 +411,17 @@ function writeOutcome(panelId: string, outcome: DispatchOutcome): void {
     store.replaceFrame(panelId, {
       status: 'error',
       error: {
-        code: outcome.problem.code,
-        message: outcome.problem.message,
+        // The SERVER'S code, not the command-line problem's. `Frame.error.code` is a free-form line
+        // in the panel footer — the branch below already writes `VALIDATION_FAILED`, which is not a
+        // `CommandProblem` code — and `CommandProblem.code` is the parser's closed set, which has no
+        // word for `INTERNAL`. Writing the problem code here is what made `SRCH`'s 500 read
+        // `ARG_PARSE · SRCH failed.` in the footer of a command that had no arguments at all.
+        code: outcome.errorCode,
+        // `outcome.errorMessage`, not `problem.message`: the problem's message carries the server's
+        // code in front of it, because the command line's closed code set has no word for it, and the
+        // footer prints the code on its own already — `INTERNAL · INTERNAL · YAS failed.` is what the
+        // two together produced in the browser.
+        message: outcome.errorMessage,
         traceId: outcome.traceId,
       },
     });
@@ -589,7 +603,24 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
     void useSessionStore.getState().load(sdk.auth);
   }, [sdk]);
 
+  /**
+   * The gate's own read, ONCE per SDK.
+   *
+   * Same shape and same reason as `Shell.tsx`'s restore guard: `load()` is a `GET /auth/session`, and
+   * StrictMode mounts this component twice in development to expose an effect that cannot be run
+   * twice. Counted off the wire on one authenticated load of the seeded desk, `GET /auth/session`
+   * arrived ×2 — the other half of the doubling the workspace restore accounted for. Two reads are
+   * not merely wasteful here: each one refreshes `sessions.last_seen_at` (API.md §1.3) and writes an
+   * access-log row, so the ledger said a person opened the terminal twice.
+   *
+   * A ref rather than a store flag, because a ref survives StrictMode's simulated remount and the
+   * condition is about this component's lifetime. `reload` above is untouched: the retry button on
+   * the gate calls `load` directly, and a user asking again must always be answered.
+   */
+  const sessionLoadedFor = useRef<AppSdk | null>(null);
   useEffect(() => {
+    if (sessionLoadedFor.current === sdk) return;
+    sessionLoadedFor.current = sdk;
     useSessionStore.getState().setClientVersion(CLIENT_VERSION);
     void useSessionStore.getState().load(sdk.auth);
   }, [sdk]);
@@ -1134,19 +1165,51 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
 
   /* ── the workspace (TERM-05) ─────────────────────────────────────────────────────────────── */
 
+  /**
+   * Whatever `onRestored` needs, without `onRestored` changing when it changes.
+   *
+   * Assigned during render on purpose, the same way `overlayRef` below is: the callback must read the
+   * CURRENT dispatch deps, and it must not be a new function when they are new. Why that matters is
+   * the paragraph on identity in {@link onRestored}.
+   */
+  const restoreDeps = useRef({ dispatchDeps, run });
+  restoreDeps.current = { dispatchDeps, run };
+
+  /**
+   * The workspace, restored (TERM-05).
+   *
+   * A restored frame carries its function, its security and its params but no payload: the layout
+   * persists five fields, not a screen (CLIENT §8 L574-577). Re-running it is the only way to fill
+   * it, and `launchKind: 'refresh'` is what tells the plant's usage row that a human did not type
+   * this.
+   *
+   * **The frame is re-run from its own fields, not from a command line.** This used to rebuild the
+   * display string `"<security> <fn>"` and hand it to `executeText`, which lost everything the text
+   * did not spell: `"SPX Index GP"` re-resolved as a REF and the frame that was pushed in its place
+   * anchored no instrument, and `params` was never in the string at all. Because that pushed frame
+   * was then persisted, the SECOND load of the terminal restored GP with no security and a panel
+   * saved as `W Core` came back on the manifest's defaults. `executeFrame` sends the frame
+   * (`command/dispatch.ts` carries the measurement), so a frame survives any number of loads.
+   *
+   * **The identity of this callback is part of the fix.** `Shell.tsx` loads and restores the
+   * workspace in an effect keyed on `[workspace, scheduler, onRestored]`, so anything that gives this
+   * function a new identity re-loads the workspace and re-runs every panel from the SAVED layout. It
+   * used to close over `dispatchDeps`, which is a `useMemo` over `onHelp`, which closes over the open
+   * overlay because `nextHelpEffect` has to know whether one is already open — so OPENING HELP
+   * discarded the screen it was opened over, and TERM-09's ticket captured a screen the user never
+   * asked about (`packages/e2e/tests/help.spec.ts`). The deps live in a ref instead and this callback
+   * is built once, which is the whole of that fix.
+   */
   const onRestored = useCallback(() => {
-    // A restored frame carries its function and its security but no payload: the layout persists
-    // five fields, not a screen (CLIENT §8 L574-577). Re-running it is the only way to fill it, and
-    // `launchKind: 'refresh'` is what tells the plant's usage row that a human did not type this.
+    const { dispatchDeps: deps, run: start } = restoreDeps.current;
     const store = usePanelsStore.getState();
     for (const panelId of store.order) {
       const panel = store.panels[panelId];
       const frame = panel === undefined ? undefined : panel.frameStack[panel.index];
       if (frame?.fn == null) continue;
-      const command = frame.security === null ? frame.fn : `${frame.security.display} ${frame.fn}`;
-      run(panelId, executeText(dispatchDeps, panelId, command, { launchKind: 'refresh' }));
+      start(panelId, executeFrame(deps, panelId, { launchKind: 'refresh' }));
     }
-  }, [dispatchDeps, run]);
+  }, []);
 
   /**
    * The terminal is keyboard-first (TERM-01): on the first ready paint the caret belongs in the
@@ -1643,12 +1706,18 @@ function PanelOverlay({ state, sdk, onClose, onLaunch, onTicket }: PanelOverlayP
       draft={draft}
       sdk={sdk}
       onClose={onClose}
-      onOpened={() => {
-        // The server opens a room for the ticket. `MSG` on that room is CLIENT §3.4's next step and
-        // needs the room addressing of `MSG`'s param grammar, which nothing in this file can spell
-        // correctly without guessing; closing the dialog is what is certainly right.
-        onClose();
-      }}
+      // NOT `onClose` (TERM-09). This callback used to close the dialog, and `TicketDialog#submit`
+      // calls it in the same tick it sets `sent`, so the confirmation the dialog already writes —
+      // "Ticket N opened", with the room the answer arrives in — could never paint: the ticket was
+      // created, `201 {ticketId, roomId}` came back, and the screen simply went back to what it was
+      // (`packages/e2e/tests/help.spec.ts`'s second TERM-09 case, which measured exactly that). The
+      // dialog now stays up with its confirmation and closes on the user's Close or Escape.
+      //
+      // Nothing is navigated from here, and that part of the old comment still holds: which panel is
+      // "next" is the Shell's business, and running `MSG ROOM=<roomId>` over a panel the user did not
+      // choose would replace a screen to announce a ticket. `TicketDialog` names the room and the
+      // command instead, so the user decides.
+      onOpened={() => undefined}
     />
   );
 }

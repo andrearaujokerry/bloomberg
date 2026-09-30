@@ -211,9 +211,14 @@ export const usageRoutes: FastifyPluginAsync = async (app) => {
     async (request) => {
       const principal = principalOf(request);
       const { clock } = depsOf(request);
+      // The concurrency counter is the plant's, not the database's (see `WsGateway.subscriptionCount`
+      // and `entitlements/quotas.ts#state`), so it is read here and passed in. Without it this route
+      // answered `"concurrentSubscriptions":{"used":0}` with any number of subjects live, and the
+      // e2e reconciliation of the strip against this endpoint compared two constants (API-06).
+      const liveSubs = request.server.wsGateway?.subscriptionCount(principal.userId) ?? 0;
       return withTx(ctxOf(principal), async (tx) => {
         const service = quotas({ db: tx, clock });
-        return service.state(principal.userId, principal.firmId, principal.clientKind);
+        return service.state(principal.userId, principal.firmId, principal.clientKind, liveSubs);
       });
     },
   );

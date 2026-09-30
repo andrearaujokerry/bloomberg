@@ -74,6 +74,7 @@ import { curveInterpEngine } from '@terminal/core/functions/manifests/YAS';
 
 import type { CurveBuild, CurvePoints } from '../../data/curves.js';
 import type { ResolveContext } from '../context.js';
+import { penultimateCouponOf } from '../shared/bondTerms.js';
 import { displayOf } from '../shared/instrumentSummary.js';
 
 export const code = 'SRCH';
@@ -569,9 +570,10 @@ function couponCells(ctx: ResolveContext, security: Security, env: PricingEnv): 
     settlement: env.settlement,
     dayCount: (security.dayCount as DayCountId) ?? 'ACT/ACT',
     ...(security.firstCouponDate === null ? {} : { firstCouponDate: security.firstCouponDate }),
-    ...(security.lastRegularCoupon === null
-      ? {}
-      : { penultimateCouponDate: security.lastRegularCoupon }),
+    // `last_regular_coupon` is NOT the penultimate coupon date whenever the final coupon is regular
+    // — which it is for every seeded note — and feeding it in regardless was a `RangeError` out of
+    // `validateTerms` and a 500 for the whole screen. `shared/bondTerms.ts` states the rule once.
+    ...penultimateCouponOf(security.lastRegularCoupon, security.maturityDate),
   };
   const valuationTs = `${env.settlement}T00:00:00.000Z`;
   const priced = bondPriceEngine({ ...engineTerms, yield: yieldPct / 100 }, valuationTs);

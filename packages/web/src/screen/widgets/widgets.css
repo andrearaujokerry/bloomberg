@@ -131,6 +131,88 @@
   height: 100%;
 }
 
+/* ── the live grid's box (TERM-08, CLIENT.md §10.1) ────────────────────────────────────────── */
+
+/*
+ * `LiveGrid` draws `.grid`, `.grid__head`, `.grid__viewport`, `.grid__spacer` and `.grid__rows`, and
+ * until now NOT ONE of them had a rule anywhere in this repository. A grid therefore laid itself out
+ * as a stack of blocks at its content's height, which is what made two panels of the seeded default
+ * workspace paint over themselves. Both halves are measured below, in Chrome at 1280 × 720 on
+ * `pm@demo.terminal`'s workspace, and both are pure layout: nothing in the DOM was wrong, which is
+ * why 254 green vitest files never saw them — jsdom does not lay out, so `getBoundingClientRect` is
+ * all zeros and no jsdom test can observe an overlap at all. The regression test is therefore
+ * `packages/e2e/tests/layout-geometry.spec.ts`, which reads these boxes back off a real browser.
+ *
+ * **The grid ignored the box its pane gave it.** `LiveGrid` asks for `flex: 1 1 auto` on
+ * `.grid__viewport`, but `.grid` was a BLOCK container, so that declaration was inert and the
+ * viewport took its content's height instead — which is `totalHeight(rows)`, the height of the whole
+ * model. `WEI`'s `grid#americas` measured 635 × 200 inside a `.split__pane` of 635 × 27 and
+ * `grid#emea` 635 × 260 inside 635 × 27, so each region's rows ran 170-230 px past the box the split
+ * had allotted them and over the next region's header; `W · Core`'s `grid#rows` measured 635 × 120
+ * inside a pane of 635 × 219, scrolling five rows inside a 100 px viewport while 119 px of its pane
+ * stood empty. The same mistake also defeats virtualisation outright: `virtualiser.ts#rowWindow` is
+ * handed the viewport's `clientHeight`, so a viewport sized to its own model always reports that
+ * every row is visible, and the window that BUS-04's essential set is computed from is the whole
+ * grid. The chain below is the one `.custom-host`/`.chart-host` above already use for the chart.
+ *
+ * **A cell's text was free to paint over the rows beneath it.** CLIENT.md §10.1 specifies "a CSS
+ * grid with fixed column widths (`ch` units) and a fixed row height per density … so a text change
+ * never triggers layout of other cells", and `LiveGrid` duly writes `height: <rowHeight>px` onto
+ * every row — but nothing constrained the CELL, so a value wider than its 12 ch track wrapped to a
+ * second and third line and overflowed the row box. Measured: `W`'s formula row `row:0`
+ * (`RATIO(AAPL US Equity, SPX Index)`) was a 20 px row whose cells were 54 px, 34 px of text drawn
+ * across the two rows below it; `WEI`'s `wei:INDU` the same; and every one of those grids' HEADER
+ * rows was 20 px tall with 36 px cells, which is why `Percent change` and `1-week return` appeared
+ * as a second line struck through the first row of data. Clipping the cell is what makes §10.1's
+ * fixed row height true rather than merely declared, and `text-overflow: ellipsis` is what keeps a
+ * truncated identifier or price from reading as a complete one — a silently cut number is the
+ * failure this whole build treats as worse than a blank.
+ *
+ * The clip is on the CELL and deliberately not on `.grid__row`: an `overflow` other than `visible`
+ * on the row would make the row its own scrollport, and the frozen columns (`frozenColumns`, which
+ * `LiveGrid` implements as `position: sticky; left: <n>ch`) would then stick to the row they are in
+ * rather than to `.grid__viewport`, so column freezing would stop working the moment a grid was
+ * scrolled sideways.
+ */
+.grid-host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  /* The head, the badge and the page line are given their own height and the viewport takes the
+   * rest; this catches whatever is left over when a pane is too short even for those. */
+  overflow: hidden;
+}
+
+/* Three of the grid's four children are single lines that must neither grow nor be squeezed away;
+ * `.grid__viewport` is the one that absorbs the remaining height, through the `flex: 1 1 auto` it
+ * already sets inline. `min-height: 0` is what allows it to be shorter than the spacer it holds,
+ * which is the whole point of a scrolling viewport. */
+.grid__head,
+.grid__badge,
+.grid__page {
+  flex: 0 0 auto;
+}
+
+.grid__viewport {
+  min-height: 0;
+}
+
+.grid__th,
+.grid__cell {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* ── cells ─────────────────────────────────────────────────────────────────────────────────── */
 
 .cell {

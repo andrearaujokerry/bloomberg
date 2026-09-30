@@ -292,7 +292,16 @@ export function quotaHeaderHook(): (
     if (quotas === undefined) return payload;
 
     try {
-      const state = await quotas.state(principal.userId, principal.firmId, principal.clientKind);
+      // The third header is the plant's live count; `quotas.state` has no way to read it (API-06).
+      // The two `state()` calls in `quotaPort.settle` deliberately pass nothing: they exist only to
+      // difference `dailyUniqueInstruments.used`, and a subscription count there would be noise.
+      const liveSubs = request.server.wsGateway?.subscriptionCount(principal.userId) ?? 0;
+      const state = await quotas.state(
+        principal.userId,
+        principal.firmId,
+        principal.clientKind,
+        liveSubs,
+      );
       const pair = (used: number, limit: number): string => `${String(used)}/${String(limit)}`;
       void reply.header(
         QUOTA_HEADERS.daily,

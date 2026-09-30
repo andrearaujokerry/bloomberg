@@ -1,12 +1,16 @@
 // packages/e2e/tests/live-grid.spec.ts — the live grid (TERM-08, TERM-12, ENTL-05).
 //
 // WORKPLAN WP-15's row: "QM flashes on a replayed session; staleness badge appears after the feed
-// stops". Two halves, and both are about what a trader SEES rather than about which call was made:
+// stops". Four tests, and all but the first are about what a trader SEES rather than about which call
+// was made:
 //
-//   1. a delta on a subject moves ONE number, so exactly one cell flashes — the assertion that
+//   1. the panel asks the plant for the rows it is showing — the one claim here that is about a frame
+//      the app SENDS, because a grid nobody subscribed looks exactly like a grid whose feed is quiet;
+//   2. a delta on a subject moves ONE number, so exactly one cell flashes — the assertion that
 //      fails if the grid repaints a row, or a screen, instead of a cell (CLIENT.md §10.4);
-//   2. a value whose state is not `live` SAYS which state it is, in words, at the point of use —
-//      CLIENT.md §12.1's table, and the half of TERM-12 that a colour alone cannot carry.
+//   3. a value whose state is not `live` SAYS which state it is, in words, at the point of use —
+//      CLIENT.md §12.1's table, and the half of TERM-12 that a colour alone cannot carry;
+//   4. and a value whose feed stopped goes stale within a second and says that too (TERM-12).
 //
 // ## Where the deltas come from, and why they are interposed rather than provoked
 //
@@ -25,22 +29,25 @@
 // product, reached the way the product reaches it. It is the same standing-in the replay harness
 // does for the same reason (`server/src/replay/harness.ts`), one layer further out.
 //
-// Two things found while writing this, reported here and NOT worked around, because both are
-// composition-root wiring and this package owns no client source:
+// Two things this spec found and reported as defects when it was written, both since fixed, and both
+// now asserted here rather than described:
 //
-//   * **No grid subject is ever subscribed.** `state/subscriptions.ts#acquire` — which turns a
-//     screen's `LiveSpec` into `sub` frames — is called from no product file; `grep -rn 'acquire('
-//     packages/web/src` finds the store, its two unit tests and nothing else. The only `sub` this
-//     app ever sends is `ChartCanvas`'s (`App.tsx` L304), which is why a loaded workspace subscribes
-//     `q:37367 PX_LAST` for the GP panel and nothing at all for the three grids. The grid's cells
-//     ARE registered with their `data-subject`, so a delta that reaches the socket is applied and
-//     painted — which is what makes this spec possible at all, and it is also why `subs 0/10,000`
-//     in the status bar is the literal truth.
-//   * **The staleness sweep never reaches a cell.** See the `test.fail` at the end of this file.
+//   * **No grid subject was ever subscribed.** `state/subscriptions.ts#acquire` — which turns a
+//     screen's `LiveSpec` into `sub` frames — had no product caller: the only `sub` the app sent was
+//     `ChartCanvas`'s, so a loaded workspace subscribed `q:<id> PX_LAST` for the GP panel and nothing
+//     at all for the three grids. `shell/Panel.tsx` makes the call now, and the first test below
+//     reads the frames the browser sends and asserts a `sub` for the watchlist's own subjects and
+//     fields. What made the rest of this spec possible before the fix is unchanged and still true:
+//     the grid's cells are registered with their `data-subject`, so a delta that reaches the socket
+//     is applied and painted whether or not the browser asked for it.
+//   * **The staleness sweep never reached a cell.** `cellRegistry.ts#restyle` returned on its first
+//     line because nothing called `setStateSource()`. `rt/wsBridge.ts#attach` does it now, out of the
+//     `QuoteCache` the bridge already holds; the last test below carried that defect as a `test.fail`
+//     for one package and is a required assertion again.
 //
 // Nothing below is weakened to fit either. The frames are constructed to the letter of
-// `sdk/src/wire/ws.ts` (itself verbatim from API.md §6.2), and the third test asserts the behaviour
-// the product is supposed to have.
+// `sdk/src/wire/ws.ts` (itself verbatim from API.md §6.2), and every assertion is the one the product
+// is supposed to satisfy.
 
 import type { Locator, Page, WebSocketRoute } from '@playwright/test';
 import { expect, test } from '@playwright/test';
@@ -78,19 +85,54 @@ const STATE_PHRASE: Readonly<Record<string, string>> = {
 /** One frame added to the stream, or the whole spec is a test of an empty grid. */
 type SendFrame = (frame: Record<string, unknown>) => void;
 
+/** One `sub` frame the BROWSER sent, decoded (`sdk/src/wire/ws.ts`'s `ClientMsg`). */
+interface SubFrame {
+  t: 'sub';
+  id: number;
+  subjects: { s: string; f: string[]; essential?: boolean }[];
+}
+
+interface Interposed {
+  /** Add a frame to what the browser receives. */
+  send: SendFrame;
+  opened: Promise<void>;
+  /** Every `sub` the app has sent so far, in order — what the plant was actually asked for. */
+  subs: () => SubFrame[];
+  /**
+   * The last `seq` and `tier` the PLANT sent for a subject, or `undefined` before it sent anything.
+   *
+   * Needed because the grids now subscribe: the plant answers a `sub` with a real `snap`, so
+   * `QuoteCache` already holds the subject by the time a test wants to move it, and a delta has to
+   * chain onto THAT `seq` (§6.3 step 3 — get `prev` wrong and the cache refuses the frame and asks
+   * for a resync). It is also why a snapshot restating the values already on screen no longer
+   * repaints anything: `QuoteCache.#applySnap` reports only the fields that CHANGED, and against the
+   * plant's own snapshot nothing has.
+   */
+  serverState: (subject: string) => { seq: number; tier: string } | undefined;
+  /** `t:subject` for every frame the plant sent, capped — what a failure message needs to be useful. */
+  serverFrames: () => string[];
+}
+
 /**
- * Put this spec between the browser and the plant, transparently, and hand back a way to add a
- * frame to what the browser receives.
+ * Put this spec between the browser and the plant, transparently, and hand back both directions:
+ * a way to add a frame to what the browser receives, and a record of what the browser asked for.
  *
  * Installed BEFORE `goto`: `LiveClient` opens its socket during the first render, and a route
  * registered afterwards would watch a connection it never saw the `hello` of.
+ *
+ * The sent frames are recorded here rather than with `page.on('websocket')` because this route is
+ * already the one place both directions pass through, and because a `routeWebSocket` handler
+ * SUPPRESSES the `websocket` event for the connection it intercepts.
  */
-async function interposePlant(page: Page): Promise<{ send: SendFrame; opened: Promise<void> }> {
+async function interposePlant(page: Page): Promise<Interposed> {
   let route: WebSocketRoute | undefined;
   let announce: () => void = () => undefined;
   const opened = new Promise<void>((resolve) => {
     announce = resolve;
   });
+  const subs: SubFrame[] = [];
+  const fromPlant = new Map<string, { seq: number; tier: string }>();
+  const plantFrames: string[] = [];
 
   await page.routeWebSocket(WS_ROUTE, (ws) => {
     route = ws;
@@ -99,9 +141,52 @@ async function interposePlant(page: Page): Promise<{ send: SendFrame; opened: Pr
     // that ships.
     const server = ws.connectToServer();
     ws.onMessage((message) => {
+      // Recorded, then forwarded unchanged. A frame this spec failed to parse is a frame the plant
+      // still receives: the record is an observation, never a filter.
+      if (typeof message === 'string') {
+        try {
+          const frame = JSON.parse(message) as { t?: unknown };
+          if (frame.t === 'sub') subs.push(frame as unknown as SubFrame);
+        } catch {
+          /* not JSON — the plant will say so, and this spec has nothing to add. */
+        }
+      }
       server.send(message);
     });
     server.onMessage((message) => {
+      // Observed on the way past, exactly as the browser-bound half is: what the plant said about a
+      // subject is what a delta added to this stream has to be consistent with.
+      //
+      // Unwrapped, because the snapshot burst does not arrive as bare `snap`s. `server/src/ws/
+      // session.ts` L951 sends `{ t: 'batch', m: [...] }` — "one `snap` per accepted subject, inside
+      // `batch` frames, split at the cap" — so a reader that only looked at the envelope's own `t`
+      // would conclude the plant had sent nothing about any subject at all. It is the same shape
+      // `LiveClient` unwraps; this spec has to do the same or it is watching a different stream.
+      if (typeof message === 'string') {
+        try {
+          const outer = JSON.parse(message) as { t?: unknown; m?: unknown };
+          const frames: unknown[] = outer.t === 'batch' && Array.isArray(outer.m) ? outer.m : [outer];
+          for (const item of frames) {
+            const frame = item as { t?: unknown; s?: unknown; seq?: unknown; tier?: unknown };
+            if (plantFrames.length < 80) {
+              plantFrames.push(`${String(frame.t)}${typeof frame.s === 'string' ? ` ${frame.s}` : ''}`);
+            }
+            if (
+              (frame.t === 'snap' || frame.t === 'delta') &&
+              typeof frame.s === 'string' &&
+              typeof frame.seq === 'number'
+            ) {
+              const previous = fromPlant.get(frame.s);
+              fromPlant.set(frame.s, {
+                seq: frame.seq,
+                tier: typeof frame.tier === 'string' ? frame.tier : (previous?.tier ?? 'unknown'),
+              });
+            }
+          }
+        } catch {
+          /* not JSON — the client will say so, and this spec has nothing to add. */
+        }
+      }
       ws.send(message);
     });
     announce();
@@ -109,6 +194,9 @@ async function interposePlant(page: Page): Promise<{ send: SendFrame; opened: Pr
 
   return {
     opened,
+    subs: () => [...subs],
+    serverState: (subject) => fromPlant.get(subject),
+    serverFrames: () => [...plantFrames],
     send: (frame) => {
       if (route === undefined) throw new Error('the app has not opened /ws/v1 yet');
       route.send(JSON.stringify(frame));
@@ -116,12 +204,39 @@ async function interposePlant(page: Page): Promise<{ send: SendFrame; opened: Pr
   };
 }
 
-/** `Snap` (`wire/ws.ts`): every member is required, so every member is stated. */
-function snapFrame(subject: string, fields: Record<string, number>, capturedAt: number): Record<string, unknown> {
+/**
+ * `Snap` (`wire/ws.ts`): every member is required, so every member is stated.
+ *
+ * TWO THINGS ABOUT IT CHANGED when the panels started subscribing, and both are forced by the
+ * product rather than chosen here:
+ *
+ *   * **`seq` is a parameter now, taken from the plant's own snapshot.** The plant answers a `sub`
+ *     with a real `snap`, so `QuoteCache` already holds the row at the plant's `seq` when this frame
+ *     arrives; the deltas that chain onto this one must be above it (`#applyDelta`: `seq <= lastSeq`
+ *     is a duplicate and is dropped).
+ *   * **The values it carries must DIFFER from the ones the plant sent.** `QuoteCache.#applySnap`
+ *     reports only the fields that changed against the previous view, and `cellRegistry` writes only
+ *     the fields reported changed — deliberately, so a conflated frame restating a static price does
+ *     not flash it. A snapshot at the values already on screen therefore repaints nothing at all, and
+ *     that is what it did: both tests below failed on `data-st="stale"` the first time they ran
+ *     against a subscribing grid. Each one moves the field it is about.
+ *
+ * `session: 'open'` and `tier: 'delayed'` are still this frame's own, and that is the point of still
+ * injecting one rather than leaning on the plant's: the staleness arithmetic below is 3 × 10 s over a
+ * `delayed` line in an OPEN session (`core/quote/staleness.ts`), and a seeded session that happened
+ * to be `closed` would make `valueState` answer `closed` — a different verdict, correctly, and not
+ * the one TERM-12's "the feed stopped" case is about.
+ */
+function snapFrame(
+  subject: string,
+  fields: Record<string, number>,
+  capturedAt: number,
+  seq: number,
+): Record<string, unknown> {
   return {
     t: 'snap',
     s: subject,
-    seq: 1,
+    seq,
     // What the plant's own `subAck` grants on this stack, and what fixes the staleness basis at
     // `CLIENT_EXPECTED_INTERVAL_MS.delayed` = 10 s (so the limit is 3 × 10 s — `core/quote/staleness.ts`).
     tier: 'delayed',
@@ -190,6 +305,45 @@ async function aaplSubject(page: Page): Promise<string> {
 /** What the grid is showing for one `(subject, column)` right now, cell attributes and all. */
 function cellOf(page: Page, subject: string, column: string): Locator {
   return page.locator(`${WATCHLIST} [data-subject="${subject}"][data-col="${column}"]`);
+}
+
+/**
+ * The plant's own last word about a subject, once it has stopped talking.
+ *
+ * Four panels subscribe, several of them overlapping, and every `sub` is answered with a `snap`, so a
+ * subject's `seq` moves a few times in the first second of the session. Two identical readings is
+ * what "the plant has finished" looks like from outside; taking the first reading instead would race
+ * a later snapshot, and a delta chained onto a superseded `seq` is a gap, not a tick.
+ */
+async function plantSnapshot(
+  plant: Interposed,
+  subject: string,
+): Promise<{ seq: number; tier: string }> {
+  let last: { seq: number; tier: string } | undefined;
+  await expect
+    .poll(
+      () => {
+        const now = plant.serverState(subject);
+        const settled = now !== undefined && now.seq === last?.seq;
+        last = now;
+        return settled;
+      },
+      {
+        message: `the plant sent no snapshot for ${subject} — is the panel subscribing it?`,
+        timeout: 20_000,
+      },
+    )
+    .toBe(true)
+    .catch((error: unknown) => {
+      // What it DID send, because "no snapshot" has several causes and they are told apart by the
+      // frames that arrived instead: a `subAck` that rejected the subject, a `status`, or nothing.
+      throw new Error(
+        `${error instanceof Error ? error.message : String(error)}\nframes from the plant: ` +
+          `${plant.serverFrames().join(', ')}`,
+      );
+    });
+  if (last === undefined) throw new Error(`no plant state for ${subject}`);
+  return last;
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -275,6 +429,90 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
     await resetWorkspace(E2E_USERS.pm.email);
   });
 
+  /**
+   * The subscription itself, asserted on the wire rather than inferred from a repaint.
+   *
+   * Until `shell/Panel.tsx` made the call, the app's answer to "what does this screen want off the
+   * plant?" was nothing: the grids drew their payload and no `sub` frame ever named a row of them.
+   * That is unobservable from the DOM — a grid with no subscription looks exactly like a grid whose
+   * feed is quiet, which is the whole reason it survived fifteen packages — so this test reads the
+   * frames the BROWSER sends, through the same interposed socket the rest of the file uses.
+   *
+   * The expectation is taken from the screen on the page, not written down: every subject the grid
+   * drew a live-addressed cell for must appear in a `sub`, and the fields asked for that subject must
+   * cover every dictionary column it drew. A spec that named `q:85 PX_LAST` would keep passing if the
+   * panel subscribed one row of twenty-five.
+   */
+  test('the grid tells the plant what it is showing — a sub for every row it drew', async ({ page }) => {
+    const plant = await interposePlant(page);
+    await openWatchlist(page);
+    await plant.opened;
+
+    // What is on screen: per row, the subject its cells are addressed to and the columns it drew.
+    const drawn = await page.evaluate((selector: string) => {
+      const byRow = new Map<string, Set<string>>();
+      for (const el of document.querySelectorAll(`${selector} [data-subject][data-col]`)) {
+        const subject = el.getAttribute('data-subject') ?? '';
+        const columns = byRow.get(subject) ?? new Set<string>();
+        columns.add(el.getAttribute('data-col') ?? '');
+        byRow.set(subject, columns);
+      }
+      return [...byRow].map(([subject, columns]) => ({ subject, columns: [...columns] }));
+    }, WATCHLIST);
+
+    // A FORMULA row has no plant subject at all: `server/src/functions/W/resolve.ts` L12-13 gives it
+    // `subject: ''` and `deps` instead — the subjects its inputs are on, which is what W's `live`
+    // unions in so the computed cell moves when either input does. `W · Core`'s fifth row is
+    // `RATIO(AAPL US Equity, SPX Index)`, so one of the subjects collected above is the empty string,
+    // and it is excluded here by the wire grammar rather than by count: a subject the plant cannot be
+    // asked for is not a row this assertion is about. Measured on the seeded desk: five rows drawn,
+    // four wire subjects.
+    const rows = drawn.filter((row) => /^[a-z0-9]+:[A-Za-z0-9_.:-]+$/.test(row.subject));
+    expect(rows.length, 'the watchlist drew no live-addressed cells').toBeGreaterThan(1);
+
+    /** Subject → the union of the fields some `sub` frame named for it. */
+    const asked = (): Map<string, Set<string>> => {
+      const out = new Map<string, Set<string>>();
+      for (const frame of plant.subs()) {
+        for (const entry of frame.subjects) {
+          const fields = out.get(entry.s) ?? new Set<string>();
+          for (const field of entry.f) fields.add(field);
+          out.set(entry.s, fields);
+        }
+      }
+      return out;
+    };
+
+    // Polled, not awaited once: the subscription is made after the payload paints, and this is the
+    // one assertion in the file about a frame the app sends on its own schedule.
+    await expect
+      .poll(() => JSON.stringify(rows.filter((row) => !asked().has(row.subject)).map((r) => r.subject)), {
+        message: 'rows the watchlist drew that the app never sent a `sub` for',
+        timeout: 15_000,
+      })
+      .toBe('[]');
+
+    // Every dictionary column a row drew is in the field mask for THAT row's subject.
+    //
+    // Per row, not sampled on one, because of what the seeded desk happens to contain: `W · Core`'s
+    // third row is SPX, and p3 of the same workspace is `GP · SPX Index`, whose chart subscribes the
+    // SAME subject asking for `PX_LAST` alone. A `sub` REPLACES the plant's field mask for a subject,
+    // so before the grids subscribed, the chart's narrow `sub` was the last word and the watchlist's
+    // `CHG_PCT_1D` cell for SPX went `— unavailable` (`smoke.spec.ts`'s chart `test.fail` records
+    // it). `SubscriptionManager#desiredFields` unions across holders; this is the assertion that the
+    // union is what the plant is told, on the one subject where two panels disagree.
+    const fields = asked();
+    for (const row of rows) {
+      const asFields = [...(fields.get(row.subject) ?? [])];
+      for (const column of row.columns.filter((c) => /^[A-Z][A-Z0-9_]*$/.test(c))) {
+        expect(
+          asFields,
+          `${row.subject} was subscribed without the field its \`${column}\` cell shows`,
+        ).toContain(column);
+      }
+    }
+  });
+
   test('a delta flashes the cell whose number moved, and only that cell (TERM-08)', async ({
     page,
   }) => {
@@ -286,19 +524,22 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
     const price = cellOf(page, subject, 'PX_LAST');
     const change = cellOf(page, subject, 'CHG_PCT_1D');
 
-    // The number the seeded screen is showing — `330.27`, the last of the one recorded Cboe poll.
-    // Parsed rather than asserted so the flash below is provably a MOVE from what was on screen.
-    const before = Number((await price.textContent())?.replace(/[^\d.-]/g, ''));
-    expect(before, 'the watchlist is not showing a price to move').toBeGreaterThan(0);
-    const changeBefore = await change.textContent();
-
-    // 1. A snapshot at the values already on screen. This is the subscribe-and-snap the plant would
-    //    send if step 8 were wired; it puts both cells into `live` and seeds `QuoteCache` with the
-    //    `seq` the delta will chain onto. The percent is re-stated to two decimals, which is all the
-    //    DOM carries, so this frame may itself flash the change cell — hence the settle below.
-    const capturedAt = Date.now();
+    // 1. The plant's own snapshot of this row first — the one the panel's `sub` provoked, which is
+    //    the evidence the subscription happened at all — and then a snapshot of this spec's own on
+    //    top of it, one `seq` higher and at MOVED values, which puts both cells into `live` on a
+    //    session and a tier this spec controls. Both cells have to move or the unmoved one is not
+    //    written at all and never reads `live`; see `snapFrame`'s header.
+    const snapshot = await plantSnapshot(plant, subject);
+    const seeded = Number((await price.textContent())?.replace(/[^\d.-]/g, ''));
+    expect(seeded, 'the watchlist is not showing a price at all').toBeGreaterThan(0);
+    const seededChange = Number((await change.textContent())?.replace(/[^\d.-]/g, ''));
     plant.send(
-      snapFrame(subject, { PX_LAST: before, CHG_PCT_1D: Number(changeBefore?.replace(/[^\d.-]/g, '')) }, capturedAt),
+      snapFrame(
+        subject,
+        { PX_LAST: Number((seeded + 1.5).toFixed(2)), CHG_PCT_1D: Number((seededChange + 0.25).toFixed(2)) },
+        Date.now(),
+        snapshot.seq + 1,
+      ),
     );
     await expect(price, 'the snapshot did not reach the cell').toHaveAttribute('data-st', 'live');
     await expect(change).toHaveAttribute('data-st', 'live');
@@ -314,10 +555,15 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
       })
       .toBe(0);
 
-    // 3. Now watch, and move exactly ONE field.
+    // 3. Now watch, and move exactly ONE field. Both numbers are re-read here, after the snapshot
+    //    landed, so `moved` is provably a MOVE from what is on the screen and the neighbour assertion
+    //    below is about what the DELTA did rather than about what the snapshot did.
+    const before = Number((await price.textContent())?.replace(/[^\d.-]/g, ''));
+    expect(before, 'the watchlist is not showing a price to move').toBeGreaterThan(0);
+    const changeBefore = await change.textContent();
     await watchFlashes(page);
     const moved = Number((before + 2.23).toFixed(2));
-    plant.send(deltaFrame(subject, { PX_LAST: moved }, 2, Date.now()));
+    plant.send(deltaFrame(subject, { PX_LAST: moved }, snapshot.seq + 2, Date.now()));
 
     // The value is the delta's, formatted by the client's own formatter (2 dp for a price).
     await expect(price, 'the delta did not reach the price cell').toHaveText(moved.toFixed(2));
@@ -343,7 +589,7 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
     // `flash-down`. One direction proved twice would leave `dirOf` free to return `up` always.
     await watchFlashes(page);
     const back = Number((moved - 4.5).toFixed(2));
-    plant.send(deltaFrame(subject, { PX_LAST: back }, 3, Date.now()));
+    plant.send(deltaFrame(subject, { PX_LAST: back }, snapshot.seq + 3, Date.now()));
     await expect(price).toHaveText(back.toFixed(2));
     const down = await flashesSeen(page);
     expect(down.map((f) => f.key), 'the second delta lit more than the cell it moved').toEqual([
@@ -356,10 +602,43 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
   test('every value state is said in words at the point of use (TERM-12, ENTL-05)', async ({
     page,
   }) => {
+    // THE `live` CELL IS MANUFACTURED HERE, AND IT HAS TO BE.
+    //
+    // This test asserts that all five `ValueState`s are present on screen before asserting that each
+    // says which it is, so that it is a statement about the product and not about four states and a
+    // hole. Four of the five come from the seeded desk. The fifth used to come from `W · Core`'s
+    // computed `RATIO(...)` row — and that row was `live` because `W`'s resolver stamped a literal
+    // `'live'` on every formula cell, while both of the prices it divides read "stale, no fresh
+    // update". It was TERM-12's own clause, and this test was resting on it: when the resolver
+    // started reporting the worst state of the inputs it read, the seeded workspace had no `live`
+    // cell left and this assertion failed with `no cell on the seeded workspace renders \`live\``.
+    //
+    // Which is correct. The replay plant's last capture is days old, so NOTHING on the seeded desk is
+    // legitimately live, and a spec that needs a live cell has to produce one the way a live cell is
+    // produced — a fresh frame on the socket, at this spec's own capture instant, exactly as the two
+    // tests above do. Reading the `live` row off a resolver's constant is how this test came to be
+    // green about a cell the whole file exists to catch.
+    const plant = await interposePlant(page);
     await openWatchlist(page);
+    await plant.opened;
     // The other three panels are drawn too; this assertion is about the whole workspace, because
     // ENTL-05 is a property of every rendered value and not of one grid.
     await expect(page.locator('[data-panel="p1"]')).toContainText('31 rows', { timeout: 30_000 });
+
+    const subject = await aaplSubject(page);
+    const price = cellOf(page, subject, 'PX_LAST');
+    const snapshot = await plantSnapshot(plant, subject);
+    const seeded = Number((await price.textContent())?.replace(/[^\d.-]/g, ''));
+    expect(seeded, 'the watchlist is not showing a price to move').toBeGreaterThan(0);
+    // A MOVED value, or `QuoteCache` reports no changed field and the cell is never rewritten
+    // (`snapFrame`'s header).
+    plant.send(
+      snapFrame(subject, { PX_LAST: Number((seeded + 1.75).toFixed(2)) }, Date.now(), snapshot.seq + 1),
+    );
+    await expect(price, 'the injected snapshot did not reach the cell').toHaveAttribute(
+      'data-st',
+      'live',
+    );
 
     const audit = await page.evaluate((phrase: Record<string, string>) => {
       const states: Record<string, { total: number; said: number; numbersInBlank: number; texts: string[] }> = {};
@@ -395,10 +674,11 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
       return states;
     }, STATE_PHRASE);
 
-    // All five are on the seeded screen, which is what makes the rest of this test an assertion
-    // about the product rather than about four states and a hole: `closed` (the seeded sessions),
-    // `blank` (instruments with no captured quote), `na` (returns on an index with no book),
-    // `stale` (the recorded Cboe poll, days old) and `live` (the computed RATIO row).
+    // All five are on the screen, which is what makes the rest of this test an assertion about the
+    // product rather than about four states and a hole: `closed` (the seeded sessions), `blank`
+    // (instruments with no captured quote), `na` (returns on an index with no book), `stale` (the
+    // recorded Cboe poll, days old) and `live` (the frame this test just sent — see the note at the
+    // top about why it is not the computed `RATIO` row any more).
     for (const state of Object.keys(STATE_PHRASE)) {
       expect(audit[state]?.total ?? 0, `no cell on the seeded workspace renders \`${state}\``).toBeGreaterThan(0);
     }
@@ -427,49 +707,53 @@ test.describe('WP-15 live grid — TERM-08 flash, TERM-12 states', () => {
     expect(new Set(phrases).size, 'two value states are spoken with the same phrase').toBe(phrases.length);
   });
 
-  // ── A DEFECT, recorded rather than hidden ───────────────────────────────────────────────────
+  // ── A DEFECT THAT WAS RECORDED HERE AS A `test.fail` FOR ONE PACKAGE, NOW A REQUIRED ASSERTION ──
   //
-  // `test.fail()`, following `smoke.spec.ts`: it RUNS on every suite, it must fail, and the day the
-  // wiring lands Playwright reports "expected to fail but passed", so the fix cannot land unnoticed
-  // and this record cannot rot. The assertion is the one the product is supposed to satisfy and it
-  // is not weakened by a millisecond.
-  //
-  // What happens. `grid/cellRegistry.ts#restyle` — the sweep's only route to the DOM — opens with
+  // What it was. `grid/cellRegistry.ts#restyle` — the sweep's only route to the DOM — opens with
   // `if (stateOf === undefined) return;`, and `stateOf` is set by `CellRegistry.setStateSource()`,
-  // whose docstring says "wsBridge calls this when the client connects". Nothing calls it:
-  // `grep -rn 'setStateSource' packages/web/src` matches the definition and nothing else. So the
-  // 1 s ticker runs (`wsBridge.start()` starts it), `QuoteCache.sweep` correctly flips the view to
-  // `stale`, `#onSweep` correctly calls `restyle(subjects)` — and `restyle` returns on its first
-  // line. The cache and the screen then disagree, silently and permanently.
+  // whose docstring said "wsBridge calls this when the client connects". Nothing called it. So the
+  // 1 s ticker ran (`wsBridge.start()` starts it), `QuoteCache.sweep` correctly flipped the view to
+  // `stale`, `#onSweep` correctly called `restyle(subjects)` — and `restyle` returned on its first
+  // line. The cache and the screen disagreed, silently and permanently, and what was measured on this
+  // stack for `q:85 PX_LAST` in `p4` was `data-st="live"`, `aria-label="…, 330.27, live"`, 46 s after
+  // the last frame.
   //
-  // Measured on this stack, `q:85 PX_LAST` in `p4`, with a snapshot captured 28 s before it was
-  // sent (so the value crosses 3 × 10 000 ms two seconds later):
-  //    t+0.5 s   data-st="live"  aria-label="Last price: 330.27, live"
-  //    t+4.5 s   data-st="live"  aria-label="Last price: 330.27, live"
-  //    …and with `cap = now`, still "live" 46 s later, connection `LIVE` throughout.
+  // What fixed it. `rt/wsBridge.ts#attach` installs the source as it attaches the registry — a closure
+  // over the `QuoteCache` the bridge already owns, which is the only object in the client that holds a
+  // subject's verdict (TERM-04 allows exactly one). Attaching is the right moment and connecting was
+  // not: `App` builds the bridge before the first grid mounts.
   //
-  // This is the client-side twin of BUILD_STATUS.md's startup step 9 (the server's own 1 s sweep,
-  // also skipped). Either one alone would have put the badge on the screen; neither is wired, so
-  // TERM-12's "a dead feed cannot leave a live number on the screen" does not hold in this build.
+  // The assertion below has not been touched. It is the one the product was always supposed to
+  // satisfy, and it is the client-side half of TERM-12 — the server's own 1 s sweep is startup step 9,
+  // still deferred (BUILD_STATUS.md), so this is the only thing standing between a dead feed and a
+  // live number on a trader's screen.
   test('a value goes stale when the feed stops, and says so (TERM-12)', async ({ page }) => {
-    test.fail(
-      true,
-      'DEFECT: cellRegistry.setStateSource() is never called, so CellRegistry.restyle() returns ' +
-        'immediately and the 1 s staleness sweep never reaches a cell. web/src/grid/cellRegistry.ts ' +
-        'L720 + L797, rt/wsBridge.ts L531.',
-    );
-
     const plant = await interposePlant(page);
     await openWatchlist(page);
     await plant.opened;
     const subject = await aaplSubject(page);
     const price = cellOf(page, subject, 'PX_LAST');
 
-    // A capture 28 s old: inside 3 × 10 s, so `live` now, and past it 2 s from now. The plant warms
-    // exactly this way from `quote_snapshots`, so the frame is not a contrivance — it is the last
-    // print of a feed that has just gone quiet.
-    const capturedAt = Date.now() - 28_000;
-    plant.send(snapFrame(subject, { PX_LAST: 330.27 }, capturedAt));
+    // A capture 28 s old, at a price the plant did not send, one `seq` above the plant's own snapshot
+    // of this row: inside 3 × 10 s, so `live` now, and past it 2 s from now. The plant warms exactly
+    // this way from `quote_snapshots`, so the frame is not a contrivance — it is the last print of a
+    // feed that has just gone quiet.
+    //
+    // `plantSnapshot` first, for the `seq`: the panel subscribes this row now, so the plant has
+    // already snapped it and `QuoteCache` already holds it. The moved price is the other consequence
+    // of that — see `snapFrame`'s header — and the 28 s is arithmetic over `snapFrame`'s own
+    // `tier: 'delayed'` (expected every 10 s, stale at 3 × that: `core/quote/staleness.ts`).
+    const snapshot = await plantSnapshot(plant, subject);
+    const seeded = Number((await price.textContent())?.replace(/[^\d.-]/g, ''));
+    expect(seeded, 'the watchlist is not showing a price at all').toBeGreaterThan(0);
+    plant.send(
+      snapFrame(
+        subject,
+        { PX_LAST: Number((seeded + 1.5).toFixed(2)) },
+        Date.now() - 28_000,
+        snapshot.seq + 1,
+      ),
+    );
     await expect(price, 'a 28 s old capture is inside the limit and must read live').toHaveAttribute(
       'data-st',
       'live',

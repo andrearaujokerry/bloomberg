@@ -11,15 +11,53 @@
 //           never an empty space (ENTL-05)
 //   na      `·` in `--c-muted` — the field does not apply to this instrument
 //
-// Where the `ReasonCode` on a blank cell comes from. Most payload paths do NOT set `Cell.r`: the
+// The reason is NOT the property of one state. A cell that carries a `ReasonCode` has something to
+// say about itself whatever `st` it wears, and the cell this rule was written for is not `blank` at
+// all: the `eod` grant's withheld price arrives as `{ v: null, st: 'closed', r: 'TIER_EOD' }` —
+// `server/src/plant/policyTier.ts#eodView` sets the state once for the whole quote and the reason
+// per unserved field — and while this file drew `.cell__reason` only for `st === 'blank'` that cell
+// rendered as a bare em dash captioned "closed, session ended". Which is true of the session and
+// false of the value: the value is absent because of the reader's tier, and a reader who cannot see
+// that cannot tell a price withheld from them apart from a price the source never had. That is
+// precisely the pair ENTL-05 exists to keep apart, and WP-12 shipped the same defect once before in
+// a different place. So the badge is drawn whenever a reason resolves, in any state; the five state
+// phrases are untouched, so the five `ValueState`s stay distinguishable from one another (TERM-12).
+//
+// Where the `ReasonCode` on a valueless cell comes from. Most payload paths do NOT set `Cell.r`: the
 // denial is recorded once per field in `meta.entitlement[]` and the absence once per field in
 // `meta.unavailable[]`, not repeated on every cell that was hit by it. A `CellView` that only drew
 // `cell.r` therefore printed a bare em dash for almost every real blank, which makes a price
 // withheld by entitlement and a price the source simply does not have the same mark — exactly what
 // ENTL-05 forbids. So the reason is resolved in two steps: the cell's own `r` when it has one, and
 // otherwise `CellReasonContext` — a `fieldId -> ReasonCode` lookup `ScreenRenderer` builds once
-// from the meta it already holds. A blank whose `fieldId` is in neither table still prints the em
-// dash alone; nothing is invented to fill the gap.
+// from the meta it already holds. That second step applies to every cell that renders no number and
+// not only to `blank` ones, for the same reason the badge does. A valueless cell whose `fieldId` is
+// in neither table still prints the em dash alone; nothing is invented to fill the gap.
+//
+// The reason has to reach a screen reader as well as the pixels. WP-12's original version of this
+// defect put the reason in the DOM inside a span `widgets.css` clips to one pixel, which satisfied a
+// `textContent` assertion and told nobody, so the badge here is ordinary visible text and carries
+// only a visually-hidden *prefix* — the word that says what the bare code means, because
+// "TIER_EOD" read out on its own is not a sentence. The accessible name of the `role="cell"` that
+// wraps this element is therefore "Last: — no value: TIER_EOD (closed, session ended)", and the
+// renderer test asserts that name rather than the text alone.
+//
+// WHERE THE SEPARATOR BEFORE `no value:` COMES FROM, because a repair pass reported it missing.
+//
+// The report was that the name arrives welded — `-no value: TIER_EOD (closed, session ended)` — on
+// the grounds that accessible-name computation concatenates inline descendants with nothing between
+// them, and that the only gap here is `widgets.css`'s `.cell__reason { margin-left: 0.5ch }`, which
+// a name cannot see. Measured in Chrome on the real `eod` session, that is not what happens: the
+// name is `— no value: TIER_EOD (closed, session ended) ▏`, separator and all, and it is byte-
+// identical with a leading space added to the prefix and with it removed. The separator comes from
+// `.sr-only` itself — that rule sets `position: absolute`, so Blink treats the span as an out-of-flow
+// box and adds whitespace around it, which a plain inline `<span>` would not get. The trailing `▏` is
+// the `[data-st='closed']::after` mark, which Chrome includes in a name and jsdom does not.
+//
+// So nothing changed here. What changed is the two assertions, which matched the fragment
+// `/no value: TIER_EOD/` and would not have noticed either way: `test/screen/renderer.test.tsx` now
+// pins the whole name and `packages/e2e/tests/entitlement.spec.ts` anchors it at the dash, so the day
+// `.sr-only` stops being out of flow is the day one of them goes red.
 //
 // Two mechanical points:
 //   * the glyph for `stale` is `tokens.css`'s `[data-st='stale']::after { content: ' ·' }` and the
@@ -54,9 +92,9 @@ export function useCellFormat(): CellFormatContextValue {
 }
 
 /**
- * Why a field on this payload is blank: `meta.entitlement[]` (a `deny` decision) and
- * `meta.unavailable[]`, flattened to one lookup. `ScreenRenderer` builds it; a cell consults it
- * only when it is `blank` and carries no `r` of its own.
+ * Why a field on this payload has no value: `meta.entitlement[]` (a `deny` decision) and
+ * `meta.unavailable[]`, flattened to one lookup. `ScreenRenderer` builds it; a cell consults it when
+ * it renders no number and carries no `r` of its own — see {@link reasonOfCell}.
  */
 export type CellReasonResolver = (fieldId: string | undefined) => string | undefined;
 
@@ -69,15 +107,35 @@ export function useCellReason(): CellReasonResolver {
 }
 
 /**
- * The `ReasonCode` shown beside a blank cell: the cell's own first, then the payload-level lookup.
+ * True when this cell renders no number at all, so a `ReasonCode` is the only thing it can tell the
+ * reader about itself.
+ *
+ * It mirrors `format/index.ts#formatCell`, which is where the two state rules live: `blank` prints
+ * the blank glyph and `na` prints `·` whatever `v` holds, and every other state prints `v` — so a
+ * `null` value in `live`, `stale` or `closed` is a cell with nothing in it too. `closed` with a
+ * `null` value is not a hypothetical: it is what the `eod` tier view produces for every field the
+ * grant does not reach (ENTL-05).
+ */
+function rendersNoValue(cell: Cell): boolean {
+  return cell.v === null || cell.st === 'blank' || cell.st === 'na';
+}
+
+/**
+ * The `ReasonCode` shown beside a cell: the cell's own first, then the payload-level lookup.
  * Exported so WP-13's grid resolves a blank the same way rather than growing a second rule.
+ *
+ * The cell's own `r` is returned in every state, because a reason on the cell is a statement about
+ * that cell and not about `blank`. The payload-level fallback is consulted only for a cell that
+ * renders no number: `meta.entitlement[]` and `meta.unavailable[]` explain an *absence*, and
+ * captioning a number that is on screen with them would be a different claim from the one the
+ * server made (ENTL-05).
  */
 export function reasonOfCell(
   cell: Cell,
   resolve: CellReasonResolver = NO_REASONS,
 ): string | undefined {
-  if (cell.st !== 'blank') return cell.r;
-  return cell.r ?? resolve(cell.fieldId);
+  if (cell.r !== undefined) return cell.r;
+  return rendersNoValue(cell) ? resolve(cell.fieldId) : undefined;
 }
 
 /** What a screen reader hears and a test asserts on, one phrase per state. */
@@ -159,9 +217,16 @@ export function CellView({ cell, label, className }: CellViewProps): ReactElemen
       <span className={dir === undefined ? 'cell__value' : 'cell__value chg'}>
         {dir === undefined || DIR_GLYPH[dir] === '' ? text : `${DIR_GLYPH[dir]} ${text}`}
       </span>
-      {cell.st === 'blank' && reason !== undefined ? (
-        <span className="cell__reason">{reason}</span>
-      ) : null}
+      {reason === undefined ? null : (
+        <span className="cell__reason">
+          {/* The prefix is hidden and the code is not: the code is what a trader reads beside the
+              dash, and the prefix is the sentence a screen reader needs around it (ENTL-05). The
+              prefix carries no leading space of its own, and does not need one — see the paragraph
+              on the separator in this file's header, which was measured rather than reasoned. */}
+          <span className="sr-only">{rendersNoValue(cell) ? 'no value: ' : 'reason: '}</span>
+          {reason}
+        </span>
+      )}
       <span className="sr-only">{` (${STATE_PHRASE[cell.st]})`}</span>
     </span>
   );

@@ -114,6 +114,18 @@ declare module '../app.js' {
 export interface WsGateway {
   /** Live session count (`StatusResponse.ws.sessions`). */
   sessionCount(): number;
+  /**
+   * How many subjects this user has live across every open socket — API-06's
+   * `concurrentSubscriptions.used`.
+   *
+   * The plant holds the subscription set in memory and nothing writes it to a table, so
+   * `entitlements/quotas.ts#state` takes the number from its caller (its own comment says so) and
+   * every HTTP caller omitted it, which pinned `subs` at `0/10,000` on the status strip however many
+   * subjects were live. This is the reading those callers were missing. Summed over sockets rather
+   * than taken from one, because the ceiling API.md §8 enforces is per user and a desk may have two
+   * windows open; the same sum is what `ws/session.ts` compares against on a `sub`.
+   */
+  subscriptionCount(userId: number): number;
   /** Close every session with `bye 1001` and stop accepting upgrades. */
   close(): Promise<void>;
   /** Push a frame to every session of one user (alerts, `alerts:me`). */
@@ -386,6 +398,14 @@ export function registerWsGateway(app: FastifyInstance, deps: WsGatewayDeps): Ws
           resolve();
         });
       });
+    },
+    subscriptionCount(userId: number): number {
+      let subs = 0;
+      for (const session of sessions) {
+        if (session.principal?.userId !== userId) continue;
+        subs += session.stats().subscriptions;
+      }
+      return subs;
     },
     sendToUser(userId: number, msg: ServerMsg): number {
       let sent = 0;

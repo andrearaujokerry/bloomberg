@@ -312,7 +312,38 @@ function variantBody(p: Payload, params: Params): Node[] {
         columns: 2,
         rows: [
           kvRow('Shares out', cell('EQY_SH_OUT', f.sharesOut)),
-          kvRow('Float %', cell('EQY_FLOAT_PCT', f.publicFloat)),
+          // NO `Float %` ROW, AND NOT BY OVERSIGHT.
+          //
+          // `payload.fundamentals.publicFloat` is the XBRL fact `dei:EntityPublicFloat`
+          // (`server/src/functions/DES/resolve.ts`): the aggregate MARKET VALUE, in the filing
+          // currency, of the shares held by non-affiliates on the filing's cover date. This row
+          // rendered it as `cell('EQY_FLOAT_PCT', …)`, and `EQY_FLOAT_PCT` is a PERCENTAGE of shares
+          // outstanding — `core/fields/defs/derived.ts` gives it `unit: 'pct'`, `decimals: 2`, the
+          // derivation `PUBLIC_FLOAT / EQY_SH_OUT × 100` and the example `99.87`. On the seeded desk
+          // that printed `Float % 3,253,431,000,000.00%`, two rows above
+          // `Mkt cap $4,820,019,828,600` — the same kind of quantity twice, once under the wrong
+          // name with the wrong unit.
+          //
+          // There is no honest cell for it here, and the three obvious repairs are each worse than
+          // the absence:
+          //
+          //   * **Derive the percentage** as `publicFloat / mktCap × 100`. Algebraically that is
+          //     `EQY_FLOAT_PCT` for a single-class issuer, but the two inputs are as of different
+          //     days — a cover date and the last tick — so on Apple it yields 67.5 % against a real
+          //     free float near 100 %. A plausible wrong number is the worst outcome available.
+          //   * **Keep the value and name no field.** A cited number must name the field it is a
+          //     value of (FUNCTIONS.md §1.5, DATA-10; `test/screens/tier1/screens.test.tsx` enforces
+          //     it), and the only exemption is a CHRT-07 computed column whose formula IS its
+          //     definition. Widening that exemption to a kv label would be relaxing the rule.
+          //   * **Add a money-valued float field.** That is the right answer, and it is a change to
+          //     the field dictionary, whose ids and counts CONTRACTS pins by name
+          //     (`core/test/fields/dictionary.test.ts` asserts every list length) — a decision to
+          //     take deliberately, like the `·` glyph and the `CommandProblem` code set, not a patch
+          //     to make a screen render. `EQY_FLOAT_PCT`'s own derivation already names a
+          //     `PUBLIC_FLOAT` field that does not exist, so the dictionary has a gap here either
+          //     way.
+          //
+          // The payload keeps the fact; this screen stops making a false claim about it.
           kvRow('Market cap', cell('CUR_MKT_CAP', f.mktCap)),
           kvRow('EPS TTM (dil)', cell('EPS_DIL', f.epsTtmDil)),
           kvRow('Revenue TTM', cell('SALES_REV_TURN', f.revenueTtm)),

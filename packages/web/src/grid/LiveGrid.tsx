@@ -343,8 +343,30 @@ export function LiveGrid(props: LiveGridProps & LiveGridApiProp): ReactElement {
     return ordered;
   }, [propColumns, columnOrder]);
 
+  /**
+   * THE ROW'S PLANT SUBJECT, OR NULL — and `''` IS NULL.
+   *
+   * A row that belongs to no security carries `subject: ''`, not `subject: undefined`: `W`'s formula
+   * rows do (documented at `core/functions/manifests/W.ts`), and so does every screen whose payload
+   * fills the field for every row. `??` does not treat `''` as absent, so such a row was reported as
+   * having a subject — and the consequences ran the whole length of the live path: the cell was
+   * marked `live`, so React stopped writing its state and handed it to the registry; the element got
+   * `data-subject=""`; and the 1 s staleness sweep then looked up `quoteCache.get('')`, found
+   * nothing, and skipped it. The result was a cell registered as live that nothing could ever update
+   * and nothing could ever grey — TERM-12's own clause, a dead feed leaving a live number on the
+   * screen, reached through a subject that does not exist rather than through a feed that stopped.
+   *
+   * Normalised here, once, rather than in each screen's `subjectOf`: this is the seam every grid in
+   * the application goes through, and the next screen to fill the field with an empty string should
+   * not have to know about any of the above. `essentialSubjects` already refused `''` on the
+   * subscription path, which is why no `sub` frame ever carried one and the defect was visible only
+   * in the DOM.
+   */
   const subjectOf = useCallback(
-    (row: GridRow): string | null => live?.subjectOf(row) ?? row.subject ?? null,
+    (row: GridRow): string | null => {
+      const named = live?.subjectOf(row) ?? row.subject ?? null;
+      return named === '' ? null : named;
+    },
     [live],
   );
 

@@ -500,7 +500,17 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
 
     const [reg, quotaState] = await Promise.all([
       registry(),
-      quotaService.state(row.userId, row.firmId, row.clientKind === 'api' ? 'api' : 'web'),
+      // API-06: the concurrency counter lives in the plant, not in a table, so `state()` can only
+      // report it if its caller reads it off the gateway. Omitting the argument is what made
+      // `concurrentSubscriptions.used` a constant `0` on this response and `subs 0/10,000` on the
+      // status strip for the life of every session. `wsGateway` is decorated by `app.ts`; the `?.`
+      // is for a host that builds the HTTP routes without a socket at all.
+      quotaService.state(
+        row.userId,
+        row.firmId,
+        row.clientKind === 'api' ? 'api' : 'web',
+        app.wsGateway?.subscriptionCount(row.userId) ?? 0,
+      ),
     ]);
 
     return {

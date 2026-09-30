@@ -82,6 +82,7 @@ import {
 
 import type { CurveBuild, CurvePoints } from '../../data/curves.js';
 import type { GovtTermsRow } from '../../refdata/terms.js';
+import { penultimateCouponOf } from '../shared/bondTerms.js';
 import { displayOf } from '../shared/instrumentSummary.js';
 import type { ResolveContext } from '../context.js';
 import { AppError } from '../../http/errors.js';
@@ -528,9 +529,9 @@ function bondTermsOf(row: GovtTermsRow, couponPct: number): BondTerms {
     maturity: row.maturityDate,
     dayCount: (row.dayCount as DayCountId) ?? 'ACT/ACT',
     ...(row.firstCouponDate === null ? {} : { firstCouponDate: row.firstCouponDate }),
-    ...(row.lastRegularCoupon === null
-      ? {}
-      : { penultimateCouponDate: row.lastRegularCoupon }),
+    // Same rule, same reason as `SRCH/resolve.ts`: a regular final coupon means there is no odd-last
+    // anchor to pass, and passing the maturity date as one threw out of `validateTerms`.
+    ...penultimateCouponOf(row.lastRegularCoupon, row.maturityDate),
   };
   return terms;
 }

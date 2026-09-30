@@ -929,7 +929,13 @@ export function buildFieldLicenceRows(defs: readonly FieldDef[]): readonly Field
       const classes: readonly AssetClass[] =
         source.assetClass === '*' ? def.assetClasses : [source.assetClass];
       for (const assetClass of classes) {
-        const key = `${def.id} ${assetClass}`;
+        // `:` and not a NUL byte. A NUL makes this file BINARY to git and invisible to grep,
+        // which is the last thing a security-critical file should be — this registry is what
+        // `assert_source_known` gates every write in the database on. WP-09 replaced the same
+        // separator in `licenceRegistry.ts` and `news/ingest.ts` and missed this one. `:` is
+        // safe because a field id is `[A-Z0-9_]+` and an asset class is a lower-case enum, so
+        // neither component can contain it and the composite stays injective.
+        const key = `${def.id}:${assetClass}`;
         if (rows.has(key)) continue; // first source listed wins
         rows.set(key, {
           fieldId: def.id,

@@ -19,6 +19,7 @@ import {
   decide,
   execute,
   executeCandidate,
+  executeFrame,
   executeText,
   paramsHash,
   parseCommand,
@@ -93,6 +94,9 @@ class FakePanels implements PanelsPort {
     if (top !== undefined) {
       if (patch.params !== undefined) top.params = patch.params;
       if (patch.resultId !== undefined) top.resultId = patch.resultId;
+      // `state/panels.ts#replaceFrame` spreads the whole patch over the frame; `traceId` is in it
+      // because a restored frame is re-run on a freshly minted one (TERM-05).
+      if (patch.traceId !== undefined) top.traceId = patch.traceId;
     }
   }
   pushHistory(_panelId: string, raw: string): void {
@@ -542,5 +546,183 @@ describe('dispatch — trace id minting and the usage events (§2.5 L784-785, FU
     expect(posted).toHaveLength(1);
     expect(posted[0]?.url).toContain('/api/v1/usage/events');
     expect(posted[0]?.body).toMatchObject({ events: [{ kind: 'fn.launch', code: 'GP' }] });
+  });
+});
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/**
+ * The workspace restore (TERM-05).
+ *
+ * Every case here is stated against an EMPTY panel context — `security: null, fn: null, params: {}` —
+ * on purpose. A restored frame is re-run before anything has resolved its instrument, so the §2.5
+ * context rules have nothing to work with; the frame itself is the only thing that knows what the
+ * panel was showing. The version of this path that went through `executeText` could not satisfy one
+ * assertion below: it rebuilt `"<security display> <fn>"`, re-parsed it, and lost the params
+ * entirely, the instrument id whenever the display did not resolve to one locally, and the draft and
+ * the history ring as collateral.
+ */
+describe('dispatch — the workspace restore re-runs the frame itself (TERM-05)', () => {
+  /** What `state/panels.ts#fromWireFrame` hands back from a persisted layout: no traceId, no payload. */
+  function restoredFrame(over: Partial<Frame> = {}): Frame {
+    return {
+      security: { id: 1000, display: 'AAPL US Equity' },
+      fn: 'GP',
+      params: { range: '1Y', periodicity: 'daily', adjust: 'split' },
+      resultId: null,
+      scroll: 0,
+      traceId: '',
+      ...over,
+    };
+  }
+
+  /** A panel whose stack holds one restored frame and whose CONTEXT knows nothing about it. */
+  function restored(frame: Frame = restoredFrame()): ReturnType<typeof depsFor> {
+    const made = depsFor(panelWith());
+    made.panels.frames.push(frame);
+    made.panels.calls.length = 0;
+    return made;
+  }
+
+  it('sends the frame’s own security and params, as `refresh`, on a fresh trace id', async () => {
+    const { deps, runs, panels } = restored();
+
+    const outcome = await executeFrame(deps, 'p1');
+
+    expect(outcome.kind).toBe('ran');
+    expect(runs).toHaveLength(1);
+    expect(runs[0]?.code).toBe('GP');
+    // The two fields the string `"AAPL US Equity GP"` could not carry.
+    expect(runs[0]?.body.security).toEqual({ id: 1000 });
+    expect(runs[0]?.body.params).toEqual({ range: '1Y', periodicity: 'daily', adjust: 'split' });
+    expect(runs[0]?.body.launchKind).toBe('refresh');
+    expect(runs[0]?.body.panelId).toBe('p1');
+    // `''` is what a restored frame carries, and an empty trace id would fail the server's
+    // `z.uuid()` on the usage event and drop the batch with it (OPS-07).
+    expect(runs[0]?.traceId).toBe('aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee');
+    expect(panels.frames[0]?.traceId).toBe('aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee');
+  });
+
+  it('re-runs the frame IN PLACE: no second frame, no history entry, no cleared draft', async () => {
+    const { deps, panels } = restored();
+    panels.draft = 'AAPL US Eq';
+
+    await executeFrame(deps, 'p1');
+
+    // One frame, patched twice — the trace id before the request and the result id after it.
+    expect(panels.frames).toHaveLength(1);
+    expect(panels.calls).toEqual(['clearProblem', 'replaceFrame', 'replaceFrame']);
+    expect(panels.patches[0]).toEqual({
+      traceId: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
+      resultId: null,
+    });
+    expect(panels.patches[1]).toEqual({ resultId: 'result-1' });
+    // Nobody typed this. The ring must not fill with commands the user never issued, and the draft
+    // is persisted precisely so a half-typed line comes back with the desk (CLIENT §8 L583).
+    expect(panels.history).toEqual([]);
+    expect(panels.draftCleared).toBe(0);
+    expect(panels.draft).toBe('AAPL US Eq');
+  });
+
+  it('survives the SECOND load: the same request, from a frame nothing has degraded', async () => {
+    // The defect this whole block exists for was invisible on the first load and only appeared on
+    // the next one, because what the first load ran was persisted. So the frame is re-run twice and
+    // the two requests are compared with each other.
+    const { deps, runs, panels } = restored();
+
+    await executeFrame(deps, 'p1');
+    await executeFrame(deps, 'p1');
+
+    expect(runs).toHaveLength(2);
+    expect(runs[1]?.body).toEqual(runs[0]?.body);
+    expect(panels.frames).toHaveLength(1);
+    expect(panels.frames[0]?.security).toEqual({ id: 1000, display: 'AAPL US Equity' });
+    expect(panels.frames[0]?.params).toEqual({
+      range: '1Y',
+      periodicity: 'daily',
+      adjust: 'split',
+    });
+  });
+
+  it('addresses a ref-only security by its ref rather than dropping it', async () => {
+    // `dispatch.Frame.security.id` is `number | null`: null is a security addressed by ref or by
+    // formula on the line that created it, and the ref is the only handle it has (§2.3). No RESTORED
+    // frame is this shape — neither the store nor the wire can persist a ref (see
+    // `frameSecurityInput`) — so what this states is the contract of the port, over the frame shape
+    // `execute()` itself builds: a frame that knows how it is addressed is re-run that way.
+    const { deps, runs } = restored(
+      restoredFrame({ security: { id: null, display: 'SPX Index', ref: 'SPX Index' } }),
+    );
+
+    await executeFrame(deps, 'p1');
+
+    expect(runs[0]?.body.security).toEqual({ ref: 'SPX Index' });
+  });
+
+  it('runs a function that takes no security with no security', async () => {
+    const { deps, runs } = restored(
+      restoredFrame({ security: null, fn: 'W', params: { watchlist: { name: 'Core' } } }),
+    );
+
+    await executeFrame(deps, 'p1');
+
+    expect(runs[0]?.body.security).toBeUndefined();
+    // The loss that made a panel saved as `W Core` come back on somebody else's watchlist.
+    expect(runs[0]?.body.params).toEqual({ watchlist: { name: 'Core' } });
+  });
+
+  it('runs nothing for a panel whose restored frame has no function', async () => {
+    const { deps, runs, panels } = restored(restoredFrame({ fn: null }));
+
+    const outcome = await executeFrame(deps, 'p1');
+
+    expect(outcome.kind).toBe('rejected');
+    expect(runs).toHaveLength(0);
+    // Silent: a panel with nothing in it is not a mistake the user made, and the caller loops over
+    // every panel in the layout.
+    expect(panels.problem).toBeNull();
+    expect(panels.calls).toEqual([]);
+  });
+
+  it('emits fn.launch for the restored frame, with its instrument and `refresh`', async () => {
+    const { deps, events, runs } = restored();
+
+    const outcome = await executeFrame(deps, 'p1');
+
+    expect(events.map((e) => e.kind)).toEqual(['fn.launch']);
+    const launch = events[0];
+    expect(launch?.code).toBe('GP');
+    expect(launch?.panelId).toBe('p1');
+    expect(launch?.instrumentId).toBe(1000);
+    expect(launch?.traceId).toBe(outcome.kind === 'ran' ? outcome.traceId : '');
+    expect(launch?.paramsHash).toBe(paramsHash(runs[0]!.body.params));
+    // `launchKind` is how the plant's usage row tells a restore from something a human typed.
+    expect(launch?.details).toMatchObject({ launchKind: 'refresh', clientReported: true });
+  });
+
+  it('a restore the server refuses shows the reason and keeps the frame', async () => {
+    const { deps, panels } = restored();
+    const failing: DispatchDeps = {
+      ...deps,
+      sdk: {
+        ...deps.sdk,
+        fn: {
+          run: () =>
+            Promise.reject(
+              Object.assign(new Error('GP is not licensed for this security'), {
+                code: 'ENTITLEMENT_DENIED',
+              }),
+            ),
+          page: deps.sdk.fn.page.bind(deps.sdk.fn),
+        },
+      },
+    };
+
+    const outcome = await executeFrame(failing, 'p1');
+
+    expect(outcome.kind).toBe('failed');
+    expect(panels.frames).toHaveLength(1);
+    expect(panels.frames[0]?.security).toEqual({ id: 1000, display: 'AAPL US Equity' });
+    expect(panels.problem?.message).toContain('not licensed');
   });
 });

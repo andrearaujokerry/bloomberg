@@ -15,7 +15,7 @@
 //     four DIFFERENT screens the seeded workspace restores into, each with its own numbers, and by
 //     running a command in one panel and finding the other three exactly as they were. "Four panels
 //     are visible" would pass against an empty database; `31 rows`, `30 headlines`, `7,585.75` and
-//     Jane Ruiz's own 25-name watchlist with AAPL at `330.27` in it would not.
+//     the five-name `Core` watchlist the layout names, with AAPL at `330.27` in it, would not.
 //   * **The back-stack (TERM-04, §2.5 L786)** — Back returns the EARLIER SCREEN WITH ITS VALUES
 //     (Apple's `330.27`, then HP's first bar), Forward returns, and a new launch from a back
 //     position truncates the forward history rather than leaving a screen the user can walk into.
@@ -28,9 +28,11 @@
 //     focused panel, the panel's function and security with its data, and the command history the
 //     recall walks. A persistence test that never reloads is a test of a store.
 //
-// The last test is a `test.fail`: a restored panel does NOT come back with the parameters it was
-// saved with. It is written the way the product should behave and recorded rather than weakened —
-// its docstring carries the measurement.
+// The last test is the regression test for TERM-05's second loss: a restored panel comes back with
+// the PARAMETERS it was saved with. It was a `test.fail` for one work package — the restore re-ran
+// each frame as the command string `"<security> <fn>"`, and `params` is not in that string — and the
+// measurement it recorded is kept in its docstring, because the assertion only means something if
+// you can see what it used to report.
 //
 // A second persistence defect is NOT a test here, deliberately. `Shell.tsx` flushes the workspace
 // on `pagehide` so that a desk rearranged and then closed is not lost, and that flush is an
@@ -85,7 +87,10 @@ async function openTerminal(page: Page): Promise<void> {
   await expect(panelOf(page, 'p1'), 'p1').toContainText('WEI ·', { timeout: 30_000 });
   await expect(panelOf(page, 'p2'), 'p2').toContainText('TOP ·', { timeout: 30_000 });
   await expect(panelOf(page, 'p3'), 'p3').toContainText('GP · SPX Index', { timeout: 30_000 });
-  await expect(panelOf(page, 'p4'), 'p4').toContainText('W ·', { timeout: 30_000 });
+  // `W · Core`, not the looser `W ·`: the seeded layout names `Core` in `params.watchlist`, and the
+  // restore now sends the frame's own params, so the FIRST load already shows the right list. While
+  // the restore went through the command line this read `W · <the person's default list>`.
+  await expect(panelOf(page, 'p4'), 'p4').toContainText('W · Core', { timeout: 30_000 });
 }
 
 /** Type into one panel's command line and press GO — the same path `command-line.spec.ts` uses. */
@@ -170,11 +175,15 @@ async function expectUntouched(page: Page, panelIds: readonly string[]): Promise
         ).toBeGreaterThan(40);
         break;
       case 'p4':
-        // `analyst` is Jane Ruiz, who owns `S&P 500 Top 25` (`fixtures/seed/workspaces.json`, seed
-        // module 13) — `pm` would see `Core` here, which is why this file's person is not that one.
-        // AAPL's last comes from the recorded Cboe poll; `row:85` is its instrument id, so this
-        // states that the price is on APPLE'S ROW rather than merely somewhere on the screen.
-        await expect(panel, 'p4 · W').toContainText('25 rows');
+        // `Core`, with its five names — the list the seeded LAYOUT names in `params.watchlist`
+        // (`fixtures/seed/workspaces.json`, seed module 13), shared to the firm by Alex Pardo and so
+        // visible to Jane Ruiz. This clause used to read `25 rows`, which was `S&P 500 Top 25`:
+        // Jane's OWN default list, drawn because the restore dropped the frame's params and ran the
+        // bare `W`. AAPL is in both lists, which is why only the count and the reason change here.
+        // Its last comes from the recorded Cboe poll; `row:85` is its instrument id, so this states
+        // that the price is on APPLE'S ROW rather than merely somewhere on the screen.
+        await expect(panel, 'p4 · W').toContainText('W · Core');
+        await expect(panel).toContainText('5 rows');
         await expect(cellOf(page, id, 'row:85', 'key'), 'p4 · AAPL').toHaveText('AAPL US Equity');
         await expect(cellOf(page, id, 'row:85', 'PX_LAST'), 'p4 · AAPL last').toContainText(
           '330.27',
@@ -351,56 +360,65 @@ test.describe('WP-15 — panels, the back-stack and the workspace (TERM-04, TERM
     await expect(input).toHaveValue('AAPL US Equity DES');
   });
 
-  // ── A DEFECT, recorded rather than hidden ───────────────────────────────────────────────────
+  // ── The regression test for the defect this file used to record ─────────────────────────────
   //
-  // `test.fail()` and not `test.skip()`: it runs on every suite, it MUST fail, and the day the
-  // restore path is fixed Playwright reports "expected to fail but passed", so neither the fix nor
-  // this record can rot. Nothing below is weakened; the assertion is the one TERM-05 asks for.
+  // **A restored panel comes back with the parameters it was saved with.**
   //
-  // What happens. `App.tsx#onRestored` (L1135) re-runs each restored frame as the COMMAND STRING
-  // `"<security display> <fn>"` and throws the frame's params away. A frame is five fields
-  // (CLIENT §8 L574-577) and `params` is one of them; the string carries two. So a panel comes back
-  // running the same function with the manifest's defaults instead of the parameters it was saved
-  // with.
-  //
-  // Measured on `analyst@demo.terminal`'s p4 in `bloomberg_e2e_11`, which is why this test sets the
-  // panel up itself rather than relying on the seed: with `W Core` launched by hand the panel shows
-  // `W · Core`, `5 rows` and the frame is persisted as
+  // This was a `test.fail` for one work package, and what it reported is worth keeping: the restore
+  // re-ran each frame as the COMMAND STRING `"<security display> <fn>"`. A frame is five fields
+  // (CLIENT §8 L574-577) and `params` is one of them; that string carried two. So a panel came back
+  // running the same function on the manifest's defaults instead of on the parameters it was saved
+  // with. Measured then on `analyst@demo.terminal`'s p4: with `W Core` launched by hand the panel
+  // showed `W · Core`, `5 rows` and the frame was persisted as
   //   { fn: "W", params: { view: "grid", watchlist: { name: "Core" } }, security: null }
-  // and after a reload the same panel shows `W · S&P 500 Top 25`, `25 rows` — Jane Ruiz's own list,
-  // because the re-run command is the bare `W`. The list is not an entitlement problem: the control
-  // below shows this person can open `Core`, which is shared to the firm by Alex Pardo.
+  // and after a reload the same panel showed `W · S&P 500 Top 25`, `25 rows` — Jane Ruiz's own list,
+  // because the re-run command was the bare `W`.
   //
-  // It is the same line as the defect `smoke.spec.ts` records (a restored GP loses its instrument)
-  // and a different loss: that one is the security, this one is the params. TERM-05.
+  // `App.tsx#onRestored` now re-runs the frame through `command/dispatch.ts#executeFrame`, which
+  // sends the frame's own fields and never builds a command line. It was the same line as the
+  // defect `smoke.spec.ts` recorded (a restored GP losing its instrument) and a different loss:
+  // that one was the security, this one the params. TERM-05.
+  //
+  // The list this test sets is `MAG7` and not the seeded `Core`, deliberately: `MAG7` is neither
+  // what the layout ships with nor what `W` falls back to for this person, so the only way it can be
+  // on the screen after a reload is that the params made the round trip. Its own columns prove it
+  // too — `Core` has no market-cap column.
   test('a restored panel comes back with the parameters it was saved with (TERM-05)', async ({
     page,
   }) => {
-    test.fail(
-      true,
-      'DEFECT: onRestored re-runs a frame as "<security> <fn>", so the frame’s params are dropped ' +
-        'and the panel comes back on the manifest defaults. App.tsx L1135.',
-    );
-
     await openTerminal(page);
 
-    // The control: this person CAN open that watchlist, and the panel shows it when asked.
+    // `MAG7` is Alex Pardo's list, shared to the firm, so Jane Ruiz can open it (SEC-05: a
+    // firm-shared list is visible inside the firm). The panel shows it when asked.
     const saved = savedLayout(page, '4', 'p4');
-    await go(page, 'p4', 'W Core');
-    await expect(panelOf(page, 'p4')).toContainText('W · Core', { timeout: 20_000 });
-    await expect(panelOf(page, 'p4')).toContainText('5 rows');
-    // Wait for the save that carries this panel, so that what the reload below loses is the PARAMS
-    // and not the whole frame — the flush defect above would otherwise fail this test for the wrong
-    // reason, and a `test.fail` that fails for the wrong reason records nothing.
+    await go(page, 'p4', 'W MAG7');
+    await expect(panelOf(page, 'p4')).toContainText('W · MAG7', { timeout: 20_000 });
+    await expect(panelOf(page, 'p4')).toContainText('7 rows');
+    // Wait for the save that carries this panel, so that what the reload tests is the PARAMS and not
+    // the flush defect this file's header describes.
     await saved;
 
     await page.reload();
     await expect(page.getByTestId('shell')).toBeVisible({ timeout: 30_000 });
-    await expect(panelOf(page, 'p4')).toContainText('W ·', { timeout: 30_000 });
 
-    // A short timeout on purpose: this assertion is expected to fail, and a 30 s wait for a failure
-    // already decided would add half a minute to every run of the suite.
-    await expect(panelOf(page, 'p4')).toContainText('W · Core', { timeout: 8_000 });
-    await expect(panelOf(page, 'p4')).toContainText('5 rows');
+    // The assertion TERM-05 asks for: the same list, and it is the person's own default list that
+    // used to be here. Not spelled as `not.toContainText('S&P 500 Top 25')` — `W`'s own list picker
+    // names every watchlist this person can open, so that string is on the screen either way; the
+    // header, the count and the columns below are what tell the two lists apart.
+    await expect(panelOf(page, 'p4')).toContainText('W · MAG7', { timeout: 30_000 });
+    await expect(panelOf(page, 'p4')).toContainText('7 rows');
+    // The columns come with the list (`watchlists.columns`, seed module 13): `MAG7` carries volume
+    // and market cap, `Core` carries neither — so this is the restored list's own definition and not
+    // only its title. And a row count is not a value: AAPL's last comes from the recorded Cboe poll
+    // and `row:85` is its instrument id, so the number is on APPLE'S ROW of the list that came back.
+    await expect(panelOf(page, 'p4').locator('[role="columnheader"]')).toHaveText([
+      'Security',
+      'Name',
+      'Last price',
+      'Percent change',
+      'Volume',
+      'Market capitalisation',
+    ]);
+    await expect(cellOf(page, 'p4', 'row:85', 'PX_LAST'), 'p4 · AAPL last').toContainText('330.27');
   });
 });

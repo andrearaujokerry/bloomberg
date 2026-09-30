@@ -820,7 +820,11 @@ export class CellRegistry {
     if (ms === 0) flash.endAllFlashes();
   }
 
-  /** Point {@link restyle} at a `QuoteCache`. `wsBridge` calls this when the client connects. */
+  /**
+   * Point {@link restyle} at a `QuoteCache`. `rt/wsBridge.ts#attach` calls this as it attaches this
+   * registry, which is the moment a cache and a registry first know about each other; until it does,
+   * {@link restyle} has no verdict to write and returns on its first line (TERM-12).
+   */
   setStateSource(stateOf: (subject: string) => ValueState | undefined): void {
     this.#stateOf = stateOf;
   }

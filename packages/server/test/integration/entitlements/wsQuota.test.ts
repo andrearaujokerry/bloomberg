@@ -59,6 +59,13 @@ interface World {
   /** A second live subject, so a ceiling of 1 has something to refuse. */
   other: string;
   client: WsClient;
+  /**
+   * The same app the socket is on, so a test can ask the HTTP side what the socket is doing. The
+   * `subs` counter is the only quota whose numerator lives in the process rather than in a table.
+   */
+  app: StartedWsApp;
+  /** A web session's cookie; `''` for an api one, which authenticates on the `hello` frame. */
+  cookie: string;
 }
 
 /**
@@ -119,7 +126,14 @@ async function world(spec: {
     client.send({ t: 'hello', protocol: 1, client: 'web/0.1.0', conflationMs: 50 });
   }
 
-  return { instrument, subject: instrument.subject, other: 'sys:status', client };
+  return {
+    instrument,
+    subject: instrument.subject,
+    other: 'sys:status',
+    client,
+    app,
+    cookie: spec.kind === 'web' ? (session as { cookie: string }).cookie : '',
+  };
 }
 
 async function ackFor(client: WsClient, id: number): Promise<SubAck> {
@@ -163,6 +177,74 @@ describe('the concurrent-subscription ceiling (API.md §8)', () => {
       limits: { maxSubscriptions: number };
     };
     expect(welcome.limits.maxSubscriptions).toBe(2_000);
+  });
+});
+
+describe('what the HTTP side reports for the live counter (API-06)', () => {
+  /**
+   * `concurrentSubscriptions.used` was a hardcoded `0`.
+   *
+   * `entitlements/quotas.ts#state` takes the count as an argument — the plant holds the subscription
+   * set in memory and there is no table to read, and the function's own comment says so — and every
+   * HTTP caller omitted the argument, so the field answered `0` with any number of subjects live.
+   * `subs 0/10,000` on the status strip was that constant, not a measurement, and the e2e test named
+   * "the quota strip reports the plant's own counters, not a constant" was satisfied by it.
+   *
+   * This is the only place in the suite where the two halves meet: a real socket holding real
+   * subscriptions, and the two HTTP reads a client makes about them. Both are asserted, because the
+   * strip is seeded from `/auth/session` at page load and refreshed from `/usage/quota` a minute
+   * later, and a fix to one of them would have left the other reading zero.
+   */
+  it('counts the socket’s live subjects on /usage/quota and /auth/session', async () => {
+    const w = await world({ kind: 'web' });
+    await w.client.next((f) => f.t === 'welcome');
+
+    const quota = async (): Promise<{ used: number; limit: number }> => {
+      const res = await w.app.app.inject({
+        method: 'GET',
+        url: '/api/v1/usage/quota',
+        headers: { cookie: w.cookie },
+      });
+      expect(res.statusCode, res.body).toBe(200);
+      return (JSON.parse(res.body) as { concurrentSubscriptions: { used: number; limit: number } })
+        .concurrentSubscriptions;
+    };
+
+    // Before any `sub`, zero is the truth rather than the constant — which is exactly why the
+    // assertion below has to move it.
+    expect((await quota()).used).toBe(0);
+
+    w.client.send({ t: 'sub', id: 1, subjects: [{ s: w.subject, f: ['PX_LAST'] }] });
+    expect((await ackFor(w.client, 1)).accepted).toHaveLength(1);
+    w.client.send({ t: 'sub', id: 2, subjects: [{ s: w.other, f: [] }] });
+    expect((await ackFor(w.client, 2)).accepted).toHaveLength(1);
+
+    const after = await quota();
+    expect(after.used, 'GET /usage/quota does not see the socket’s subscriptions').toBe(2);
+    expect(after.limit).toBe(10_000);
+
+    const session = await w.app.app.inject({
+      method: 'GET',
+      url: '/api/v1/auth/session',
+      headers: { cookie: w.cookie },
+    });
+    expect(session.statusCode, session.body).toBe(200);
+    // `GET /auth/session` answers the bare `SessionInfo`; `POST /auth/login` is the one that wraps it
+    // in `{ session }` (API.md §1.2/§1.3).
+    const info = JSON.parse(session.body) as {
+      quotas: { concurrentSubscriptions: { used: number; limit: number } };
+    };
+    expect(
+      info.quotas.concurrentSubscriptions.used,
+      'the page-load snapshot the status strip is seeded from does not see them either',
+    ).toBe(2);
+
+    // And it comes back down: a gauge that only ever rose would read as a leak the first time a
+    // panel was retargeted (TERM-12's own register — a number that cannot fall is not a measurement).
+    // `unsub` is not acknowledged on the wire (API.md §6.4), so the read is retried rather than
+    // sequenced: the assertion is the value it settles on, not the first one it sees.
+    w.client.send({ t: 'unsub', subjects: [w.other] });
+    await expect.poll(async () => (await quota()).used, { timeout: 2_000 }).toBe(1);
   });
 });
 

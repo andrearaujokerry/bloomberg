@@ -1366,6 +1366,281 @@ describe('a Cell renders its ValueState distinctly', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
+// 4b. A withheld cell is not a missing one (ENTL-05)
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * The fields `eod@demo.terminal`'s grant does not reach, and the fields it serves.
+ *
+ * Both lists are measured, not invented: `packages/e2e/tests/entitlement.spec.ts` runs
+ * `AAPL US Equity DES` as that user against the seeded database and records exactly this split —
+ * `PX_LAST`, `PX_BID`, `PX_ASK` and `LAST_TRADE_TIME` withheld, the five settled fields served with
+ * the same numbers the delayed desk sees.
+ */
+const EOD_WITHHELD = new Set(['PX_LAST', 'PX_BID', 'PX_ASK', 'LAST_TRADE_TIME']);
+const EOD_SERVED = new Set(['PX_OPEN', 'PX_HIGH', 'PX_LOW', 'PX_CLOSE_1D', 'PX_VOLUME']);
+
+/**
+ * A payload as the `eod` tier view hands it to a screen, derived from the committed `pm` golden.
+ *
+ * This is the one transform in the file, and it is not a convenience: no golden is minted for the
+ * end-of-day desk, so the shape this section is about — a cell with NO value, in state `closed`,
+ * carrying `r: 'TIER_EOD'` — cannot be read off `fixtures/golden/`. It is however exactly what
+ * `server/src/plant/policyTier.ts#eodView` produces, and the rule is transcribed from that function
+ * rather than guessed: the state is set once for the whole quote (`'closed'`), a served field keeps
+ * its number, an unserved one becomes `null` with `r: 'TIER_EOD'` and loses its source timestamp,
+ * because `r` carries a reason only for a field that is not served.
+ *
+ * Keyed off `live.field`, so the projection lands on the same cells the subscription would cover and
+ * nothing else — and the *screen* is still the real one. That matters more than the payload's
+ * provenance here: the question this section answers is whether a `ValueCell`'s reason survives the
+ * screen's own cell construction (`screens/shared/quoteHeader.ts#cell` spreads it) and reaches the
+ * DOM, and a hand-built `Cell` handed straight to the renderer would skip both halves.
+ */
+function eodProjection<T>(payload: T): T {
+  const walk = (value: unknown): unknown => {
+    if (Array.isArray(value)) return value.map(walk);
+    if (value === null || typeof value !== 'object') return value;
+    const o = value as Record<string, unknown>;
+    const field = (o.live as { field?: string } | undefined)?.field;
+    if (typeof o.st === 'string' && 'v' in o && field !== undefined) {
+      if (EOD_WITHHELD.has(field)) {
+        const { ts: _dropped, ...rest } = o;
+        return { ...rest, v: null, st: 'closed', r: 'TIER_EOD' };
+      }
+      if (EOD_SERVED.has(field)) return { ...o, st: 'closed' };
+    }
+    return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, walk(v)]));
+  };
+  return walk(payload) as T;
+}
+
+/**
+ * `DES` as the end-of-day desk, spec and meta.
+ *
+ * The meta carries the notes the run really reports for that user — `downgrade` /
+ * `NOT_ENTITLED_TIER` / `effectiveTier: 'eod'`, one per price field — and that is deliberate rather
+ * than incidental: `ScreenRenderer#reasonResolverFor` puts only `deny` notes in the payload-level
+ * lookup, so on this screen the lookup can explain nothing. The cell's own `r` is the only thing
+ * that can, which is what makes this the honest test of the cell-level rule.
+ */
+function eodDesCase(): Case {
+  const payload = eodProjection(golden<'DES'>('DES.equity.json'));
+  const rec = newRecorder();
+  const mod = screenModules.DES as { Screen: AnyScreen };
+  const props = propsFor('DES', payload, {}, rec) as unknown as ScreenProps<never, never>;
+  const base = metaFor(payload);
+  const meta: PayloadMeta = {
+    ...base,
+    tier: 'eod',
+    entitlement: [...EOD_WITHHELD, ...EOD_SERVED].map((fieldId) => ({
+      fieldId,
+      decision: 'downgrade' as const,
+      effectiveTier: 'eod' as const,
+      reason: 'NOT_ENTITLED_TIER' as const,
+    })),
+    unavailable: [],
+  };
+  return { name: 'DES.equity(eod)', code: 'DES', spec: mod.Screen(props), meta, rec };
+}
+
+describe('a withheld cell says it was withheld, not that the session ended (ENTL-05)', () => {
+  /** The `role="cell"` a screen reader announces this cell inside — `KeyValue`'s and `Table`'s. */
+  function announced(cell: Element | null | undefined): HTMLElement {
+    const host = cell?.closest<HTMLElement>('[role="cell"]') ?? null;
+    if (host === null) throw new Error('a cell is not inside a role="cell"');
+    return host;
+  }
+
+  it('the eod desk’s withheld price carries its reason in the pixels and in the accessible name', () => {
+    const c = eodDesCase();
+    const container = renderCase(c);
+    const withheld = container.querySelector<HTMLElement>('.cell[data-field="PX_LAST"]');
+    expect(withheld, 'DES draws no PX_LAST cell — the quote header has changed').not.toBeNull();
+
+    // The state is the server's and is not laundered: the session really has closed.
+    expect(withheld?.dataset.st).toBe('closed');
+    // No number leaks, and the reason is beside the dash where a reader looking at the row sees it.
+    expect(visibleText(withheld?.querySelector('.cell__value'))).toBe('—');
+    expect(visibleText(withheld?.querySelector('.cell__reason'))).toBe('TIER_EOD');
+
+    // And it reaches a screen reader. The WP-12 version of this defect had the reason in the DOM
+    // inside a one-pixel span, which passed a `textContent` assertion and told nobody, so both
+    // halves are asserted: `visibleText` above strips every `.sr-only` node, and the accessible
+    // name below is what a reader is actually handed.
+    const name = announced(withheld).getAttribute('aria-label');
+    expect(name, 'the cell is named by its contents, not by an aria-label').toBeNull();
+    // THE WHOLE NAME, not a fragment of it. `/no value: TIER_EOD/` was the assertion here, and a
+    // fragment match cannot see whether the em dash and the visually-hidden prefix are separated —
+    // which a repair pass reported they were not. They are, in Chrome and here, and `CellView.tsx`'s
+    // header records where the separator comes from and how it was measured. What this line adds is
+    // that the sentence is pinned end to end: a prefix that stopped being announced, a state phrase
+    // that stopped being appended, or an em dash that welded to either of them is a different string
+    // and turns this red.
+    expect(announced(withheld)).toHaveAccessibleName(
+      // The row label is the kv row's own key element here, not a `label` prop on the cell, so the
+      // name begins at the dash.
+      '— no value: TIER_EOD (closed, session ended)',
+    );
+  });
+
+  it('the reason is drawn, not hidden: `.cell__reason` is not clipped the way `.sr-only` is', () => {
+    // WP-12's first version of this defect was not a missing span. It was a span that existed, held
+    // the right text and was clipped to one pixel — which satisfied every `textContent` assertion in
+    // the suite and told 73 readers nothing. jsdom computes no layout, so the DOM cannot answer this
+    // and the stylesheet has to: the same honest substitute `stateGlyphs()` makes for the `::after`
+    // marks. The `.sr-only` rule is read beside it as the control, because a test that only looked
+    // at `.cell__reason` would also pass against a file that clips nothing at all.
+    const css = readFileSync(
+      join(TEST_DIR, '..', '..', 'src', 'screen', 'widgets', 'widgets.css'),
+      'utf8',
+    );
+    // Anchored at the start of a line so a compound selector that merely contains the class name
+    // cannot be mistaken for the rule that declares it.
+    const ruleFor = (selector: string): string => {
+      const hit = new RegExp(`^\\${selector}\\s*\\{([^}]*)\\}`, 'm').exec(css);
+      expect(hit?.[1], `widgets.css declares no ${selector} rule`).toBeDefined();
+      return (hit?.[1] ?? '').replace(/\s+/g, ' ');
+    };
+
+    const srOnly = ruleFor('.sr-only');
+    expect(srOnly, 'the control: .sr-only is what a clipped span looks like').toMatch(/clip/);
+
+    const reason = ruleFor('.cell__reason');
+    for (const hidden of [
+      /\bclip\b/,
+      /width:\s*1px/,
+      /height:\s*1px/,
+      /display:\s*none/,
+      /visibility:\s*hidden/,
+      /font-size:\s*0\s*;/,
+      /opacity:\s*0\s*;/,
+      /position:\s*absolute/,
+    ]) {
+      expect(reason, `.cell__reason is hidden by ${String(hidden)}`).not.toMatch(hidden);
+    }
+    // And it is drawn in the colour the denial owns, so it reads as a denial and not as a value.
+    expect(reason).toMatch(/color:\s*var\(--c-blocked\)/);
+  });
+
+  it('a withheld price and a price the source does not have are not the same mark', () => {
+    // The whole of ENTL-05 in one comparison, on one rendered screen: one cell the eod grant
+    // withheld and one the payload has no source for. Both are an em dash, which is correct — what
+    // must differ is what each says about itself.
+    const c = eodDesCase();
+    const absent = mountedCells(c.spec).find(
+      (cell) => cell.st === 'blank' && cell.fieldId !== undefined && cell.r === undefined,
+    );
+    expect(absent?.fieldId, 'DES draws no unexplained blank cell any more').toBeDefined();
+    const absentField = absent?.fieldId ?? '';
+    const meta: PayloadMeta = {
+      ...c.meta,
+      unavailable: [{ field: absentField, reason: 'NO_SOURCE', detail: 'no capture for this field' }],
+    };
+
+    const container = renderSpec(c.spec, meta, c.rec);
+    const withheld = container.querySelector<HTMLElement>('.cell[data-field="PX_LAST"]');
+    const missing = [...container.querySelectorAll<HTMLElement>('.cell')].find(
+      (el) => visibleText(el.querySelector('.cell__reason')) === 'NO_SOURCE',
+    );
+    expect(withheld).not.toBeNull();
+    expect(missing, `no cell picked up the NO_SOURCE note for ${absentField}`).toBeDefined();
+
+    expect(visibleText(withheld?.querySelector('.cell__value'))).toBe('—');
+    expect(visibleText(missing?.querySelector('.cell__value'))).toBe('—');
+    // Same glyph, different account of itself — on screen and to a reader.
+    expect(visibleText(withheld)).not.toBe(visibleText(missing));
+    expect(announced(withheld)).toHaveAccessibleName(/TIER_EOD/);
+    expect(announced(missing)).toHaveAccessibleName(/NO_SOURCE/);
+    expect(announced(missing)).not.toHaveAccessibleName(/TIER_EOD/);
+  });
+
+  it('the badge belongs to the reason, not to one state: all five states show one when they carry one', () => {
+    // The five states side by side is the comparison no golden provides (see §4). The point here is
+    // that `closed` was not a special case to be added beside `blank`: the rule is that a cell with
+    // a reason has something to say, and a rule written state by state is the defect this closes.
+    const reasoned: Cell[] = (['live', 'stale', 'closed', 'blank', 'na'] as const).map((st) => ({
+      v: st === 'live' || st === 'stale' ? 231.45 : null,
+      st,
+      provIdx: 0,
+      fmt: 'px',
+      decimals: 2,
+      r: 'QUOTA_EXCEEDED',
+    }));
+    const container = renderSpec(
+      {
+        title: 'Five states, one reason',
+        body: {
+          kind: 'kv',
+          id: 'reasoned',
+          rows: reasoned.map((cell) => ({ label: cell.st, value: cell })),
+        },
+      },
+      metaFor({ provIdx: 0 }),
+      newRecorder(),
+    );
+
+    const cells = [...container.querySelectorAll<HTMLElement>('.cell')];
+    expect(cells).toHaveLength(5);
+    for (const el of cells) {
+      expect(
+        visibleText(el.querySelector('.cell__reason')),
+        `state '${el.dataset.st ?? ''}' hides its reason`,
+      ).toBe('QUOTA_EXCEEDED');
+      expect(announced(el)).toHaveAccessibleName(/QUOTA_EXCEEDED/);
+    }
+    // And the five are still five: the badge is the same on all of them, so the thing that keeps
+    // them apart is the state phrase, which this change does not touch (TERM-12).
+    expect(new Set(cells.map((el) => el.textContent))).toHaveProperty('size', 5);
+  });
+
+  it('a cell with no number consults the payload-level reason whatever state it is in', () => {
+    // The cell-level `r` above is one half. The other is the lookup `ScreenRenderer` builds from
+    // `meta`, which a payload uses far more often — and it was reached only by `st: 'blank'`. The
+    // goldens do carry cells that show no number in another state (`LAST_TRADE_TIME` comes back
+    // `{ v: null, st: 'live' }` on a subject that has not printed today), and those rendered an
+    // unexplained em dash in a state that says the value is current.
+    const candidates = CASES.flatMap((c) =>
+      mountedCells(c.spec)
+        .filter(
+          (cell) =>
+            cell.v === null &&
+            cell.st !== 'blank' &&
+            cell.r === undefined &&
+            cell.fieldId !== undefined,
+        )
+        .map((cell) => ({ c, cell })),
+    );
+    expect(
+      candidates.length,
+      'no golden shows a valueless cell outside `blank` — this test would be vacuous',
+    ).toBeGreaterThan(0);
+
+    for (const { c, cell } of candidates) {
+      const field = cell.fieldId ?? '';
+      const meta: PayloadMeta = {
+        ...c.meta,
+        entitlement: [],
+        unavailable: [{ field, reason: 'NO_SOURCE', detail: 'no capture for this field' }],
+      };
+      const container = renderSpec(c.spec, meta, c.rec);
+      const shown = [...container.querySelectorAll<HTMLElement>(`.cell[data-st="${cell.st}"]`)]
+        .filter((el) => visibleText(el.querySelector('.cell__reason')) === 'NO_SOURCE');
+      expect(
+        shown.length,
+        `${c.name}: the ${cell.st} cell for ${field} is an unexplained glyph`,
+      ).toBeGreaterThan(0);
+      // The state's own glyph, not a number: `na` prints `·` and everything else the em dash
+      // (CLIENT §12.1). The reason explains the glyph; it never appears beside a value.
+      const glyph = cell.st === 'na' ? '·' : '—';
+      for (const el of shown) {
+        expect(visibleText(el.querySelector('.cell__value')), `${c.name}: ${field}`).toBe(glyph);
+      }
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
 // 5. Ctrl+I opens the provenance panel for the focused cell (DATA-10)
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 

@@ -47,6 +47,7 @@ import type {
 import type { MonitorColumn } from '@terminal/core/functions/shared/monitor';
 
 import { AppError } from '../../http/errors.js';
+import { worstState } from '../../data/request.js';
 import type { GatedQuoteState, ResolveContext } from '../context.js';
 import { cellFromState } from '../shared/cells.js';
 import { rowMeta, type RowMeta } from '../QM/resolve.js';
@@ -301,6 +302,37 @@ export async function resolve(ctx: ResolveContext, params: WParams): Promise<WPa
   ctx.plant.ensureHot(subjects);
   const snapshots: Map<string, GatedQuoteState> = ctx.plant.snapshotMany(subjects);
 
+  /**
+   * HOW FRESH A FORMULA'S ANSWER IS: the worst state of the leaves it read (TERM-12).
+   *
+   * A formula row is not a subject, so nothing on the wire will ever update it and no client-side
+   * staleness sweep can reach it — `LiveGrid` looks a cell up by subject and a formula row has none.
+   * Its state therefore has to be computed here, from the inputs, and the only honest answer is the
+   * least fresh of them: `RATIO(AAPL US Equity, SPX Index)` is exactly as current as the older of
+   * the two prices it divides.
+   *
+   * This used to be a literal `'live'`. Measured on the seeded desk: the `RATIO` row rendered
+   * `data-st="live"` and the accessible name "Last price: 0.04, live", byte-identical after 70 s,
+   * while both of its inputs two rows away read "stale, no fresh update". That is TERM-12's own
+   * clause — a dead feed leaving a live number on the screen — and a computed number is the easiest
+   * place in the product for it to hide, because nothing about the arithmetic goes wrong.
+   *
+   * `worstState` is `data/request.ts`'s, the same ordering `meta.staleness` and
+   * `ProvenanceIndex.worstState()` use (`live < closed < na < stale < blank`), so a formula cell and
+   * the payload's own staleness badge cannot disagree. A leaf with no snapshot at all counts as
+   * `'stale'`: it was asked for and nothing came back, which is not `'closed'`.
+   */
+  const formulaState = (formula: string): ValueCell['st'] => {
+    const states = probe(formula).securities.map((security): ValueCell['st'] => {
+      const leaf = leaves.get(security);
+      if (leaf === undefined || leaf.subject === '') return 'stale';
+      return snapshots.get(leaf.subject)?.state ?? 'stale';
+    });
+    // A formula naming no security at all (`1 + 1`) reads nothing, so there is nothing to be stale:
+    // `worstState([])` is `'live'` and that is the right answer for a constant.
+    return worstState(states);
+  };
+
   /** A leaf's current value of `field`, or `null` when it was never polled or is denied. */
   const leafValue = (security: FormulaSecurity | null, field: FieldId): number | null => {
     if (security === null) return null;
@@ -320,6 +352,13 @@ export async function resolve(ctx: ResolveContext, params: WParams): Promise<WPa
     const state = subject === '' ? undefined : snapshots.get(subject);
     const cells: Record<string, ValueCell> = {};
     const deps: string[] = [];
+    /**
+     * How fresh THIS ROW's own numbers are, whatever a formula column over them then computes.
+     *
+     * A plain row's answer is its snapshot; a formula row's is set below from its leaves. Either way
+     * a nothing-came-back is `'stale'` and not `'closed'`, because the row was asked for.
+     */
+    let rowState: ValueCell['st'] = state?.state ?? 'stale';
 
     if (plainId !== null) {
       for (const column of fieldColumns) {
@@ -331,6 +370,8 @@ export async function resolve(ctx: ResolveContext, params: WParams): Promise<WPa
       const formula = item.formula!;
       const message = formulaMessage(formula);
       if (message !== null) formulaErrors.push({ where: `row:${String(item.position)}`, message });
+      const st = formulaState(formula);
+      rowState = st;
       for (const column of fieldColumns) {
         const field = column.fieldId!;
         const evaluation = evaluateFormula(formula, {
@@ -342,7 +383,7 @@ export async function resolve(ctx: ResolveContext, params: WParams): Promise<WPa
             ? { v: null, st: 'na', provIdx: -1 }
             : {
                 v: evaluation.value,
-                st: 'live',
+                st,
                 provIdx: firstLeafProvIdx(ctx, formula, leaves, snapshots),
               };
       }
@@ -366,10 +407,16 @@ export async function resolve(ctx: ResolveContext, params: WParams): Promise<WPa
         },
         defaultField: DEFAULT_FORMULA_FIELD,
       });
+      // A formula COLUMN reads this row's own fields and, when it names one, other securities; so
+      // it is as fresh as the worse of the two, not as fresh as the row alone.
       cells[column.id] =
         evaluation.value === null
           ? { v: null, st: 'na', provIdx: -1 }
-          : { v: evaluation.value, st: state?.state ?? 'live', provIdx: cellProvIdx(cells) };
+          : {
+              v: evaluation.value,
+              st: worstState([rowState, formulaState(formula)]),
+              provIdx: cellProvIdx(cells),
+            };
       for (const security of probe(formula).securities) {
         const leaf = leaves.get(security);
         if (leaf !== undefined && leaf.subject !== '' && !deps.includes(leaf.subject)) {

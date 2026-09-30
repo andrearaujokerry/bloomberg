@@ -22,22 +22,28 @@
 // `ChartCanvas`. They are registered under three names rather than one because the screens address
 // them by name and a name with nothing behind it is a placeholder.
 //
-// ## The two `custom` names that are deliberately NOT here
+// ## The two `custom` names that used to be missing, and what they are now
 //
-//   * **`Sparkline`** (DES, ECO, EE) passes `{ points: [{t, v}], fmt }` — bare points, and no
-//     `provIdx` on any of them. Drawing them would mean synthesising a `ChartSpec`, and every
-//     `ChartSeries` in one carries a mandatory `provIdx`: there is no honest value to put there.
-//     DATA-10 does not allow a drawn number whose source cannot be named, so the node keeps its
-//     placeholder — which names the component and states that nothing is plotted — until a screen
-//     passes provenance with the points.
-//   * **`Composer`** (MSG, FXC) is not a chart at all. `FXC/Screen.tsx` says so in a comment: it is
-//     "a keyboard-driven editor grid", with its own arrow-key handling, and the two screens pass two
-//     unrelated prop shapes (a currency matrix; a message draft with attachments and a send gate).
-//     No component for either exists anywhere in the repo. Registering the chart adapter under that
-//     name would draw an empty canvas over a message composer.
+//   * **`Sparkline`** (DES `rate`, ECO, EE) is `screen/widgets/Sparkline.tsx`. It was left out here
+//     because the node passes `{ points: [{t, v}], fmt }` with no `provIdx` on any point, and
+//     DATA-10 does not allow a drawn number whose source cannot be named. That reasoning holds for
+//     the numbers and not for the picture, which is the distinction the component is built on: it
+//     draws the shape with WP-14's own `SERIES_DRAWS.line` and prints no number at all — no axis, no
+//     tick label, no readout — and carries no `data-prov-idx`, so `Ctrl+I` on it reports that it
+//     cites no provenance. The values themselves are printed, with their own indexes, in the kv and
+//     grid blocks beside it on all three screens. Its header has the measurements behind not using
+//     `Renderer` directly.
+//   * **`Composer`** (MSG, FXC) is `screen/widgets/Composer.tsx`, and it is MSG's message draft
+//     only. FXC addresses the same name for a currency cross matrix — "a keyboard-driven editor
+//     grid", its own comment says — and the component recognises that shape and names it rather than
+//     drawing a message box over it. MSG's composer drafts, keeps the draft across a payload
+//     refresh, prints MSG-03's disclaimer and the `sendBlockedReason` gate, and states plainly that
+//     it cannot send: there is no messaging port in the widget tree and `AppSdk` declares no
+//     `messaging.send`, so a GO wired to an injected port would be dead in the product. Both limits
+//     are in that file's header.
 //
-// Both are reported as missing rather than approximated, because a placeholder that says what it is
-// waiting for is a fact a reader can act on and a wrong drawing is not.
+// Neither component approximates anything: what cannot be attributed is not printed, and what has no
+// component still says what it is waiting for.
 
 import { useEffect, useRef, useState } from 'react';
 import type { ComponentType, ReactElement } from 'react';
@@ -45,6 +51,8 @@ import type { ComponentType, ReactElement } from 'react';
 import { ChartCanvas } from './chart/index.js';
 import type { ChartParamsPatch } from './chart/index.js';
 import { LiveGrid } from './grid/LiveGrid.js';
+import { Composer } from './screen/widgets/Composer.js';
+import { Sparkline } from './screen/widgets/Sparkline.js';
 import type { ChartSpec } from './screen/types.js';
 import type { CustomComponentProps, WidgetRegistry } from './screen/widgets/registry.js';
 import { usePanelsStore } from './state/panels.js';
@@ -226,7 +234,10 @@ export function buildWidgetRegistry(options: WidgetRegistryOptions = {}): Widget
       PriceChart: chart,
       CurveChart: chart,
       OptionSurface: chart,
-      // `Sparkline` and `Composer` are absent on purpose — see the file header.
+      // Neither of these two takes a `ChartSpec`, and neither takes the chart adapter: `Sparkline`
+      // owns its own canvas (no axes, no numbers) and `Composer` is a text control. See the header.
+      Sparkline,
+      Composer,
     },
   };
 }

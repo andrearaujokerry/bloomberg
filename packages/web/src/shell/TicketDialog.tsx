@@ -9,9 +9,12 @@
 //
 // There is no 24/7 desk behind this (BRIEF §1). Tickets are rows answered by `helpdesk` users at
 // `HELP TICKETS`, and the confirmation hands back the `ticketId` and the `roomId` of the room the
-// server opened, which the Shell turns into `MSG` in the next panel. That is why `onOpened` carries
-// both ids rather than this component navigating on its own: which panel is "next" is the Shell's
-// business, not a dialog's.
+// server opened. `onOpened` carries both ids rather than this component navigating on its own,
+// because which panel is "next" is the Shell's business, not a dialog's — and no host navigates on it
+// today, which is why the confirmation below names the room and the command instead of promising a
+// panel. `onOpened` MUST NOT close this dialog: it fires in the same tick as `sent`, so a host that
+// closes on it unmounts the confirmation before it paints and the user learns nothing about a ticket
+// that was created (TERM-09; this was the measured gap at `e2e/tests/help.spec.ts`).
 //
 // `ticket.open` is NOT emitted here. FUNCTIONS §1.10 assigns that event to the server's
 // `POST /help/tickets`, which is also the only side that knows the `ticketId` it must carry. A
@@ -67,7 +70,10 @@ export interface TicketDialogProps {
   draft: TicketDraft;
   sdk: TicketSdk;
   onClose: () => void;
-  /** The server opened a room for this ticket: the Shell runs `MSG` on it in the next panel. */
+  /**
+   * The server opened a room for this ticket. A host may use the ids; it must not close this dialog
+   * from here (see the file header — that is the TERM-09 gap this prop caused).
+   */
   onOpened?: (result: TicketCreatedResponse) => void;
 }
 
@@ -238,12 +244,22 @@ export function TicketDialog({ draft, sdk, onClose, onOpened }: TicketDialogProp
         <h2 style={{ ...LABEL, fontSize: '1rem', margin: '0.5em 0' }}>Open a ticket</h2>
 
         {state === 'sent' && created !== null ? (
-          <div role="status">
+          // This branch was unreachable until TERM-09's gap was closed: `App.tsx#PanelOverlay` passed
+          // `onOpened={() => onClose()}`, and `submit` calls `onOpened` in the same tick it sets
+          // `sent`, so the dialog unmounted before the confirmation could paint. The ticket was
+          // opened and the user was told nothing. It closes on Close or Escape now, and nothing
+          // closes it for them.
+          <div role="status" data-testid="ticket-opened">
             <p>{`Ticket ${String(created.ticketId)} opened.`}</p>
             <p style={MUTED}>
-              {`The helpdesk room is open in the next panel (MSG room ${String(created.roomId)}). Answers arrive there.`}
+              {/* The room is REAL — the server opened it with the ticket — and it is not on screen:
+                  nothing in this application navigates a panel for the user here (App.tsx says why).
+                  So the sentence names the room and the command that opens it rather than claiming a
+                  panel that does not exist; the previous wording said "open in the next panel", which
+                  was never true even before the confirmation stopped painting. */}
+              {`Answers arrive in helpdesk MSG room ${String(created.roomId)} — run \`MSG ROOM=${String(created.roomId)}\` in any panel to read them.`}
             </p>
-            <button type="button" style={BUTTON} onClick={onClose}>
+            <button type="button" className="ticket__close" style={BUTTON} onClick={onClose}>
               Close
             </button>
           </div>

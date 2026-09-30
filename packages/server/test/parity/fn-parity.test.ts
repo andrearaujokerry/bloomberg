@@ -74,8 +74,9 @@
  *
  * **WHAT THIS FILE FOUND, and did not fix.** Six defects, each in a package this file may not edit,
  * each recorded by name so that it is neither hidden nor able to hide the next one: see
- * {@link CENSUS} (five resolvers that answer `500` against the seeded universe, two of them because
- * a seeded Treasury cannot be priced), {@link CSV_CENSUS} (twenty exports refused `403` for a field
+ * {@link CENSUS} (three resolvers that answer `500` against the seeded universe; the two that failed
+ * because a seeded Treasury could not be priced are fixed and their entries say what it was),
+ * {@link CSV_CENSUS} (twenty-one exports refused `403` for a field
  * with no `field_licence` row), {@link KNOWN_CELL_DEFECTS} (`FA`'s period columns typed `number`
  * and filled with text) and {@link KNOWN_LIVE_DEFECTS} (a field the payload refuses and the socket
  * serves). Each table is asserted exactly, so a fix turns the file red until the entry is deleted.
@@ -301,14 +302,21 @@ const CENSUS: Record<string, string> = {
   'Q×rate': 'ok',
   'RV×equity': 'ok',
   'SECF': 'ok',
-  'SRCH': 'INTERNAL',
+  // Was `INTERNAL`. `govt_terms.last_regular_coupon` equals `maturity_date` for every seeded note —
+  // the seed's own comment says a Treasury note's final coupon IS a regular one — and the resolver
+  // passed it to the engines as `BondTerms.penultimateCouponDate`, which exists only for an ODD last
+  // coupon and must be strictly earlier. `RangeError: bond: penultimateCouponDate 2028-08-31 is not
+  // before maturity 2028-08-31` was the whole screen's answer. `functions/shared/bondTerms.ts` now
+  // states the translation once, for this resolver and `YAS`'s.
+  'SRCH': 'ok',
   'SWPM': 'ok',
   'TOP': 'ok',
   'W': 'ok',
   'WB': 'ok',
   'WEI': 'ok',
   'WIRP': 'ok',
-  'YAS×govt': 'INTERNAL',
+  // Same cause, same fix as `SRCH` above: a seeded Treasury can be priced now.
+  'YAS×govt': 'ok',
 };
 
 /**
@@ -386,12 +394,17 @@ const CSV_CENSUS: Record<string, string> = {
   'Q×rate': 'ok',
   'RV×equity': 'ok',
   'SECF': 'ok',
+  // New rows: both launches used to fail, so door 2 was never reached for either of them. `SRCH`
+  // joins the twenty-one exports refused for a field with no `field_licence` row; `YAS`'s file is
+  // served and compares cell for cell.
+  'SRCH': 'ENTITLEMENT_DENIED',
   'SWPM': 'ok',
   'TOP': 'ok',
   'W': 'ok',
   'WB': 'ok',
   'WEI': 'ok',
   'WIRP': 'ok',
+  'YAS×govt': 'ok',
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────

@@ -24,8 +24,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { manifests, registry } from '@terminal/core';
-import type { FunctionCode, PayloadOf } from '@terminal/core';
-import type { InstrumentSummary, PayloadMeta } from '@terminal/sdk';
+import type { FieldId, FunctionCode, PayloadOf } from '@terminal/core';
+import type { InstrumentSummary, PayloadMeta, SubscribeOptions, Subscription } from '@terminal/sdk';
 import type { Workspace, WorkspaceLayout } from '@terminal/sdk/wire/rest/workspaces';
 import { act, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -39,7 +39,7 @@ import { STALENESS_LEGEND, connectionOf } from '../../src/shell/StatusBar.js';
 import { PANEL_COUNT, usePanelsStore } from '../../src/state/panels.js';
 import { useSessionStore } from '../../src/state/session.js';
 import { useSettingsStore } from '../../src/state/settings.js';
-import { useSubscriptionsStore } from '../../src/state/subscriptions.js';
+import { selectSubjects, useSubscriptionsStore } from '../../src/state/subscriptions.js';
 import { DEFAULT_LAYOUT, useWorkspaceStore } from '../../src/state/workspace.js';
 import type { Scheduler, WorkspaceApi } from '../../src/state/workspace.js';
 
@@ -710,5 +710,165 @@ describe('a frame carries the params that were STORED, not the params a manifest
     for (const region of ['AMERICAS', 'EMEA', 'APAC']) {
       expect(within(panel).getByText(region)).toBeInTheDocument();
     }
+  });
+});
+
+/* ---------------------------------------------------------------------------------------------- */
+/* What a panel asks the socket for (CLIENT §9, TERM-08, TERM-12)                                   */
+/* ---------------------------------------------------------------------------------------------- */
+
+/**
+ * The panel-side half of the live path, which for fifteen packages did not exist.
+ *
+ * `state/subscriptions.ts#acquire` turns a screen's `LiveSpec` into `sub` frames and had no product
+ * caller: the only subscription the terminal ever made was `ChartCanvas`'s, so every grid drew its
+ * payload once and never received a delta — measured in Chrome, with the call removed again, as
+ * `q:85`, `q:21133` and `q:37398` never subscribed while the chart's `q:37367` was. `Panel` is the
+ * component that holds the frame, the manifest and the parsed params, so it is the component that can
+ * answer "what does this panel want off the wire".
+ *
+ * One limit of this file, stated rather than worked around: the committed goldens carry REDACTED
+ * instrument ids (`q:<AAPL>`), and `planSubscription` drops a subject that does not match the wire
+ * grammar — correctly, since the plant would reject the whole `sub` frame for it. So a golden-driven
+ * grid proves the spec that was computed and the subjects that were dropped; the assertion that a
+ * `sub` reaches the socket is made on CRVF, whose subject comes from a param and is therefore real.
+ * The end-to-end claim — a `sub` for a grid's own subjects, and a delta repainting the cell that
+ * changed — is `packages/e2e/tests/live-grid.spec.ts`'s, against the seeded database.
+ */
+describe('a panel subscribes what its manifest asks for', () => {
+  interface SubCall {
+    subjects: string[];
+    fields: FieldId[] | '*';
+    options: SubscribeOptions | undefined;
+  }
+
+  /** `LiveSubscriber` as `rt/wsBridge.ts` attaches it: the socket, recorded. */
+  function recordingSubscriber(): { calls: SubCall[]; unsubscribed: number[] } {
+    const calls: SubCall[] = [];
+    const unsubscribed: number[] = [];
+    useSubscriptionsStore.getState().attach({
+      subscribe: (subjects, fields, opts): Subscription => {
+        const id = calls.length + 1;
+        calls.push({ subjects: [...subjects], fields, options: opts });
+        return {
+          id,
+          subjects,
+          fields,
+          ack: Promise.resolve({ accepted: [], rejected: [] }),
+          on: () => () => undefined,
+          unsubscribe: () => unsubscribed.push(id),
+        };
+      },
+    });
+    return { calls, unsubscribed };
+  }
+
+  const W = (): Launch => launchOf('W', 'W.default.json', 'cccccccc-0000-4000-8000-000000000003');
+  const HP = (): Launch => launchOf('HP', 'HP.price.json', 'dddddddd-0000-4000-8000-000000000004');
+
+  it('computes the spec from the manifest over the payload on screen', () => {
+    render(<Shell />);
+    const w = W();
+    run('p1', w);
+
+    // What W's own `live` says about this payload — taken from the manifest, because the subjects are
+    // the watchlist's rows and a transcribed list would start asserting about the fixture instead.
+    const expected = manifests.W.live?.(w.params as never, w.payload as never) ?? null;
+    expect(expected, 'W no longer declares a live spec — this test is about the wrong function').not.toBeNull();
+
+    const entry = useSubscriptionsStore.getState().byPanel.p1;
+    expect(entry, 'the panel painted a streaming screen and asked for nothing').not.toBeNull();
+    expect(entry?.spec).toEqual(expected);
+    // It is the watchlist's four rows that were asked for, not an empty list that happens to match.
+    expect(entry?.spec.subjects).toContain('q:<AAPL>');
+    expect(entry?.spec.subjects.length).toBeGreaterThan(1);
+    expect(entry?.spec.fields).toContain('PX_LAST');
+    // …and the redacted ids are reported as dropped rather than silently discarded, which is also
+    // the proof that the plan was built from THIS payload's subjects (`planSubscription`).
+    expect(entry?.plan.dropped.map((d) => d.subject)).toContain('q:<AAPL>');
+  });
+
+  it('subscribes the parsed params, not the raw ones a restored frame carries', () => {
+    const socket = recordingSubscriber();
+    render(<Shell />);
+
+    // A restored CRVF frame: `params` holds only what the user typed, and they typed nothing.
+    // CRVF's live is `subjects: ['c:' + params.curveId]` over a key the manifest defaults to
+    // `UST_PAR`, so the raw bag would subscribe `c:undefined` — a subject the plant rejects, taking
+    // the whole `sub` frame with it, which is the failure mode `screenParams` exists to prevent.
+    act(() => {
+      usePanelsStore.getState().pushFrame('p1', {
+        security: null,
+        fn: 'CRVF',
+        traceId: 'restored-crvf-0001',
+        params: {},
+        instrument: null,
+      });
+      usePanelsStore.getState().replaceFrame('p1', {
+        payload: golden('CRVF.default.json'),
+        meta: metaFor('restored-crvf-0001'),
+        status: 'ready',
+      });
+    });
+
+    expect(usePanelsStore.getState().panels.p1?.frameStack[0]?.params).toEqual({});
+    expect(selectSubjects(useSubscriptionsStore.getState())).toEqual(['c:UST_PAR']);
+    // And it reached the socket the bridge attached: `c:` is one of the families for which `f: []`
+    // is legal (API.md §6.1), which is what `'*'` becomes on the wire.
+    expect(socket.calls).toEqual([
+      { subjects: ['c:UST_PAR'], fields: '*', options: { essential: true, conflationMs: 1_000 } },
+    ]);
+  });
+
+  it('releases the subjects when the frame moves to a screen that does not stream', () => {
+    const socket = recordingSubscriber();
+    render(<Shell />);
+
+    act(() => {
+      usePanelsStore.getState().pushFrame('p1', {
+        security: null,
+        fn: 'CRVF',
+        traceId: 'crvf-0002',
+        params: {},
+        instrument: null,
+      });
+      usePanelsStore.getState().replaceFrame('p1', {
+        payload: golden('CRVF.default.json'),
+        meta: metaFor('crvf-0002'),
+        status: 'ready',
+      });
+    });
+    expect(socket.calls).toHaveLength(1);
+    expect(socket.unsubscribed).toEqual([]);
+
+    // HP is a static screen (`live: null`): nothing about a price history changes while it is open,
+    // so holding its predecessor's subjects would spend the session's subscription budget on a panel
+    // that cannot show a tick.
+    run('p1', HP());
+    expect(useSubscriptionsStore.getState().byPanel.p1).toBeUndefined();
+    expect(socket.unsubscribed).toEqual([1]);
+    // No churn on the way: a release is not a resubscribe.
+    expect(socket.calls).toHaveLength(1);
+  });
+
+  it('releases them when the panel goes away, and a repaint does not resubscribe', () => {
+    const socket = recordingSubscriber();
+    const view = render(<Shell />);
+
+    const w = W();
+    run('p1', w);
+    const first = useSubscriptionsStore.getState().byPanel.p1?.plan;
+    expect(first).toBeDefined();
+
+    // The same payload painted again — a status write, a focus change, any of the things that give a
+    // frame a new identity. `acquire` diffs, so the socket sees nothing: a repaint that resubscribed
+    // would gap the stream and make the server rebuild its field mask several times a second.
+    run('p1', w);
+    expect(useSubscriptionsStore.getState().byPanel.p1?.plan).toBe(first);
+    expect(socket.calls).toHaveLength(0); // W's golden subjects are redacted, hence dropped
+
+    // Going 4 → 1 unmounts three panels; this unmounts all of them at once, which is the same event.
+    view.unmount();
+    expect(useSubscriptionsStore.getState().byPanel).toEqual({});
   });
 });

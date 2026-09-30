@@ -144,7 +144,14 @@ interface ShownCell {
   text: string;
   /** The `title`, which is `CellView#cellTooltip`: state · reason · timestamp. */
   title: string;
-  /** `.cell__reason` — the visible `ReasonCode` beside a blank value, when there is one. */
+  /**
+   * `.cell__reason` — the `ReasonCode` beside a value the cell has not got, as a SIGHTED user reads
+   * it: the badge's text with every `.sr-only` node removed. `textContent` is not that, and the
+   * difference is the whole of WP-12's first version of this defect, where the reason was in the DOM
+   * inside a span clipped to one pixel. `CellView` puts a hidden prefix inside this badge ("no
+   * value: ") so a screen reader hears a sentence around the bare code; that prefix must not count
+   * as something the screen says.
+   */
   reason: string | null;
 }
 
@@ -186,15 +193,21 @@ async function desAs(context: BrowserContext): Promise<{
   const cells: Record<string, ShownCell> = await page.evaluate(() => {
     const out: Record<string, { state: string; text: string; title: string; reason: string | null }> =
       {};
+    /** An element's text as it is read on screen: its own, less every visually-hidden span. */
+    const visibleText = (el: Element | null): string | null => {
+      if (el === null) return null;
+      const clone = el.cloneNode(true) as Element;
+      for (const hidden of clone.querySelectorAll('.sr-only')) hidden.remove();
+      return (clone.textContent ?? '').trim();
+    };
     for (const el of document.querySelectorAll('[data-panel="p1"] [data-field][data-st]')) {
       const field = el.getAttribute('data-field');
       if (field === null || field in out) continue;
-      const value = el.querySelector('.cell__value');
       out[field] = {
         state: el.getAttribute('data-st') ?? '',
-        text: (value?.textContent ?? '').trim(),
+        text: visibleText(el.querySelector('.cell__value')) ?? '',
         title: el.getAttribute('title') ?? '',
-        reason: el.querySelector('.cell__reason')?.textContent?.trim() ?? null,
+        reason: visibleText(el.querySelector('.cell__reason')),
       };
     }
     return out;
@@ -341,46 +354,84 @@ test.describe('WP-15 entitlement — two desks, one instrument (ENTL-05)', () =>
     }
   });
 
-  // ── A DEFECT, recorded rather than hidden ───────────────────────────────────────────────────
+  // ── The rule the two desks exist to demonstrate, formerly a recorded defect ─────────────────
   //
-  // `test.fail()` and not `test.skip()`: it runs on every suite and it MUST fail, so the day the
-  // renderer tells the truth about a withheld cell, Playwright reports "expected to fail but
-  // passed" and this record cannot rot.
+  // This was a `test.fail()`. What it recorded: `ScreenRenderer.tsx`'s rule 4 and `CellView.tsx`'s
+  // own header both said a cell must print the `ReasonCode` that denied it, but `CellView` drew
+  // `.cell__reason` only when `cell.st === 'blank'` — and a value withheld by the eod grant does not
+  // arrive as `blank`. `server/src/plant/policyTier.ts#eodView` sets the state once for the whole
+  // quote and the reason per unserved field, so the payload carries `st: 'closed'`, `v: null`,
+  // `r: 'TIER_EOD'`. Measured on `eod@demo.terminal`'s `AAPL US Equity DES` in `bloomberg_e2e`:
   //
-  // What happens. `ScreenRenderer.tsx`'s rule 4 and `CellView.tsx`'s own header both say a blank
-  // cell must print the `ReasonCode` that denied it — "Without it a withheld price and a missing
-  // price are the same em dash." But `CellView` renders `.cell__reason` only when
-  // `cell.st === 'blank'`, and a value withheld by the eod grant does not arrive as `blank`: the
-  // payload carries `st: 'closed'`, `v: null`, `r: 'TIER_EOD'`. So `formatCell` prints the blank
-  // glyph, the reason span is never rendered, and the visually-hidden state phrase reads
-  // "closed, session ended".
+  //   PX_LAST  data-st="closed"  text "—"  .cell__reason absent  title "closed, session ended · TIER_EOD"
   //
-  // Measured on `eod@demo.terminal`'s `AAPL US Equity DES` in `bloomberg_e2e`:
-  //   PX_LAST  data-st="closed"  text "—"  title "closed, session ended · TIER_EOD"
+  // The user saw an em dash and was told the session had ended, which is true of the session and
+  // false of this value: it is absent because of their tier. The field-level badge strip did carry
+  // `PX_LAST: NOT_ENTITLED_TIER` (asserted above), so the information was on the SCREEN; it was not
+  // on the CELL, and the cell is what somebody reading a row looks at. That is the distinction
+  // ENTL-05 draws, and it is also the distinction the delayed desk's row depends on — a missing
+  // price and a withheld one cannot be the same mark.
   //
-  // The user sees an em dash and is told the session ended, which is true of the session and false
-  // of this value — it is absent because of their tier, and the only place that says so is a
-  // `title` attribute nobody hovers. The field-level badge strip does carry
-  // `PX_LAST: NOT_ENTITLED_TIER` (asserted above, and it is why the test above passes), so the
-  // information is on the screen; it is not on the CELL, which is the distinction ENTL-05 draws
-  // and the one that decides whether a person reading a row knows what they are looking at.
+  // `CellView` now draws the badge whenever a reason resolves, in any state, and the five state
+  // phrases are untouched so the `ValueState`s stay distinguishable from one another (TERM-12). Both
+  // halves are asserted here because the first version of this defect, in WP-12, was a reason that
+  // WAS in the DOM inside a one-pixel span: the pixels below are `.cell__reason`'s own text and the
+  // accessible name is what a screen reader is handed.
   test('a withheld cell says it was withheld, not that the session ended (ENTL-05)', async ({
     browser,
   }) => {
-    test.fail(
-      true,
-      'DEFECT: an entitlement-withheld cell arrives as st:"closed" with r:"TIER_EOD", and ' +
-        'CellView only renders .cell__reason for st:"blank" — so the cell shows a bare em dash. ' +
-        'CellView.tsx L162, ScreenRenderer.tsx rule 4.',
-    );
-
     const eodContext = await browser.newContext({ storageState: EOD_STATE });
     try {
       const eod = await desAs(eodContext);
       const withheld = eod.cells.PX_LAST;
       expect(withheld?.text, 'PX_LAST is not withheld — the grant has changed').toBe('—');
-      // The assertion the product should satisfy: the reason travels with the cell, visibly.
-      expect(withheld?.reason, 'the withheld cell carries no visible ReasonCode').not.toBeNull();
+      // The state is the server's and is not laundered on the way to the DOM: the session has closed.
+      expect(withheld?.state, 'the ValueState the server sent').toBe('closed');
+      // The reason travels with the cell, visibly, and it is the server's own code.
+      expect(withheld?.reason, 'the withheld cell carries no visible ReasonCode').toBe('TIER_EOD');
+
+      // Drawn at a size a person can read, which only a real browser can answer: jsdom lays nothing
+      // out, and WP-12's version of this defect was a span that held the right text inside a
+      // one-pixel box. Measured here at 56.05 × 13 CSS px; the floor below is well under that and well
+      // over the 1 × 1 a clipped span reports.
+      const badge = eod.page
+        .locator('[data-panel="p1"] .cell[data-field="PX_LAST"] .cell__reason')
+        .first();
+      await expect(badge).toBeVisible();
+      const box = await badge.boundingBox();
+      expect(box?.width ?? 0, 'the reason badge is clipped, not drawn').toBeGreaterThan(20);
+      expect(box?.height ?? 0, 'the reason badge is clipped, not drawn').toBeGreaterThan(8);
+
+      // And to a reader who is not looking at the pixels. `role="cell"` is `KeyValue.tsx`'s wrapper
+      // around the cell, so this is the name the row announces.
+      const named = eod.page
+        .locator('[data-panel="p1"] [role="cell"]')
+        .filter({ has: eod.page.locator('.cell[data-field="PX_LAST"]') })
+        .first();
+      //
+      // ANCHORED AT THE DASH, which is the part a fragment match cannot see. A repair pass reported
+      // this name arriving welded — `-no value: TIER_EOD (closed, session ended)` — because
+      // accessible-name computation concatenates inline descendants with nothing between them and the
+      // visual gap is `.cell__reason { margin-left: 0.5ch }`, which no name can see. Measured here in
+      // Chrome it is separated: the separator comes from `.sr-only`'s own `position: absolute`, which
+      // makes the span an out-of-flow box that Blink puts whitespace around. Nothing needed fixing;
+      // `/no value: TIER_EOD/` needed replacing, because it would have matched either way. Verified
+      // by removing the space from the prefix and re-running this test in Chrome: same name, byte for
+      // byte.
+      //
+      // Left outside the pattern on purpose: the trailing ` ▏` Chrome appends from `widgets.css`'s
+      // `[data-st='closed']::after`, the per-cell closed mark. It is asserted as a mark by the
+      // staleness tests and is not part of this sentence.
+      await expect(named).toHaveAccessibleName(
+        /^— no value: TIER_EOD \(closed, session ended\)/,
+      );
+
+      // The contrast, without which "every cell has a badge" would satisfy the assertions above: the
+      // five fields the frozen session DOES serve carry a number and no reason at all.
+      for (const field of SETTLED_FIELDS) {
+        expect(eod.cells[field]?.text, `${field} should be served to the eod desk`).not.toBe('—');
+        expect(eod.cells[field]?.reason, `${field} is served and has nothing to explain`).toBeNull();
+      }
     } finally {
       await eodContext.close();
     }

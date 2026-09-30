@@ -376,7 +376,10 @@ async function main(): Promise<void> {
   } else {
     const dictIds = fields.map((f: unknown) => (isRecord(f) ? String(f.id) : '?'));
     const sorted = [...dictIds].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
-    if (dictIds.join(' ') !== sorted.join(' ')) {
+    // `,` and not a NUL byte, for the reason in `providers/licences.ts`: a NUL makes the file
+    // binary to git and unsearchable. A field id is `[A-Z0-9_]+`, so a comma cannot appear
+    // inside one and the joined forms compare exactly as the arrays do.
+    if (dictIds.join(',') !== sorted.join(',')) {
       fail('core/fields/dictionary.ts', 'fieldDictionary.fields is not sorted by id');
     }
     for (const id of dictIds) {

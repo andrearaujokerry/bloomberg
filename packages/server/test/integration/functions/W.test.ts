@@ -88,6 +88,9 @@ interface Env {
   nvda: number;
 }
 
+/** `md_lines.md_line_id` of the AAPL line, so a later poll can be applied to the same line. */
+let aaplLineId = 0;
+
 let env: Env;
 
 async function ensureLicences(): Promise<void> {
@@ -207,6 +210,8 @@ beforeEach(async () => {
     `INSERT INTO watchlist_items (watchlist_id, position, instrument_id) VALUES ($1, 0, $2)`,
     [sharedId, aapl.instrumentId],
   );
+
+  aaplLineId = aapl.mdLineId;
 
   const quoteProv = await bootstrapProvenance(t, 'cboe.quotes', 'w-quote');
   const wrote = await t.client.query<{ at: string }>(`SELECT clock_timestamp() AS at`);
@@ -365,6 +370,111 @@ describe('W — watchlists, formula columns and formula rows', () => {
     for (const subject of formulaRow.deps) {
       expect(parseSubject(subject)?.family, subject).toBe('q');
     }
+  });
+
+  /**
+   * TERM-12 ON A COMPUTED NUMBER — the clause the arithmetic hides.
+   *
+   * A formula row is not a plant subject, so nothing on the wire will update it and no client-side
+   * staleness sweep can reach it: `LiveGrid` finds a cell by subject and this row has none. Its
+   * freshness is therefore whatever the resolver stamps on it, and the resolver used to stamp a
+   * literal `'live'`.
+   *
+   * Measured on the running terminal before the fix: `RATIO(AAPL US Equity, SPX Index)` rendered
+   * `data-st="live"` with the accessible name "Last price: 0.04, live", byte-identical after 70 s,
+   * two rows above its own inputs reading "stale, no fresh update". Nothing about the division was
+   * wrong, which is exactly why it went fifteen packages without being seen.
+   *
+   * The scenario is one poll of each leaf, an hour of silence, then a fresh AAPL poll and a sweep —
+   * so the two leaves are in DIFFERENT states and the assertion can tell "worst of the inputs" from
+   * both "always live" and "always the first input". Three cells are asserted for that reason: the
+   * live leaf, the stale leaf, and the formula that reads both.
+   */
+  it('stamps a formula row with the worst state of the inputs it read (TERM-12)', async () => {
+    const quoteProv = await bootstrapProvenance(t, 'cboe.quotes', 'w-quote-refresh');
+
+    // An hour of silence turns both leaves stale; AAPL is then polled again, so only MSFT is.
+    env.clock.advance(3_600_000);
+    const fresh = env.clock.now();
+    env.harness.deps.plant.apply({
+      ...quote(env.aapl, aaplLineId, quoteProv, { PX_LAST: AAPL_LAST, PX_CLOSE_1D: AAPL_CLOSE }),
+      ts: { src: fresh - 1_000, cap: fresh, pub: 0 },
+    });
+    env.harness.deps.plant.sweep(fresh);
+
+    const payload = await runW();
+    const rows = payload.active!.rows;
+    const aaplRow = rows.find((r) => r.subject === `q:${String(env.aapl)}`)!;
+    const msftRow = rows.find((r) => r.subject === `q:${String(env.msft)}`)!;
+    const formulaRow = rows.find((r) => r.formula !== null)!;
+
+    // The premise, asserted rather than assumed: without two different leaf states there is nothing
+    // for "the worst of them" to mean.
+    expect(aaplRow.cells.PX_LAST?.st, 'AAPL was just polled').toBe('live');
+    expect(msftRow.cells.PX_LAST?.st, 'MSFT has not been polled for an hour').toBe('stale');
+
+    // The value is still right — the defect was never in the arithmetic.
+    expect(formulaRow.cells.PX_LAST?.v).toBeCloseTo(AAPL_LAST / MSFT_LAST, 12);
+    expect(
+      formulaRow.cells.PX_LAST?.st,
+      'the ratio is exactly as fresh as the older of the two prices it divides',
+    ).toBe('stale');
+    expect(formulaRow.cells.PX_CLOSE_1D?.st).toBe('stale');
+
+    // And a formula COLUMN over the stale row is stale too, while the fresh row's stays live: the
+    // column is a different code path over the same rule.
+    expect(aaplRow.cells.c1?.st).toBe('live');
+    expect(msftRow.cells.c1?.st).toBe('stale');
+  });
+
+  /**
+   * The same rule for a formula COLUMN that reaches outside its own row.
+   *
+   * `c1 = PX_LAST/PX_CLOSE_1D-1` is arithmetic over the row's own cells, so the row's state is the
+   * whole answer and the case above cannot tell the two rules apart. A column that names another
+   * security can: a LIVE row divided by a STALE reference is a stale number, and reporting the row's
+   * own state would call it live.
+   *
+   * Its own watchlist, because the committed golden pins the default list's `columns` and a fourth
+   * column there would be a golden change rather than a test.
+   */
+  it('stamps a formula column with the state of the securities it names too', async () => {
+    const list = await t.client.query<{ watchlist_id: string }>(
+      `INSERT INTO watchlists (owner_user_id, firm_id, name, columns, sort, group_by, shared_scope)
+       SELECT $1, w.firm_id, 'CROSS', $2::jsonb, '[]'::jsonb, NULL, 'private'
+         FROM watchlists w WHERE w.watchlist_id = $3
+       RETURNING watchlist_id`,
+      [
+        env.userId,
+        JSON.stringify([
+          { id: 'PX_LAST' },
+          { id: 'c1', formula: 'PX_LAST/MSFT US Equity', label: 'vs MSFT', decimals: 6 },
+        ]),
+        env.mineId,
+      ],
+    );
+    await t.client.query(
+      `INSERT INTO watchlist_items (watchlist_id, position, instrument_id) VALUES ($1, 0, $2)`,
+      [Number(list.rows[0]!.watchlist_id), env.aapl],
+    );
+
+    const quoteProv = await bootstrapProvenance(t, 'cboe.quotes', 'w-quote-cross');
+    env.clock.advance(3_600_000);
+    const fresh = env.clock.now();
+    env.harness.deps.plant.apply({
+      ...quote(env.aapl, aaplLineId, quoteProv, { PX_LAST: AAPL_LAST, PX_CLOSE_1D: AAPL_CLOSE }),
+      ts: { src: fresh - 1_000, cap: fresh, pub: 0 },
+    });
+    env.harness.deps.plant.sweep(fresh);
+
+    const payload = await runW({ watchlist: { name: 'CROSS' } });
+    const row = payload.active!.rows[0]!;
+    expect(row.cells.PX_LAST?.st, 'the row itself was just polled').toBe('live');
+    expect(row.cells.c1?.v).toBeCloseTo(AAPL_LAST / MSFT_LAST, 12);
+    expect(
+      row.cells.c1?.st,
+      'a live row divided by a price nobody has published for an hour is not a live number',
+    ).toBe('stale');
   });
 
   it('reports a broken formula once and keeps the grid', async () => {

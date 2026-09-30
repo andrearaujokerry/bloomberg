@@ -45,7 +45,7 @@
 // changes nothing reports no changed fields at all (`QuoteCache.#applySnap`), so a grey that only
 // values could lift would never lift on exactly the subjects whose prices were right all along.
 
-import type { FieldId } from '@terminal/core';
+import type { FieldId, ValueState } from '@terminal/core';
 import { LiveClient } from '@terminal/sdk';
 import type {
   ClientOptions,
@@ -97,6 +97,20 @@ export interface CellRegistryPort {
   clearSubjectStatus(subject: string): void;
   /** The staleness sweep's restyle — `data-st` only, no value writes (TERM-12). */
   restyle(subjects: string[]): void;
+  /**
+   * Where {@link CellRegistryPort.restyle} reads a subject's verdict from (TERM-12).
+   *
+   * Part of the port because the registry cannot answer the question itself. `restyle` is handed the
+   * subjects whose state CHANGED and not what it changed to — `QuoteCache.sweep` returns a list of
+   * names — so something has to tell the registry where the verdict lives, and the only object that
+   * holds it is the cache on the other side of this bridge. The registry's own default for
+   * `stateOf` is `undefined`, and `restyle` then returns on its first line: for fifteen packages
+   * nothing called this, so the 1 s sweep ran, the cache correctly flipped a subject to `stale`, and
+   * the cell kept the `live` colour and the accessible name "…, live" for the rest of the session
+   * (TERM-12's "a dead feed cannot leave a live number on the screen"). {@link WsBridge.attach} is
+   * the caller now, because attaching a registry is exactly the moment there is one to point.
+   */
+  setStateSource(stateOf: (subject: string) => ValueState | undefined): void;
   /**
    * Clear any flash whose animation never ended. Driven from the 1 s ticker as well as from the
    * frame, because the case a backstop exists for — the feed falling quiet — is the case where no
@@ -238,7 +252,10 @@ export class WsBridge {
       }
       this.#client = new LiveClient(clientOptions);
     }
-    if (options.registry !== undefined) this.#registry = options.registry;
+    // Through `attach`, not by assignment: attaching is what points the registry's staleness source
+    // at this bridge's cache, and a registry passed to the constructor must not be the one case that
+    // skips it (TERM-12).
+    if (options.registry !== undefined) this.attach(options.registry);
   }
 
   /** The one `LiveClient` — what `rt/conflation.ts` and the SDK-facing hooks read. */
@@ -277,9 +294,18 @@ export class WsBridge {
    * `QuoteCache` — that is what makes them safe to skip — so a grid that mounts mid-stream reads
    * the current value out of the cache on its first render rather than replaying a history of
    * changes to cells that did not exist when they happened.
+   *
+   * Attaching also hands the registry the staleness source the 1 s sweep needs (TERM-12): see
+   * {@link CellRegistryPort.setStateSource}. It is done here rather than in {@link WsBridge.start}
+   * because the verdict lives in `QuoteCache`, which exists from construction, and because a
+   * registry attached AFTER the socket opened — the live path, since `App` builds the bridge before
+   * the first grid mounts — would otherwise never be told.
    */
   attach(registry: CellRegistryPort | null): void {
     this.#registry = registry;
+    // A closure over the cache, not a snapshot of it: `LiveClient` replaces the views inside its
+    // cache on every frame, and the sweep must read the verdict at the instant it asks.
+    registry?.setStateSource((subject) => this.#client.quoteCache.get(subject)?.st);
   }
 
   /**

@@ -17,7 +17,14 @@
 //   trace id        the focused frame's `traceId`, dimmed — what a user reads out to support, and
 //                   what OPS-07 correlates the server logs by.
 //   quotas          `SessionInfo.quotas`, counted and not enforced for a web session (API.md §8),
-//                   shown as `used / limit` through `<meter>` so nothing here computes a ratio.
+//                   shown as `used / limit` through `<meter>` so nothing here computes a ratio. The
+//                   strip is the only reader of those counters, so it is also what starts their
+//                   refresh: `session.ts#startQuotaRefresh` runs while this bar is mounted and stops
+//                   with it, which is one page's worth of polling and not one per component that
+//                   happens to import the store. Until this effect existed, `setQuotas` had no caller
+//                   at all and the numbers here were the login snapshot for the whole session
+//                   (API-06) — which is why the export counter test in `packages/e2e` reloads the
+//                   page instead of watching the strip move.
 //
 // And one thing that is not a status but an interruption: a workspace save that could not be
 // reconciled (TERM-05). `state/workspace.ts` merges and retries once; a second 409 means somebody
@@ -27,7 +34,7 @@
 // No arithmetic on any number a user reads: `format/index.ts` renders the integers and `<meter>`
 // draws the gauge from `value`/`max`. Layout numbers (the row height) are the web package's own.
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { CSSProperties, ReactElement } from 'react';
 
 import type { ValueState } from '@terminal/core';
@@ -230,6 +237,21 @@ export function StatusBar({
   const focusedFrame = usePanelsStore(selectFocusedFrame);
   const conflictMessage = useWorkspaceStore(selectConflictMessage);
 
+
+  /**
+   * The counters' cadence, for as long as the bar is on screen (API-06).
+   *
+   * `getState()` rather than selected actions, like `onReload` below: the store's actions are stable,
+   * and selecting them would re-run this effect on every unrelated store write. The store owns the
+   * interval, the floor and the visibility gate; this is only its lifetime.
+   */
+  useEffect(() => {
+    const session = useSessionStore.getState();
+    session.startQuotaRefresh();
+    return () => {
+      session.stopQuotaRefresh();
+    };
+  }, []);
 
   const conn = connectionOf(connection);
   const shownTrace = traceId === undefined ? (focusedFrame?.traceId ?? null) : traceId;

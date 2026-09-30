@@ -29,7 +29,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
-import type { KeyBinding } from '@terminal/core';
+import type { KeyBinding, LiveSpec } from '@terminal/core';
 import { registry } from '@terminal/core';
 
 import { bindingApplies, formatCombo, parseCombo } from '../keyboard/keymap.js';
@@ -43,6 +43,7 @@ import type { ScreenActions, WidgetRegistry } from '../screen/widgets/registry.j
 import { screenModules } from '../screens/index.js';
 import type { Frame } from '../state/panels.js';
 import { selectCanGoBack, selectCanGoForward, selectFrame, usePanelsStore } from '../state/panels.js';
+import { useSubscriptionsStore } from '../state/subscriptions.js';
 
 /* ---------------------------------------------------------------------------------------------- */
 /* Ports                                                                                            */
@@ -294,6 +295,8 @@ const S = {
   trace: { color: 'var(--c-pending)' },
   body: { position: 'relative', flex: '1 1 auto', minHeight: 0, overflow: 'auto' },
   empty: { padding: '1ch', color: 'var(--c-muted)' },
+  failed: { padding: '1ch', color: 'var(--c-error)', margin: 0 },
+  failedDetail: { padding: '0 1ch', color: 'var(--c-muted)', margin: 0 },
   footer: {
     display: 'flex',
     alignItems: 'center',
@@ -442,6 +445,26 @@ export function Panel({
       : frame.params;
   }, [frame, manifest]);
 
+  /**
+   * THE RUN FAILED AND THERE IS NOTHING TO DRAW — so the body must not draw a skeleton.
+   *
+   * Every screen renders a `loading…` skeleton for an absent payload, which is right while a run is
+   * in flight and a lie once it has failed. Measured on the running terminal: with `SRCH` answering
+   * `500 INTERNAL`, panel p2 said `SRCH · US Treasuries loading…` over a grid of em dashes while the
+   * footer said `SRCH failed`. A trader reading the screen was told the data was on its way; only
+   * the footer said it was not coming, and the body is the larger of the two by an order of
+   * magnitude.
+   *
+   * Decided here rather than in each of the 38 screens because it is one rule about the frame and
+   * not 38 rules about payloads, and because the screens already take `ctx.error` for the case they
+   * *can* answer — a partial screen that keeps its last payload and reports the failed refresh over
+   * it. That case is exactly the one this branch leaves alone: the test is a failed frame with NO
+   * payload at all. A screen that has something true to show keeps showing it, with the footer alert
+   * beside it.
+   */
+  const failed =
+    frame?.status === 'error' && frame.payload === undefined ? (frame.error ?? null) : null;
+
   const spec: ScreenSpec | null = useMemo(() => {
     if (entry === undefined || frame === undefined) return null;
     const props: AnyScreenProps = {
@@ -463,6 +486,73 @@ export function Panel({
     };
     return entry.Screen(props);
   }, [entry, frame, ctx, screenParams]);
+
+  /**
+   * WHAT THIS PANEL WANTS OFF THE WIRE — `manifest.live(params, payload)` (CLIENT.md §9 L621-660).
+   *
+   * The screens, the subscription plan, the socket and the per-cell write were all finished and
+   * tested against each other, and nothing ever made this call: `state/subscriptions.ts#acquire` had
+   * no product caller for fifteen packages, so the only `sub` frame the terminal ever sent was
+   * `ChartCanvas`'s and every grid drew its payload once and never received a delta. This is the
+   * missing call. (The status bar's `subs 0/10,000` was literally true then and still reads zero now:
+   * it shows the session's quota snapshot, and `state/session.ts#setQuotas` has no caller either —
+   * a separate open item. The evidence for this wiring is the `sub` frames on the socket, which
+   * `packages/e2e/tests/live-grid.spec.ts` reads, not that counter.)
+   *
+   * Three decisions in it:
+   *
+   *   * **`screenParams`, not `frame.params`.** `manifest.live` is declared over the manifest's
+   *     PARSED params — CRVF's is `subjects: ['c:' + params.curveId]` for a key the manifest gives a
+   *     `.default()` — and a restored frame carries only the keys the user actually set. Handed the
+   *     raw bag, a restored CRVF panel would subscribe `c:undefined`, which the plant rejects, and
+   *     the whole `sub` frame with it. Same seam, same reason, as the `spec` above.
+   *   * **A payload is required.** `live` is a function of the payload (W walks its rows for their
+   *     subjects), and a panel that has launched but not yet answered has nothing to compute from.
+   *     Subscribing the previous frame's subjects in the meantime would stream one screen's prices
+   *     into the next screen's cells.
+   *   * **A throwing `live` costs the subscription, not the panel.** Nothing here can validate what
+   *     38 manifests do with a payload; the runner has, upstream. But an exception raised during
+   *     render replaces the whole page with React's blank screen — which is exactly what
+   *     `screenParams`' `safeParse` was added to stop happening — while a missing subscription
+   *     leaves the numbers on screen and, within a second, says they are stale (TERM-12). The worse
+   *     of those two is not the one to choose.
+   */
+  const liveSpec = useMemo<LiveSpec | null>(() => {
+    const live = manifest?.live ?? null;
+    const payload = frame?.payload;
+    if (live === null || payload === undefined) return null;
+    try {
+      return live(screenParams, payload);
+    } catch {
+      return null;
+    }
+  }, [manifest, frame, screenParams]);
+
+  /**
+   * Acquire what the frame wants, and release what it no longer does.
+   *
+   * No cleanup on this effect, deliberately. `acquire` already diffs: an identical plan is a no-op,
+   * so a repaint is not a resubscribe. A cleanup would turn every repaint into an `unsub` followed by
+   * a `sub` for the same subjects — a gap in the stream, a fresh snapshot per paint, and on the
+   * server a field mask that is rebuilt from scratch each time. The frame going to one that does not
+   * stream (HP, SRCH, an empty panel) releases here instead, and the unmount below does the rest.
+   */
+  useEffect(() => {
+    const subscriptions = useSubscriptionsStore.getState();
+    if (liveSpec === null) subscriptions.release(panelId);
+    else subscriptions.acquire(panelId, liveSpec);
+  }, [liveSpec, panelId]);
+
+  // A panel that goes away releases its subjects: `4` → `1` unmounts three panels, and a session
+  // that kept paying for their subjects would spend the socket's 10,000-subscription quota on grids
+  // nobody can see (API.md §10.2). Its own effect, so that a new plan does not pass through "nothing
+  // subscribed" on its way — see above.
+  useEffect(
+    () => () => {
+      useSubscriptionsStore.getState().release(panelId);
+    },
+    [panelId],
+  );
 
   /** `instruments.currency` / `price_decimals` — what a `ccy` or `px` cell cannot carry itself. */
   const formatCtx = useMemo<CellFormatContextValue>(() => {
@@ -611,7 +701,16 @@ export function Panel({
       {slots?.commandLine?.(slotProps)}
 
       <div style={S.body} ref={bodyRef} data-testid={`panel-body-${panelId}`}>
-        {spec !== null ? (
+        {failed !== null ? (
+          <>
+            <p style={S.failed} data-testid={`panel-failed-${panelId}`}>
+              {`${code ?? 'The function'} could not be run — ${failed.code} · ${failed.message}`}
+            </p>
+            <p style={S.failedDetail}>
+              {`Nothing is loading. Trace ${failed.traceId.slice(0, 8)} — quote it to support, or press GO to try again.`}
+            </p>
+          </>
+        ) : spec !== null ? (
           <ScreenRenderer
             ref={screenRef}
             spec={spec}
@@ -635,7 +734,9 @@ export function Panel({
       </div>
 
       <div style={S.footer} data-testid={`panel-footer-${panelId}`}>
-        {spec?.footer === undefined ? null : (
+        {/* A failed frame draws no screen, so it has no sources to attribute either: the skeleton's
+            footer would name a feed and an as-of for numbers the panel is not showing. */}
+        {failed !== null || spec?.footer === undefined ? null : (
           <span data-testid={`panel-sources-${panelId}`}>
             {[
               spec.footer.sources.join(' · '),

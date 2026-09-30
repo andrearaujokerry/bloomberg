@@ -26,7 +26,7 @@
 // Theme and density live on `<html>` (CLIENT §12.3) and are per device, so the Shell reflects the
 // settings store onto the document rather than styling anything itself.
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 import type { LiveState } from '@terminal/sdk';
@@ -115,19 +115,61 @@ export function Shell({
     root.dataset.density = density;
   }, [theme, density]);
 
-  // Load the workspace. `configure` is separate from `load` in the store so that a caller can swap
-  // the scheduler without re-fetching; here they happen together, once.
+  // Configure the store. Separate from the load below because `configure` is separate in the store:
+  // a caller may swap the scheduler — a test injecting a virtual one — and must not re-fetch the
+  // layout to do it.
   useEffect(() => {
     if (workspace === undefined) return;
-    const store = useWorkspaceStore.getState();
-    store.configure({
+    useWorkspaceStore.getState().configure({
       api: workspace,
       ...(scheduler === undefined ? {} : { scheduler }),
     });
-    void store.load().then(() => {
-      onRestored?.();
-    });
-  }, [workspace, scheduler, onRestored]);
+  }, [workspace, scheduler]);
+
+  /**
+   * ONE LOAD, ONE RESTORE, per workspace API — whatever React does to this component.
+   *
+   * `load()` is a fetch and `onRestored()` re-runs every panel's function, so this effect is not
+   * idempotent in the way `useEffect` assumes: running it twice costs two `GET /workspace`s, two
+   * `POST /functions/<code>/run`s per panel and two `fn.launch` rows against the user's quota, under
+   * two different trace ids. Measured off the wire on one authenticated load of the seeded desk
+   * before this guard: `auth/session` ×2, `workspace` ×2, and `WEI`, `GP`, `W` and `TOP` ×2 each;
+   * the plant's own `usage_events` agreed at `fn.launch W=6/6, GP=6/6, WEI=6/6` over three loads.
+   *
+   * The cause was React StrictMode (`main.tsx`), which mounts, tears down and re-mounts every
+   * component in development precisely to expose an effect that cannot be run twice. Making
+   * `onRestored` identity-stable — `App.tsx` does, and for its own separate reason — removes the
+   * re-runs that a changing dependency caused but not this one, because StrictMode re-runs the
+   * effect with the dependencies unchanged.
+   *
+   * A ref is the guard rather than a store flag because a ref survives StrictMode's simulated
+   * remount (it is the same component instance) while a fresh `useState` would not, and because the
+   * condition is about this Shell's lifetime, not about the store's contents: a `load()` that failed
+   * must not be silently retried by the next render either — the workspace store reports its own
+   * error, and a retry loop behind the user's back is worse than one honest failure. Keyed on the
+   * api object so a host that genuinely swaps workspaces (a different server, a test's second app)
+   * still gets its load.
+   *
+   * AND DELIBERATELY NO CLEANUP. The obvious companion — an `alive` flag that suppresses
+   * `onRestored` after unmount — breaks the restore outright under the very mode this guard exists
+   * for: StrictMode's cleanup would clear the flag of the invocation that owns the in-flight load,
+   * the second invocation would return early on the ref, and nothing would ever restore. There is
+   * nothing for a cleanup to protect in any case, because `onRestored` writes through
+   * `usePanelsStore.getState()` — a module singleton, not this component's state — so a late call
+   * cannot touch an unmounted tree.
+   */
+  const restoredFor = useRef<WorkspaceApi | null>(null);
+  useEffect(() => {
+    if (workspace === undefined) return;
+    if (restoredFor.current === workspace) return;
+    restoredFor.current = workspace;
+    void useWorkspaceStore
+      .getState()
+      .load()
+      .then(() => {
+        onRestored?.();
+      });
+  }, [workspace, onRestored]);
 
   // The page going away is the one save the debounce cannot cover.
   useEffect(() => {

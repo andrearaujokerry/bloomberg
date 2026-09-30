@@ -40,7 +40,7 @@ import type {
   Subscription,
   UpdateEvent,
 } from '@terminal/sdk';
-import type { FieldId, LiveSpec } from '@terminal/core';
+import type { FieldId, LiveSpec, ValueState } from '@terminal/core';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { CellRegistry } from '../../src/grid/cellRegistry.js';
@@ -193,6 +193,13 @@ class RecordingRegistry implements CellRegistryPort {
 
   restyle(subjects: string[]): void {
     this.restyled.push([...subjects]);
+  }
+
+  /** The source the bridge installed, kept so a test can ask it what the bridge would answer. */
+  stateOf: ((subject: string) => ValueState | undefined) | null = null;
+
+  setStateSource(stateOf: (subject: string) => ValueState | undefined): void {
+    this.stateOf = stateOf;
   }
 
   sweepFlashes(): void {
@@ -499,6 +506,65 @@ describe('wsBridge staleness sweep (TERM-12)', () => {
     expect(changed.sort()).toEqual(['q:1', 'q:2']);
     expect(registry.restyled.at(-1)?.sort()).toEqual(['q:1', 'q:2']);
     expect(client.quoteCache.get('q:1')?.st).toBe('stale');
+    bridge.stop();
+  });
+
+  /**
+   * The half of TERM-12 that was wired to nothing until this commit.
+   *
+   * `restyle` is handed the subjects whose verdict changed and not the verdict, so it needs a source
+   * for it, and `CellRegistry.setStateSource` had no caller in the product: `restyle` returned on its
+   * first line, for ever. The 1 s ticker ran, `QuoteCache.sweep` correctly flipped the view to
+   * `stale`, and the cell on screen kept `data-st="live"`, the live colour and the accessible name
+   * "…, live" about a number the feed had stopped sending — recorded as the `test.fail` at
+   * `packages/e2e/tests/live-grid.spec.ts` and now flipped.
+   *
+   * Asserted on the CELL, with no `stateOf` passed anywhere by this test: an assertion that
+   * `restyle(['q:1'])` was called is what the earlier version of this file made, and it passed for a
+   * year while the rendered cell said `live`. The threshold is the shipped function's — `snap` says
+   * `tier: 'delayed'`, `core/quote/staleness.ts` expects a delayed line every 10 s and calls it stale
+   * at 3 × that — so this test does not contain a staleness rule of its own to agree with.
+   */
+  it('greys a real cell when the feed stops, because the bridge gave the registry its cache', async () => {
+    const rigged = await screenRig([{ subject: 'q:1', fields: ['PX_LAST'] }]);
+    const { client, bridge } = rigged;
+    client.snap('q:1', { PX_LAST: 330.27 });
+    flushFrames(1);
+
+    const cell = rigged.cell('q:1', 'PX_LAST');
+    expect(cell.getAttribute('data-st')).toBe('live');
+    expect(cell.getAttribute('aria-label')).toBe('PX_LAST: 330.27, live');
+
+    // Nothing more arrives. This is the feed going quiet, which is the case the sweep exists for.
+    client.now += 31_000;
+    expect(bridge.sweep(client.now)).toEqual(['q:1']);
+
+    // The cache and the screen now say the same thing, in the attribute the stylesheet greys on and
+    // in the words a screen reader hears. Either one alone would leave half of TERM-12 unmet: a
+    // colour cannot be read aloud, and a phrase cannot be seen at a glance across four panels.
+    expect(client.quoteCache.get('q:1')?.st).toBe('stale');
+    expect(cell.getAttribute('data-st')).toBe('stale');
+    expect(cell.getAttribute('aria-label')).toBe('PX_LAST: 330.27, stale, no fresh update');
+    // …and the number itself is untouched: a value going stale is not a value changing (CLIENT §9).
+    expect(cell.textContent).toBe('330.27');
+    bridge.stop();
+  });
+
+  it('the installed source is the cache itself, so it answers per subject and not per sweep', async () => {
+    const { client, registry, bridge } = await rig();
+    client.snap('q:1', { PX_LAST: 10 });
+
+    // `attach` installed it; nothing else in the application is allowed to hold the cache (TERM-04).
+    const stateOf = registry.stateOf;
+    expect(stateOf, 'the bridge attached a registry without giving it a staleness source').not.toBeNull();
+    expect(stateOf?.('q:1')).toBe('live');
+    // A subject no frame has ever mentioned has no verdict — `restyle` skips it rather than
+    // inventing one, which is why this returns `undefined` instead of a state.
+    expect(stateOf?.('q:99')).toBeUndefined();
+
+    client.now += 31_000;
+    client.quoteCache.sweep(client.now);
+    expect(stateOf?.('q:1')).toBe('stale');
     bridge.stop();
   });
 

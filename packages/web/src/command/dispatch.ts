@@ -22,6 +22,10 @@
 // in-place replacement for a `param` or `page` run, and the `fn.launch` / `search.select` usage
 // events.
 //
+// `executeFrame()` is the one entry point that does not begin with text. A workspace restore re-runs
+// a frame the panel already holds, and the frame — not a display string rebuilt from two of its five
+// fields — is what it sends (TERM-05; its docstring carries the defect that made the distinction).
+//
 // Ports, not imports: `state/panels.ts` and `state/usage.ts` are other files in this work package.
 // `PanelsPort` and `UsagePort` are the shapes this module needs; `Shell.tsx` implements them once
 // over the real stores, and the tests implement them over plain objects.
@@ -309,7 +313,27 @@ export type DispatchOutcome =
       resultId: string | null;
       durationMs: number;
     }
-  | { kind: 'failed'; traceId: string; code: string; problem: CommandProblem; error: unknown }
+  | {
+      kind: 'failed';
+      traceId: string;
+      code: string;
+      problem: CommandProblem;
+      /**
+       * The SERVER'S own error code — `INTERNAL`, `PROVIDER_UNAVAILABLE`, `RESULT_EXPIRED` — for the
+       * panel footer, which is a free-form line (`App.tsx` already writes `VALIDATION_FAILED` there
+       * and that is not a `CommandProblem` code either). `problem.code` is the parser's closed set
+       * and cannot carry it; see {@link problemFor}.
+       */
+      errorCode: string;
+      /**
+       * The server's own message, WITHOUT the code prepended. {@link problemFor} puts the code in
+       * front of the command line's message because `CommandProblem.code` has no word for it; the
+       * footer prints `errorCode` on its own line already, so prepending it there too gave
+       * `INTERNAL · INTERNAL · YAS failed.` — measured in the browser.
+       */
+      errorMessage: string;
+      error: unknown;
+    }
   | { kind: 'rejected'; problem: CommandProblem; suggest?: string }
   | { kind: 'shell'; word: string; args: string[] }
   | { kind: 'help'; code?: string; query?: string };
@@ -560,8 +584,152 @@ export async function execute(
     const problem = problemFor(error, decision.code, cmd.fn?.span ?? [0, cmd.raw.length]);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
-    return { kind: 'failed', traceId, code: decision.code, problem, error };
+    return {
+      kind: 'failed',
+      traceId,
+      code: decision.code,
+      problem,
+      errorCode: apiCodeOf(error) || 'INTERNAL',
+      errorMessage: messageOf(error, decision.code),
+      error,
+    };
   }
+}
+
+/**
+ * Re-run the frame a panel ALREADY HOLDS, from its own fields — the workspace restore (TERM-05).
+ *
+ * A restored frame carries its function, its security and its params but no payload: a workspace row
+ * is a layout, not a cache (CLIENT §8 L574-577), so the screen has to be re-run to exist. What this
+ * function exists to avoid is how that used to be done. `App.tsx#onRestored` rebuilt the display
+ * string `"<security> <fn>"` and handed it to {@link executeText}, and a round trip through text
+ * loses everything the text does not spell:
+ *
+ *   * `"SPX Index GP"` re-parses to a REF, not to an instrument id — the local universe index is
+ *     keyed on tickers, so `CommandSecurity.instrumentId` is undefined and `parser.ts#securityInput`
+ *     falls back to `{ ref }`. A ref-addressed security has no local id, so the frame that was
+ *     pushed in place of the restored one anchored NO security, and that frame was then persisted:
+ *     the second load of the terminal restored GP with no instrument at all.
+ *   * `params` is one of the five persisted fields and is not in the string. A panel saved as
+ *     `W Core` — `params: { watchlist: { name: 'Core' } }` — came back as the bare `W`, which is the
+ *     manifest's defaults: somebody else's watchlist, in the user's own panel.
+ *
+ * So nothing here parses anything, and nothing here consults the §2.5 context rules: those rules
+ * decide what a NEW command means against the panel it is typed into, and this is not a new command.
+ * The frame is the request.
+ *
+ * Three consequences, each one a thing the text path got wrong:
+ *
+ *   * **The frame is updated in place — no push.** It is already the top of the stack. A push would
+ *     grow the stack by one frame per load (to `MAX_FRAMES`) and leave an idle duplicate of the
+ *     screen one Back click away.
+ *   * **No history entry and no draft clear.** A restore is not something the user typed. Appending
+ *     to the ring fills `PanelState.history` with commands nobody issued — and ArrowUp then recalls
+ *     them — while `commandDraft` is persisted precisely so a half-typed line comes back with the
+ *     desk.
+ *   * **A fresh trace id** (OPS-07, §2.5 L784). A frame restored from a layout carries `traceId: ''`
+ *     (`state/panels.ts#fromWireFrame`), and the run header, the `fn.launch` event and the caller's
+ *     own "is this answer still for the screen on the display" guard are all keyed on it. `''` would
+ *     also fail the server's `z.uuid()` on the usage event and drop the whole batch.
+ */
+export async function executeFrame(
+  deps: DispatchDeps,
+  panelId: string,
+  options: { launchKind?: 'launch' | 'refresh' } = {},
+): Promise<DispatchOutcome> {
+  const frame = deps.panels.frame(panelId);
+  if (frame?.fn == null) {
+    // Not an error the user made: a panel with no function has nothing to restore, and every caller
+    // loops over every panel. Rejected silently, with no footer problem.
+    const problem: CommandProblem = {
+      code: 'NOT_APPLICABLE',
+      span: [0, 0],
+      message: `panel ${panelId} has no function to re-run`,
+    };
+    return { kind: 'rejected', problem };
+  }
+
+  const code = frame.fn;
+  const security = frameSecurityInput(frame.security);
+  const launchKind = options.launchKind ?? 'refresh';
+  const traceId = (deps.traceId ?? defaultTraceId)();
+  const clock = deps.clock ?? defaultClock;
+  const started = clock();
+
+  deps.panels.setProblem(panelId, null);
+  deps.panels.replaceFrame(panelId, { traceId, resultId: null });
+
+  const body = {
+    ...(security === null ? {} : { security }),
+    params: frame.params,
+    panelId,
+    launchKind,
+  };
+
+  try {
+    const payload = await deps.sdk.fn.run({ params: { code }, body }, { traceId });
+    const durationMs = Math.round(clock() - started);
+    const resultId = resultIdOf(payload);
+    deps.panels.replaceFrame(panelId, { resultId });
+    const instrumentId = instrumentIdOf(security);
+
+    emit(deps, {
+      kind: 'fn.launch',
+      panelId,
+      code,
+      paramsHash: paramsHash(frame.params),
+      durationMs,
+      traceId,
+      ...(instrumentId === undefined ? {} : { instrumentId }),
+      details: { launchKind, clientReported: true },
+    });
+
+    return {
+      kind: 'ran',
+      traceId,
+      code,
+      frame: { ...frame, traceId, resultId },
+      payload,
+      resultId,
+      durationMs,
+    };
+  } catch (error) {
+    const problem = problemFor(error, code, [0, 0]);
+    deps.panels.setProblem(panelId, problem);
+    deps.onError?.(error);
+    return {
+      kind: 'failed',
+      traceId,
+      code,
+      problem,
+      errorCode: apiCodeOf(error) || 'INTERNAL',
+      errorMessage: messageOf(error, code),
+      error,
+    };
+  }
+}
+
+/**
+ * The frame's own security, as a run request addresses it.
+ *
+ * `id` first, because that is what the layout persists and what REF-01 anchors a panel to.
+ *
+ * `ref` is for the frame shape {@link Frame} declares and {@link execute} builds — `id: null` plus a
+ * ref, a security addressed by ref or formula on the line that created it. A RESTORED frame is never
+ * that shape today: `state/panels.ts#FrameSecurity.id` is `number` and the wire's
+ * `PanelState.frameStack[].security` is `{ id, display }`, so a ref-addressed security is not
+ * persisted at all. The branch is here because this function's argument is a `dispatch.Frame`,
+ * whatever `PanelsPort` supplies it, and dropping a ref the frame is carrying would repeat in a new
+ * place exactly the loss this file's restore path exists to stop.
+ *
+ * A security with neither is not addressable, and the run goes out with no security rather than with
+ * a guess: the function answers `NO_SECURITY_CONTEXT` and the footer says so, which is the truth
+ * about that frame.
+ */
+function frameSecurityInput(security: FrameSecurity | null): CommandSecurityInput | null {
+  if (security === null) return null;
+  if (security.id !== null) return { id: security.id };
+  return security.ref === undefined ? null : { ref: security.ref };
 }
 
 /**
@@ -626,7 +794,15 @@ export async function runParams(
     const problem = problemFor(error, frame.fn, [0, 0]);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
-    return { kind: 'failed', traceId: frame.traceId, code: frame.fn, problem, error };
+    return {
+      kind: 'failed',
+      traceId: frame.traceId,
+      code: frame.fn,
+      problem,
+      errorCode: apiCodeOf(error) || 'INTERNAL',
+      errorMessage: messageOf(error, frame.fn),
+      error,
+    };
   }
 }
 
@@ -677,7 +853,15 @@ export async function runPage(
     const problem = problemFor(error, frame.fn, [0, 0]);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
-    return { kind: 'failed', traceId: frame.traceId, code: frame.fn, problem, error };
+    return {
+      kind: 'failed',
+      traceId: frame.traceId,
+      code: frame.fn,
+      problem,
+      errorCode: apiCodeOf(error) || 'INTERNAL',
+      errorMessage: messageOf(error, frame.fn),
+      error,
+    };
   }
 }
 
@@ -730,22 +914,70 @@ function resultIdOf(payload: unknown): string | null {
   return typeof id === 'string' && id !== '' ? id : null;
 }
 
+/**
+ * The server's `ErrorCode` → the closed set `CommandProblem.code` is (`core/command/parser.ts`,
+ * CONTRACTS §4.1 L976).
+ *
+ * Only the codes that really are a statement about what the user typed map onto a parser code. This
+ * function used to map two of them and fall through to `'ARG_PARSE'` for everything else, so the
+ * command line accused a command of a syntax error on the strength of a `500`: `SRCH <GO>` — no
+ * arguments at all, parsed perfectly — printed `ARG_PARSE: SRCH failed.`, and `WEI` printed
+ * `ARG_PARSE: WEI: numbers with no provenance and no engine`. Both sent the next reader to the wrong
+ * file, which is the whole cost of a wrong code.
+ *
+ * `VALIDATION_FAILED` is the one case that is genuinely ambiguous, and `details.location` decides it:
+ * `'fnParams'` means the function's own arguments were rejected — an `ARG_PARSE` and nothing else —
+ * while a `'body'` or `'query'` failure is the client's bug, not the user's.
+ *
+ * Everything the closed set has no word for — `INTERNAL`, `PROVIDER_UNAVAILABLE`, `RATE_LIMITED`,
+ * `RESULT_EXPIRED` — becomes `'NOT_APPLICABLE'` with the server's code first in the message. That is
+ * the convention `App.tsx`'s export path already documents for the same reason: the closed set is a
+ * documented contract and adding a `RUN_FAILED` to it is a change to CONTRACTS §4.1 rather than a
+ * patch, and of the eight words available `NOT_APPLICABLE` is the only one that does not accuse the
+ * user's input of something. The precise code is never lost — it is the first thing in the message,
+ * and it is what the panel footer prints on its own line (see {@link DispatchOutcome}).
+ */
+const PROBLEM_FOR_API_CODE: Readonly<Record<string, CommandProblem['code']>> = Object.freeze({
+  FUNCTION_NOT_APPLICABLE: 'NOT_APPLICABLE',
+  NO_SECURITY_CONTEXT: 'NO_SECURITY_LOADED',
+  NOT_IN_UNIVERSE: 'NOT_IN_UNIVERSE',
+  SECURITY_NOT_FOUND: 'BAD_IDENTIFIER',
+  AMBIGUOUS_SECURITY: 'AMBIGUOUS',
+  FUNCTION_NOT_FOUND: 'UNKNOWN_FUNCTION',
+  FIELD_UNKNOWN: 'ARG_PARSE',
+});
+
+/** The server's code, or `''` when the failure did not come from the API at all. */
+function apiCodeOf(error: unknown): string {
+  const apiError = error as { code?: unknown } | null;
+  return apiError !== null && typeof apiError.code === 'string' ? apiError.code : '';
+}
+
+/** The failure's own sentence — the API error's message, or the exception's. */
+function messageOf(error: unknown, code: string): string {
+  const apiError = error as { message?: unknown } | null;
+  return apiError !== null && typeof apiError.message === 'string' && apiError.message !== ''
+    ? apiError.message
+    : `${code} failed`;
+}
+
 /** A failed run becomes a footer problem; the API error's own message is what the desk needs. */
 function problemFor(error: unknown, code: string, span: [number, number]): CommandProblem {
-  const apiError = error as { code?: unknown; message?: unknown } | null;
-  const message =
-    apiError !== null && typeof apiError.message === 'string' && apiError.message !== ''
-      ? apiError.message
-      : `${code} failed`;
-  const apiCode = apiError !== null && typeof apiError.code === 'string' ? apiError.code : '';
+  const apiError = error as { details?: { location?: unknown } } | null;
+  const message = messageOf(error, code);
+  const apiCode = apiCodeOf(error);
+  if (apiCode === 'VALIDATION_FAILED') {
+    return {
+      code: apiError?.details?.location === 'fnParams' ? 'ARG_PARSE' : 'NOT_APPLICABLE',
+      span,
+      message,
+    };
+  }
+  const mapped = PROBLEM_FOR_API_CODE[apiCode];
+  if (mapped !== undefined) return { code: mapped, span, message };
   return {
-    code:
-      apiCode === 'FUNCTION_NOT_APPLICABLE'
-        ? 'NOT_APPLICABLE'
-        : apiCode === 'NO_SECURITY_CONTEXT'
-          ? 'NO_SECURITY_LOADED'
-          : 'ARG_PARSE',
+    code: 'NOT_APPLICABLE',
     span,
-    message,
+    message: apiCode === '' ? message : `${apiCode} · ${message}`,
   };
 }

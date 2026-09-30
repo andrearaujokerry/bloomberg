@@ -61,7 +61,9 @@ import type {
   UpdateEvent,
 } from '@terminal/sdk';
 import type { SessionInfo } from '@terminal/sdk/wire/rest/auth';
-import type { Workspace } from '@terminal/sdk/wire/rest/workspaces';
+import type { HelpResponse } from '@terminal/sdk/wire/rest/functions';
+import { WorkspaceLayout as WorkspaceLayoutSchema } from '@terminal/sdk/wire/rest/workspaces';
+import type { Workspace, WorkspaceLayout } from '@terminal/sdk/wire/rest/workspaces';
 import { act, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -73,6 +75,7 @@ import { cellRegistry } from '../../src/grid/cellRegistry.js';
 import { gpChartSpec } from '../../src/screens/GP/Screen.js';
 import type { AnyScreenProps, ScreenRegistry } from '../../src/shell/Panel.js';
 import { usePanelsStore } from '../../src/state/panels.js';
+import { buildWidgetRegistry } from '../../src/widgets.js';
 import { useSessionStore } from '../../src/state/session.js';
 import { useSettingsStore } from '../../src/state/settings.js';
 import { useSubscriptionsStore } from '../../src/state/subscriptions.js';
@@ -106,6 +109,16 @@ const PAYLOAD_FILE: Readonly<Record<string, string>> = {
 };
 
 const AAPL_ID = 1000;
+/**
+ * `SPX Index` is deliberately NOT in this file's universe snapshot, and that is the point.
+ *
+ * The local index is keyed on tickers, and the seeded 41k-instrument snapshot does not answer the
+ * display `SPX Index` either — which is exactly how the TERM-05 defect was measured in Chrome: the
+ * restore rebuilt `"SPX Index GP"`, the parser had no instrument id for it, and the frame that
+ * replaced the restored one anchored no security at all. So this id exists only in the master
+ * (`ref.resolve` below), as it does on the real plant.
+ */
+const SPX_ID = 9001;
 
 const INSTRUMENT: InstrumentSummary = {
   instrumentId: AAPL_ID,
@@ -119,6 +132,22 @@ const INSTRUMENT: InstrumentSummary = {
   exchCode: 'US',
   securityType: 'Common Stock',
   compositeFigi: 'BBG000B9XRY4',
+  status: 'active',
+  priceDecimals: 2,
+};
+
+const SPX: InstrumentSummary = {
+  instrumentId: SPX_ID,
+  assetClass: 'index',
+  marketSector: 'Index',
+  display: 'SPX Index',
+  name: 'S&P 500',
+  currency: 'USD',
+  mdLineIds: [201],
+  ticker: 'SPX',
+  exchCode: 'INDEX',
+  securityType: 'Equity Index',
+  compositeFigi: null,
   status: 'active',
   priceDecimals: 2,
 };
@@ -326,6 +355,13 @@ interface Plant {
   session: SessionInfo | null;
   /** `null` session → 401, which the session store reads as anonymous, not as broken. */
   authError: { status: number; code: string; message: string } | null;
+  /** What `GET /workspace` answers — `DEFAULT_LAYOUT` (no frames) unless a test serves its own. */
+  layout: WorkspaceLayout;
+  /** Every layout the autosave PUT back, in order: what the NEXT load of this terminal would read. */
+  saved: WorkspaceLayout[];
+  /** Every `POST /help/tickets` body, and what the plant answered (TERM-09). */
+  tickets: { body: unknown }[];
+  ticketCreated: { ticketId: number; roomId: number };
 }
 
 function plant(): Plant {
@@ -341,6 +377,13 @@ function plant(): Plant {
     liveAccesses: () => accesses,
     session: SESSION,
     authError: null,
+    layout: DEFAULT_LAYOUT,
+    saved: [],
+    tickets: [],
+    // What the seeded plant answers `POST /help/tickets` with: `201 {ticketId, roomId}` (API.md
+    // §5.12). The ids are the shape, not a guess — `packages/e2e/tests/help.spec.ts` reads the real
+    // ones off the wire.
+    ticketCreated: { ticketId: 12, roomId: 34 },
     sdk: undefined as unknown as AppSdk,
   };
 
@@ -386,29 +429,63 @@ function plant(): Plant {
           name: 'Default',
           isActive: true,
           version: 1,
-          layout: DEFAULT_LAYOUT,
+          layout: state.layout,
           updatedAt: '2026-09-15T08:00:00.000Z',
         } satisfies Workspace),
-      putActive: () => Promise.resolve({ version: 2, updatedAt: '2026-09-15T09:00:00.000Z' }),
+      putActive: (args) => {
+        // Recorded, because "the desk comes back" is a claim about what was SAVED and not only
+        // about what is on screen after one load (TERM-05).
+        state.saved.push(args.body.layout);
+        return Promise.resolve({ version: 2, updatedAt: '2026-09-15T09:00:00.000Z' });
+      },
     },
     help: {
-      get: () => Promise.reject(new Error('help is not exercised here')),
-      openTicket: () => Promise.reject(new Error('tickets are not exercised here')),
+      // A `HelpResponse` for whatever code is asked about (API.md §5.3): enough for `HelpOverlay` to
+      // paint, which is all the ticket path needs from it.
+      get: (args) =>
+        Promise.resolve({
+          code: args.params.code,
+          name: `${args.params.code} — a function`,
+          summary: `What ${args.params.code} is for.`,
+          description: 'The long form.',
+          params: [{ name: 'range', type: 'string', required: false, description: 'the window' }],
+          keys: [{ key: 'Ctrl+I', action: 'provenance', description: 'where a number came from' }],
+          fields: [],
+          sources: ['cboe.delayed'],
+          related: [],
+        } as unknown as HelpResponse),
+      openTicket: (args) => {
+        state.tickets.push({ body: args.body });
+        return Promise.resolve(state.ticketCreated);
+      },
     },
     search: {
       universeSnapshot: () => Promise.resolve(snapshot()),
       query: () => Promise.resolve({ hits: [], tookMs: 1, traceId: SESSION.sessionId }),
     },
     ref: {
-      resolve: () =>
-        Promise.resolve({
+      // The master, which is the one place `SPX Index` resolves: the local universe index does not
+      // answer a display (see `SPX_ID`), and `App.tsx#resolveInstrument` asks this route for the
+      // instrument behind the frame's security AFTER the screen has painted.
+      resolve: (args) => {
+        const asked = args.query.ref;
+        const instrument = asked === SPX.display ? SPX : INSTRUMENT;
+        return Promise.resolve({
           meta: {
             traceId: SESSION.sessionId,
             asOf: { validAt: '2026-09-15T18:41:28.000Z', knownAt: '2026-09-15T18:41:28.000Z' },
             servedAt: '2026-09-15T18:41:28.100Z',
           },
-          results: [{ ref: { id: AAPL_ID }, instrument: INSTRUMENT, candidates: [], source: 'master' }],
-        }),
+          results: [
+            {
+              ref: { id: instrument.instrumentId },
+              instrument,
+              candidates: [],
+              source: 'master' as const,
+            },
+          ],
+        });
+      },
     },
     get live(): FakeLive {
       accesses += 1;
@@ -486,10 +563,17 @@ interface Mounted {
 }
 
 async function mountApp(
-  options: { screens?: ScreenRegistry; mode?: '1' | '2h' | '2v' | '4'; session?: SessionInfo | null } = {},
+  options: {
+    screens?: ScreenRegistry;
+    mode?: '1' | '2h' | '2v' | '4';
+    session?: SessionInfo | null;
+    /** What `GET /workspace` serves, for the restore path; `DEFAULT_LAYOUT` has no frames in it. */
+    layout?: WorkspaceLayout;
+  } = {},
 ): Promise<Mounted> {
   const state = plant();
   if (options.session !== undefined) state.session = options.session;
+  if (options.layout !== undefined) state.layout = options.layout;
   const universe = universeFor(state.sdk);
 
   const settle = async (frames = 4): Promise<void> => {
@@ -849,36 +933,123 @@ describe('ScreenCtx.provenance (DATA-10)', () => {
 });
 
 /* ---------------------------------------------------------------------------------------------- */
-/* The one widget the registry does NOT serve — an inverted assertion, on purpose                   */
+/* The two `custom` components the registry used to leave unserved                                  */
 /* ---------------------------------------------------------------------------------------------- */
 
 describe('the `Composer` custom node (widgets.tsx, docs/TRACEABILITY.md)', () => {
-  it('leaves MSG and FXC on the WP-12 placeholder, and says so out loud', async () => {
-    // `buildWidgetRegistry` deliberately omits `Composer`: MSG passes a message draft with
-    // attachments and a send gate, FXC "a keyboard-driven editor grid", and no component for either
-    // exists anywhere in the repo — so the node keeps the placeholder that NAMES what it waits for
-    // rather than drawing an empty canvas over a message composer (widgets.tsx header).
+  it('draws MSG a real composer, and still refuses to draw one over FXC’s matrix', async () => {
+    // THIS TEST USED TO BE INVERTED: it asserted `data-pending="Composer"` on both screens, because
+    // `buildWidgetRegistry` registered nothing for the name and the placeholder was the honest state.
+    // MSG's half is now a component (`screen/widgets/Composer.tsx`) and its behaviour is pinned in
+    // `test/screen/composer.test.tsx`; what belongs HERE is the composed application — that the node
+    // MSG emits is served by the registry `App.tsx` actually builds.
     //
-    // THIS ASSERTION IS INVERTED AND THAT IS THE POINT. Every other test in this file asserts
-    // `[data-pending]` is absent; these two assert it is present, because docs/TRACEABILITY.md
-    // records MSG and FXC as partially implemented for exactly this reason. The day someone
-    // registers a `Composer`, this test fails and the traceability row gets corrected instead of
-    // quietly becoming false.
+    // FXC's half stays a refusal, and that is the point of keeping the two in one test. The screens
+    // address one component name with two unrelated prop shapes — a message draft, and a 9 × 9
+    // currency matrix of `ValueCell`s — so a component that drew a message box wherever it saw the
+    // name would put a textarea over a rate grid. The traceability row for FXC therefore still says
+    // "partial", and the day somebody writes the matrix, this test fails and the row gets corrected
+    // instead of quietly becoming false.
     const app = await mountApp();
 
     await app.go('p1', 'MSG{Enter}');
     await app.settle(8);
     expect(app.plant.runs.map((r) => r.code)).toEqual(['MSG']);
     const msgBody = screen.getByTestId('panel-body-p1');
-    const msgPending = [...msgBody.querySelectorAll<HTMLElement>('[data-pending]')];
-    expect(msgPending.map((el) => el.dataset.pending)).toEqual(['Composer']);
+    expect([...msgBody.querySelectorAll<HTMLElement>('[data-pending]')].map((el) => el.dataset.pending)).toEqual([]);
+    const composer = msgBody.querySelector<HTMLTextAreaElement>('textarea.composer__body');
+    expect(composer, 'MSG has no composer').not.toBeNull();
+    // The policy strip's own disclaimer, and the gate, come off the payload — not from the component.
+    expect(msgBody.querySelector<HTMLElement>('.composer')?.dataset.composerState).toBe('ready');
+
+    // It is typeable in the composed shell, which is the property the window dispatcher's
+    // type-anywhere routing has to respect (`focus.ts#capturesTypedText` names `Composer`).
+    if (composer === null) throw new Error('unreachable');
+    await act(async () => {
+      composer.focus();
+      await userEvent.type(composer, 'morning');
+    });
+    expect(composer.value).toBe('morning');
 
     await app.go('p1', 'FXC{Enter}');
     await app.settle(8);
     expect(app.plant.runs.map((r) => r.code)).toEqual(['MSG', 'FXC']);
     const fxcBody = screen.getByTestId('panel-body-p1');
-    const fxcPending = [...fxcBody.querySelectorAll<HTMLElement>('[data-pending]')];
-    expect(fxcPending.map((el) => el.dataset.pending)).toEqual(['Composer']);
+    expect(fxcBody.querySelector('textarea.composer__body'), 'a message box was drawn over the FX matrix').toBeNull();
+    expect(fxcBody.querySelector<HTMLElement>('.composer--matrix')?.dataset.composerState).toBe(
+      'matrix-not-implemented',
+    );
+  });
+
+  it('draws DES’s rate sparkline instead of a placeholder, and prints no number on it', () => {
+    // The other half of the same gap (CHRT-01). `DES.equity.json` is the golden this file already
+    // serves DES with; the `rate` variant is the one that emits the node, and the component's own
+    // behaviour is pinned in `test/screen/sparkline.test.tsx`. What is asserted here is the registry:
+    // a `custom#Sparkline` reaching the composed app finds a component.
+    expect(buildWidgetRegistry().custom?.Sparkline).not.toBeUndefined();
+  });
+});
+
+/* ---------------------------------------------------------------------------------------------- */
+/* TERM-09: the terminal says which ticket it opened                                                */
+/* ---------------------------------------------------------------------------------------------- */
+
+describe('a support ticket (TERM-09)', () => {
+  it('keeps the confirmation on screen after GO, naming the ticket and its room', async () => {
+    // The gap this closes was a one-line callback: `App.tsx#PanelOverlay` passed
+    // `onOpened={() => { onClose(); }}`, and `TicketDialog#submit` calls `onOpened(result)` in the
+    // same tick it sets `sent` — so the dialog unmounted before its confirmation could paint. The
+    // ticket was created, `201 {ticketId, roomId}` came back, and the user was told nothing at all.
+    //
+    // Driven through the composed app rather than the dialog alone, because the dialog's `sent` branch
+    // was never in doubt: what was broken is this composition, and only a test that opens the overlay
+    // the way a user does can see it.
+    const app = await mountApp();
+    await app.go('p1', 'WEI{Enter}');
+    await app.settle(8);
+
+    // HELP once explains, twice opens the ticket — `dispatcher.ts#nextHelpEffect`, the same
+    // transition `F1` drives.
+    await app.go('p1', 'HELP{Enter}');
+    await app.settle(4);
+    expect(document.querySelector('.help[role="dialog"]'), 'the first HELP did not explain').not.toBeNull();
+
+    await app.go('p1', 'HELP{Enter}');
+    await app.settle(4);
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"][aria-label="Open a helpdesk ticket"]');
+    expect(dialog, 'the second HELP did not open a ticket').not.toBeNull();
+
+    const question = document.querySelector<HTMLTextAreaElement>('#ticket-question-p1');
+    if (question === null) throw new Error('the ticket has no question field');
+    await act(async () => {
+      await userEvent.type(question, 'Why is the 1-week return blank for INDU?');
+    });
+    const submit = document.querySelector<HTMLButtonElement>('.ticket__submit');
+    if (submit === null) throw new Error('the ticket has no submit button');
+    await act(async () => {
+      submit.click();
+      await Promise.resolve();
+    });
+    await app.settle(2);
+
+    // It was posted...
+    expect(app.plant.tickets).toHaveLength(1);
+    // ...and the user can see WHICH ticket, and where the answer will arrive.
+    const confirmation = document.querySelector<HTMLElement>('[data-testid="ticket-opened"]');
+    expect(confirmation, 'the ticket was opened and the user was not told').not.toBeNull();
+    expect(confirmation?.getAttribute('role')).toBe('status');
+    expect(confirmation?.textContent).toContain(`Ticket ${String(app.plant.ticketCreated.ticketId)} opened`);
+    expect(confirmation?.textContent).toContain(`MSG ROOM=${String(app.plant.ticketCreated.roomId)}`);
+
+    // And it is the USER who dismisses it — the defect was a confirmation closed for them.
+    expect(document.querySelector('[role="dialog"][aria-label="Open a helpdesk ticket"]')).not.toBeNull();
+    const close = document.querySelector<HTMLButtonElement>('.ticket__close');
+    if (close === null) throw new Error('the confirmation has no close button');
+    await act(async () => {
+      close.click();
+      await Promise.resolve();
+    });
+    expect(document.querySelector('[role="dialog"][aria-label="Open a helpdesk ticket"]')).toBeNull();
   });
 });
 
@@ -1086,5 +1257,180 @@ describe('the window key dispatcher is attached (TERM-06, TERM-07)', () => {
     });
     await app.settle();
     expect(app.plant.csvCalls.length).toBe(csvBefore);
+  });
+});
+
+/* ---------------------------------------------------------------------------------------------- */
+/* 6. The workspace a SECOND load restores (TERM-05)                                                */
+/* ---------------------------------------------------------------------------------------------- */
+
+describe('the workspace restore (TERM-05)', () => {
+  /**
+   * A saved desk, with the two fields the old restore path could not carry.
+   *
+   * `p1` is a chart on `SPX Index`, whose display the local universe index cannot resolve — so the
+   * command string `"SPX Index GP"` re-parsed to a REF, and the frame that was pushed in place of
+   * the restored one anchored NO security. `p2` is the same function on a security the index CAN
+   * resolve, carrying `range: '5Y'` where GP's manifest default is `1Y`: that one loses its params
+   * whatever the security does. Both were persisted as they stand here, which is why the loss only
+   * became visible on the load after the one that caused it.
+   *
+   * Parsed through the wire schema rather than hand-built, so a layout this fixture gets wrong is a
+   * failure here and not a 500 on the plant.
+   */
+  const SAVED_LAYOUT: WorkspaceLayout = WorkspaceLayoutSchema.parse({
+    schema: 1,
+    mode: '2h',
+    focus: 'p1',
+    panels: [
+      {
+        id: 'p1',
+        index: 0,
+        history: ['SPX Index GP'],
+        commandDraft: '',
+        frameStack: [
+          {
+            security: { id: SPX_ID, display: 'SPX Index' },
+            fn: 'GP',
+            params: { range: '1Y' },
+            resultId: '01J0000000000000000SAVED1',
+            scroll: 0,
+          },
+        ],
+      },
+      {
+        id: 'p2',
+        index: 0,
+        history: ['AAPL US Equity GP RANGE=5Y'],
+        commandDraft: 'MSF',
+        frameStack: [
+          {
+            security: { id: AAPL_ID, display: 'AAPL US Equity' },
+            fn: 'GP',
+            params: { range: '5Y', periodicity: 'W' },
+            resultId: '01J0000000000000000SAVED2',
+            scroll: 0,
+          },
+        ],
+      },
+    ],
+  });
+
+  /** `FunctionRunRequest` as the plant received it — `RunCall.body` is `unknown` by design. */
+  interface RunBody {
+    panelId?: string;
+    security?: unknown;
+    params?: Record<string, unknown>;
+    launchKind?: string;
+  }
+
+  /** The run body for one panel, which is how a run is attributed when four are in flight. */
+  function runFor(app: Mounted, panelId: string): RunBody {
+    const body = app.plant.runs
+      .map((call) => call.body as RunBody)
+      .find((call) => call.panelId === panelId);
+    expect(body, `nothing was run for ${panelId}`).toBeDefined();
+    return body ?? {};
+  }
+
+  function frameOf(panelId: string): ReturnType<typeof usePanelsStore.getState>['panels'][string] {
+    const panel = usePanelsStore.getState().panels[panelId];
+    expect(panel, `no panel ${panelId}`).toBeDefined();
+    return panel!;
+  }
+
+  it('re-runs each restored frame FROM THE FRAME: its security, its params, as a refresh', async () => {
+    const app = await mountApp({ layout: SAVED_LAYOUT });
+    await app.settle(8);
+
+    // Both panels ran their own function, on their own security, with their own parameters. The
+    // string `"<security> <fn>"` this path used to build carried neither the id nor the params:
+    // `SPX Index` has no local ticker entry, so its run went out with `{ ref: 'SPX Index' }`, and
+    // `range` was never in the string at all — `5Y` would have come back as the manifest's `1Y`.
+    expect(app.plant.runs.map((r) => r.code)).toEqual(['GP', 'GP']);
+    expect(runFor(app, 'p1').security).toEqual({ id: SPX_ID });
+    expect(runFor(app, 'p2').security).toEqual({ id: AAPL_ID });
+    expect(runFor(app, 'p2').params).toEqual({ range: '5Y', periodicity: 'W' });
+    // The plant's usage row has to be able to tell a restore from something a human typed.
+    expect(runFor(app, 'p1').launchKind).toBe('refresh');
+  });
+
+  it('leaves the frame it restored intact — the layout the NEXT load reads is the one that was saved', async () => {
+    const app = await mountApp({ layout: SAVED_LAYOUT });
+    await app.settle(8);
+
+    // In the store: one frame per panel, still carrying its security and its params. The old path
+    // PUSHED a frame, so the stack grew by one on every load and the frame on screen was a new one
+    // built from re-parsed text.
+    for (const panelId of ['p1', 'p2']) {
+      expect(frameOf(panelId).frameStack, `${panelId} frame stack`).toHaveLength(1);
+      expect(frameOf(panelId).index).toBe(0);
+    }
+    expect(frameOf('p1').frameStack[0]?.security).toEqual({ id: SPX_ID, display: 'SPX Index' });
+    expect(frameOf('p2').frameStack[0]?.params).toEqual({ range: '5Y', periodicity: 'W' });
+
+    // And on the wire. `flush()` is what `Shell.tsx` calls on `pagehide`, so this is the layout the
+    // browser would leave behind — and the layout the second load of the terminal would restore.
+    await act(async () => {
+      await useWorkspaceStore.getState().flush();
+    });
+    const saved = app.plant.saved.at(-1);
+    expect(saved, 'the workspace was never saved').toBeDefined();
+    const savedPanel = (id: string): unknown =>
+      saved?.panels.find((p) => p.id === id)?.frameStack[0];
+    expect(savedPanel('p1')).toMatchObject({
+      security: { id: SPX_ID, display: 'SPX Index' },
+      fn: 'GP',
+    });
+    expect(savedPanel('p2')).toMatchObject({ params: { range: '5Y', periodicity: 'W' } });
+    // The history ring and the draft are persisted state too, and a restore is not something the
+    // user typed: the old path appended `"AAPL US Equity GP"` to the ring on every load and cleared
+    // the draft that had been saved with the desk.
+    expect(saved?.panels.find((p) => p.id === 'p2')?.history).toEqual([
+      'AAPL US Equity GP RANGE=5Y',
+    ]);
+    expect(saved?.panels.find((p) => p.id === 'p2')?.commandDraft).toBe('MSF');
+  });
+
+  it('draws the restored screen with the parameters it was saved with', async () => {
+    const app = await mountApp({ layout: SAVED_LAYOUT });
+    await app.settle(8);
+
+    // `GP/Screen.tsx` L249 builds its subtitle from `params.range`, so this is the restored `5Y`
+    // reaching the screen and not merely the store: the panel the user comes back to is the one they
+    // left. GP's manifest default is `1Y`, which is what the command line `"AAPL US Equity GP"` used
+    // to restore it on.
+    const subtitle = screen.getByTestId('panel-body-p2').querySelector('.screen__subtitle');
+    expect(subtitle?.textContent).toMatch(/^5Y · /);
+    // The security is anchored on the frame, so `resolveInstrument` had something to ask about and
+    // the panel knows which instrument it is showing (TERM-03's context rules read this).
+    expect(frameOf('p1').frameStack[0]?.instrument?.display).toBe('SPX Index');
+    expect(frameOf('p2').frameStack[0]?.instrument?.display).toBe('AAPL US Equity');
+  });
+
+  it('is not re-run by an unrelated piece of UI state — opening HELP keeps the screen (TERM-09)', async () => {
+    // `Shell.tsx` restores the workspace in an effect keyed on `onRestored`. While that callback
+    // closed over `dispatchDeps` — a `useMemo` over `onHelp`, which closes over the open overlay —
+    // opening HELP gave it a new identity, re-loaded the workspace and re-ran all four panels, so
+    // the screen the user asked about was discarded and TERM-09's ticket captured the restored one.
+    const app = await mountApp({ layout: SAVED_LAYOUT });
+    await app.settle(8);
+    const runsAfterRestore = app.plant.runs.length;
+
+    // A screen the user launched themselves, over the restored one.
+    await app.go('p1', 'AAPL US Equity DES {Enter}');
+    await app.settle(8);
+    expect(frameOf('p1').frameStack.at(-1)?.fn).toBe('DES');
+    const runsAfterLaunch = app.plant.runs.length;
+
+    await app.go('p1', 'HELP{Enter}');
+    await app.settle(8);
+
+    // The overlay is up, and nothing was restored behind it: no further runs, and the panel is still
+    // on the frame the user launched.
+    expect(app.plant.runs.length, 'the workspace was re-restored').toBe(runsAfterLaunch);
+    expect(runsAfterLaunch).toBeGreaterThan(runsAfterRestore);
+    expect(frameOf('p1').frameStack.at(-1)?.fn).toBe('DES');
+    expect(frameOf('p1').frameStack).toHaveLength(2);
   });
 });

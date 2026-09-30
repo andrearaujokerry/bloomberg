@@ -109,9 +109,10 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
   //
   //   * without a reset, the second test in this file would be asserting against the first test's
   //     layout, and spec order would be part of the result;
-  //   * restoring a workspace currently DEGRADES it — see `resetWorkspace`'s docstring and the
-  //     `test.fail` near the end of this file. The reset is what stops that defect from deciding
-  //     whether the assertions above it pass.
+  //   * a restore no longer DEGRADES the layout it restores (the regression test near the end of this
+  //     file is what holds that), but the tests here still launch functions into these panels, so the
+  //     reset is what keeps one test's launches out of the next one's assertions.
+  //     `resetWorkspace`'s docstring still describes the old defect.
   //
   // `resetWorkspace` goes to postgres directly, which is a harness affordance rather than a breach of
   // WORKPLAN §1.2: no package source is imported, and there is no API for "put this workspace back".
@@ -353,10 +354,51 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
       );
       expect(strip[key]?.limit, `${key}: limit`).toBe(live[key]?.limit);
     }
-    // The subscription counter is the one that can move under the test (the socket is live), so it
-    // is the ceiling that is compared and the numerator that is merely bounded.
+    // THE SUBSCRIPTION COUNTER, which is what this test is named after and what it could not see.
+    //
+    // `expect(used ?? -1).toBeGreaterThanOrEqual(0)` was the assertion here, against a number the
+    // server hardcoded: `entitlements/quotas.ts#state` takes the live count from its caller — the
+    // plant holds the subscription set in memory and there is no table to read — and every HTTP
+    // caller omitted the argument, so `GET /auth/session` and `GET /usage/quota` both answered
+    // `"concurrentSubscriptions":{"used":0}` with 35 subjects live on the socket. The assertion was
+    // satisfied by the constant it is named after: the eleventh test in this build that could not
+    // fail, and it was guarding the very counter in its own title.
+    //
+    // Two things are asserted instead, and the first is the one that fails against a constant.
     expect(strip.concurrentSubscriptions?.limit).toBe(live.concurrentSubscriptions?.limit);
-    expect(strip.concurrentSubscriptions?.used ?? -1).toBeGreaterThanOrEqual(0);
+
+    // 1 — the plant's own count, which is NOT zero: the four restored panels subscribe their grid
+    // subjects (`Panel.tsx`'s `live` effect) and the chart subscribes its own. Polled, because the
+    // subscriptions land a moment after the last panel paints.
+    await expect
+      .poll(
+        async () => {
+          const body = (await (await page.request.get('/api/v1/usage/quota')).json()) as {
+            concurrentSubscriptions: { used: number };
+          };
+          return body.concurrentSubscriptions.used;
+        },
+        { message: 'GET /usage/quota never reported a live subscription', timeout: 15_000 },
+      )
+      .toBeGreaterThan(0);
+
+    // 2 — and the strip agrees with it. The strip is seeded from `GET /auth/session` at page load,
+    // which happens BEFORE any panel has subscribed, and refreshed on a 60 s cadence — too slow for
+    // a spec to wait on. `session.ts#startQuotaRefresh` also refreshes on `visibilitychange`, which
+    // is the gesture a trader makes by coming back to the tab, so that is the one dispatched here:
+    // the product's own listener, not a back door into the store.
+    const settled = (await (await page.request.get('/api/v1/usage/quota')).json()) as {
+      concurrentSubscriptions: { used: number };
+    };
+    await page.evaluate(() => {
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await expect
+      .poll(async () => (await quotaStrip(page)).concurrentSubscriptions?.used, {
+        message: 'the strip never picked up the plant’s subscription count',
+        timeout: 15_000,
+      })
+      .toBe(settled.concurrentSubscriptions.used);
 
     // The ceilings are `quota_limits`' two seeded rows (`fixtures/seed/entitlements.json`, module
     // 12): firm 1 at 500 / 2,000,000 / 2,000 and user 1 at 500 / 2,000,000 / **10,000**. The
@@ -490,8 +532,9 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
 
   // ── A GAP IN THE SEED, recorded where the plan expected to read the chart ───────────────────
   //
-  // `test.fail()` for the same reason as the defect at the end of this file: it runs, it must fail,
-  // and the day the seed gains index history Playwright reports "expected to fail but passed".
+  // `test.fail()` and not `test.skip()`, for the reason the TERM-05 defect at the end of this file
+  // was one until it was fixed: it RUNS on every suite, it must fail, and the day the seed gains
+  // index history Playwright reports "expected to fail but passed".
   //
   // The default desk's chart panel does not plot, and the obvious fix makes the terminal WORSE.
   // Both halves are measured, because one of them cost a suite run to learn.
@@ -619,44 +662,88 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
     expect([...runs].sort()).toEqual(['GP', 'TOP', 'W', 'WEI']);
   });
 
-  // ── A DEFECT, recorded rather than hidden ───────────────────────────────────────────────────
+  test('one load reads the session, the workspace and each panel exactly once', async ({ page }) => {
+    // THE RESTORE RAN EVERY PANEL TWICE, and nothing could see it.
+    //
+    // `Shell.tsx` loaded the workspace and re-ran every restored frame in an effect with no guard,
+    // and `App.tsx` read the session gate in another; React StrictMode — which `main.tsx` wraps the
+    // application in, on purpose, to expose exactly this — mounts, tears down and re-mounts every
+    // component in development, so both effects ran twice. Counted off the wire on one authenticated
+    // load of the seeded desk: `GET /auth/session` ×2, `GET /workspace` ×2, and `WEI`, `GP`, `W` and
+    // `TOP` ×2 each. The plant's own ledger agreed — `select kind, code, count(*),
+    // count(distinct trace_id) from usage_events` over three loads gave `fn.launch W=6/6, GP=6/6,
+    // WEI=6/6`: two launches, two distinct trace ids, per panel, per load.
+    //
+    // It cost four duplicate function runs, two `fn.launch` quota rows per panel and two refreshes of
+    // `sessions.last_seen_at` per visit, and every screen looked exactly right. So the assertion is a
+    // COUNT off the wire, which is the only channel the defect was ever visible on — the DOM half of
+    // this file cannot see it, and neither could 254 green vitest files, because none of them renders
+    // the shell inside the StrictMode the product uses.
+    const calls = new Map<string, number>();
+    page.on('request', (req) => {
+      const url = new URL(req.url());
+      if (!url.pathname.startsWith('/api/v1/')) return;
+      const key = `${req.method()} ${url.pathname}`;
+      calls.set(key, (calls.get(key) ?? 0) + 1);
+    });
+
+    await openRestoredWorkspace(page);
+    await page.waitForLoadState('networkidle');
+
+    for (const key of [
+      'GET /api/v1/auth/session',
+      'GET /api/v1/workspace',
+      'POST /api/v1/functions/WEI/run',
+      'POST /api/v1/functions/GP/run',
+      'POST /api/v1/functions/W/run',
+      'POST /api/v1/functions/TOP/run',
+    ]) {
+      // `toBe(1)`, not `toBeLessThan(2)`: zero would mean the page never asked, and this assertion
+      // has to fail on that too.
+      expect(calls.get(key) ?? 0, `${key} — once per page load`).toBe(1);
+    }
+  });
+
+  // ── The regression test for the defect this file used to record ─────────────────────────────
   //
-  // `test.fail()` and not `test.skip()`: this runs on every suite, it MUST fail, and the day somebody
-  // fixes the restore path Playwright reports "expected to fail but passed" — so the fix cannot land
-  // unnoticed and the record cannot rot. Nothing is weakened to accommodate it; the assertion below
-  // is the one the product should satisfy.
+  // **A reload keeps the instrument a panel was restored with.**
   //
-  // What happens. `App.tsx#onRestored` (L1135) re-runs each restored frame as
-  // `"<security display> <fn>"` — `"SPX Index GP"`. The dispatcher resolves that display as a REF,
-  // and a ref-addressed security has no local instrument id, so the `pushFrame` adapter at
-  // `App.tsx` L664 anchors NO security on the frame it pushes. Its comment describes that choice
-  // deliberately, and only in terms of the panel header; what it does not consider is that the
-  // pushed frame becomes the ACTIVE one and is then persisted. The layout in postgres now holds a GP
-  // frame with `security: null`, so the next load rebuilds the command as bare `"GP"`.
+  // A `test.fail` for one work package, and what it measured is the reason this test reloads twice
+  // over. `App.tsx#onRestored` re-ran each restored frame as `"<security display> <fn>"` —
+  // `"SPX Index GP"`. The dispatcher resolved that display as a REF (the local universe index is
+  // keyed on tickers and does not answer a display), a ref-addressed security has no local instrument
+  // id, so the `pushFrame` adapter anchored NO security on the frame it pushed. That pushed frame
+  // became the ACTIVE one and was then persisted, so the layout in postgres held a GP frame with
+  // `security: null` and the next load rebuilt the command as the bare `"GP"`.
   //
-  // Measured on `pm@demo.terminal`'s `p3` in `bloomberg_e2e`, after two loads:
+  // Measured then on `pm@demo.terminal`'s `p3` in `bloomberg_e2e`, after two loads:
   //   frameStack[1] = { fn: "GP", security: null, resultId: "01M3F9…" }, index: 1
   //   history       = ["SPX Index GP RANGE=1Y", "SPX Index GP"]
   //   the screen    = "NO_SECURITY_LOADED: GP needs a security — load one, or type 'SECF GP'"
   //
-  // The first load is fine — the run is built from the command text, which still names the security —
-  // so this is invisible until a user opens the terminal a second time, and then their chart has lost
-  // its instrument. TERM-05.
+  // The first load was fine — that run was built from the command text, which still named the
+  // security — so it was invisible until a user opened the terminal a SECOND time, and then their
+  // chart had lost its instrument. `onRestored` now re-runs the frame from its own fields
+  // (`command/dispatch.ts#executeFrame`), so the frame it re-runs is the frame that is saved again.
+  // TERM-05.
   test('a reload keeps the instrument a panel was restored with (TERM-05)', async ({ page }) => {
-    test.fail(
-      true,
-      'DEFECT: the frame pushed by onRestored is persisted with security: null, so the second ' +
-        'load restores GP with no instrument. App.tsx L1135 + L664.',
-    );
-
     await openRestoredWorkspace(page);
     // The autosave is debounced; `pagehide` flushes it, and a reload fires `pagehide`.
     await page.reload();
     await expect(page.getByTestId('shell')).toBeVisible({ timeout: 30_000 });
-    // A short timeout on purpose: this assertion is expected to fail, and a 30 s wait for a failure
-    // that is already decided would add half a minute to every run of the suite.
     await expect(page.locator('[data-panel="p3"]')).toContainText('GP · SPX Index · S&P 500', {
-      timeout: 8_000,
+      timeout: 30_000,
+    });
+    // The index's own seeded level, so that "the instrument came back" is a value and not a title:
+    // `7,585.75` is the recorded Cboe poll for SPX (`fixtures/providers/raw/`, modules 2-7).
+    await expect(page.locator('[data-panel="p3"]')).toContainText('7,585.75');
+
+    // And a THIRD load, because the loss was invisible on the load that caused it: what the second
+    // load saved is what the third one reads.
+    await page.reload();
+    await expect(page.getByTestId('shell')).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator('[data-panel="p3"]')).toContainText('GP · SPX Index · S&P 500', {
+      timeout: 30_000,
     });
   });
 

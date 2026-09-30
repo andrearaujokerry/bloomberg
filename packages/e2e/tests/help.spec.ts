@@ -311,23 +311,24 @@ test.describe('WP-15 help — once explains, twice opens a ticket (TERM-09)', ()
     ).toEqual(onScreen.fields);
   });
 
-  // ── A DEFECT, recorded rather than hidden ───────────────────────────────────────────────────
+  // ── THE FIRST DEFECT, now closed ────────────────────────────────────────────────────────────
   //
-  // `test.fail()` and not `test.skip()`: it runs on every suite and it MUST fail, so the day the
-  // restore effect stops firing, Playwright reports "expected to fail but passed".
+  // This was a `test.fail()`, and what it recorded is why the assertion below is worth its lines.
   //
-  // **Opening the HELP overlay throws away the screen it is explaining.**
+  // **Opening the HELP overlay threw away the screen it was explaining.**
   //
   //   `Shell.tsx` L113-123 loads the workspace and restores it in a `useEffect` whose dependency
   //   list is `[workspace, scheduler, onRestored]` — its own comment says "here they happen
-  //   together, once". `onRestored` is not stable: `App.tsx` L1131 declares it
+  //   together, once". `onRestored` was not stable: `App.tsx` declared it
   //   `useCallback(…, [dispatchDeps, run])`, `dispatchDeps` is a `useMemo` over `[…, onHelp, …]`,
   //   and `onHelp` is `useCallback(…, [sdk, overlay, setProblem])` — it closes over the overlay
   //   because `nextHelpEffect` has to know whether one is already open.
   //
   //   So `setOverlay(…)` → new `onHelp` → new `dispatchDeps` → new `onRestored` → the effect
-  //   re-runs → `GET /api/v1/workspace` → `onRestored()` → all four panels are re-run from the
-  //   SAVED layout. Whatever the user had launched is discarded.
+  //   re-ran → `GET /api/v1/workspace` → `onRestored()` → all four panels were re-run from the
+  //   SAVED layout. Whatever the user had launched was discarded. `onRestored` now reads its
+  //   dependencies through a ref and is built once (`App.tsx`, the workspace section), so the
+  //   restore fires when the workspace loads and at no other time.
   //
   // Measured on `pm@demo.terminal`, `bloomberg_e2e`, with the network log beside the DOM:
   //   `AAPL US Equity HP 1M` → the panel reads `HP · AAPL US Equity · Apple Inc`
@@ -338,30 +339,24 @@ test.describe('WP-15 help — once explains, twice opens a ticket (TERM-09)', ()
   //   `HELP` again           → the ticket posts `functionCode: "WEI"`, WEI's params and WEI's 180
   //                            pending cells (`provIdx: -1`) as the screen state
   //
-  // The consequence for TERM-09 is the whole value of the feature: the desk receives a faithful
-  // capture of a screen the user never asked about, and the one they did ask about has gone from
-  // their display too. It is a TERM-05 defect in its own right — a workspace restore that fires on
+  // The consequence for TERM-09 was the whole value of the feature: the desk received a faithful
+  // capture of a screen the user never asked about, and the one they did ask about had gone from
+  // their display too. It was a TERM-05 defect in its own right — a workspace restore that fires on
   // an unrelated piece of UI state will discard a user's work at any time, not only under HELP.
   test('the ticket carries the screen the user was on (TERM-09)', async ({ page }) => {
-    test.fail(
-      true,
-      'DEFECT: Shell.tsx’s workspace-restore effect depends on onRestored, whose identity changes ' +
-        'whenever the HELP overlay opens (App.tsx: onHelp → dispatchDeps → onRestored). Opening ' +
-        'HELP re-restores the workspace, so the ticket describes the restored screen.',
-    );
-
     await openHpInPanel1(page);
     const posted = watchTicketPosts(page);
 
     await pressHelp(page);
     await expect(page.locator(HELP_OVERLAY)).toBeVisible({ timeout: 20_000 });
 
-    // Where it actually breaks. A short timeout on purpose: the failure is already decided, and a
-    // 20 s wait for it would be twenty seconds on every run of the suite.
+    // Where it used to break: the panel is still the one the user launched, with the overlay over
+    // it. The HP screen is already on the display by this point (`openHpInPanel1` waited for it), so
+    // what this asserts is that opening HELP did not replace it.
     await expect(
       page.locator('[data-panel="p1"]'),
       'the panel HELP was opened over has been restored out from under it',
-    ).toContainText('HP · AAPL US Equity · Apple Inc', { timeout: 5_000 });
+    ).toContainText('HP · AAPL US Equity · Apple Inc', { timeout: 10_000 });
 
     // …and then what the desk should receive.
     await pressHelp(page);
@@ -380,28 +375,29 @@ test.describe('WP-15 help — once explains, twice opens a ticket (TERM-09)', ()
     expect(body.security?.id, 'the ticket names no security').toBeGreaterThan(0);
   });
 
-  // ── A SECOND GAP, in the same feature ───────────────────────────────────────────────────────
+  // ── THE SECOND GAP, now closed ──────────────────────────────────────────────────────────────
   //
-  // `TicketDialog` has a `sent` state that renders `role="status"` — "Ticket 1 opened. The
-  // helpdesk room is open in the next panel (MSG room 3)." — and it is unreachable in this
-  // composition: `App.tsx#PanelOverlay` passes `onOpened={() => { onClose(); }}` and
-  // `TicketDialog#submit` calls `onOpened(result)` in the same tick it sets `sent`, so the dialog
-  // unmounts before that branch can paint. Measured: the dialog disappears; no status, no toast,
-  // no footer line, nothing in the panel changes.
+  // This was a `test.fail()`. `TicketDialog` has a `sent` state that renders `role="status"` —
+  // "Ticket 1 opened." — and it was unreachable in this composition: `App.tsx#PanelOverlay` passed
+  // `onOpened={() => { onClose(); }}` and `TicketDialog#submit` calls `onOpened(result)` in the same
+  // tick it sets `sent`, so the dialog unmounted before that branch could paint. Measured then: the
+  // dialog disappeared; no status, no toast, no footer line, nothing in the panel changed. A user
+  // pressed HELP twice, typed a question, pressed GO — and the screen went back to what it was,
+  // while `201 {ticketId, roomId}` sat on the wire.
   //
-  // So a user presses HELP twice, types their question, presses GO — and the screen goes back to
-  // what it was. The ticket WAS opened (the green test above proves it on the wire, `201
-  // {ticketId:1, roomId:3}`) and there is no way for the person who opened it to know that, or to
-  // find the room the answer will arrive in. `App.tsx`'s own comment says closing is "what is
-  // certainly right" because navigating to `MSG` needs param grammar it cannot spell; that is a
-  // fair reason not to navigate, and not a reason to say nothing.
+  // Fixed in `App.tsx#PanelOverlay` (`onOpened` no longer closes the dialog — the user's Close or
+  // Escape does) and in `TicketDialog`'s own copy, which used to promise "the helpdesk room is open
+  // in the next panel". Nothing navigates a panel here — App.tsx's comment says why, and running
+  // `MSG ROOM=<id>` over a panel the user did not choose would replace a screen to announce a
+  // ticket — so the confirmation names the room and the command that opens it instead. Both halves
+  // are asserted below: the id the wire returned, and the room the answer will arrive in.
+  //
+  // Scoped to the dialog rather than `page.getByRole('status')`, which is what this assertion said
+  // while it was allowed to fail: the status BAR is also `role="status"` (`shell/StatusBar.tsx`), so
+  // the unscoped locator matches two elements and resolves strict-mode-violation rather than either
+  // pass or fail honestly. Inside the dialog is also the stronger claim — the confirmation has to be
+  // where the user is looking, not anywhere on the page.
   test('the terminal says which ticket it opened (TERM-09)', async ({ page }) => {
-    test.fail(
-      true,
-      'GAP: App.tsx#PanelOverlay closes the dialog from onOpened, so TicketDialog’s "Ticket N ' +
-        'opened / MSG room M" confirmation never paints. The user is told nothing.',
-    );
-
     await openHpInPanel1(page);
     await pressHelp(page);
     await expect(page.locator(HELP_OVERLAY)).toBeVisible({ timeout: 20_000 });
@@ -416,13 +412,22 @@ test.describe('WP-15 help — once explains, twice opens a ticket (TERM-09)', ()
     await page.locator('.ticket__submit').click();
     const created = (await (await answered).json()) as { ticketId: number; roomId: number };
 
-    // The assertion the product should satisfy: the confirmation `TicketDialog` already writes,
-    // naming the ticket and the room the answer will arrive in. Matched on that sentence rather
-    // than on the bare id, because a low ticket number appears in a dozen unrelated places on a
-    // terminal full of numbers.
+    const confirmation = page.locator(TICKET_DIALOG).getByRole('status');
     await expect(
-      page.getByRole('status'),
+      confirmation,
       'the ticket was opened and the user was not told',
     ).toContainText(`Ticket ${String(created.ticketId)} opened`, { timeout: 5_000 });
+    // The room is the half a user has to act on: it is where the answer arrives, and nothing in the
+    // terminal opens it for them.
+    await expect(
+      confirmation,
+      'the confirmation does not name the room the answer arrives in',
+    ).toContainText(`MSG ROOM=${String(created.roomId)}`);
+
+    // And it stays up until the user dismisses it — the whole defect was a confirmation that was
+    // closed for them in the tick it was created.
+    await expect(page.locator(TICKET_DIALOG)).toBeVisible();
+    await page.locator('.ticket__close').click();
+    await expect(page.locator(TICKET_DIALOG)).toHaveCount(0);
   });
 });
