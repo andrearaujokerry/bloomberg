@@ -37,6 +37,7 @@ import { useWorkspaceStore } from '../state/workspace.js';
 import type { Scheduler, WorkspaceApi } from '../state/workspace.js';
 
 import { PanelGrid } from './PanelGrid.js';
+import type { PanelKeyContext } from './Panel.js';
 import type { PanelActions, PanelSlots, ScreenRegistry } from './Panel.js';
 import { StatusBar } from './StatusBar.js';
 
@@ -71,6 +72,11 @@ export interface ShellProps {
   /** WP-13's `LiveGrid` and WP-14's `ChartCanvas`, when they exist. */
   widgets?: WidgetRegistry | undefined;
   screens?: ScreenRegistry | undefined;
+  /**
+   * The focused panel's focus model, published for the window key dispatcher (TERM-06/TERM-07).
+   * The Shell only forwards it; the composition root is what builds a `KeyboardHost` from it.
+   */
+  onKeyContext?: ((context: PanelKeyContext) => void) | undefined;
   /** `KeyBar.tsx` — between the panels and the status bar (CLIENT §3.3). */
   keyBar?: ReactNode;
   /** Page-level overlays: the lock screen and the toasts, which are not per panel. */
@@ -89,6 +95,7 @@ export function Shell({
   slots,
   widgets,
   screens,
+  onKeyContext,
   keyBar,
   overlays,
   clientVersion,
@@ -146,6 +153,7 @@ export function Shell({
         slots={slots}
         widgets={widgets}
         screens={screens}
+        onKeyContext={onKeyContext}
       />
       {keyBar}
       <StatusBar

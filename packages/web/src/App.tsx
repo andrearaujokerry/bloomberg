@@ -95,7 +95,13 @@ import type { CommandLineHandle, GoSelection } from './shell/CommandLine.js';
 import { HelpOverlay, loadHelp } from './shell/HelpOverlay.js';
 import type { HelpSdk } from './shell/HelpOverlay.js';
 import { SCREENS } from './shell/Panel.js';
-import type { PanelActions, PanelSlotProps, PanelSlots, ScreenRegistry } from './shell/Panel.js';
+import type {
+  PanelActions,
+  PanelKeyContext,
+  PanelSlotProps,
+  PanelSlots,
+  ScreenRegistry,
+} from './shell/Panel.js';
 import { Shell } from './shell/Shell.js';
 import { TicketDialog, collectScreenState } from './shell/TicketDialog.js';
 import type { TicketDraft, TicketSdk } from './shell/TicketDialog.js';
@@ -104,8 +110,8 @@ import { executeText, runPage, runParams, sdkUsagePort } from './command/dispatc
 import type { DispatchDeps, DispatchOutcome, DispatchSdk, PanelsPort } from './command/dispatch.js';
 import { LocalUniverseIndex } from './command/localIndex.js';
 import type { UniverseSdk } from './command/localIndex.js';
-import { initialHelpState, nextHelpEffect } from './keyboard/dispatcher.js';
-import type { HelpState } from './keyboard/dispatcher.js';
+import { createDispatcher, initialHelpState, nextHelpEffect } from './keyboard/dispatcher.js';
+import type { HelpState, KeyboardHost } from './keyboard/dispatcher.js';
 
 import { ChartLiveContext } from './chart/index.js';
 import type { ChartLiveSource } from './chart/index.js';
@@ -1151,6 +1157,247 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
    * frame. The ref makes the effect idempotent across React StrictMode's double mount. The handle is
    * registered by the slot's `ref` callback, which has run by the time this effect does.
    */
+  /* ── the window key dispatcher (TERM-06, TERM-07) ─────────────────────────────────────────── */
+  //
+  // For fifteen packages `keyboard/dispatcher.ts` was complete, tested and NOT ATTACHED, so `F1`,
+  // `PRINT`, `PAGE FWD/BACK`, the panel chords and type-anywhere did nothing. Two things unblocked
+  // it:
+  //
+  //   1. `Panel` now publishes its focus model (`PanelKeyContext`) instead of keeping it private, so
+  //      the host reads the SAME focus state the footer hints read. The alternative was to re-derive
+  //      the focused node's kind from class names in the DOM — a second focus model, disagreeing
+  //      with the first at exactly the moments the first was written to get right.
+  //
+  //   2. Double-handling has one rule instead of a per-key argument: **the element wins.** Every
+  //      widget that consumes a key calls `preventDefault()` (grid, chart, command line, renderer),
+  //      and a window listener runs after React's root during bubbling, so `e.defaultPrevented` is
+  //      exactly "the focused element already dealt with this". The listener returns on it, and the
+  //      dispatcher therefore sees only the keys nothing else claimed. `Enter` on a grid cell stays
+  //      the grid's; `Enter` with focus nowhere in particular becomes GO.
+  //
+  // The host is built ONCE and reads live state through refs and `getState()`. Rebuilding it per
+  // render would hand `createDispatcher` a new closure every time and lose the HELP double-press
+  // window, which is the one piece of state the dispatcher owns.
+  const panelKeys = useRef(new Map<string, PanelKeyContext>());
+  const overlayRef = useRef<OverlayState | null>(null);
+  overlayRef.current = overlay;
+
+  const onKeyContext = useCallback((context: PanelKeyContext) => {
+    panelKeys.current.set(context.panelId, context);
+  }, []);
+
+  const keyboardHost = useMemo<KeyboardHost>(() => {
+    const focusedPanelId = (): string => usePanelsStore.getState().focus;
+    const ctx = (): PanelKeyContext | undefined => panelKeys.current.get(focusedPanelId());
+    const line = (): CommandLineHandle | null =>
+      commandLines.current.get(focusedPanelId()) ?? null;
+    const frameOf = (panelId: string): Frame | undefined => {
+      const panel = usePanelsStore.getState().panels[panelId];
+      return panel === undefined ? undefined : panel.frameStack[panel.index];
+    };
+    /**
+     * A key that did nothing says so (CLIENT §5.2: "a footer hint, never a silent no-op").
+     *
+     * `NOT_APPLICABLE` is the parser's own code for it and the panel's problem line is already the
+     * surface a user is reading when a command misfires, so a misfiring KEY lands in the same place.
+     * The span is empty because nothing in the draft is at fault.
+     */
+    const hint = (message: string): void => {
+      setProblems((prev) => ({
+        ...prev,
+        [focusedPanelId()]: { code: 'NOT_APPLICABLE', span: [0, 0], message },
+      }));
+    };
+
+    return {
+      // ── what is on screen ─────────────────────────────────────────────────────────────────────
+      // There is no lock screen in this build (CLIENT §5.1 stage 1 is unimplemented), so the first
+      // stage is permanently open rather than pretending to guard something.
+      isLocked: () => false,
+      overlay: () => {
+        const open = overlayRef.current;
+        return open !== null && open.panelId === focusedPanelId() ? open.kind : null;
+      },
+      autocompleteOpen: () => {
+        const panel = usePanelsStore.getState().panels[focusedPanelId()];
+        return panel?.ac.open === true;
+      },
+      commandText: () => line()?.text() ?? '',
+      // Prompts and chart draw modes are the pending kinds, and both answer `Escape` at their own
+      // element — so by the time a key reaches here there is nothing pending left to cancel.
+      hasPendingMode: () => false,
+      canPopFrame: () => {
+        const panel = usePanelsStore.getState().panels[focusedPanelId()];
+        return panel !== undefined && panel.index > 0;
+      },
+      /**
+       * Where the next key lands, decided honestly rather than defaulted.
+       *
+       * A published region is the focused NODE's kind and is authoritative. With none, focus is
+       * either in the command line or on the shell chrome, and the difference matters: the typing
+       * stage fires only when the region is NOT `'command'`, so returning `'command'` for "focus is
+       * nowhere" would silently switch TERM-06's type-anywhere off — which is the feature this whole
+       * wiring exists to deliver. So the input is asked directly, and anything else is `'keybar'`:
+       * the union's own member for a shell region that is not a screen node, and the one that lets a
+       * printable key reach the command line while leaving `Tab` to the region walk.
+       */
+      region: () => {
+        const published = ctx()?.region;
+        if (published !== null && published !== undefined) return published;
+        const active = globalThis.document?.activeElement ?? null;
+        const inCommandLine =
+          active instanceof globalThis.HTMLElement &&
+          active.closest('[data-testid="command-line"]') !== null;
+        return inCommandLine ? 'command' : 'keybar';
+      },
+      screenBindings: () => ctx()?.bindings ?? [],
+      capturesTypedText: () => ctx()?.capturesTypedText ?? false,
+      isPageable: () => ctx()?.pageable ?? false,
+
+      // ── stages that own their own maps ────────────────────────────────────────────────────────
+      // Both return false, and the reason is the rule above rather than an omission: an overlay or a
+      // region that consumed the key called `preventDefault()`, and the listener never called the
+      // dispatcher at all. Anything that reaches here is a key its own element declined.
+      overlayKey: () => false,
+      regionKey: () => false,
+      unlock: () => undefined,
+
+      // ── actions ───────────────────────────────────────────────────────────────────────────────
+      closeOverlay: () => {
+        setOverlay(null);
+      },
+      openHelp: () => {
+        const panelId = focusedPanelId();
+        // `Frame.fn` is nullable — a panel can hold a security with no function yet — and HELP on
+        // such a panel is the general help, not the help for a code that is not there.
+        const code = frameOf(panelId)?.fn ?? null;
+        onHelp(code === null ? {} : { code }, panelId);
+      },
+      // The dispatcher asks for a ticket directly when HELP is pressed twice inside ten seconds. It
+      // keeps its own `HelpState`, so this must NOT go through `onHelp` — that would consult a
+      // second copy of the same window and could answer "explain" to a key already resolved as
+      // "ticket".
+      openTicket: () => {
+        setOverlay({ kind: 'ticket', panelId: focusedPanelId() });
+      },
+      closeAutocomplete: () => {
+        const panelId = focusedPanelId();
+        usePanelsStore.getState().setAc(panelId, { rows: [], selected: -1, open: false });
+      },
+      clearCommandDraft: () => {
+        line()?.clear();
+      },
+      cancelPendingMode: () => undefined,
+      popFrame: () => {
+        usePanelsStore.getState().goBack(focusedPanelId());
+      },
+      // A dead CANCEL is stated, not silent (CLIENT §5.2): the footer hint is the panel's problem
+      // line, which is the one surface a user is already reading when a key does nothing.
+      cancelUnavailable: () => {
+        hint('Nothing to cancel.');
+      },
+      go: () => {
+        line()?.go();
+      },
+      goNextPanel: () => {
+        const panelId = focusedPanelId();
+        const text = line()?.text() ?? '';
+        if (text.trim() === '') return;
+        actions.navigateNext(panelId, text);
+      },
+      rowNextPanel: () => undefined,
+      insertSector: (sector) => {
+        line()?.insertSector(sector);
+      },
+      print: () => {
+        actions.exportResult(focusedPanelId());
+      },
+      exportGrid: () => {
+        actions.exportResult(focusedPanelId());
+      },
+      page: (direction) => {
+        actions.page(focusedPanelId(), direction);
+      },
+      // Not pageable: one viewport of the panel body, which is the element the renderer scrolls.
+      scrollViewport: (direction) => {
+        const body = globalThis.document?.querySelector<HTMLElement>(
+          `[data-testid="panel-body-${focusedPanelId()}"]`,
+        );
+        if (body === null || body === undefined) return;
+        body.scrollBy({ top: direction === 'fwd' ? body.clientHeight : -body.clientHeight });
+      },
+      frame: (direction) => {
+        const store = usePanelsStore.getState();
+        if (direction === 'back') store.goBack(focusedPanelId());
+        else store.goForward(focusedPanelId());
+      },
+      focusPanel: (index) => {
+        const store = usePanelsStore.getState();
+        const target = store.visible[index - 1];
+        if (target !== undefined) store.setFocus(target);
+      },
+      cyclePanel: (direction) => {
+        const store = usePanelsStore.getState();
+        const order = store.visible;
+        const at = order.indexOf(store.focus);
+        const next = order[(at + direction + order.length) % Math.max(1, order.length)];
+        if (next !== undefined) store.setFocus(next);
+      },
+      // The region walk is the renderer's roving tabindex, and it lives on the panel body's own
+      // focus ring. Moving it from here would need a second copy of `focus.ts#nextRegion`'s state;
+      // instead the focused panel is told to move, through the DOM focus the renderer publishes.
+      moveRegion: (direction) => {
+        const body = globalThis.document?.querySelector<HTMLElement>(
+          `[data-testid="panel-body-${focusedPanelId()}"]`,
+        );
+        if (body === null || body === undefined) return;
+        const nodes = [...body.querySelectorAll<HTMLElement>('[data-node-id]')];
+        if (nodes.length === 0) return;
+        const active = globalThis.document?.activeElement;
+        const at = nodes.findIndex((n) => n === active || n.contains(active ?? null));
+        const next = nodes[(at + direction + nodes.length) % nodes.length];
+        next?.focus();
+      },
+      // `Ctrl+I` is answered by `ScreenRenderer` at the focused cell, which is the only place that
+      // knows which `provIdx` the cursor is on. If it reaches here, focus is not on a cell and there
+      // is nothing to cite — so this says so rather than opening an empty panel.
+      provenance: () => {
+        hint('Focus a value to see where it came from.');
+      },
+      focusCommandLine: (opts) => {
+        line()?.focus({ selectAll: opts.selectAll });
+      },
+      typeIntoCommandLine: (ch) => {
+        line()?.type(ch);
+      },
+      // A manifest or screen `keymap` entry fired, and NOTHING CONSUMES THE ACTION STRING: a grep
+      // for any of them (`open-des`, `cycle-regions`, `adjust`, `normalise`, …) over packages/web/src
+      // finds only the declarations. Most are served anyway at the element — `Enter` on a WEI row is
+      // the grid running `row.command` — so this is reached only by a binding its own widget
+      // declined, and it reports that instead of pretending. The channel a screen would read is a
+      // real gap and is recorded in BUILD_STATUS.md.
+      screenAction: (action) => {
+        hint(`${action}: this key is declared by the screen but not wired yet.`);
+      },
+    };
+  }, [actions, onHelp, setOverlay, setProblems]);
+
+  const dispatcher = useMemo(() => createDispatcher(keyboardHost), [keyboardHost]);
+
+  useEffect(() => {
+    const target = globalThis.window;
+    if (target === undefined) return undefined;
+    const onKeyDown = (e: KeyboardEvent): void => {
+      // The element wins. See the note above `panelKeys`.
+      if (e.defaultPrevented) return;
+      dispatcher.handleKeyDown(e);
+    };
+    target.addEventListener('keydown', onKeyDown);
+    return () => {
+      target.removeEventListener('keydown', onKeyDown);
+    };
+  }, [dispatcher]);
+
   const focusedOnce = useRef(false);
   useEffect(() => {
     if (status !== 'ready' || focusedOnce.current) return;
@@ -1195,6 +1442,7 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
           slots={slots}
           widgets={runtime.widgets}
           screens={runtime.screens}
+          onKeyContext={onKeyContext}
           clientVersion={CLIENT_VERSION}
         />
       </ChartLiveContext.Provider>

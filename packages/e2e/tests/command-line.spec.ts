@@ -19,7 +19,7 @@
 //
 //   * `330.27 / ▼ -2.81` — AAPL's last and net change from the one recorded Cboe poll
 //     (`fixtures/providers/raw/cboe-quote-AAPL.json`, seed module 7);
-//   * `2026-09-15 · 330.18 · 17,504,609` and `244` bars — AAPL's seeded daily bars, which are the
+//   * `2026-09-15 · 330.18 · 17,504,609` and ~one year of bars — AAPL's seeded daily bars, the
 //     ONLY equity bars in the universe (`select … from bars_daily` returns AAPL 1255 and ten FX
 //     pairs with one row each), so an HP that carried the wrong security has nothing to draw;
 //   * `Microsoft Corp` / CIK `0000789019` — the security master and SEC submissions (modules 2-4).
@@ -207,9 +207,23 @@ test.describe('WP-15 — the command line (TERM-01, TERM-03)', () => {
     await expect(grid.nth(0)).toHaveText('2026-09-15');
     await expect(grid.nth(1)).toHaveText('330.18');
     await expect(grid.nth(5)).toHaveText('17,504,609');
-    await expect(kvRow(page, 'p1', 'Bars').getByRole('cell')).toContainText('244');
+    // `Bars` and `From` are NOT asserted as literals, and that is a correction rather than a
+    // weakening. `HP`'s default range is `1Y` measured from NOW, so the window slides every day the
+    // suite is not run: these read 244 bars from 2025-09-25 when this file was written and 242 from
+    // 2025-09-29 four days later, which is the test rotting on the calendar rather than the product
+    // changing. What is FIXTURE-FIXED is the far end (the capture's last bar) and the extremes inside
+    // the window, so those stay exact, and the count is asserted as the property that actually
+    // matters: about one year of US trading days, which still fails for a window of 60 or of 1,255.
+    const bars = Number(
+      ((await kvRow(page, 'p1', 'Bars').getByRole('cell').textContent()) ?? '').replace(
+        /[^\d]/g,
+        '',
+      ),
+    );
+    expect(bars).toBeGreaterThan(235);
+    expect(bars).toBeLessThan(260);
     await expect(kvRow(page, 'p1', 'High').getByRole('cell')).toContainText('344.57');
-    await expect(kvRow(page, 'p1', 'From').getByRole('cell')).toContainText('2025-09-25');
+    await expect(kvRow(page, 'p1', 'To').getByRole('cell')).toContainText('2026-09-15');
 
     // Every cell of the grid cites something, and the price columns cite a real entry — the bars
     // came from `yahoo.chart`, the `date` and `adjFactor` columns are the screen's own and carry

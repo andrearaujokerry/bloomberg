@@ -25,6 +25,7 @@ import { useCallback } from 'react';
 import type { CSSProperties, ReactElement } from 'react';
 
 import { Panel } from './Panel.js';
+import type { PanelKeyContext } from './Panel.js';
 import type { PanelActions, PanelSlots, ScreenRegistry } from './Panel.js';
 import type { WidgetRegistry } from '../screen/widgets/registry.js';
 import type { LayoutMode } from '../state/panels.js';
@@ -70,9 +71,17 @@ export interface PanelGridProps {
   slots?: PanelSlots | undefined;
   widgets?: WidgetRegistry | undefined;
   screens?: ScreenRegistry | undefined;
+  /** Threaded straight through to every `Panel` — see `Panel.tsx#PanelKeyContext`. */
+  onKeyContext?: ((context: PanelKeyContext) => void) | undefined;
 }
 
-export function PanelGrid({ actions, slots, widgets, screens }: PanelGridProps): ReactElement {
+export function PanelGrid({
+  actions,
+  slots,
+  widgets,
+  screens,
+  onKeyContext,
+}: PanelGridProps): ReactElement {
   const mode = usePanelsStore((s) => s.mode);
   const visible = usePanelsStore((s) => s.visible);
   const focus = usePanelsStore((s) => s.focus);
@@ -102,6 +111,7 @@ export function PanelGrid({ actions, slots, widgets, screens }: PanelGridProps):
           slots={slots}
           widgets={widgets}
           screens={screens}
+          onKeyContext={onKeyContext}
         />
       ))}
     </main>

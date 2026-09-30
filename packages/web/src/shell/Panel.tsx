@@ -37,7 +37,7 @@ import type { KeyRegion } from '../keyboard/keymap.js';
 import { collectFocusNodes } from '../keyboard/focus.js';
 import { ScreenRenderer } from '../screen/ScreenRenderer.js';
 import type { ScreenHandle } from '../screen/ScreenRenderer.js';
-import type { LiveView, ScreenCtx, ScreenProps, ScreenSpec } from '../screen/types.js';
+import type { LiveView, Node, ScreenCtx, ScreenProps, ScreenSpec } from '../screen/types.js';
 import type { CellFormatContextValue } from '../screen/widgets/CellView.js';
 import type { ScreenActions, WidgetRegistry } from '../screen/widgets/registry.js';
 import { screenModules } from '../screens/index.js';
@@ -47,6 +47,43 @@ import { selectCanGoBack, selectCanGoForward, selectFrame, usePanelsStore } from
 /* ---------------------------------------------------------------------------------------------- */
 /* Ports                                                                                            */
 /* ---------------------------------------------------------------------------------------------- */
+
+/**
+ * What `Panel` publishes upward so a WINDOW-LEVEL key dispatcher can exist (TERM-06, TERM-07).
+ *
+ * `keyboard/dispatcher.ts` is complete and tested, and for fifteen packages it was not attached,
+ * because four members of its `KeyboardHost` — `region()`, `screenBindings()`,
+ * `capturesTypedText()` and `isPageable()` — need the focused panel's focus model, and this
+ * component held all of it in local state and exposed none of it. The composition root's only other
+ * option was to re-derive the focused node's KIND from class names in the DOM, which is a second
+ * focus model that disagrees with this one at exactly the moments this one was written to get right.
+ *
+ * So this is the focus model, published rather than re-derived. Every field is already computed here
+ * for the footer hints; nothing is recomputed for the dispatcher's benefit.
+ */
+export interface PanelKeyContext {
+  readonly panelId: string;
+  /** The focused node's kind, or `null` when focus is not inside the panel body. */
+  readonly region: KeyRegion | null;
+  /** `manifest.keymap` and `ScreenSpec.keymap`, unmerged — the dispatcher matches over both. */
+  readonly bindings: readonly KeyBinding[];
+  /** `focus.ts#capturesTypedText`'s structural cases: a form field or the MSG composer. */
+  readonly capturesTypedText: boolean;
+  /**
+   * Does the focused screen page server-side? PAGE FWD/BACK pages when it does and scrolls a
+   * viewport when it does not. There is no `paging` flag on a manifest — the structural signal is a
+   * node carrying `page: { index, count }` — so it has to be read off the spec, which is here.
+   */
+  readonly pageable: boolean;
+}
+
+/** Does any node of this body carry `page`? — {@link PanelKeyContext.pageable}. */
+function specPages(body: Node): boolean {
+  if ('page' in body && body.page !== undefined) return true;
+  if (body.kind === 'split') return body.children.some((child) => specPages(child));
+  if (body.kind === 'tabs') return body.tabs.some((tab) => specPages(tab.body));
+  return false;
+}
 
 /** The one thing this file needs from a manifest's zod object: {@link Panel}'s `screenParams`. */
 interface ParamsSchema {
@@ -283,6 +320,12 @@ export interface PanelProps {
   focused: boolean;
   /** Clicking or tabbing into a panel focuses it — the pointer path for TERM-04. */
   onFocus: (panelId: string) => void;
+  /**
+   * Publish the focus model upward so the window dispatcher can route a key (TERM-06/TERM-07).
+   * Called whenever the focused region, the key bindings or the paging shape changes, and with
+   * `region: null` when focus leaves the panel body. See {@link PanelKeyContext}.
+   */
+  onKeyContext?: ((context: PanelKeyContext) => void) | undefined;
   actions?: PanelActions | undefined;
   slots?: PanelSlots | undefined;
   widgets?: WidgetRegistry | undefined;
@@ -294,6 +337,7 @@ export function Panel({
   ordinal,
   focused,
   onFocus,
+  onKeyContext,
   actions = INERT_PANEL_ACTIONS,
   slots,
   widgets,
@@ -478,6 +522,32 @@ export function Panel({
     () => keyHints(manifest?.keymap ?? [], spec?.keymap, region),
     [manifest, spec, region],
   );
+
+  // The same three inputs the footer uses, published for the window dispatcher (TERM-06/TERM-07).
+  // An effect rather than a call inside `onFocusIn`, because `region` also changes when the SPEC
+  // changes — a new frame in this panel moves the user from a grid to a chart without any focus
+  // event at all, and a dispatcher holding the old region would route the next key to a widget that
+  // is no longer on screen.
+  const focusedKind = useMemo(() => {
+    if (focusedNodeId === null) return null;
+    return focusNodes.find((n) => n.id === focusedNodeId) ?? null;
+  }, [focusNodes, focusedNodeId]);
+
+  const bindings = useMemo<readonly KeyBinding[]>(
+    () => [...(manifest?.keymap ?? []), ...(spec?.keymap ?? [])],
+    [manifest, spec],
+  );
+
+  const pageable = useMemo(() => (spec === null ? false : specPages(spec.body)), [spec]);
+
+  const capturesTyped =
+    focusedKind !== null &&
+    (focusedKind.kind === 'form' ||
+      (focusedKind.kind === 'custom' && focusedKind.component === 'Composer'));
+
+  useEffect(() => {
+    onKeyContext?.({ panelId, region, bindings, capturesTypedText: capturesTyped, pageable });
+  }, [onKeyContext, panelId, region, bindings, capturesTyped, pageable]);
 
   // Read through `getState()` rather than selecting the method: the store's actions are stable, so
   // subscribing to them buys nothing, and a selected method is a method separated from its object.

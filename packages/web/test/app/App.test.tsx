@@ -981,3 +981,110 @@ describe('the one socket (TERM-04, API.md §6.3 step 1)', () => {
   });
 });
 
+
+describe('the window key dispatcher is attached (TERM-06, TERM-07)', () => {
+  /**
+   * `keyboard/dispatcher.ts` was complete and tested for fifteen packages and never attached, so
+   * `F1`, `PRINT`, `PAGE FWD/BACK`, the panel chords and type-anywhere did nothing at all. Each test
+   * here presses a key that was dead and asserts the effect, on the composed application.
+   *
+   * They are written against `window` rather than an element on purpose: that is the listener under
+   * test. A key dispatched at a focused widget would prove the widget's own handler instead, which
+   * was never the broken half.
+   */
+  function press(init: KeyboardEventInit): void {
+    act(() => {
+      globalThis.window.dispatchEvent(
+        new globalThis.KeyboardEvent('keydown', { bubbles: true, cancelable: true, ...init }),
+      );
+    });
+  }
+
+  it('types anywhere into the focused panel’s command line (TERM-06)', async () => {
+    const app = await mountApp();
+    // Focus is deliberately taken OFF the command line: type-anywhere is the case where the user is
+    // not in the input and starts typing regardless, which is the whole of TERM-06. `blur()` rather
+    // than focusing something else, because the shell chrome is not focusable and a `.focus()` that
+    // does nothing would leave the caret in the input and test the input instead.
+    act(() => {
+      const active = globalThis.document.activeElement;
+      if (active instanceof globalThis.HTMLElement) active.blur();
+    });
+    expect(globalThis.document.activeElement).toBe(globalThis.document.body);
+
+    press({ key: 'A' });
+    await app.settle();
+
+    // The contract is exactly this: the key lands in the command line AND focus moves there, so the
+    // user carries on typing normally. Only the FIRST key routes — after it, the input has focus and
+    // the browser types into it natively, which is why the rest of this test uses `userEvent` rather
+    // than more synthetic window events (those would prove nothing about a focused input).
+    const input = screen.getByRole('combobox', { name: 'Command line p1' });
+    expect(input).toHaveValue('A');
+    expect(globalThis.document.activeElement).toBe(input);
+
+    await userEvent.type(input, 'PL');
+    await app.settle();
+    expect(input).toHaveValue('APL');
+  });
+
+  it('switches panels with the panel chord, and the store agrees (TERM-04)', async () => {
+    const app = await mountApp({ mode: '4' });
+    expect(usePanelsStore.getState().focus).toBe('p1');
+
+    press({ key: '3', altKey: true });
+    await app.settle();
+    expect(usePanelsStore.getState().focus).toBe('p3');
+
+    press({ key: '1', altKey: true });
+    await app.settle();
+    expect(usePanelsStore.getState().focus).toBe('p1');
+  });
+
+  it('walks the frame stack from the window (MENU / back)', async () => {
+    const app = await mountApp();
+    await app.go('p1', 'WEI{Enter}');
+    await app.go('p1', 'TOP{Enter}');
+    const before = usePanelsStore.getState().panels.p1;
+    expect(before?.frameStack).toHaveLength(2);
+    expect(before?.index).toBe(1);
+
+    press({ key: 'Escape' });
+    await app.settle();
+    // The CANCEL ladder's last rung with nothing else pending is the frame stack.
+    expect(usePanelsStore.getState().panels.p1?.index).toBe(0);
+  });
+
+  it('PRINT exports the focused panel, which had no key at all before (FUNC-03)', async () => {
+    const app = await mountApp();
+    await app.go('p1', 'WEI{Enter}');
+    const before = app.plant.csvCalls.length;
+
+    press({ key: 'p', ctrlKey: true });
+    await app.settle();
+
+    expect(app.plant.csvCalls.length).toBe(before + 1);
+    expect(app.plant.csvCalls.at(-1)).toContain('WEI');
+  });
+
+  it('leaves a key the focused element already consumed alone', async () => {
+    // The rule that makes attaching the listener safe: a widget that handles a key calls
+    // `preventDefault`, and the listener returns on `defaultPrevented`. Without it, `Enter` on a grid
+    // row would run the row's command AND the command line's GO.
+    const app = await mountApp();
+    await app.go('p1', 'WEI{Enter}');
+    const consumed = new globalThis.KeyboardEvent('keydown', {
+      key: 'p',
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    consumed.preventDefault();
+    const csvBefore = app.plant.csvCalls.length;
+    act(() => {
+      globalThis.window.dispatchEvent(consumed);
+    });
+    await app.settle();
+    expect(app.plant.csvCalls.length).toBe(csvBefore);
+  });
+});

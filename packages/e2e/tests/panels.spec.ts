@@ -247,7 +247,12 @@ test.describe('WP-15 — panels, the back-stack and the workspace (TERM-04, TERM
     await expect(panelOf(page, 'p2')).toContainText('HP · AAPL US Equity · Apple Inc', {
       timeout: 20_000,
     });
-    await expect(panelOf(page, 'p2')).toContainText('244');
+    // The last bar of the capture, not the bar COUNT: `HP`'s `1Y` window is measured from now, so a
+    // literal count is a test that rots on the calendar (it read 244 when this file was written and
+    // 242 four days later). `2026-09-15` is the newest bar in `yahoo-chart-events.json` and does not
+    // move, and it is the better assertion anyway — it says the panel really ran HP over the seeded
+    // history rather than that some three-digit number appeared somewhere in the panel.
+    await expect(panelOf(page, 'p2')).toContainText('2026-09-15');
 
     // Back. The earlier screen returns WITH THE VALUES IT HAD — the frame keeps its payload, so
     // this is the DES the user saw, not a fresh run that happens to look like it.

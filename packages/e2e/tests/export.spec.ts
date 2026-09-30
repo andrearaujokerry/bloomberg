@@ -470,12 +470,12 @@ test.describe('WP-15 export — PRINT on HP (FUNC-03)', () => {
   // So a user looking at the table the test above exported has no way to ask for it. The export
   // path is proven; the gesture is missing. FUNC-03.
   test('PRINT is reachable from the terminal (FUNC-03)', async ({ page }) => {
-    test.fail(
-      true,
-      'GAP: nothing in the UI invokes ScreenCtx.export(), and the window keyboard dispatcher that ' +
-        'would bind Ctrl+P is not attached (App.tsx L56-69). PRINT has no gesture.',
-    );
-
+    // This was an expected failure for fifteen packages: nothing in the UI invoked
+    // `ScreenCtx.export()` and the window dispatcher that binds `Ctrl+P` was never attached, so
+    // PRINT had no gesture at all. The dispatcher is attached now (`App.tsx`, `keyboardHost`), and
+    // `Ctrl+P` is a RESERVED key — `keymap.ts` L285 — so it reaches `host.print()` from anywhere
+    // that has not already consumed it. The download is the assertion: a key that fires an action
+    // which produces no file is not a working PRINT.
     await openRestoredWorkspace(page);
     await runHpInPanel1(page);
 
