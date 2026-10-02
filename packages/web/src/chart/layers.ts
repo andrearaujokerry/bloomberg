@@ -176,6 +176,22 @@ function guttersOf(
  * build do not sum to 1 — GP with a volume pane and two studies sums to 0.85 — and a layout that
  * left the difference as empty canvas would leave a grey band under the chart on the screen most
  * used (`screens/GP/Screen.tsx`).
+ *
+ * ## THE X STRIP IS RESERVED BEFORE THE FRACTIONS, NOT TRIMMED OFF THE LAST PANE AFTER THEM
+ *
+ * It used to be the second of those, and the bottom pane paid for the whole strip out of its own band.
+ * Measured on GP with the volume pane and three `sub` studies in a 900 × 400 canvas at a 13 px line
+ * height: `main` 288 px of plot, `vol` 37, `st0` 20, `st1` 20, and **`st2` 3** — a study pane three
+ * pixels tall, with a y-axis label beside it. GP's fractions sum to exactly 1.00 (0.72 + 0.13 +
+ * 3 × 0.05) and reserve nothing for the strip, which is half of it; the other half is that the strip is
+ * shared furniture and only one pane was charged for it.
+ *
+ * So `xAxisHeightPx` comes out of the height the fractions divide, and the last open pane's BAND is
+ * then given it back — the band is where the strip is drawn, inside it, below that pane's plot. Every
+ * pane's plot is therefore its own fraction of what is left after the strip, which is what the
+ * fractions were always meant to mean. The strip stays inside the last open pane rather than at the
+ * bottom of the canvas, because a collapsed pane below it would otherwise sit between the plots and
+ * their own axis.
  */
 export function computeLayout(input: LayoutInput): PaneLayout[] {
   const { spec, fonts } = input;
@@ -188,7 +204,10 @@ export function computeLayout(input: LayoutInput): PaneLayout[] {
   const collapsed = panes.map((p) => input.collapsedPanes.has(p.id));
   const openIdx = panes.map((_p, i) => i).filter((i) => collapsed[i] !== true);
   const closedCount = panes.length - openIdx.length;
-  const openHeight = Math.max(0, height - closedCount * titleH);
+  // Reserved before the fractions: see the note above. Nothing is reserved when every pane is
+  // collapsed, because then no pane draws a strip.
+  const stripH = openIdx.length > 0 ? xAxisH : 0;
+  const openHeight = Math.max(0, height - closedCount * titleH - stripH);
   const fracSum = openIdx.reduce((sum, i) => sum + Math.max(0, panes[i]?.height ?? 0), 0);
   // Every fraction zero (or one pane at height 0) still has to draw: fall back to equal shares.
   const share = (i: number): number =>
@@ -197,6 +216,12 @@ export function computeLayout(input: LayoutInput): PaneLayout[] {
   const lastOpen = openIdx.length > 0 ? openIdx[openIdx.length - 1] : undefined;
   const mainId = panes[0]?.id ?? 'main';
   const bandH = openIdx.map((i) => Math.round(openHeight * share(i)));
+  // The strip's height, back onto the band that draws it. `plotH` below trims it off again, so the
+  // last pane's PLOT is its fraction of `openHeight` exactly as every other pane's is.
+  if (bandH.length > 0) {
+    const last = bandH.length - 1;
+    bandH[last] = (bandH[last] ?? 0) + stripH;
+  }
 
   const out: PaneLayout[] = [];
   let y = 0;

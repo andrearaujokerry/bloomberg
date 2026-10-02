@@ -28,8 +28,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { expectGolden } from './golden.js';
 
-import type { NormalisedUpdate, QuoteFields } from '@terminal/core';
-import { FunctionRegistry } from '@terminal/core';
+import type { NormalisedUpdate, PanelContext, ParseEnv, QuoteFields } from '@terminal/core';
+import { FunctionRegistry, parse, registry as coreRegistry } from '@terminal/core';
 import { MSG } from '@terminal/core/functions/manifests/MSG';
 import type { MsgPayload } from '@terminal/core/functions/manifests/MSG';
 
@@ -48,6 +48,26 @@ const API = '/api/v1';
 const GOLDEN_ISO = new Date(GOLDEN_CAPTURE_MS).toISOString();
 const GRANT_FROM = '2020-01-01T00:00:00.000Z';
 const GOLDEN_NAME = 'MSG.default.json';
+
+/**
+ * A `ParseEnv` for reading a command this resolver emitted back through the shipped parser.
+ *
+ * `coreRegistry` and not this file's `FunctionRegistry` fixture: the claim is about the catalogue the
+ * client ships with, which is what will actually receive the click-through. `lookupTicker` answers
+ * `[]` as a cold client does, so a `BAD_IDENTIFIER` on the security half is possible and is not what
+ * these assertions are about — they are about `ARG_PARSE` and the function code, both decided from the
+ * text and the registry alone.
+ */
+function msgParseEnv(): ParseEnv {
+  const panel: PanelContext = { panelId: 'p1', security: null, fn: null, params: {} };
+  return {
+    registry: coreRegistry,
+    panel,
+    lookupTicker: () => [],
+    today: GOLDEN_ISO.slice(0, 10),
+    panelId: 'p1',
+  };
+}
 
 const REGISTRY = new FunctionRegistry([MSG]);
 const MODULES: Record<string, FunctionServerModule<never, never>> = {
@@ -495,8 +515,23 @@ describe('MSG — rooms, the archive and MSG-04 attachments', () => {
 
     const chart = chips[1]!;
     expect(chart.label).toBe('GP · AAPL US Equity · 1Y');
-    expect(chart.command).toBe('AAPL US Equity GP RANGE=1Y');
     expect(chart.code).toBe('GP');
+    /**
+     * `GP 1Y`, POSITIONALLY, and asserted by parsing rather than by restating.
+     *
+     * This line read `expect(chart.command).toBe('AAPL US Equity GP RANGE=1Y')` and passed for every
+     * work package, because the string it compared against was the string the resolver built: a test
+     * checking its own setup artefact. `GP.paramGrammar` puts `range` in the first POSITIONAL slot and
+     * its `keyed` map holds TYPE / ADJ / VS / CCY / NORM / PER / LOG and no RANGE, so the real parser
+     * answered `ARG_PARSE: RANGE is not an argument of this function` — a click-through that could not
+     * be clicked through. The spelling is now asserted, AND so is the thing the spelling is for:
+     * `parse()` reads it with no problem and recovers `range: '1Y'`.
+     */
+    expect(chart.command).toBe('AAPL US Equity GP 1Y');
+    const [read] = parse(chart.command ?? '', msgParseEnv());
+    expect(read?.problems.filter((p) => p.code === 'ARG_PARSE')).toEqual([]);
+    expect(read?.fn?.code).toBe('GP');
+    expect(read?.params.range).toBe('1Y');
 
     expect(chips[2]!.label).toBe('Core');
     expect(chips[2]!.command).toBe(`W ${String(env.watchlistId)}`);
@@ -517,6 +552,24 @@ describe('MSG — rooms, the archive and MSG-04 attachments', () => {
         expect.stringContaining('FUNCTION_NOT_FOUND'),
       ]),
     );
+
+    /**
+     * AND THE GUARD OVER ALL FIVE, which is the one that will catch the next one of these.
+     *
+     * A `command` on a chip is a promise that the command line accepts that string; the chart chip's
+     * did not, and no test could see it because each assertion compared the string to the same string.
+     * Every resolvable chip's command is parsed here, and the function code it resolves to must be the
+     * code the chip claims — a command that parses into a DIFFERENT function would be worse than one
+     * that refuses. A chip with no command is skipped: `resolvable: false` is the honest answer and is
+     * asserted above.
+     */
+    for (const chip of chips) {
+      if (chip.command === null) continue;
+      const [cmd] = parse(chip.command, msgParseEnv());
+      const argProblems = (cmd?.problems ?? []).filter((p) => p.code === 'ARG_PARSE');
+      expect(argProblems, `${chip.kind} chip: "${chip.command}"`).toEqual([]);
+      expect(cmd?.fn?.code, `${chip.kind} chip: "${chip.command}"`).toBe(chip.code ?? cmd?.fn?.code);
+    }
   });
 
   it('shows two readers of the same message different numbers and the same chip', async () => {

@@ -868,7 +868,7 @@ describe('y tick selection and labelling on the path that draws (layers.ts)', ()
  *
  * ## What drawing it found, which is why the geometry is pinned and not only the tick count
  *
- * Measured on this layout in a 900 × 400 canvas at a 13 px line height:
+ * Measured on this layout in a 900 × 400 canvas at a 13 px line height, when this suite was written:
  *
  *     main y=0   h=288    5 labels
  *     vol  y=303 h=37     2 labels
@@ -876,14 +876,25 @@ describe('y tick selection and labelling on the path that draws (layers.ts)', ()
  *     st1  y=360 h=20     1 label
  *     st2  y=380 h=3      1 label
  *
- * `st2`'s plot is **three pixels tall**, and it is the bottom pane that pays for the x strip:
- * `computeLayout` shares the full canvas height out by the fractions and only then trims
- * `xAxisHeightPx(fonts)` — 17 px here — off whichever pane is last, so a 20 px band becomes a 3 px
+ * `st2`'s plot was **three pixels tall**, because the bottom pane paid for the whole x strip:
+ * `computeLayout` shared the full canvas height out by the fractions and only then trimmed
+ * `xAxisHeightPx(fonts)` — 17 px here — off whichever pane was last, so a 20 px band became a 3 px
  * plot. GP's fractions sum to exactly 1.00 (0.72 + 0.13 + 3 × 0.05) and reserve nothing for the strip,
- * which is the half of it that is GP's. Nothing is changed here: who pays for the x strip is a layout
- * policy, it would move the volume pane's height in the suite above and every multi-pane chart on
- * screen, and `BUILD_STATUS.md` carries it. What this file does is make the number visible, so that a
- * fix is a failing assertion with the new geometry in it rather than a silent improvement.
+ * which was half of it; the other half was that the strip is shared furniture and one pane was charged
+ * for all of it.
+ *
+ * **That is fixed, and this is the test that said so.** The assertion below was written bounded ABOVE —
+ * `toBeLessThan(8)` — precisely so that a fix would arrive here as a failure with the new geometry in
+ * it rather than as a silent improvement, and that is how it arrived. `xAxisHeightPx` now comes out of
+ * the height the fractions divide and is given back to the last open pane's band, so the three study
+ * panes are within a pixel of one another and the assertion compares the bottom one to its sibling
+ * instead of to a literal.
+ *
+ * No committed pixel hash moved, and that is a property rather than luck: for a single open pane the
+ * new arithmetic is the old arithmetic (`openHeight = H − strip`, band `= openHeight + strip = H`,
+ * plot `= band − strip`), and `fixtures/golden/chart/series-hashes.json`'s twelve cases are all single
+ * pane. The suite in `renderer.test.ts` that renders the six real multi-pane screens asserts ink and
+ * no throw, not pixels, and is unaffected. `assertSinglePaneUnchanged` below pins the identity.
  */
 describe('a study sub-pane is 16 px tall, and its axis says so (§11.6, §11.2)', () => {
   const SUB_STUDIES = ['RSI', 'MACD', 'ROC'] as const;
@@ -912,7 +923,7 @@ describe('a study sub-pane is 16 px tall, and its axis says so (§11.6, §11.2)'
 
   const plugins: RendererPlugins = { studies: studyRegistry };
 
-  it('gives each one a domain of its own, and the bottom one three pixels', () => {
+  it('gives each one a domain of its own, and the bottom one the same band as its siblings', () => {
     const p = paint(studySpec(), { plugins });
     const panes = p.panes();
     expect(panes.map((q) => q.paneId)).toEqual(['main', 'vol', 'st0', 'st1', 'st2']);
@@ -923,15 +934,35 @@ describe('a study sub-pane is 16 px tall, and its axis says so (§11.6, §11.2)'
       expect(pane.plot.h, `${pane.paneId} plot height`).toBeGreaterThan(12);
       expect(pane.plot.h, `${pane.paneId} plot height`).toBeLessThan(26);
     }
-    // And the bottom one, which pays the x strip out of its own 20 px band. Pinned as a range rather
-    // than as 3 exactly, so a font metric change does not fail the suite for the wrong reason, and
-    // bounded ABOVE so that a fix to who pays for the strip shows up here as a failure.
+    /**
+     * AND THE BOTTOM ONE, which was three pixels tall and is now its siblings' height.
+     *
+     * This was the assertion that recorded the defect: `toBeLessThan(8)`, bounded above so that a fix
+     * to who pays for the x strip would show up here as a failure. It did. `computeLayout` now takes
+     * `xAxisHeightPx` out of the height the fractions divide and gives it back to the last open pane's
+     * BAND, so the strip is shared furniture paid for in proportion and every plot is its own fraction
+     * of what is left. The three study panes are within a pixel of each other, which is what equal
+     * fractions are supposed to mean.
+     *
+     * Asserted against its siblings rather than as a literal, because the quantity that was wrong was
+     * the RELATIONSHIP: a literal would pass again the moment a font metric moved it back.
+     */
     const bottom = panes[4];
+    const sibling = panes[3];
     expect(bottom).toBeDefined();
-    if (bottom === undefined) return;
-    expect(bottom.plot.h, 'the bottom study pane pays for the x strip').toBeLessThan(8);
-    expect(bottom.plot.h).toBeGreaterThanOrEqual(0);
-    expect(bottom.xAxis, 'and it is the pane that carries the strip').toBeDefined();
+    expect(sibling).toBeDefined();
+    if (bottom === undefined || sibling === undefined) return;
+    expect(
+      Math.abs(bottom.plot.h - sibling.plot.h),
+      'the bottom study pane is no longer charged for the whole x strip',
+    ).toBeLessThanOrEqual(1);
+    expect(bottom.plot.h, 'and it is a pane a study can be read in').toBeGreaterThan(12);
+    expect(bottom.xAxis, 'and it is still the pane that carries the strip').toBeDefined();
+    // The strip sits below that pane's plot, inside its band — not over it.
+    expect(bottom.xAxis?.y).toBeGreaterThanOrEqual(bottom.plot.y + bottom.plot.h);
+    // And no pixel of the canvas is unassigned, which is the invariant the reservation must not break.
+    const total = panes.reduce((sum, q) => sum + q.rect.h, 0);
+    expect(Math.abs(total - 400)).toBeLessThanOrEqual(1);
 
     // Three panes, three domains: RSI is bounded 0-100, MACD is a price difference and ROC a
     // percentage either side of zero, so three identical domains would mean no study output reached an
@@ -939,6 +970,27 @@ describe('a study sub-pane is 16 px tall, and its axis says so (§11.6, §11.2)'
     const domains = panes.slice(2, 4).map((pane) => domainOf(p, pane.paneId));
     for (const d of domains) expect(d.hi, JSON.stringify(d)).toBeGreaterThan(d.lo);
     expect(new Set(domains.map((d) => `${d.lo.toFixed(4)}:${d.hi.toFixed(4)}`)).size).toBe(2);
+  });
+
+  /**
+   * THE REASON NO COMMITTED PIXEL HASH MOVED, as an assertion rather than as a paragraph.
+   *
+   * Reserving the strip before the fractions is an IDENTITY for a single open pane — `openHeight` loses
+   * the strip, the one band gets it straight back, and `plotH` trims it off again — so every one of
+   * `series-hashes.json`'s twelve single-pane cases draws into the same rect it always did. If a later
+   * change to this arithmetic breaks that identity, this fails here with the geometry in hand instead of
+   * as twelve hash mismatches in another file.
+   */
+  it('leaves a single-pane chart’s plot rect exactly where it was', () => {
+    const one = paint({ ...priceSpec({ decimals: 2 }), panes: [{ id: 'main', height: 1 }] });
+    const main = one.panes()[0];
+    expect(main).toBeDefined();
+    if (main === undefined) return;
+    // The canvas is 400 px tall and the strip is `xAxisHeightPx(fonts)`; the plot is the rest of it.
+    expect(main.rect.h).toBe(400);
+    expect(main.plot.y).toBe(0);
+    expect(main.plot.h).toBe(400 - (main.xAxis?.h ?? 0));
+    expect(main.xAxis?.y).toBe(main.plot.h);
   });
 
   it('prints at most two labels in each, and never two that touch', () => {

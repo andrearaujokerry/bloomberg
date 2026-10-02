@@ -243,7 +243,7 @@
               }
             },
             "label": "GP · AAPL US Equity · 1Y",
-            "command": "AAPL US Equity GP RANGE=1Y",
+            "command": "AAPL US Equity GP 1Y",
             "resolvable": true,
             "reason": "OK"
           },

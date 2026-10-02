@@ -375,12 +375,14 @@ export {
   BOOLEAN_WORDS,
   RANGE_VALUES,
   coerceArg,
+  formatArgString,
+  formatArgs,
   isKeyedArg,
   parseArgs,
   parseArgDate,
   parseArgNumber,
 } from './command/args.js';
-export type { ParseArgsOptions, ParseArgsResult } from './command/args.js';
+export type { FormatArgsResult, ParseArgsOptions, ParseArgsResult } from './command/args.js';
 
 // Autocomplete: the universe index and the ranker (FUNCTIONS.md §3).
 export { UniverseIndex, jaccard, normalizeWords, trigramsOf } from './command/index.js';

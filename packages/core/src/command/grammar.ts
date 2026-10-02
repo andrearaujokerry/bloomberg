@@ -130,9 +130,17 @@ export interface ShellCommandSpec {
 }
 
 /**
- * Every shell command, in HELP order: `/layout`, `/panel`, `/conflate`, `/theme`, `/clear`,
- * `/logout`, `/trace`, `/version` (FUNCTIONS.md §2.6 L792-794). A leading `/` that is not one of
- * these — and not a `/scheme/value` identifier — is still a shell line; it simply names no command.
+ * Every shell command, in HELP order: `/layout`, `/panel`, `/conflate`, `/theme`, `/keybar`, `/clear`,
+ * `/logout`, `/trace`, `/version`. A leading `/` that is not one of these — and not a `/scheme/value`
+ * identifier — is still a shell line; it simply names no command.
+ *
+ * **DEVIATION, stated because the catalogue is a contract.** FUNCTIONS.md §2.6 L792-794 lists EIGHT and
+ * does not include `/keybar`. CLIENT.md §3.3 L266 names `/keybar on` as the way the key bar is shown in
+ * density `compact`, where it is hidden by default, and §5 L348 requires every binding to have an
+ * on-screen equivalent — of which §18.6 Q6 makes the key bar the GUARANTEED one for `F11`, which macOS
+ * Chrome will not surrender. Without this ninth word a compact desk can reach `F11` by no path at all,
+ * which is the defect the key bar was written to close, one layer up. So the word is here rather than
+ * leaving CLIENT's escape hatch unreachable, and HELP lists it with the other eight.
  */
 export const SHELL_COMMANDS: readonly ShellCommandSpec[] = Object.freeze([
   Object.freeze({
@@ -169,6 +177,18 @@ export const SHELL_COMMANDS: readonly ShellCommandSpec[] = Object.freeze([
       } as const),
     ]),
     summary: 'switch the colour theme',
+    emitsPanelSwitch: false,
+  }),
+  Object.freeze({
+    word: 'keybar',
+    args: Object.freeze([
+      Object.freeze({
+        name: 'visibility',
+        kind: 'enum',
+        values: Object.freeze(['on', 'off', 'auto']),
+      } as const),
+    ]),
+    summary: 'show or hide the on-screen key bar (auto: hidden in compact density)',
     emitsPanelSwitch: false,
   }),
   Object.freeze({

@@ -76,7 +76,19 @@ export interface PanelKeyContext {
    * node carrying `page: { index, count }` — so it has to be read off the spec, which is here.
    */
   readonly pageable: boolean;
+  /**
+   * `ScreenSpec.actions` — the focused screen's handlers for its own keymap action ids.
+   *
+   * The dispatcher resolves a binding and then has to run something; without this it ran a hint.
+   * Published by identity rather than merged into one callback so that `App.tsx` can tell a declared
+   * action with a handler from a declared action without one, which is the difference between a key
+   * that works and a key whose footer hint says it does not.
+   */
+  readonly actions: Readonly<Record<string, () => void>>;
 }
+
+/** A spec with no handlers, hoisted so the published context keeps its identity between renders. */
+const NO_SCREEN_ACTIONS: Readonly<Record<string, () => void>> = Object.freeze({});
 
 /** Does any node of this body carry `page`? — {@link PanelKeyContext.pageable}. */
 function specPages(body: Node): boolean {
@@ -630,14 +642,23 @@ export function Panel({
 
   const pageable = useMemo(() => (spec === null ? false : specPages(spec.body)), [spec]);
 
+  const screenKeyActions = spec?.actions ?? NO_SCREEN_ACTIONS;
+
   const capturesTyped =
     focusedKind !== null &&
     (focusedKind.kind === 'form' ||
       (focusedKind.kind === 'custom' && focusedKind.component === 'Composer'));
 
   useEffect(() => {
-    onKeyContext?.({ panelId, region, bindings, capturesTypedText: capturesTyped, pageable });
-  }, [onKeyContext, panelId, region, bindings, capturesTyped, pageable]);
+    onKeyContext?.({
+      panelId,
+      region,
+      bindings,
+      capturesTypedText: capturesTyped,
+      pageable,
+      actions: screenKeyActions,
+    });
+  }, [onKeyContext, panelId, region, bindings, capturesTyped, pageable, screenKeyActions]);
 
   // Read through `getState()` rather than selecting the method: the store's actions are stable, so
   // subscribing to them buys nothing, and a selected method is a method separated from its object.

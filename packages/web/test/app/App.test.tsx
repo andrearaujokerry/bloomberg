@@ -1238,6 +1238,131 @@ describe('the window key dispatcher is attached (TERM-06, TERM-07)', () => {
     expect(app.plant.csvCalls.at(-1)).toContain('WEI');
   });
 
+  /**
+   * A SCREEN'S OWN KEY, which had no channel to arrive on until `ScreenSpec.actions` existed.
+   *
+   * `screenAction` answered every one of them `NOT_APPLICABLE: declared by the screen but not wired
+   * yet` — a grep for any action id over packages/web/src found only the declarations — so GP's `R`
+   * was a key the toolbar advertised on every chip and that did nothing. The dispatcher half, the
+   * `Panel`-publishes-its-handlers half and the GP half each have their own test; this is the three of
+   * them composed, pressed at `window`, against the running application.
+   */
+  it('runs a screen’s own keymap action, which reached nothing before (TERM-07)', async () => {
+    const app = await mountApp();
+    await app.go('p1', 'AAPL US Equity GP{Enter}');
+    const runsBefore = app.plant.runs.length;
+    expect(app.plant.runs.at(-1)?.code).toBe('GP');
+
+    // Off the command line: stage 5 never fires in the `'command'` region (`keymap.ts#bindingApplies`),
+    // which is correct — `R` typed into the command line is the letter R.
+    act(() => {
+      const active = globalThis.document.activeElement;
+      if (active instanceof globalThis.HTMLElement) active.blur();
+    });
+
+    press({ key: 'R' });
+    await app.settle();
+
+    // The whole claim: one more `POST /functions/GP/run`, carrying the NEXT range. `1Y` is GP's param
+    // DEFAULT, which is what a bare `GP` launches with — not the golden payload's `window.range`
+    // (`CUSTOM`), which is the window the fixture happens to have been captured over. The key cycles
+    // the params the frame holds, which is the thing the user can see in the subtitle.
+    expect(app.plant.runs.length).toBe(runsBefore + 1);
+    const body = app.plant.runs.at(-1)?.body as { params: Record<string, unknown>; launchKind: string };
+    expect(app.plant.runs.at(-1)?.code).toBe('GP');
+    expect(body.params.range).toBe('2Y');
+    expect(body.launchKind).toBe('param');
+    // And no `start`/`end` survives onto the wire — `JSON.stringify` drops the cleared keys, which is
+    // what makes `setParams({ start: undefined })` a clear rather than a no-op.
+    expect(body.params.start).toBeUndefined();
+    expect(body.params.end).toBeUndefined();
+  });
+
+  it('still reports a declared action that its screen does not wire', async () => {
+    // The hint did not go away: it is now the answer for the keys a screen genuinely has not wired
+    // (GP's four prompt-driven ones, because `ctx.prompt` resolves `null` until `PromptDialog` exists).
+    const app = await mountApp();
+    await app.go('p1', 'AAPL US Equity GP{Enter}');
+    act(() => {
+      const active = globalThis.document.activeElement;
+      if (active instanceof globalThis.HTMLElement) active.blur();
+    });
+    const runsBefore = app.plant.runs.length;
+
+    press({ key: 'C' });
+    await app.settle();
+
+    expect(app.plant.runs.length).toBe(runsBefore);
+    expect(screen.getByText(/set-currency: this key is declared by the screen but not wired yet/)).toBeInTheDocument();
+  });
+
+  /**
+   * THE KEY BAR, which is the on-screen half of TERM-07 and for fifteen packages did not exist.
+   *
+   * CLIENT §5 L348 requires every binding to have an on-screen equivalent and §18.6 Q6 makes this bar
+   * the GUARANTEED one for `F11` (Curncy), which macOS Chrome keeps for itself — so `F11` had no
+   * reachable binding of any kind. `Shell.tsx` has carried the `keyBar` slot since WP-12 and nothing
+   * passed it. These press the buttons, on the composed application, and assert what the keys do.
+   */
+  it('inserts a sector from the key bar — the F11 path a browser will not give up (TERM-07)', async () => {
+    const app = await mountApp();
+    const input = screen.getByRole('combobox', { name: 'Command line p1' });
+    await userEvent.type(input, 'EURUSD');
+    await app.settle();
+
+    await userEvent.click(screen.getByRole('button', { name: 'CURNCY' }));
+    await app.settle();
+
+    // The yellow key's whole job: the sector token after the typed ticker (FUNCTIONS §10 Q5). The
+    // trailing space is `CommandLine.tsx#insertSector`'s and is deliberate — the next slot of
+    // `[SECURITY] [SECTOR] [FUNCTION] [ARGS]` is what the desk types next, and the caret is left in it.
+    expect(input).toHaveValue('EURUSD Curncy ');
+  });
+
+  it('runs HELP and PRINT from the key bar', async () => {
+    const app = await mountApp();
+    await app.go('p1', 'WEI{Enter}');
+    const csvBefore = app.plant.csvCalls.length;
+
+    await userEvent.click(screen.getByRole('button', { name: 'PRINT' }));
+    await app.settle();
+    expect(app.plant.csvCalls.length).toBe(csvBefore + 1);
+
+    await userEvent.click(screen.getByRole('button', { name: 'HELP' }));
+    await app.settle();
+    expect(screen.getByRole('dialog', { name: /help/i })).toBeInTheDocument();
+  });
+
+  /**
+   * MENU walks the frame stack, and it does it THROUGH THE LADDER.
+   *
+   * The bar sends `Escape` for both CANCEL and MENU rather than calling `popFrame()` for one of them,
+   * so an open overlay is closed first and the frame is popped only when there is nothing else to
+   * cancel. This presses it twice to show both rungs in order: the first closes the HELP overlay the
+   * test above would have left open, the second pops the frame.
+   */
+  it('MENU pops the frame, after whatever else the CANCEL ladder owes', async () => {
+    const app = await mountApp();
+    await app.go('p1', 'WEI{Enter}');
+    await app.go('p1', 'TOP{Enter}');
+    expect(usePanelsStore.getState().panels.p1?.index).toBe(1);
+
+    await userEvent.click(screen.getByRole('button', { name: 'HELP' }));
+    await app.settle();
+    expect(screen.queryByRole('dialog', { name: /help/i })).not.toBeNull();
+
+    await userEvent.click(screen.getByRole('button', { name: 'MENU' }));
+    await app.settle();
+    // Rung 1: the overlay. The frame stack has NOT moved.
+    expect(screen.queryByRole('dialog', { name: /help/i })).toBeNull();
+    expect(usePanelsStore.getState().panels.p1?.index).toBe(1);
+
+    await userEvent.click(screen.getByRole('button', { name: 'MENU' }));
+    await app.settle();
+    // Rung 5: nothing left to cancel, so the previous screen.
+    expect(usePanelsStore.getState().panels.p1?.index).toBe(0);
+  });
+
   it('leaves a key the focused element already consumed alone', async () => {
     // The rule that makes attaching the listener safe: a widget that handles a key calls
     // `preventDefault`, and the listener returns on `defaultPrevented`. Without it, `Enter` on a grid

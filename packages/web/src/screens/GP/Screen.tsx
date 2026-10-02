@@ -39,6 +39,25 @@ type Series = Payload['primary'];
 /** The range chips, in the order `R` cycles them (§GP Keyboard `cycle-range`). */
 const RANGES = ['1D', '5D', '1M', '3M', '6M', 'YTD', '1Y', '2Y', '5Y', '10Y', 'MAX'] as const;
 
+// The other three ladders the keymap cycles, in `GpParams`' own enum order so that the spelling the
+// manifest validates and the spelling this screen sends are the same list. `CUSTOM` is in `GpRange`
+// and not in `RANGES` on purpose — see `cycle`.
+const CHART_TYPES = [
+  'line',
+  'area',
+  'mountain',
+  'candle',
+  'ohlc',
+  'bar',
+  'step',
+  'pnf',
+  'profile',
+  'heatmap',
+  'tick',
+] as const;
+const ADJUST_POLICIES = ['unadjusted', 'price', 'total_return'] as const;
+const NORMALISATIONS = ['none', 'pct', 'base100'] as const;
+
 /** A series unit decides which axis format the chart draws (`unitFmt` of the §GP listing). */
 function unitFmt(unit: Series['unit']): Cell['fmt'] {
   switch (unit) {
@@ -188,12 +207,150 @@ export function gpChartSpec(p: Payload, params: Params): ChartSpec {
   return spec;
 }
 
+/* -------------------------------------------------------------------------------------------- */
+/* The keymap's own actions (§GP Keyboard)                                                        */
+/* -------------------------------------------------------------------------------------------- */
+
+/**
+ * The next value after `current` in `values`, wrapping; `values[0]` when `current` is not in them.
+ *
+ * The fallback is the case that matters: `range: 'CUSTOM'` is a legal param and is deliberately NOT
+ * in `RANGES`, because a custom window is defined by its dates and there is nothing to cycle to.
+ * Pressing `R` on one lands on the first fixed range rather than doing nothing.
+ */
+function cycle<T extends string>(values: readonly T[], current: string): T {
+  const at = values.indexOf(current as T);
+  const next = values[(at + 1) % values.length];
+  // `values` is a non-empty literal tuple at every call site; the fallback is for the index type.
+  return next ?? values[0]!;
+}
+
+function nextRange(current: string): (typeof RANGES)[number] {
+  return cycle(RANGES, current);
+}
+
+/**
+ * The periodicities `P` offers, which is not all six (§GP step 1).
+ *
+ * `server/src/functions/GP/resolve.ts#planWindow` CLAMPS an intraday periodicity to `'D'` on a range
+ * longer than five days rather than refusing it, so cycling the full list would spend two presses
+ * doing nothing visible on a 1Y chart — the same class of lie as a key that is not wired, one step
+ * quieter. Offered instead: the daily family always, plus the intraday pair when the window is one
+ * the store actually holds minute bars for.
+ */
+function periodicityChoices(params: Params, p: Payload | undefined): readonly Params['periodicity'][] {
+  const intraday =
+    params.range === '1D' ||
+    params.range === '5D' ||
+    (params.range === 'CUSTOM' && spanDays(p) !== null && (spanDays(p) ?? 0) <= 5);
+  return intraday
+    ? (['auto', '1m', '5m', 'D', 'W', 'M'] as const)
+    : (['auto', 'D', 'W', 'M'] as const);
+}
+
+/** The payload's own window span in days, or `null` before the first payload lands. */
+function spanDays(p: Payload | undefined): number | null {
+  if (p === undefined) return null;
+  const ms = Date.parse(`${p.window.end}T00:00:00Z`) - Date.parse(`${p.window.start}T00:00:00Z`);
+  return Number.isFinite(ms) ? ms / 86_400_000 : null;
+}
+
+/** Every event kind on, or every one off — §GP's `E` is one toggle over the whole set. */
+function toggledEvents(events: Params['events']): Params['events'] {
+  const anyOn = Object.values(events).some((v) => v === true);
+  const out = { ...events };
+  for (const key of Object.keys(out) as (keyof Params['events'])[]) out[key] = !anyOn;
+  return out;
+}
+
+/**
+ * `ScreenSpec.actions` for GP — the keys `manifest.keymap` declares, as handlers.
+ *
+ * WIRED HERE: every binding that is a param change, because `setParams` re-runs the function with the
+ * patch and that is the whole of what these keys mean (§11.9 "the round trip"). `cycle-range` is the
+ * one this file titled its chips after and the one that had no handler at all.
+ *
+ * DELIBERATELY NOT HERE, and still answered by the footer hint:
+ *
+ *   * `custom-range`, `add-overlay`, `set-currency`, `add-study` — each needs `ctx.prompt`, and
+ *     `App.tsx`'s prompt resolves `null` because `PromptDialog` is unwritten. A handler that always
+ *     cancelled would be a key that looks wired and is not, which is worse than the hint.
+ *   * `crosshair-*`, `pan-*`, `zoom-*`, `draw-mode`, `delete-annotation` — `when: 'chart'`, owned by
+ *     the chart node at the element (`chart/ChartCanvas.tsx`), which is where the crosshair state is.
+ *   * `save-annotations` — there is no annotation mutation endpoint in this build.
+ */
+function screenActions(
+  params: Params,
+  p: Payload | undefined,
+  ctx: Parameters<FunctionScreen<Params, Payload>>[0]['ctx'],
+  display: string,
+): Readonly<Record<string, () => void>> {
+  return {
+    'cycle-range': () => {
+      // Leaving CUSTOM must drop the dates it was pinned to: `planWindow` measures a fixed range back
+      // from `params.end ?? today`, so a surviving `end` would silently anchor the new window to the
+      // old custom one. Cleared on every cycle, not only when leaving CUSTOM, because they mean
+      // nothing to a fixed range either.
+      ctx.setParams({ range: nextRange(params.range), start: undefined, end: undefined });
+    },
+    'cycle-type': () => {
+      ctx.setParams({ range: params.range, type: cycle(CHART_TYPES, params.type) });
+    },
+    'cycle-adjust': () => {
+      ctx.setParams({ adjust: cycle(ADJUST_POLICIES, params.adjust) });
+    },
+    'cycle-normalise': () => {
+      ctx.setParams({ normalise: cycle(NORMALISATIONS, params.normalise) });
+    },
+    'cycle-periodicity': () => {
+      const choices = periodicityChoices(params, p);
+      ctx.setParams({ periodicity: cycle(choices, params.periodicity) });
+    },
+    'toggle-log': () => {
+      ctx.setParams({ logScale: !params.logScale });
+    },
+    'toggle-volume': () => {
+      ctx.setParams({ volume: !params.volume });
+    },
+    'toggle-events': () => {
+      ctx.setParams({ events: toggledEvents(params.events) });
+    },
+    'remove-overlay': () => {
+      if (params.overlays.length === 0) return;
+      ctx.setParams({ overlays: params.overlays.slice(0, -1) });
+    },
+    'remove-study': () => {
+      if (params.studies.length === 0) return;
+      ctx.setParams({ studies: params.studies.slice(0, -1) });
+    },
+    // The two navigations §GP lists, which are commands and not params: GIP is the intraday view of
+    // the same security and HP its historical table. `display` is the security as the command line
+    // spells it, which is what the parser needs back.
+    'open-gip': () => {
+      ctx.navigate(`${display} GIP`);
+    },
+    'open-hp': () => {
+      ctx.navigate(`${display} HP ${params.range}`);
+    },
+  };
+}
+
 /** `badges#toolbar` — the range chips, then the params that change what the chart means. */
 function toolbar(p: Payload | undefined, params: Params, meta: Parameters<typeof footer>[0]): Node {
+  // `R` cycles ONE step, so exactly one chip is where it goes — titling all ten "press R to cycle to
+  // <r>" said that any of them was one keypress away. (It said it against a key that did nothing at
+  // all until `ScreenSpec.actions` existed; both halves of that are fixed, and this is the half a
+  // reader sees.) The chips are badges and badges do not click, so the others carry no title rather
+  // than a title promising a path that is not there.
+  const next = nextRange(params.range);
   const items: Badge[] = RANGES.map((r) => ({
     text: r,
     tone: r === params.range ? ('ok' as const) : ('info' as const),
-    title: r === params.range ? 'active range' : `press R to cycle to ${r}`,
+    ...(r === params.range
+      ? { title: 'active range' }
+      : r === next
+        ? { title: 'press R to cycle here' }
+        : {}),
   }));
   items.push({ text: `type ${params.type}`, tone: 'info' });
   items.push({ text: `adjust ${params.adjust}`, tone: 'info' });
@@ -242,11 +399,18 @@ function footerStats(p: Payload): Node {
   };
 }
 
-export const Screen: FunctionScreen<Params, Payload> = ({ payload, params, instrument, meta }) => {
+export const Screen: FunctionScreen<Params, Payload> = ({
+  payload,
+  params,
+  instrument,
+  meta,
+  ctx,
+}) => {
   const display = payload?.primary.key ?? instrument?.display ?? '—';
   const name = payload?.primary.label ?? instrument?.name ?? '';
   const title = `GP · ${display} · ${name}`;
   const subtitle = `${params.range} · ${payload?.window.periodicity ?? params.periodicity} · ${params.adjust}`;
+  const actions = screenActions(params, payload, ctx, display);
 
   if (payload === undefined) {
     // Skeleton: the toolbar from the params and an empty chart frame — never a fake series.
@@ -264,6 +428,7 @@ export const Screen: FunctionScreen<Params, Payload> = ({ payload, params, instr
       ),
       footer: footer(undefined),
       initialFocus: 'chart',
+      actions,
     } satisfies ScreenSpec;
   }
 
@@ -286,6 +451,7 @@ export const Screen: FunctionScreen<Params, Payload> = ({ payload, params, instr
     ),
     footer: footer(meta),
     initialFocus: 'chart',
+    actions,
   } satisfies ScreenSpec;
 };
 

@@ -29,7 +29,16 @@ export interface LiveView {
 
 export interface ScreenCtx<P> {
   panelId: string; // 'p1'..'p8'
-  setParams(patch: Partial<P>): void; // → re-run with launchKind:'param' (usage fn.param), keeps the frame
+  /**
+   * → re-run with `launchKind:'param'` (usage `fn.param`), keeps the frame.
+   *
+   * `P[K] | undefined` rather than `Partial<P>`: the patch is merged `{ ...frame.params, ...patch }`
+   * and sent as JSON, which drops an `undefined`, so a key set to `undefined` CLEARS that param.
+   * `Partial<P>` cannot spell that under `exactOptionalPropertyTypes` — and the clear is needed:
+   * GP's `R` cycling off `range: 'CUSTOM'` has to drop the `start`/`end` it was pinned to, or the
+   * next range is measured back from the custom end date instead of from today.
+   */
+  setParams(patch: { [K in keyof P]?: P[K] | undefined }): void;
   navigate(command: string): void; // executes a command line string in THIS panel ('AAPL US Equity GP 1Y')
   navigateNext(command: string): void; // same, in the next panel (Shift+Enter conventions)
   export(): void; // PRINT → sdk.fn.csvUrl({ resultId }) (never serialises locally)
@@ -65,6 +74,25 @@ export interface ScreenSpec {
   footer?: { sources: string[]; asOf?: string; notes?: string[] };
   keymap?: KeyBinding[]; // additions to manifest.keymap (dynamic, e.g. per tab)
   initialFocus?: string; // node id
+  /**
+   * Handlers for the `action` ids of `manifest.keymap` and `keymap` above, keyed by action id.
+   *
+   * THIS IS THE CHANNEL A SCREEN'S OWN KEYS ARRIVE ON, and for fifteen packages it did not exist: a
+   * manifest declared `{ key: 'R', action: 'cycle-range' }`, the dispatcher matched it, and
+   * `KeyboardHost.screenAction` had nowhere to send it, so every one of them answered
+   * `NOT_APPLICABLE: declared by the screen but not wired yet`. GP's toolbar titled every range chip
+   * "press R to cycle" against a key that did nothing.
+   *
+   * A closure and not a `(action: string) => void` switch, because the spec is rebuilt whenever the
+   * params or the payload change (`shell/Panel.tsx`'s `spec` memo) and a handler built here closes
+   * over the params THIS spec was built from. A screen that read its params out of a long-lived
+   * callback would cycle from whatever was current when the callback was made.
+   *
+   * Only `when`-matching bindings reach here — the dispatcher has already resolved the region — and
+   * an action with no entry still gets the footer hint, so a partially wired screen says which of
+   * its keys work rather than pretending about all of them.
+   */
+  actions?: Readonly<Record<string, () => void>>;
 }
 
 export type Node =

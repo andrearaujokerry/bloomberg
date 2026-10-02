@@ -587,3 +587,154 @@ export function isKeyedArg(text: unknown): boolean {
 
 /** Re-exported so a screen can render the formula test the argument mapper uses. */
 export { isFormulaToken };
+
+/* ---------------------------------------------------------------------------------------------- */
+/* The inverse: params -> the tokens a command line spells them with                                 */
+/* ---------------------------------------------------------------------------------------------- */
+
+export interface FormatArgsResult {
+  /** The argument tokens, in command-line order: positionals first, then `KEY=VALUE`, then rest. */
+  readonly args: readonly string[];
+  /** Param keys that have NO command-line spelling in this grammar, so no token could carry them. */
+  readonly dropped: readonly string[];
+}
+
+/**
+ * `params` → the argument tokens of a command line `parseArgs` reads back (FUNCTIONS.md §2.4).
+ *
+ * ## Why this exists
+ *
+ * A screen or a resolver that hands the user a COMMAND to run — a chart attachment's click-through, a
+ * grid row's `Enter`, a news item's source link — is making a promise that the command line accepts
+ * that string. `server/src/functions/MSG/resolve.ts` built one by upper-casing every param name into
+ * `KEY=value`, which produced `AAPL US Equity GP RANGE=1Y`: GP's `range` is the first POSITIONAL slot
+ * and has no `keyed` entry, so the real parser answers `ARG_PARSE: RANGE is not an argument of this
+ * function` and the chip could not be clicked through. The grammar is the authority on which spelling
+ * a param takes, and this is the one place that reads it in that direction.
+ *
+ * ## The rules, each because the parser does the matching thing
+ *
+ *   * **A positional is emitted only while every slot before it has a value.** Positions are counted,
+ *     not named, so `['', '2026-01-01']` is not a thing a command line can say — the second token
+ *     would fill the first empty slot. The run of leading slots that `params` covers is emitted and
+ *     the rest are `dropped`.
+ *   * **A param with a `keyed` entry is emitted `KEY=value`**, using the grammar's own key, which is
+ *     what `keyByUpper` matches case-insensitively.
+ *   * **A positional slot's param is never emitted as `KEY=`**, even when the two names collide,
+ *     because `grammar.keyed` is the only set of keys the parser accepts.
+ *   * **Booleans are `Y`/`N`** (`BOOLEAN_WORDS`), and emitted either way: dropping a `false` would
+ *     read as "unset" to a reader and "default" to the manifest, and those differ whenever a default
+ *     is `true` (GP's `volume`).
+ *   * **Arrays and objects are dropped**, not flattened. A repeated keyed token OVERWRITES in
+ *     `parseArgs` rather than appending, so `VS=A VS=B` would round-trip to `B` alone — a command that
+ *     parses and means something else is worse than one that is honestly missing a param.
+ *   * **Nothing throws.** Totality (QA-05), as everywhere in this file.
+ */
+export function formatArgs(grammar: ParamGrammar, params: Record<string, unknown>): FormatArgsResult {
+  const g: ParamGrammar =
+    grammar !== null && typeof grammar === 'object' && Array.isArray(grammar.positional)
+      ? grammar
+      : EMPTY_GRAMMAR;
+  const bag = params !== null && typeof params === 'object' ? params : {};
+
+  const args: string[] = [];
+  const dropped: string[] = [];
+  const placed = new Set<string>();
+
+  // ── positionals, as a leading run ────────────────────────────────────────────────────────────
+  let open = true;
+  for (const slot of g.positional) {
+    if (slot === undefined || typeof slot.name !== 'string') continue;
+    const token = open ? scalarToken(bag[slot.name]) : null;
+    if (token === null) {
+      // The first gap closes the run: everything after it has no position to be written at.
+      open = false;
+      if (slot.name in bag && scalarToken(bag[slot.name]) !== null) dropped.push(slot.name);
+      continue;
+    }
+    args.push(token);
+    placed.add(slot.name);
+  }
+  const positionalNames = new Set(
+    g.positional.filter((s) => s !== undefined).map((s) => s.name),
+  );
+
+  // ── keyed ────────────────────────────────────────────────────────────────────────────────────
+  const keyed = g.keyed ?? {};
+  const keyOf = new Map<string, string>();
+  for (const [key, spec] of Object.entries(keyed)) {
+    if (spec !== undefined && typeof spec.name === 'string' && !keyOf.has(spec.name)) {
+      keyOf.set(spec.name, key);
+    }
+  }
+  for (const [name, value] of Object.entries(bag)) {
+    if (placed.has(name)) continue;
+    if (name === g.rest?.name) continue;
+    const key = keyOf.get(name);
+    if (key === undefined) {
+      // No keyed spelling. A positional the run could not reach was already recorded above; anything
+      // else has no token in this grammar at all.
+      if (!positionalNames.has(name) && value !== undefined && value !== null) dropped.push(name);
+      continue;
+    }
+    const token = scalarToken(value);
+    if (token === null) {
+      if (value !== undefined && value !== null) dropped.push(name);
+      continue;
+    }
+    args.push(`${key}=${token}`);
+    placed.add(name);
+  }
+
+  // ── rest, last, because it swallows what follows it ──────────────────────────────────────────
+  const restName = g.rest?.name;
+  if (restName !== undefined) {
+    const token = scalarToken(bag[restName]);
+    if (token !== null) args.push(token);
+    else if (bag[restName] !== undefined && bag[restName] !== null) dropped.push(restName);
+  }
+
+  return { args, dropped };
+}
+
+/**
+ * One argument token for a value, or `null` when it has no single-token spelling.
+ *
+ * Scalars are themselves. Three of the coercions above produce an OBJECT from one token, and two of
+ * those invert exactly, so they are spelled rather than dropped:
+ *
+ *   * `{ formula }` ← `<RATIO(A, B)>` — back through the same angle brackets `formulaBody` reads.
+ *   * `{ ref }` ← a non-ticker identifier (`/isin/US0378331005`), which `parseSecurityRef` returns in
+ *     its canonical form, and canonical is a form it also accepts.
+ *   * `{ kind: 'watchlist', id | name }` ← digits, or a name.
+ *
+ * **`{ id }` is dropped on purpose.** An instrument id is what the UNIVERSE answered for a ticker; no
+ * command-line token spells one, and `coerceSecurity` can only produce it by looking a ticker up. A
+ * formatter that invented `1000` would write a command that parses — as the ticker "1000" — and means
+ * something else. `dropped` names it instead, and a caller holding the display string passes that.
+ */
+function scalarToken(value: unknown): string | null {
+  if (typeof value === 'string') return value === '' ? null : value;
+  if (typeof value === 'number') return Number.isFinite(value) ? String(value) : null;
+  if (typeof value === 'boolean') return value ? 'Y' : 'N';
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) return null;
+  const bag = value as Record<string, unknown>;
+  if (typeof bag.formula === 'string' && bag.formula !== '') return `<${bag.formula}>`;
+  if (typeof bag.ref === 'string' && bag.ref !== '') return bag.ref;
+  if (bag.kind === 'watchlist') {
+    if (typeof bag.id === 'number' && Number.isFinite(bag.id)) return String(bag.id);
+    if (typeof bag.name === 'string' && bag.name !== '') return bag.name;
+  }
+  return null;
+}
+
+/**
+ * `formatArgs` as the string that follows a function code, with its leading space.
+ *
+ * The shape every caller wanted from the thing this replaced: `' 1Y'`, or `''` when there is nothing
+ * to say. `dropped` is not reported here — a caller that needs to know asks `formatArgs`.
+ */
+export function formatArgString(grammar: ParamGrammar, params: Record<string, unknown>): string {
+  const { args } = formatArgs(grammar, params);
+  return args.length === 0 ? '' : ` ${args.join(' ')}`;
+}

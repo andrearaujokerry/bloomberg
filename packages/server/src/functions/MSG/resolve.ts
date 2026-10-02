@@ -33,7 +33,7 @@
 
 import { sql } from 'drizzle-orm';
 
-import { registry } from '@terminal/core';
+import { formatArgString, registry } from '@terminal/core';
 import type { FieldId, ValueCell } from '@terminal/core';
 import type {
   MsgAttachmentView,
@@ -211,23 +211,28 @@ function previewOf(body: string | null, chips: readonly string[]): string | null
 // Attachments (§MSG resolver step 7, MSG-04)
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 
-/** `argString({ range: '1Y' })` → `' 1Y'`: the command line the chip's GO runs. */
-function argString(params: Record<string, unknown>): string {
-  const parts: string[] = [];
-  for (const [key, value] of Object.entries(params)) {
-    if (value === null || value === undefined || value === '') continue;
-    if (typeof value === 'boolean') {
-      if (value) parts.push(`${key.toUpperCase()}=Y`);
-      continue;
-    }
-    if (typeof value === 'number') {
-      parts.push(`${key.toUpperCase()}=${String(value)}`);
-      continue;
-    }
-    if (typeof value !== 'string') continue;
-    parts.push(`${key.toUpperCase()}=${value}`);
-  }
-  return parts.length === 0 ? '' : ` ${parts.join(' ')}`;
+/**
+ * `argString('GP', { range: '1Y' })` → `' 1Y'`: the command line the chip's GO runs.
+ *
+ * THROUGH THE TARGET FUNCTION'S GRAMMAR, which is the whole of the fix here. This used to upper-case
+ * every param name into `KEY=value` unconditionally, so a chart attachment emitted
+ * `AAPL US Equity GP RANGE=1Y` — and `range` is the first POSITIONAL slot of `GP.paramGrammar` with no
+ * `keyed` entry, so the parser the click-through hands that string to answers `ARG_PARSE: RANGE is not
+ * an argument of this function`. A click-through that could not be clicked through, pinned in
+ * `fixtures/golden/functions/MSG.default.json` and asserted by tests that only ever compared the
+ * string to itself.
+ *
+ * `core/command/args.ts#formatArgString` reads the grammar in the direction a formatter needs it, and
+ * `test/unit/functions/MSG.command.test.ts` parses every command this resolver emits back through the
+ * shipped parser — which is the assertion that could not have passed before and cannot silently rot.
+ *
+ * An unknown code has no grammar, so it gets no arguments: the command still names the function, which
+ * is the part the user can act on, and `resolvable: false` already covers the case where the code
+ * itself is gone.
+ */
+function argString(code: string, params: Record<string, unknown>): string {
+  const manifest = registry.get(code);
+  return manifest === undefined ? '' : formatArgString(manifest.paramGrammar, params);
 }
 
 function chipLabel(attachment: Attachment, display: ReadonlyMap<number, RowMeta>): string {
@@ -341,7 +346,7 @@ function attachmentView(
         params: attachment.params,
         annotationIds: [...attachment.annotationIds],
         label: chipLabel(attachment, sources.instruments),
-        command: `${meta.key} GP${argString(attachment.params)}`,
+        command: `${meta.key} GP${argString('GP', attachment.params)}`,
         resolvable: true,
         reason: 'OK',
       };
@@ -372,7 +377,7 @@ function attachmentView(
         params: attachment.params,
         resultId: attachment.resultId ?? null,
         label: meta === undefined ? code : `${code} · ${meta.key}`,
-        command: `${prefix}${code}${argString(attachment.params)}`,
+        command: `${prefix}${code}${argString(code, attachment.params)}`,
         resolvable: true,
         reason: 'OK',
       };
@@ -393,7 +398,12 @@ function attachmentView(
         ...base,
         portfolioId: attachment.portfolioId,
         label: name,
-        command: `PORT ${String(attachment.portfolioId)}`,
+        // `PORT P=7`, not `PORT 7`: `portfolioId` is PORT's KEYED `P=` and its positional slot is
+        // `view`. The hand-written form was the same defect as the chart chip's `RANGE=`, the other way
+        // round — `7` is not one of `PORT_VIEWS`, so the parser answered `ARG_PARSE: 7 is not an
+        // argument of this function` and this chip could not be clicked through either. Found by
+        // parsing every command this file emits rather than by reading it.
+        command: `PORT${argString('PORT', { portfolioId: attachment.portfolioId })}`,
         resolvable: true,
         reason: 'OK',
       };
@@ -414,7 +424,10 @@ function attachmentView(
         ...base,
         watchlistId: attachment.watchlistId,
         label: name,
-        command: `W ${String(attachment.watchlistId)}`,
+        // `W 3` — `watchlist` IS W's first positional, so this one was already right. Through the
+        // grammar anyway, so that all four attachment kinds are spelled by one rule and a later change
+        // to W's grammar moves this with it.
+        command: `W${argString('W', { watchlist: attachment.watchlistId })}`,
         resolvable: true,
         reason: 'OK',
       };

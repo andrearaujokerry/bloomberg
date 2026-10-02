@@ -17,10 +17,23 @@ export type Density = 'compact' | 'normal' | 'comfortable';
 /** 700 ms is the terminal default; 350 ms for a fast desk; 0 turns the flash off (TERM-11). */
 export type FlashMs = 700 | 350 | 0;
 
+/**
+ * Key-bar visibility, which is THREE states and not two (CLIENT §3.3 L266).
+ *
+ * The spec is "hidden in density `compact` unless `/keybar on`", and a boolean cannot say that: it
+ * cannot tell the default-on of a normal desk from an explicit on, so either `/keybar on` does nothing
+ * in compact density (and §3.3's escape hatch is not there) or compact density never hides the bar
+ * (and §3.3's default is not there). `'auto'` is the default and means "unless the density is compact";
+ * `'on'` and `'off'` are the user saying so, and both outrank the density.
+ *
+ * A stored `true`/`false` from an older bundle maps to `'auto'`/`'off'` — see `parseSettings`.
+ */
+export type KeybarVisibility = 'auto' | 'on' | 'off';
+
 export interface Settings {
   theme: Theme;
   density: Density;
-  keybar: boolean;
+  keybar: KeybarVisibility;
   flashMs: FlashMs;
 }
 
@@ -29,7 +42,7 @@ export const SETTINGS_KEY = 'terminal.settings';
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
   theme: 'dark',
   density: 'normal',
-  keybar: true,
+  keybar: 'auto',
   flashMs: 700,
 });
 
@@ -52,6 +65,7 @@ let storage: SettingsStorage | null = defaultStorage();
 const THEMES: readonly Theme[] = ['dark', 'light', 'system'];
 const DENSITIES: readonly Density[] = ['compact', 'normal', 'comfortable'];
 const FLASHES: readonly FlashMs[] = [700, 350, 0];
+const KEYBARS: readonly KeybarVisibility[] = ['auto', 'on', 'off'];
 
 /**
  * A stored blob is untrusted input — a hand-edited `localStorage`, or a value written by an older
@@ -73,7 +87,16 @@ export function parseSettings(raw: string | null): Settings {
     density: DENSITIES.includes(bag.density as Density)
       ? (bag.density as Density)
       : DEFAULT_SETTINGS.density,
-    keybar: typeof bag.keybar === 'boolean' ? bag.keybar : DEFAULT_SETTINGS.keybar,
+    // A boolean is what every bundle before the three-state visibility wrote. `true` becomes `'auto'`
+    // and not `'on'`: it was the default, not a choice, and reading it as a choice would pin the bar
+    // on for every compact desk that had never touched the setting.
+    keybar: KEYBARS.includes(bag.keybar as KeybarVisibility)
+      ? (bag.keybar as KeybarVisibility)
+      : typeof bag.keybar === 'boolean'
+        ? bag.keybar
+          ? 'auto'
+          : 'off'
+        : DEFAULT_SETTINGS.keybar,
     flashMs: FLASHES.includes(bag.flashMs as FlashMs)
       ? (bag.flashMs as FlashMs)
       : DEFAULT_SETTINGS.flashMs,
@@ -142,6 +165,15 @@ export const selectSettings = (s: SettingsStore): Settings => ({
   keybar: s.keybar,
   flashMs: s.flashMs,
 });
+
+/**
+ * Is the key bar on screen? `'auto'` defers to the density (CLIENT §3.3).
+ *
+ * Here rather than in `KeyBar.tsx` so the rule has one statement: the bar reads it, and so does
+ * anything that needs to know whether the guaranteed path for `F11` is currently reachable.
+ */
+export const keyBarVisible = (keybar: KeybarVisibility, density: Density): boolean =>
+  keybar === 'on' || (keybar === 'auto' && density !== 'compact');
 
 /**
  * `'system'` resolved against the media query, for `density.ts`'s `data-theme` attribute. The

@@ -770,6 +770,80 @@ here, because who pays for the strip moves the volume pane's height and every mu
 `onGo` clears unconditionally — and nothing depends on the claim any more now that `problemFor`
 carries no span, but the docstring is the last place that stale story is told.
 
+### The four small defects, closed — and a second command that could not be clicked through
+
+Each of these four was recorded as open and each was reachable by a user: a key the screen advertised
+and did not answer, a chip the parser refused, a study pane three pixels tall, and a reserved key with
+no on-screen path at all. One of the four turned out to be two.
+
+**`ScreenSpec.actions` — a screen's own keys had no channel to arrive on.** `manifests/GP.ts` declares
+`{ key: 'R', action: 'cycle-range' }`, the dispatcher matched it, and `KeyboardHost.screenAction` had
+nowhere to send it: a grep for any action id over `packages/web/src` found only the declarations, so
+every one of them answered `NOT_APPLICABLE: declared by the screen but not wired yet` while
+`GP/Screen.tsx` titled all ten range chips "press R to cycle to <r>". The channel is a new optional
+`ScreenSpec.actions`, published with the rest of the focus model by `Panel.tsx` and run by
+`App.tsx#screenAction`; GP wires the twelve bindings that are a param change or a navigation, and the
+chips now title the ONE chip `R` goes to. The hint survives for the four that need `ctx.prompt`, which
+resolves `null` until `PromptDialog` exists — asserted absent, so wiring a prompt dialog fails that test
+and brings the author back. `ScreenCtx.setParams` was widened to `{ [K in keyof P]?: P[K] | undefined }`
+because cycling off `range: 'CUSTOM'` must CLEAR `start`/`end`: `planWindow` measures a fixed range back
+from `params.end ?? today`, so a surviving `end` would run `1D` against a day in the past with nothing
+on screen saying so.
+
+**MSG's click-through, and `PORT 7`.** The resolver upper-cased every param name into `KEY=value`,
+emitting `AAPL US Equity GP RANGE=1Y` — `range` is GP's first POSITIONAL slot and `RANGE` is in no
+`keyed` map, so the parser answered `ARG_PARSE: RANGE is not an argument of this function`. The same
+spelling had already been found once, in `fixtures/seed/workspaces.json`; twice is a missing function.
+`core/command/args.ts#formatArgs` is the inverse of `parseArgs` — positionals as a leading run, keyed
+with the grammar's own key, booleans `Y`/`N`, arrays and objects DROPPED AND NAMED rather than flattened
+(a repeated keyed token overwrites in `parseArgs`, so `VS=A VS=B` would round-trip to `B` alone, and a
+command that parses and means something else is worse than one honestly missing a param). Three
+structured coercions invert exactly and are spelled; `{ id }` from the universe is dropped, because no
+token spells an instrument id and inventing `1000` would write a command that parses as the ticker
+"1000". **The second defect was found by parsing the commands rather than reading them:** the portfolio
+chip emitted `PORT 7`, and `portfolioId` is PORT's keyed `P=` while its positional is a `view` enum, so
+that chip could not be clicked through either. `MSG.test.ts`' chart assertion had read
+`expect(chart.command).toBe('AAPL US Equity GP RANGE=1Y')` — a test checking its own setup artefact —
+and now parses; a loop over every resolvable chip parses the rest. `formatArgs.test.ts` round-trips
+params → tokens → params over all 38 shipped grammars, and asserts that every key it loses is a key it
+names.
+
+**The bottom pane of a multi-pane chart no longer pays for the whole x strip.**
+`layers.ts#computeLayout` shared the full canvas height by the `panes[].height` fractions and only then
+trimmed `xAxisHeightPx` off whichever pane was last. `xAxisHeightPx` now comes out of the height the
+fractions divide and is given back to the last open pane's BAND, so the strip is shared furniture paid
+for in proportion. GP with the volume pane and three `sub` studies in a 900 × 400 canvas went from
+`main 288 · vol 37 · st0 20 · st1 20 · st2 3` to three study panes within a pixel of each other. **No
+committed pixel hash moved, and that is a property rather than luck:** for a single open pane the new
+arithmetic is the old arithmetic (`openHeight = H − strip`, band `= openHeight + strip = H`, plot
+`= band − strip`), and all twelve cases of `series-hashes.json` are single pane. `scales.test.ts` pins
+that identity, and its `toBeLessThan(8)` — written bounded above precisely so a fix would arrive as a
+failure with the new geometry in it — is now a comparison against the sibling pane.
+
+**`shell/KeyBar.tsx` exists.** `Shell.tsx` had carried the `keyBar` slot since WP-12 and nothing passed
+it, so CLIENT §5 L348's "every binding has an on-screen equivalent" was false and §18.6 Q6's GUARANTEED
+path for `F11` — which macOS Chrome does not surrender to a page — did not exist: `F11` had no reachable
+binding of any kind. The bar is `GO CANCEL MENU HELP PRINT PG▲ PG▼` and the ten yellow sector keys,
+derived from `yellowKeyForSector` so it cannot disagree with the table the dispatcher matches (`Crypto`
+answers `null` and is absent from both). **A button presses the key:** `onKey` hands a
+`KeyboardEventInit` to the same `dispatcher.handleKeyDown` the window listener calls, so the two are one
+implementation. That is what makes `MENU` correct — `MENU` and `CANCEL` are both `Escape`, and a bar
+that called `popFrame()` directly would pop the frame out from under an open overlay; the ladder decides,
+and a mutation that sent `Alt+ArrowLeft` for `MENU` reddens the test that presses it twice.
+
+`settings.keybar` became three-state (`'auto' | 'on' | 'off'`, legacy `true`→`'auto'`, `false`→`'off'`).
+A boolean cannot express §3.3's "hidden in density `compact` unless `/keybar on`": it cannot tell the
+default-on of a normal desk from an explicit on, so either `/keybar on` does nothing in compact density
+or compact density never hides the bar. **`/keybar on|off|auto` is a NINTH shell command and a stated
+deviation** — FUNCTIONS.md §2.6 L792-794 lists eight — taken because without it a compact desk can reach
+`F11` by no path at all, which is the defect the bar was written to close, one layer up.
+
+Gate: 269 files / 6,214 tests green (was 266 / 6,098); 44 e2e green, exit 0, WEI p95 483.9 ms of 500;
+`bloomberg_test` still unseeded at `instruments=0 / licence_registry=33`; no NUL byte in 645 production
+source files. Every fix was mutation-checked — eleven mutations, each reverted and confirmed red,
+including the original spelling (`KEY=` for a positional) which reddens the round trip for every grammar
+that has one.
+
 ## Notes
 
 - `packages/server/src/test/fixtures.ts` resolves `REPLAY_DIR` against `packages/server` while the

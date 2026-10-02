@@ -93,6 +93,7 @@ import type { AutocompleteContext, AutocompleteEngine } from './shell/Autocomple
 import { CommandLine, applyCandidate } from './shell/CommandLine.js';
 import type { CommandLineHandle, GoSelection } from './shell/CommandLine.js';
 import { HelpOverlay, loadHelp } from './shell/HelpOverlay.js';
+import { KeyBar } from './shell/KeyBar.js';
 import type { HelpSdk } from './shell/HelpOverlay.js';
 import { SCREENS } from './shell/Panel.js';
 import type {
@@ -782,9 +783,9 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
   );
 
   /**
-   * The eight shell commands of FUNCTIONS §2.6 (`core/command/grammar.ts#SHELL_COMMANDS`), all of
-   * them, because a word the parser accepts and the shell ignores is the worst of the three
-   * possible behaviours.
+   * The nine shell commands of `core/command/grammar.ts#SHELL_COMMANDS`, all of them, because a word
+   * the parser accepts and the shell ignores is the worst of the three possible behaviours. (Eight are
+   * FUNCTIONS §2.6's; `/keybar` is CLIENT §3.3's, and that file states the deviation.)
    *
    * The arguments arrive already validated against each command's `ShellArgSpec` — the parser
    * refuses `/layout 3` before `execute` is reached — so this switch narrows rather than checks.
@@ -824,6 +825,14 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
         case 'theme': {
           if (first === 'dark' || first === 'light' || first === 'system') {
             useSettingsStore.getState().set('theme', first);
+          }
+          return;
+        }
+        case 'keybar': {
+          // CLIENT §3.3's escape hatch. `'auto'` is the default — on, except in compact density — and
+          // the two explicit values outrank the density either way (`state/settings.ts`).
+          if (first === 'on' || first === 'off' || first === 'auto') {
+            useSettingsStore.getState().set('keybar', first);
           }
           return;
         }
@@ -1300,18 +1309,23 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
        * either in the command line or on the shell chrome, and the difference matters: the typing
        * stage fires only when the region is NOT `'command'`, so returning `'command'` for "focus is
        * nowhere" would silently switch TERM-06's type-anywhere off — which is the feature this whole
-       * wiring exists to deliver. So the input is asked directly, and anything else is `'keybar'`:
-       * the union's own member for a shell region that is not a screen node, and the one that lets a
-       * printable key reach the command line while leaving `Tab` to the region walk.
+       * wiring exists to deliver. So the input is asked directly, then the key bar, and anything else
+       * falls back to `'keybar'`: the union's own member for a shell region that is not a screen node,
+       * and the one that lets a printable key reach the command line while leaving `Tab` to the region
+       * walk. The two `'keybar'`s are written separately because only one of them is a fact.
        */
       region: () => {
         const published = ctx()?.region;
         if (published !== null && published !== undefined) return published;
         const active = globalThis.document?.activeElement ?? null;
-        const inCommandLine =
-          active instanceof globalThis.HTMLElement &&
-          active.closest('[data-testid="command-line"]') !== null;
-        return inCommandLine ? 'command' : 'keybar';
+        const within = (selector: string): boolean =>
+          active instanceof globalThis.HTMLElement && active.closest(selector) !== null;
+        if (within('[data-testid="command-line"]')) return 'command';
+        // `'keybar'` for a real reason now: `KeyBar.tsx` exists, it is in the Tab ring
+        // (`focus.ts#nextRegion`), and it owns its own arrow keys at the element. Checked before the
+        // fallback so that the honest case is reported as itself.
+        if (within('[data-testid="key-bar"]')) return 'keybar';
+        return 'keybar';
       },
       screenBindings: () => ctx()?.bindings ?? [],
       capturesTypedText: () => ctx()?.capturesTypedText ?? false,
@@ -1433,14 +1447,26 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
       typeIntoCommandLine: (ch) => {
         line()?.type(ch);
       },
-      // A manifest or screen `keymap` entry fired, and NOTHING CONSUMES THE ACTION STRING: a grep
-      // for any of them (`open-des`, `cycle-regions`, `adjust`, `normalise`, …) over packages/web/src
-      // finds only the declarations. Most are served anyway at the element — `Enter` on a WEI row is
-      // the grid running `row.command` — so this is reached only by a binding its own widget
-      // declined, and it reports that instead of pretending. The channel a screen would read is a
-      // real gap and is recorded in BUILD_STATUS.md.
+      /**
+       * A manifest or screen `keymap` entry fired — run the focused screen's handler for it.
+       *
+       * For fifteen packages there was no handler to run: nothing consumed the action string, so a
+       * grep for any of them (`cycle-range`, `open-des`, `adjust`, …) over packages/web/src found
+       * only the declarations, and this reported that instead of pretending. `ScreenSpec.actions` is
+       * the channel; `Panel.tsx` publishes the focused panel's copy of it with the rest of the focus
+       * model, so the handler this calls closes over the params the screen was last rendered with.
+       *
+       * The hint survives for the actions a screen has not wired, which is most of them: a binding
+       * its own widget declined and its screen does not answer is still better reported than
+       * silently dropped. What changed is that a screen CAN answer now.
+       */
       screenAction: (action) => {
-        hint(`${action}: this key is declared by the screen but not wired yet.`);
+        const handler = ctx()?.actions[action];
+        if (handler === undefined) {
+          hint(`${action}: this key is declared by the screen but not wired yet.`);
+          return;
+        }
+        handler();
       },
     };
   }, [actions, onHelp, setOverlay, setProblems]);
@@ -1460,6 +1486,24 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
       target.removeEventListener('keydown', onKeyDown);
     };
   }, [dispatcher]);
+
+  /**
+   * The key bar's buttons, routed through the SAME dispatcher the window listener uses.
+   *
+   * `KeyBar.tsx` sends a `KeyboardEventInit` rather than an action id, so a button and its key are one
+   * implementation and not two that can drift — and so `MENU` and `CANCEL`, which are both `Escape`,
+   * are resolved by the one CANCEL ladder instead of by a bar guessing which rung applies. The event is
+   * constructed and handed over rather than dispatched at `window`: dispatching it would also reach the
+   * listener above, and `handleKeyDown` would run twice.
+   */
+  const onKeyBarKey = useCallback(
+    (init: KeyboardEventInit) => {
+      const Ctor = globalThis.KeyboardEvent;
+      if (Ctor === undefined) return;
+      dispatcher.handleKeyDown(new Ctor('keydown', { bubbles: false, cancelable: true, ...init }));
+    },
+    [dispatcher],
+  );
 
   const focusedOnce = useRef(false);
   useEffect(() => {
@@ -1506,6 +1550,7 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
           widgets={runtime.widgets}
           screens={runtime.screens}
           onKeyContext={onKeyContext}
+          keyBar={<KeyBar onKey={onKeyBarKey} />}
           clientVersion={CLIENT_VERSION}
         />
       </ChartLiveContext.Provider>
