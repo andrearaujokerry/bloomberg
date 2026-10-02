@@ -40,33 +40,21 @@
 //
 // ## What is wired to nothing, and why — none of these is a stub
 //
-//   * `Shell.keyBar` — CLIENT §3.3's `KeyBar.tsx` was never written; there is no component to pass.
-//     Every key it would show is reachable from the keyboard (`keyboard/dispatcher.ts`) and from the
-//     panel's own back/forward buttons.
 //   * `ScreenCtx.prompt` — `PromptDialog` does not exist. The port answers `null`, which every
 //     screen already treats as "the user cancelled", rather than hanging on a promise that cannot
 //     resolve.
 //   * The page-level lock screen (`CLIENT §5.1`, `SessionStore.status === 'locked'`) is rendered as a
 //     gate message here rather than as the modal overlay §5.1 describes, because that overlay is
 //     also unwritten. A superseded session is stated, not hidden behind a working terminal.
-//   * **The window-level keyboard dispatcher is NOT attached, and this is the one wire that cannot be
-//     made from this file.** `keyboard/dispatcher.ts` is complete and tested, but four members of its
-//     `KeyboardHost` — `region()`, `screenBindings()`, `capturesTypedText()` and `screenAction()` —
-//     need the focus model of `keyboard/focus.ts`: a `FocusState` plus `collectFocusNodes(spec.body)`
-//     for the focused panel. `Panel.tsx` is the only place both exist, it holds them in local
-//     component state (`focusedNodeId`, `focusNodes`) and it exposes neither, so the composition root
-//     would have to re-derive the focused node's KIND from class names in the DOM — a second focus
-//     model, disagreeing with the first at exactly the moments the first was written to get right.
-//     The honest report is the gap, not a heuristic: `Panel` needs to publish its focus (a callback
-//     prop, or the focus slice of a store), and then the host is a straightforward object.
-//     What that costs today: `F1`, `PRINT`, `PAGE FWD/BACK`, the panel-switch chords and TERM-06's
-//     type-anywhere are not bound at the window. Everything they reach is reachable another way —
-//     `HELP` is a command (and typing it twice inside ten seconds opens the ticket, exactly as the
-//     key does, because the HELP transition lives in `dispatcher.ts#nextHelpEffect` and is called
-//     here), `/panel n`, `/layout` and `/clear` are shell commands, the frame stack has its visible
-//     back/forward buttons, and the grid, the chart, the form and the command line each own their own
-//     keys at the element. PRINT has no non-key path: `ScreenCtx.export` is wired, so a screen's own
-//     PRINT control works, but there is no global key for it.
+//
+// The window-level keyboard dispatcher IS attached (see `onKeyDown` below), and the paragraph that used
+// to stand here said it was not. It was written when four members of `KeyboardHost` — `region()`,
+// `screenBindings()`, `capturesTypedText()` and `isPageable()` — needed a focus model that `Panel.tsx`
+// held in local state and exposed to nobody, and it argued that re-deriving the focused node's KIND from
+// class names in the DOM would be a second focus model disagreeing with the first. That argument was
+// right and the fix was the one it named: `Panel` publishes its focus (`PanelKeyContext`, through
+// `onKeyContext`), and the host here is a straightforward object over it. `screenAction` was the fifth
+// member and needed a channel of its own, which `ScreenSpec.actions` is.
 //
 // Arithmetic: none. IO: every request goes through the injected `@terminal/sdk` client (API-05); this
 // file never names `fetch` or `WebSocket`.

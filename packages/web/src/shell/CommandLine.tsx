@@ -396,8 +396,15 @@ export function CommandLine({
     [commit, focus, go, insertSector, recall],
   );
 
-  // The problem is anchored to the text that produced it. GO does not clear the draft when the
-  // command is refused (`command/dispatch.ts`), so the input still holds exactly that text.
+  // The problem is anchored to the text that produced it — the text that is in the input AT THE MOMENT
+  // THE PROBLEM LANDS, which is not the same thing as the text that produced it.
+  //
+  // This comment used to say "GO does not clear the draft when the command is refused". It does:
+  // `App.tsx#onGo` clears unconditionally, before the request (CLIENT §2.5 L783). So the snapshot below
+  // is the draft the user has typed SINCE, which is why `command/dispatch.ts#problemFor` withdraws
+  // `CommandProblem.span` for the answers that are not statements about the command — a server fault
+  // would otherwise underline whatever was on the line by the time it arrived. Nothing depends on the
+  // claim any more; this is the last place the old story was told.
   useEffect(() => {
     setProblemText(problem == null ? '' : (inputRef.current?.value ?? ''));
   }, [problem]);

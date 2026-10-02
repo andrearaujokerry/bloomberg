@@ -665,12 +665,19 @@ behaviour the plant cannot yet exercise, the second changes the documented schem
 done on speculation, and a third writer's worth of duplicated dedup logic would be worse than the
 gap.
 
-### Fourteen of forty function manifests exist
+### All forty function codes exist — as 38 manifests and two aliases
 
-WP-09 wrote the Tier 1 fourteen. WP-10 and WP-11 write the rest, into
-`packages/core/src/functions/manifests/`, which the generated registry globs — so a throwaway
-fixture manifest must never be written there, or `GET /functions` serves it. Tests that need a
-manifest build one with `defineFunction()` inside the test file, as WP-08's do.
+**This heading read "Fourteen of forty function manifests exist", and had since WP-09 — it was still
+there two work packages after it stopped being true.** The catalogue is complete: `packages/core/src/functions/manifests/` holds 38 manifests,
+`IB` is an alias of `MSG` and `ICVS` an alias of `CRVF` (with `aliasParams { curveId: 'SOFR_OIS' }`), and
+BRIEF §1 L127-130 writes both of those pairings itself (`MSG`/`IB`, `CRVF`/`ICVS`). `packages/web/src/
+screens/` has a screen for every one of the 38. `FUNCTIONS_TIER3.md` has a separate `### ICVS` entry
+proposing ICVS as a manifest of its own (curve-vs-curve comparison) with its own payload; that is a
+catalogue change and `manifests/CRVF.ts` records the decision not to make it.
+
+The registry globs that directory, so a throwaway fixture manifest must never be written there, or
+`GET /functions` serves it. Tests that need a manifest build one with `defineFunction()` inside the test
+file, as WP-08's do.
 
 `runner.ts` holds two guards for resolver authors: `assertPayloadMeta` refuses a payload carrying a
 cell whose number cites no provenance — per cell, not per payload — or a null with no
@@ -679,13 +686,18 @@ cell whose number cites no provenance — per cell, not per payload — or a nul
 that leaves `provIdx: -1` on a cell holding a price fails its own tests, so the resolvers WP-10 and
 WP-11 add inherit the rule rather than the exception.
 
-### The last backlog pass: eight findings, three fixed in code, six items left open
+### The last backlog pass: eight findings, and what became of the six it left open
 
-The repair pass that closed the last tier of the backlog is in the commit that carries this paragraph.
-Three findings were defects and are fixed; four were comments that overstated or misdescribed what
-they left behind, and those are corrected in place; and the six open items below are here because each
-one was recorded only inside the comment of the file it was in, which is the one place a reader looking
-for open work does not look. One of the six was found by writing a test for another.
+The repair pass that closed the last tier of the backlog is in commit `557b71f`. Three findings were
+defects and were fixed there; four were comments that overstated or misdescribed what they left behind,
+and those were corrected in place; and six items were left open because each one was recorded only inside
+the comment of the file it was in, which is the one place a reader looking for open work does not look.
+One of the six was found by writing a test for another.
+
+**Four of those six are now closed, and the paragraphs below are kept with their outcome marked rather
+than deleted** — each one says what was wrong, and a reader who remembers the old behaviour should be
+able to find out where it went. **Two are still open:** `field_licence` cannot admit a pair without
+naming a publisher, and the e2e gate's timing assertions remain a property of a quiet machine.
 
 **The four corrected comments**, so that a reader who remembers the old numbers knows they moved.
 `startup.ts`' `fieldsWithoutLicence` said this build has "twenty" dictionary fields with no
@@ -715,30 +727,37 @@ parser. And `chart/scales.ts`' suite now renders a chart with three `sub` study 
 golden or spec did: `targetYTickCount`'s ceiling was asserted only against GP's volume pane, and
 reverting it puts five y labels into a 20 px study pane.
 
-**`routes/status.ts` pools two quantities into one percentile.** `timings.fnLaunchP95Ms` is
-`percentile_cont(0.95)` over `usage_events.duration_ms` for `kind = 'fn.launch'` with no
-`clientReported` predicate, so it mixes the client's GO → first paint with the runner's own duration.
-Four runs of `command-line.spec.ts` read `W` at 207.0, 236.4, 403.0 and 739.2 ms with no change to
-the server, and the last of those FAILED the spec's `<= 500 ms` assertion. `routes/usage.ts`' header
-has the full measurement and both candidate fixes; neither is free (the client's number is untrusted
-for billing, the runner's rounds to 0 on a cached screen and breaks the same spec's `> 0` assertion),
-so the choice is a decision about that page.
+**~~`routes/status.ts` pools two quantities into one percentile.~~ CLOSED in `557b71f` — the same
+commit that wrote this paragraph, which is why the two disagreed for one commit.** What was true:
+`timings.fnLaunchP95Ms` was `percentile_cont(0.95)` over `usage_events.duration_ms` for
+`kind = 'fn.launch'` with no `clientReported` predicate, so it mixed the client's GO → first paint with
+the runner's own duration. Four runs of `command-line.spec.ts` read `W` at 207.0, 236.4, 403.0 and
+739.2 ms with no change to the server. The fix is the predicate at `routes/status.ts` L331
+(`AND NOT coalesce((details ->> 'clientReported')::boolean, false)`), chosen because FUNCTIONS.md §588
+makes the server runner authoritative and `/usage/functions` already excluded the client's rows; the
+section "`GET /status` published a p95 of neither quantity" above has the whole of it, including the test
+that writes a 9,000 ms client row beside a 42 ms server row.
 
 **The e2e gate's two timing assertions pass on a quiet machine and not otherwise.**
 `command-line.spec.ts` `:410` (WEI go → first paint p95 vs a 500 ms budget) measured 472.4 ms on slot 6
 over 20 samples — 27.6 ms of room — and has been seen at 1045.2, 897.5, 536.1, 489.4, 483.0 and
 472.8 ms across runs: between 11 and 28 ms of headroom when it passes, and over budget twice.
 The server is not the cause —
-`POST /functions/WEI/run` is a stable 335-420 ms over 25 consecutive calls — and `:475` fails
-alongside it for the pooling reason above. So `44/44 passing` is a property of a quiet machine, not
-of this tree; siblings running Playwright concurrently is a normal condition here by design.
+`POST /functions/WEI/run` is a stable 335-420 ms over 25 consecutive calls. So `44/44 passing` is a
+property of a quiet machine, not of this tree; siblings running Playwright concurrently is a normal
+condition here by design. **This half is still open.**
 
 The closing run of the backlog is that quiet machine, and both read inside budget with the headroom
 this paragraph predicts: `:410` p95 **472.1 ms** of 500 over its 20 samples (411 … 480 ms, so no
 single launch was over), and `:475` `DES 103.9 · GP 152.2 · HP 79.8 · TOP 59.6 · W 199.1 · WEI 489.6`,
-where the budget binds every code but `WEI`. Note what the pooling does to that second line even when
-it passes: `W` read 199.1 ms here against 739.2 ms in the row above, with no change to the server.
-A figure that moves fourfold between runs is inside budget by luck, not by margin.
+where the budget binds every code but `WEI`. **The `:475` half is no longer pooled** — that was fixed in
+the same commit, above — and the fourfold swing this paragraph used to attribute to pooling (`W` at
+199.1 ms here against 739.2 ms in the row above) had a second cause that was found afterwards and is
+the larger of the two: four vitest projects defaulted into one scheduling group with `maxWorkers` unset
+and each sized its own pool at `availableParallelism() - 1`, up to 28 workers on 8 cores. Two runs since
+the fix, on the same quiet machine: `:410` p95 **494.3** and **483.9 ms**, `W` at **233.4** and
+**219.8 ms**. The variance is now of a size a 500 ms budget with 16 ms of headroom can still lose to,
+which is why the first half of this paragraph stays open.
 
 **`field_licence` cannot admit a pair without naming a publisher.** `providers/licences.ts`' gap fill
 gives each of 117 declared-but-unobserved `(field, asset class)` pairs the field's `sources[0]`, which
@@ -750,25 +769,29 @@ states things nobody contracted for: ten land on `cboe.quotes`, including `(PX_B
 no source; `field_licence.source_id` is `text NOT NULL` with `assert_source_known()` on it (migration
 `0002` L72-80), so that needs a migration and a rule-1 change.
 
-**`GP`'s `R` is declared and not wired, and the keyed `RANGE=` spelling survives in `MSG`.**
-`cycle-range` reaches `App.tsx#screenAction`, which answers `NOT_APPLICABLE: … declared by the screen
-but not wired yet` (driven in Chrome), while `GP/Screen.tsx` L196 titles every range chip `press R to
-cycle to 1M`. So the default desk's chart cannot be moved off `5D` from the keyboard at all; the only
-path is typing the positional form. Separately, `functions/MSG`'s chart click-through emits
-`AAPL US Equity GP RANGE=1Y` (pinned in `fixtures/golden/functions/MSG.default.json`), which is a
-command the parser refuses — a click-through that cannot be clicked through.
+**~~`GP`'s `R` is declared and not wired, and the keyed `RANGE=` spelling survives in `MSG`.~~ CLOSED in
+`786d5e3`, and the MSG half was two commands, not one.** What was true: `cycle-range` reached
+`App.tsx#screenAction`, which answered `NOT_APPLICABLE: … declared by the screen but not wired yet`
+(driven in Chrome), while `GP/Screen.tsx` L196 titled every range chip `press R to cycle to 1M` — so the
+default desk's chart could not be moved off its range from the keyboard at all. And `functions/MSG`'s
+chart click-through emitted `AAPL US Equity GP RANGE=1Y`, a command the parser refuses. See "The four
+small defects, closed" below: the channel is `ScreenSpec.actions`, the spelling is
+`core/command/args.ts#formatArgs`, and parsing the commands rather than reading them found `PORT 7` as
+well.
 
-**The bottom pane of a multi-pane chart pays for the x strip out of its own band.**
-`layers.ts#computeLayout` shares the full canvas height out by the `panes[].height` fractions and only
-then trims `xAxisHeightPx` off whichever pane is last. Measured on GP with the volume pane and three
-`sub` studies in a 400 px canvas: `main` 288 px, `vol` 37, `st0` 20, `st1` 20, **`st2` 3**. GP's own
-fractions sum to exactly 1.00 and reserve nothing for the strip. Pinned in
-`test/chart/scales.test.ts` so a fix is a failing assertion with the new geometry in it; not changed
-here, because who pays for the strip moves the volume pane's height and every multi-pane chart.
+**~~The bottom pane of a multi-pane chart pays for the x strip out of its own band.~~ CLOSED in
+`786d5e3`.** What was true: `layers.ts#computeLayout` shared the full canvas height out by the
+`panes[].height` fractions and only then trimmed `xAxisHeightPx` off whichever pane was last. Measured on
+GP with the volume pane and three `sub` studies in a 400 px canvas: `main` 288 px, `vol` 37, `st0` 20,
+`st1` 20, **`st2` 3**. The strip is now reserved before the fractions and given back to the last open
+pane's band. The pin in `test/chart/scales.test.ts` did its job: it was bounded ABOVE so a fix would
+arrive as a failure with the new geometry in it, and that is how it arrived.
 
-**`CommandLine.tsx` L400-401 still says GO leaves a refused command on the line.** It does not —
-`onGo` clears unconditionally — and nothing depends on the claim any more now that `problemFor`
-carries no span, but the docstring is the last place that stale story is told.
+**~~`CommandLine.tsx` L400-401 still says GO leaves a refused command on the line.~~ CORRECTED.** It did
+not — `onGo` clears unconditionally — and nothing depended on the claim once `problemFor` carried no span,
+but the docstring was the last place that stale story was told. It now says what the snapshot actually
+is: the draft the user has typed SINCE the problem was raised, which is why `problemFor` withdraws the
+span for answers that are not statements about the command.
 
 ### The four small defects, closed — and a second command that could not be clicked through
 

@@ -88,25 +88,44 @@ grid row runs that row's own command, `Ctrl+I` on a focused cell opens the prove
 number, and the chart has its own crosshair, zoom, study-picker and draw-mode keys (`docs/CLIENT.md`
 §11.9). `Tab` moves between panels and nodes in document order.
 
-**The window-level keys are not bound yet.** `keyboard/dispatcher.ts` is complete and tested but is
-not attached, because its host needs the focus model that `Panel.tsx` holds privately — the reasoning
-is in a comment at the top of `packages/web/src/App.tsx`. So `F1`, `PRINT`, `PAGE FWD/BACK`, the
-panel-switch chords and type-anywhere do nothing at the window. Everything they reach is reachable
-another way: `HELP` is a command and typing it twice within ten seconds opens the ticket exactly as
-the key would; `/panel`, `/layout` and `/clear` are shell commands; the frame stack has visible
-back/forward buttons. The one exception is `PRINT`: `ScreenCtx.export` is wired and a screen's own
-control works, but there is no global key for it.
+The window-level keys are bound too:
+
+| Key                   | Action                                                                                                           |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `F1`                  | `HELP` for the function in the focused panel; twice within ten seconds opens a ticket                            |
+| `Escape`              | `CANCEL`, then `MENU` — closes an overlay, then the autocomplete, then clears the draft, then goes back a screen |
+| `Ctrl+P`              | `PRINT` — export the focused panel's result as CSV                                                               |
+| `PageUp` / `PageDown` | page a pageable function, or scroll one viewport                                                                 |
+| `F2`…`F11`            | the yellow sector keys — insert `Govt`…`Curncy` after the ticker                                                 |
+| `Alt+1`…`Alt+8`       | focus a panel                                                                                                    |
+| `Alt+←` / `Alt+→`     | walk the focused panel's frame stack                                                                             |
+| `Ctrl+L`              | focus the command line and select all                                                                            |
+| typing anywhere       | the first character goes to the command line and takes focus with it                                             |
+
+Every one of those also has a button, in the **key bar** above the status bar: `GO CANCEL MENU HELP
+PRINT PG▲ PG▼` and the ten yellow sector keys. The buttons press the keys, so the two cannot drift.
+The bar exists because `F11` (`Curncy`) is not interceptable in Chrome on macOS — the browser keeps it
+for full screen — so without a clickable path that one sector would be unreachable. `/keybar off`
+hides the bar; in `compact` density it is hidden by default and `/keybar on` brings it back.
+
+A screen's own keys work where the screen wires them. On `GP`: `R` cycles the range, `T` the chart
+type, `A` the adjustment basis, `L` the log axis, `V` the volume pane, `P` the periodicity, `E` the
+event markers, `X` removes the last overlay, and `G`/`H` open `GIP`/`HP` over the same window. Four of
+GP's declared keys — `Shift+R` (a custom date range), `O` (add an overlay), `C` (set a currency) and
+`S` (add a study) — need a modal typeahead that is not written, and they say so in the panel footer
+rather than doing nothing.
 
 Shell commands start with `/`:
 
-| Command                      | Effect                                                     |
-| ---------------------------- | ---------------------------------------------------------- |
-| `/layout 1 \| 2h \| 2v \| 4` | panel layout — one, two side by side, two stacked, or four |
-| `/panel <n>`                 | focus a panel                                              |
-| `/theme light \| dark`       | theme                                                      |
-| `/conflate <ms>`             | change the quote conflation interval                       |
-| `/clear`                     | clear the panel's frame stack                              |
-| `/logout`                    | end the session                                            |
+| Command                      | Effect                                                       |
+| ---------------------------- | ------------------------------------------------------------ |
+| `/layout 1 \| 2h \| 2v \| 4` | panel layout — one, two side by side, two stacked, or four   |
+| `/panel <n>`                 | focus a panel                                                |
+| `/theme light \| dark`       | theme                                                        |
+| `/conflate <ms>`             | change the quote conflation interval                         |
+| `/keybar on \| off \| auto`  | show or hide the key bar (`auto`: hidden in compact density) |
+| `/clear`                     | clear the panel's frame stack                                |
+| `/logout`                    | end the session                                              |
 
 ### The 38 screens
 
