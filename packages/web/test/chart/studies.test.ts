@@ -990,3 +990,315 @@ describe('KELTNER and ATR share one Wilder ATR, so they agree across a gap', () 
     expect(halfWidth).toBeCloseTo(k * 3.0, 9);
   });
 });
+
+/* -------------------------------------------------------------------------------------------- */
+/* 6. A gap in the series, on the two main-pane studies that could not survive one                */
+/* -------------------------------------------------------------------------------------------- */
+
+/**
+ * `BB` and `PSAR` against a series with one hole in it (§11.2, CHRT-04).
+ *
+ * The goldens above are digests of a capture with no gap, which is exactly why this shipped:
+ * `ChartSeries.y` documents `NaN` as a legal GAP and §11.2 makes one ordinary the moment a second
+ * calendar is on the chart — two securities on one chart align by the union of their timestamps, so
+ * the one that did not trade on a slot is `NaN` there. Measured on one 120-bar series with a single
+ * hole, before the repair:
+ *
+ *  - **`BB` threw a `RangeError`** out of `core/analytics/stats`: `stdevOf` validates its input and is
+ *    right to, and `bbAt` handed it a twenty-close window with a `NaN` in it. The throw arrives inside
+ *    `setSpec`. `Renderer.computeStudies` guards the call and records the failure on
+ *    `skippedStudies()` (`renderer.test.ts` owns that half), so the cost was the overlay rather than
+ *    the chart — but a study that cannot answer must return a gapped column, not an exception.
+ *  - **`PSAR` produced not one finite value after the hole**, and one at the hole itself. The stop's
+ *    state is a trend, an extreme point and an acceleration factor, none of which is in the output:
+ *    `sar + af * (ep - sar)` with a `NaN` extreme is `NaN` and `Math.min(NaN, …)` keeps it, so one
+ *    absent bar removed the stop for the rest of the chart. On this study that is worse than a blank
+ *    line — PSAR exists to say which side of the price the stop is on, and it stopped saying anything.
+ *
+ * Both are asserted directly rather than through a golden, and the expected numbers are closed forms
+ * worked out below rather than recorded output.
+ */
+describe('a hole in the series: BB and PSAR', () => {
+  const LEN = 120;
+  const HOLE = 60;
+
+  /**
+   * A rising ramp with one bar missing: `close = 100 + i/2`, `high = close + 1.5`, `low = close − 1.5`.
+   *
+   * A ramp because it makes both studies' post-gap answers closed forms — the population σ of twenty
+   * terms of an arithmetic progression is `d·√((n²−1)/12)` exactly, and a monotone series never
+   * reverses, so the parabolic stop's re-initialisation is a named low rather than a recorded number.
+   * The whole bar is `NaN`, not just the close: a slot no bar occupies has no open, high, low or close.
+   */
+  function ramp(holeAt: number | null): StudyInput {
+    const x = new Float64Array(LEN);
+    const close = new Float64Array(LEN);
+    const high = new Float64Array(LEN);
+    const low = new Float64Array(LEN);
+    for (let i = 0; i < LEN; i += 1) {
+      x[i] = Date.UTC(2026, 0, 1) + i * 86_400_000;
+      const base = 100 + i * 0.5;
+      close[i] = base;
+      high[i] = base + 1.5;
+      low[i] = base - 1.5;
+    }
+    if (holeAt !== null) {
+      close[holeAt] = Number.NaN;
+      high[holeAt] = Number.NaN;
+      low[holeAt] = Number.NaN;
+    }
+    return { x, close, high, low };
+  }
+
+  /** The bars from `HOLE + 1` on, as a series of their own — what the study can honestly know after. */
+  function afterTheHole(): StudyInput {
+    const full = ramp(null);
+    const from = HOLE + 1;
+    return {
+      x: full.x.slice(from),
+      close: full.close.slice(from),
+      high: full.high!.slice(from),
+      low: full.low!.slice(from),
+    };
+  }
+
+  /** The indices of every finite slot of `y`. */
+  function finiteIndices(y: Float64Array): number[] {
+    const out: number[] = [];
+    for (let i = 0; i < y.length; i += 1) if (Number.isFinite(y[i]!)) out.push(i);
+    return out;
+  }
+
+  /**
+   * The post-gap tail of a gapped series' output, against the same study over the post-gap bars alone.
+   *
+   * This is the assertion that says the recurrence was **not carried across the gap**, and it is the
+   * strongest form available: after a hole a study knows nothing but the bars since it, so its tail
+   * must be indistinguishable from a fresh start on those bars — same values, and the same warm-up
+   * gap. A study that carried its state across would agree in no slot at all; one that re-seeded a
+   * slot early or late would agree in the values and not in the warm-up.
+   *
+   * `minFinite` is not decoration. Two all-`NaN` columns are equal, so without a floor on how many
+   * finite pairs were actually compared this would pass on a study that drew nothing — which is the
+   * defect it exists to catch.
+   */
+  function expectTailMatchesAFreshStart(
+    id: string,
+    lineId: string,
+    gappedOut: StudyOutput,
+    freshOut: StudyOutput,
+    minFinite: number,
+  ): void {
+    const tail = lineOf(gappedOut, lineId);
+    const fresh = lineOf(freshOut, lineId);
+    expect(fresh.length).toBe(LEN - HOLE - 1);
+    let compared = 0;
+    for (let j = 0; j < fresh.length; j += 1) {
+      const got = tail[HOLE + 1 + j]!;
+      const want = fresh[j]!;
+      if (Number.isNaN(want)) {
+        expect(got, `${id}.${lineId} slot ${String(HOLE + 1 + j)} should still be warming up`).toBe(
+          Number.NaN,
+        );
+        continue;
+      }
+      expect(got, `${id}.${lineId} slot ${String(HOLE + 1 + j)}`).toBeCloseTo(want, 12);
+      compared += 1;
+    }
+    expect(compared, `${id}.${lineId}: finite slots compared`).toBeGreaterThanOrEqual(minFinite);
+  }
+
+  it('BB returns a gapped column instead of throwing out of core', () => {
+    const input = ramp(HOLE);
+    // The throw, first and on its own: `compute` must return. Before the repair this line was the
+    // `RangeError` — `stats: series[19] must be a finite number, got NaN`.
+    const out = trendStudies.BB.compute(input, { n: 20, k: 2 });
+
+    // Exactly the slots whose twenty-close window spans the hole are gaps, and no others: a window
+    // ending at `i` covers `i−19..i`, so it contains slot 60 for `i` in 60..79. Slot 59 is the last
+    // clean window before it and slot 80 the first after, and asserting both edges is what would
+    // notice a guard that gapped one slot too many or the whole rest of the series.
+    for (const lineId of ['mid', 'upper', 'lower']) {
+      const y = lineOf(out, lineId);
+      const gaps = finiteIndices(y);
+      expect(gaps[0], `${lineId} first finite`).toBe(19);
+      expect(gaps.includes(59), `${lineId} slot 59`).toBe(true);
+      for (let i = HOLE; i <= HOLE + 19; i += 1) {
+        expect(Number.isNaN(y[i]!), `${lineId} slot ${String(i)}`).toBe(true);
+      }
+      expect(Number.isFinite(y[80]!), `${lineId} slot 80`).toBe(true);
+      expect(Number.isFinite(y[LEN - 1]!), `${lineId} last slot`).toBe(true);
+    }
+  });
+
+  it('BB resumes with the σ of the twenty closes it can see, worked out by hand', () => {
+    const out = trendStudies.BB.compute(ramp(HOLE), { n: 20, k: 2 });
+    const mid = lineOf(out, 'mid');
+    const upper = lineOf(out, 'upper');
+    const lower = lineOf(out, 'lower');
+
+    // Slot 80's window is slots 61..80, all clean. `close = 100 + i/2`, so the mean is
+    // `100 + 70.5/2 = 135.25` — the mean of the integers 61..80 is 70.5.
+    expect(mid[80]!).toBeCloseTo(135.25, 12);
+
+    // The population standard deviation of `n` terms of an arithmetic progression of step `d` is
+    // `d·√((n²−1)/12)`, independent of where the window sits: with `d = 0.5` and `n = 20` that is
+    // `0.5·√(399/12) = 0.5·√33.25 = 2.8831406…`, so the band's half-width is `k·σ = 5.7662812…`.
+    // This is the number a σ over NINETEEN closes would have got wrong (`0.5·√(360/12) = 2.7386…`),
+    // which is why the repair gaps the slot rather than dropping the missing bar from the window.
+    const sigma = 0.5 * Math.sqrt((20 * 20 - 1) / 12);
+    expect(upper[80]! - mid[80]!).toBeCloseTo(2 * sigma, 12);
+    expect(mid[80]! - lower[80]!).toBeCloseTo(2 * sigma, 12);
+
+    // And the band is a band across the hole: upper above mid above lower wherever all three are
+    // drawn, on both sides of it.
+    for (const i of finiteIndices(mid)) {
+      expect(upper[i]!, `upper at ${String(i)}`).toBeGreaterThan(mid[i]!);
+      expect(mid[i]!, `mid at ${String(i)}`).toBeGreaterThan(lower[i]!);
+    }
+  });
+
+  it('BB after the hole is what BB over the bars since the hole would draw', () => {
+    const gappedOut = trendStudies.BB.compute(ramp(HOLE), { n: 20, k: 2 });
+    const freshOut = trendStudies.BB.compute(afterTheHole(), { n: 20, k: 2 });
+    for (const lineId of ['mid', 'upper', 'lower']) {
+      // 59 post-gap slots, 19 of them the fresh warm-up: 40 finite comparisons.
+      expectTailMatchesAFreshStart('BB', lineId, gappedOut, freshOut, 40);
+    }
+  });
+
+  it('BB leaves the slots before the hole exactly where they were', () => {
+    // A re-seeding repair that perturbed history would move a line the trader has been looking at all
+    // session, and the goldens cannot notice because the capture has no hole. Every slot before the
+    // window that first touches it must equal the ungapped series' own value, bit for bit.
+    const gappedOut = trendStudies.BB.compute(ramp(HOLE), { n: 20, k: 2 });
+    const cleanOut = trendStudies.BB.compute(ramp(null), { n: 20, k: 2 });
+    for (const lineId of ['mid', 'upper', 'lower']) {
+      const got = Array.from(lineOf(gappedOut, lineId).subarray(0, HOLE));
+      const want = Array.from(lineOf(cleanOut, lineId).subarray(0, HOLE));
+      expect(got, `${lineId} head`).toEqual(want);
+    }
+  });
+
+  it('PSAR re-initialises after the hole instead of dying at it', () => {
+    const out = trendStudies.PSAR.compute(ramp(HOLE), { af: 0.02, max: 0.2 });
+    const y = lineOf(out, 'psar');
+
+    // The hole itself carries no stop. Before the repair it carried one: the recurrence still had a
+    // finite `sar` and `ep` at slot 60 and the penetration test `NaN < next` is `false`, so the study
+    // drew a stop for a bar that did not trade, and only went `NaN` from slot 61 — where the clamp
+    // `Math.min(next, low[60], low[59])` finally poisoned it.
+    expect(Number.isNaN(y[HOLE]!)).toBe(true);
+
+    // Rule (1) applied per run: the first bar of the run after the hole has no value, because the
+    // first stop needs two bars to know which way the trend points.
+    expect(Number.isNaN(y[HOLE + 1]!)).toBe(true);
+
+    // Rule (2), by hand. The run's first two closes rise, so the trend initialises LONG and the first
+    // stop is the lower of the run's first two lows — `low[61] = 100 + 61/2 − 1.5 = 129.0`. Not
+    // `low[60]`, which does not exist, and not a value carried from the trend before the hole.
+    expect(y[HOLE + 2]!).toBeCloseTo(129.0, 12);
+
+    // And the line is drawn for the whole run, not for two slots of it.
+    const finite = finiteIndices(y);
+    expect(finite.filter((i) => i > HOLE).length).toBe(LEN - HOLE - 2);
+    expect(finite[finite.length - 1]).toBe(LEN - 1);
+
+    // A long stop sits below the bar it is drawn against — that is what makes it a stop. On a monotone
+    // ramp the trend never reverses, so this holds at every drawn slot on both sides of the hole; it is
+    // the assertion that would catch a re-initialisation that came back short, on the wrong side of
+    // the price, which is the one thing this study exists to say.
+    const low = ramp(HOLE).low!;
+    for (const i of finite) {
+      expect(y[i]!, `stop below the low at ${String(i)}`).toBeLessThan(low[i]!);
+    }
+  });
+
+  it('PSAR after the hole is what PSAR over the bars since the hole would draw', () => {
+    const gappedOut = trendStudies.PSAR.compute(ramp(HOLE), { af: 0.02, max: 0.2 });
+    const freshOut = trendStudies.PSAR.compute(afterTheHole(), { af: 0.02, max: 0.2 });
+    // 59 post-gap slots, one of them the fresh run's own leading bar: 58 finite comparisons.
+    expectTailMatchesAFreshStart('PSAR', 'psar', gappedOut, freshOut, 58);
+  });
+
+  it('PSAR leaves the slots before the hole exactly where they were', () => {
+    const gappedOut = trendStudies.PSAR.compute(ramp(HOLE), { af: 0.02, max: 0.2 });
+    const cleanOut = trendStudies.PSAR.compute(ramp(null), { af: 0.02, max: 0.2 });
+    expect(Array.from(lineOf(gappedOut, 'psar').subarray(0, HOLE))).toEqual(
+      Array.from(lineOf(cleanOut, 'psar').subarray(0, HOLE)),
+    );
+  });
+
+  it('a run too short to start a stop draws nothing rather than reading past itself', () => {
+    // Two holes, leaving a run of exactly one bar between them. Rule (1) needs two, and a run of one
+    // at the very end of the series is the case an `i < len - 1` guard gets wrong.
+    const input = ramp(HOLE);
+    input.close[HOLE + 2] = Number.NaN;
+    input.high![HOLE + 2] = Number.NaN;
+    input.low![HOLE + 2] = Number.NaN;
+    const y = lineOf(trendStudies.PSAR.compute(input, { af: 0.02, max: 0.2 }), 'psar');
+    expect(Number.isNaN(y[HOLE + 1]!)).toBe(true);
+    // The run after the second hole is long enough, so the study comes back — a guard that gave up on
+    // the series at the first short run would leave this `NaN` too.
+    expect(Number.isNaN(y[HOLE + 3]!)).toBe(true);
+    expect(Number.isFinite(y[HOLE + 4]!)).toBe(true);
+  });
+
+  /**
+   * §11.5's incremental path, at the two slots a capture with no hole in it can never present.
+   *
+   * The block above checks `update()` against `compute()` over the fixture's own bars, where there is
+   * no gap — so neither path ever takes a gap branch, and the repair to `bbAt` changed a gap branch
+   * `BB.update` shares. The five studies here all answer from the slot's own window (`EMA` from the
+   * previous output value), so they stay consistent because `update` calls the same per-slot helper
+   * the `compute` loop calls; asserting it is what would notice the next repair that patched one and
+   * not the other. The renderer patches the forming bar through `update()` and redraws the rest from
+   * `compute()`, so a disagreement reaches a trader as the last point of a line jumping when the chart
+   * is next recomputed (§11.2, CHRT-04).
+   */
+  describe('update() agrees with compute() across a hole', () => {
+    /** The gapped series as it stood one bar ago: the first `count` slots of it. */
+    function head(full: StudyInput, count: number): StudyInput {
+      return {
+        x: full.x.slice(0, count),
+        close: full.close.slice(0, count),
+        high: full.high!.slice(0, count),
+        low: full.low!.slice(0, count),
+      };
+    }
+
+    /** The five of the nine that declare an incremental form (`HAS_UPDATE`, §11.5). */
+    const withUpdate = STUDY_IDS_HERE.filter((id) => HAS_UPDATE[id] === true);
+
+    // The hole AT the forming slot, and the hole one slot behind it. The first asks what a study draws
+    // for a bar that did not trade; the second asks what it draws for a real bar whose predecessor did
+    // not. Both reach `update()` the moment two calendars share a chart (§11.2).
+    for (const [label, holeAt] of [
+      ['the forming slot is itself the hole', LEN - 1],
+      ['the slot before the forming one is the hole', LEN - 2],
+    ] as const) {
+      it.each(withUpdate)(`%s: ${label}`, (id) => {
+        const study = trendStudies[id as keyof typeof trendStudies];
+        const params = defaults(study);
+        const full = ramp(holeAt);
+        const last = LEN - 1;
+        const fresh = study.compute(full, params);
+        const patched = study.update?.(study.compute(head(full, last), params), full, params, last);
+        expect(patched).toBeDefined();
+        for (const line of fresh.lines) {
+          const got = lineOf(patched ?? fresh, line.id);
+          expect(got.length, `${id}.${line.id} grew`).toBe(LEN);
+          const want = line.y[last]!;
+          if (Number.isNaN(want)) {
+            expect(
+              got[last]!,
+              `${id}.${line.id} at the forming slot: compute gaps it, update must too`,
+            ).toBe(Number.NaN);
+          } else {
+            expect(got[last]!, `${id}.${line.id} at the forming slot`).toBeCloseTo(want, 12);
+          }
+        }
+      });
+    }
+  });
+});

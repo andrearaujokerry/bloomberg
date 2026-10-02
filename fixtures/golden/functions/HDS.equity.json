@@ -22,11 +22,7 @@
     "marketCap": {
       "v": 3451350000000,
       "st": "live",
-      "provIdx": 0,
-      "live": {
-        "subject": "q:<SUBJECT>",
-        "field": "PX_LAST"
-      }
+      "provIdx": 0
     },
     "px": {
       "v": 230.09,

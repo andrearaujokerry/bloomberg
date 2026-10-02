@@ -33,10 +33,15 @@
 // **Slots, not timestamps.** `setSpec` builds the union of every series' `x` values, sorted and
 // deduplicated, and rebases each series onto it (§11.2 `TradingDayIndex`). Nights, weekends and
 // holidays therefore never reach a draw function, two securities with different calendars align by
-// timestamp, and a pan is integer arithmetic. `scales.ts` (WP-14's other hand) is where §11.2's
-// `TenorScale` log-ish spacing and the zoom-dependent tick thinning belong; until it lands the tenor
-// and category axes are slot-linear here, which is correct spacing for the curve nodes the six real
-// screens build (they are already ordered) but not the log-ish tenor spacing §11.2 describes. What a
+// timestamp, and a pan is integer arithmetic. **The tenor and category axes are slot-linear here, and
+// that is a KNOWN DEVIATION from §11.2, not a seam waiting on another file.** A curve's nodes are
+// already ordered, so slot-linear draws them in the right order; it does not give them the log-ish
+// spacing §11.2 asks for, so on GC, CRVF, OMON and OVML the x axis says that 1,095 days → 1,096 days
+// and 10 years → 20 years are the same distance. WP-14 shipped a `tenorScale` for exactly this in
+// `scales.ts` and never imported it; that module is gone and the deviation is measured where it can be
+// seen, on this renderer, in `test/chart/scales.test.ts`. Closing it is an x-axis change to this file
+// (`slotScaleOf`, `xTicksOf`, `hitTest` and the annotation anchors all read the slot mapping), which
+// is a deliberate piece of work and not a one-line import. What a
 // slot is CALLED on each of the four axis kinds is `layers.ts#xLabeller`, shared with both readouts:
 // a day count, a strike and a spot price are not instants, and running them through a date formatter
 // is how every curve chart came to announce `1970-01-01`.
@@ -56,10 +61,16 @@ import {
   logDecadeTicks,
   niceTicks,
   studyAxisId,
+  targetYTickCount,
   xLabeller,
   xTickStride,
+  Y_TICK_TARGET,
 } from './layers.js';
 import type { LegendEntry, XLabeller, XTick, YTick } from './layers.js';
+// The ONE value mapping and the ONE slot mapping in the package (`scales.ts`' header records what
+// this import replaced: a second copy of both, in this file).
+import { slotScale, unitScale } from './scales.js';
+import type { SlotScale, UnitScale } from './scales.js';
 import {
   DEFAULT_CACHE_ENTRIES,
   DownsampleCache,
@@ -236,6 +247,15 @@ interface AxisRender {
   readonly lo: number;
   readonly hi: number;
   readonly scale: 'linear' | 'log';
+  /**
+   * The domain → `0..1` mapping of this axis, built ONCE per axis per frame (`scales.ts#unitScale`).
+   *
+   * On the axis rather than in `scalesFor` because `scalesFor` runs per series per frame and again for
+   * every tick, reference rule, study point and crosshair read: the log branch's two `Math.log10`s and
+   * the closure allocation belong outside that loop. Measured on `chart.bench.ts`' base redraw, which
+   * is the reason this is a field and not a local.
+   */
+  readonly unit: UnitScale;
   readonly fmt: ChartSpec['yAxes'][number]['fmt'];
   readonly decimals: number | undefined;
   /**
@@ -749,7 +769,7 @@ export class Renderer {
    * `tradingDayIndex.ts` already keeps that table per series, and asking it is what keeps the table
    * honest after a streaming append — a bar appended without the matching `setPoint` shows up here
    * immediately as a gap rather than silently later, in whichever other holder of the same index
-   * (`downsample.ts`, `scales.ts`'s `yAxisScale`) reads it next.
+   * (`downsample.ts`, `buildAxes`'s domain scan) reads it next.
    */
   valueOfSeriesAtSlot(seriesId: string, slot: number): number {
     const series = this.bySeriesId.get(seriesId);
@@ -1040,14 +1060,54 @@ export class Renderer {
     return { slot0, slot1 };
   }
 
+  /**
+   * The x mapping for this frame's viewport over one plot rect — `scales.ts#slotScale`, not a copy.
+   *
+   * This file used to hold its own `plot.w / Math.max(1, span)` and its own half-slot inset, which is
+   * the duplication WP-14's audit found and `scales.ts`' header now records the end of: there is one
+   * slot mapping in the package and both the renderer and `Sparkline` draw through it.
+   *
+   * **Memoised on its whole input**, and that is a frame budget rather than a tidiness: the viewport
+   * and the plot rect are the only things a slot mapping depends on, and this is asked for once per
+   * series per frame, once per x tick, once per crosshair read and once per annotation anchor. The key
+   * is every input, so the entry can never be stale — a pan changes `view` and a resize changes the
+   * rect, and either misses. One entry is enough because the callers iterate a pane at a time.
+   * Measured on `chart.bench.ts`' ten-year pan and zoom, which is the loop that showed the cost.
+   */
+  private slotMemo: {
+    slot0: number;
+    slot1: number;
+    x: number;
+    w: number;
+    scale: SlotScale;
+  } | null = null;
+
+  private slotScaleOf(plot: Rect): SlotScale {
+    const memo = this.slotMemo;
+    if (
+      memo !== null &&
+      memo.slot0 === this.view.slot0 &&
+      memo.slot1 === this.view.slot1 &&
+      memo.x === plot.x &&
+      memo.w === plot.w
+    ) {
+      return memo.scale;
+    }
+    const scale = slotScale(this.view, plot);
+    this.slotMemo = { slot0: this.view.slot0, slot1: this.view.slot1, x: plot.x, w: plot.w, scale };
+    return scale;
+  }
+
   private slotPxOf(plot: Rect): number {
-    const span = Math.max(1, this.view.slot1 - this.view.slot0 + 1);
-    return plot.w / span;
+    return this.slotScaleOf(plot).slotPx;
   }
 
   private slotAtPx(pane: PaneLayout, px: number): number {
-    const slotPx = this.slotPxOf(pane.plot);
-    return slotPx <= 0 ? this.view.slot0 : this.view.slot0 + (px - pane.plot.x) / slotPx - 0.5;
+    const x = this.slotScaleOf(pane.plot);
+    // The guard is the renderer's and does not belong in the scale: a pane with no width gives
+    // `slotPx = 0`, and inverting through it is a division by zero that answers `±Infinity` — a
+    // crosshair at an infinite slot, on a layout that has simply not been measured yet.
+    return x.slotPx <= 0 ? this.view.slot0 : x.slotAt(px);
   }
 
   /** The slot whose timestamp is nearest `t` — how an event or an annotation anchor lands (§11.7). */
@@ -1239,54 +1299,58 @@ export class Renderer {
     // A log axis cannot show zero or a negative, and a spec may still ask for one (a spread series
     // that crossed zero). Falling back to linear draws the data; refusing would draw nothing.
     const usable = scale === 'log' && low > 0 ? 'log' : 'linear';
+    // Precedence: a study pane's own `yFmt` (§11.6), then the unit a REBASED axis is actually in,
+    // then what the screen declared. The middle one was missing and that was a wrong unit on screen.
+    const rebased = rebasedLabel(spec);
     return {
       axisId,
       lo: low,
       hi: high,
       scale: usable,
-      fmt: override?.fmt ?? spec?.fmt,
-      decimals: override?.decimals ?? spec?.decimals,
+      unit: unitScale(usable, [low, high]),
+      fmt: override?.fmt ?? rebased?.fmt ?? spec?.fmt,
+      decimals: override?.decimals ?? (rebased === undefined ? spec?.decimals : rebased.decimals),
       norm,
     };
   }
 
-  /** The scales one series draws through, for one pane, for this frame (`SeriesScales`). */
+  /**
+   * The scales one series draws through, for one pane, for this frame (`SeriesScales`).
+   *
+   * **The value mapping is `scales.ts`', not this file's.** Both halves of it — `(v - lo) / (hi - lo)`
+   * on a linear axis and the base-ten ratio on a log one — were written here a second time while
+   * `scales.ts` already held them, which is the duplication WP-14's audit found. They now come from
+   * `scales.ts#unitScale`, built once per axis per frame and carried on `AxisRender.unit`; `yUnit`
+   * composes it with this pane's rect rather than calling `ValueScale.project()`, because the two are
+   * algebraically equal and `plot.y + plot.h * (1 - u)` is the association every committed hash in
+   * `test/chart/renderer.test.ts` was taken through. `scales.test.ts` asserts the two forms agree to
+   * nine places, so the pair cannot drift back into two mappings.
+   */
   private scalesFor(pane: PaneLayout, series: Resolved | null, axis: AxisRender): SeriesScales {
     const plot = pane.plot;
-    const slotPx = this.slotPxOf(plot);
+    const x = this.slotScaleOf(plot);
     const spec = this.axisSpecOf(axis.axisId);
     // A series is placed by its OWN rebasing (two securities on one pct axis both start at zero,
     // which is what a comparison chart is); everything else on the axis — the reference rules, the
     // annotations, the crosshair's pixel → value — is placed by the axis's one base.
     const norm = series === null ? axis.norm : this.normaliserFor(series, spec?.normalise ?? 'none');
-    const toUnit =
-      axis.scale === 'log'
-        ? (v: number) => {
-            const lo = Math.log10(axis.lo);
-            const hi = Math.log10(axis.hi);
-            return (Math.log10(v) - lo) / (hi - lo || 1);
-          }
-        : (v: number) => (v - axis.lo) / (axis.hi - axis.lo || 1);
-    const fromUnit =
-      axis.scale === 'log'
-        ? (u: number) => 10 ** (Math.log10(axis.lo) + u * (Math.log10(axis.hi) - Math.log10(axis.lo)))
-        : (u: number) => axis.lo + u * (axis.hi - axis.lo);
+    const scale = axis.unit;
     // `yUnit` takes a value that is ALREADY in the axis's own units and `y` takes one in the series'
     // data coordinates. The two are the same function only while `normalise` is `none`, and keeping
     // them apart is what lets an axis tick (a number read off the domain) and a price (a number read
     // off the payload) both land in the right place.
-    const yUnit = (v: number): number => plot.y + plot.h * (1 - toUnit(v));
+    const yUnit = (v: number): number => plot.y + plot.h * (1 - scale.unit(v));
     const y = (value: number): number => yUnit(norm.to(value));
     const decimals = axis.decimals ?? 2;
     const zeroInside = axis.lo <= 0 && axis.hi >= 0 && axis.scale === 'linear';
     return {
       plot,
-      x: (slot: number) => plot.x + (slot - this.view.slot0 + 0.5) * slotPx,
+      x: (slot: number) => x.x(slot),
       y,
       yUnit,
       slotAt: (px: number) => this.slotAtPx(pane, px),
-      valueAt: (py: number) => norm.from(fromUnit(1 - (py - plot.y) / (plot.h || 1))),
-      slotPx,
+      valueAt: (py: number) => norm.from(scale.value(1 - (py - plot.y) / (plot.h || 1))),
+      slotPx: x.slotPx,
       baselinePx: zeroInside ? yUnit(0) : plot.y + plot.h,
       tick: 10 ** -decimals,
       hairline: 1 / this.dpr,
@@ -1438,8 +1502,17 @@ export class Renderer {
 
   private yTicksOf(pane: PaneLayout, axis: AxisRender): YTick[] {
     const scales = this.scalesFor(pane, null, axis);
+    // A CEILING on the count, never a floor. `layers.ts#drawYAxis` prints every tick it is handed
+    // that lands inside the plot band and thins nothing, so five labels at 13 px line height were
+    // drawn through one another on a sub-study pane 16 px tall — three studies in `sub` take
+    // `0.15 / 3` of the canvas each (§11.6). `targetYTickCount` says how many fit; the `min` is what
+    // makes this subtract labels that collided without adding any to a pane that had room, which is
+    // the half of §11.2's density rule that costs no committed golden (see that function's note).
+    const target = Math.min(Y_TICK_TARGET, targetYTickCount(pane.plot.h, this.fonts.lineHeightPx));
     const values =
-      axis.scale === 'log' ? logDecadeTicks(axis.lo, axis.hi) : niceTicks(axis.lo, axis.hi);
+      axis.scale === 'log'
+        ? logDecadeTicks(axis.lo, axis.hi, target)
+        : niceTicks(axis.lo, axis.hi, target);
     // `yUnit`, not `y`: a tick is a number read off `axis.lo..axis.hi`, which is already in the
     // axis's normalised units, and running it through the axis normaliser again would place a
     // `base100` axis's own labels somewhere else on the axis.
@@ -2005,11 +2078,42 @@ function columnsOf(series: Resolved): StudyColumns {
 const IDENTITY_NORM: Normaliser = Object.freeze({ to: identity, from: identity });
 
 /** The axis a pane with no declared axis still needs to position an x tick or an event glyph. */
+/**
+ * What a NORMALISED axis labels itself with, or `undefined` when it is not normalised (§11.2).
+ *
+ * A rebased axis is no longer in the field's unit, and carrying the spec's `fmt` through is a wrong
+ * unit printed in a gutter. Measured on the shipped screens: `screens/GP/Screen.tsx` L100 sets
+ * `fmt: unitFmt(primary.unit)` and `decimals: priceDecimals` whatever `params.normalise` is, so
+ * pressing `N` on an equity chart relabelled a percent axis as a price — `-4.23` where the number is
+ * −4.23 % — and `base100` on a yield curve would have printed an index of 110 as `11,000%`.
+ *
+ * Percent change is a percentage whatever the series was; a base-100 index is a plain number, and it
+ * takes the formatter's own decimals rather than the instrument's, because the price decimals of the
+ * underlying say nothing about an index rebased off it.
+ *
+ * This rule is the one piece of `scales.ts`' deleted `yAxisScale` that was adopted rather than
+ * declined (see that file's header): it costs no committed golden, because every spec the goldens
+ * render declares `normalise: 'none'`.
+ */
+function rebasedLabel(
+  spec: ChartSpec['yAxes'][number] | undefined,
+): { fmt: ChartSpec['yAxes'][number]['fmt']; decimals: number | undefined } | undefined {
+  switch (spec?.normalise ?? 'none') {
+    case 'pct':
+      return { fmt: 'pct', decimals: undefined };
+    case 'base100':
+      return { fmt: 'px', decimals: undefined };
+    default:
+      return undefined;
+  }
+}
+
 const FALLBACK_AXIS: AxisRender = Object.freeze({
   axisId: '',
   lo: 0,
   hi: 1,
   scale: 'linear' as const,
+  unit: unitScale('linear', [0, 1]),
   fmt: undefined,
   decimals: undefined,
   norm: IDENTITY_NORM,

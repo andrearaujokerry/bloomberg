@@ -700,7 +700,10 @@ describe('pixel goldens: every SeriesType draws, distinctly, from the data (CHRT
       cases,
       `pixel goldens moved. Recorded with node-canvas ${golden.recordedWith.canvas} on ` +
         `${golden.recordedWith.platform}; running node-canvas ${canvasVersion()} on ${process.platform}. ` +
-        'Check the renderer change before re-recording.',
+        'Check the renderer change before re-recording — and when a move is deliberate, record WHICH ' +
+        'change moved WHICH case in the golden’s own `history` array, as the `profile` entry does for ' +
+        'the intraday x-strip zone fix (`layers.ts#xLabeller`). A moved hash with no note is a pixel ' +
+        'diff nobody can audit.',
     ).toEqual(golden.cases);
   });
 });

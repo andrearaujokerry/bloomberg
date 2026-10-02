@@ -632,6 +632,15 @@ describe('HDS — equity holders', () => {
     expect(data.shareBase.px.v).toBe(230.09);
     expect(data.shareBase.marketCap.v).toBeCloseTo(230.09 * SHARES_OUT, 2);
     expect(data.shareBase.marketCap.provIdx).toBe(data.shareBase.px.provIdx);
+    // The market cap must NOT claim to be live, and least of all on `PX_LAST`. `live` is an
+    // instruction to the shell to overwrite the cell's `v` from the quote cache for that
+    // (subject, field) — and `cellRegistry`'s innermost value is a *set*, so every cell registered
+    // on a pair gets the delta. Copying `px.live` here therefore registered the market cap and the
+    // price on the same pair and had the first `PX_LAST` tick write 230.09 into a cell showing
+    // 3 451 350 000 000. Asserted on the price cell too, in the same breath, so that this reads as
+    // "one of these two is live and the other is derived" rather than as a bare absence.
+    expect(data.shareBase.marketCap.live).toBeUndefined();
+    expect(data.shareBase.px.live).toEqual({ subject: expect.any(String), field: 'PX_LAST' });
 
     const sources = meta.provenance.map((p) => p.sourceId);
     expect(sources).toContain('sec.archives');

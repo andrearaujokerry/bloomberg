@@ -832,11 +832,29 @@ describe('the /usage group', () => {
         [TEST_NOW_ISO, userId, firmId, kind, code],
       );
     };
+    /**
+     * The client's own copy of a launch it has already made: `POST /usage/events` accepts a
+     * server-originated kind and flags it `clientReported` (API.md L785) because it carries a
+     * different measurement — GO → first paint — of the same GO. FUNCTIONS.md §588 makes the server
+     * runner the authoritative writer, so these rows are real telemetry and are **not** launches to
+     * count. One per authoritative launch below, which is what a web session actually produces.
+     */
+    const clientCopy = async (userId: number, code: string): Promise<void> => {
+      await t.client.query(
+        `INSERT INTO usage_events (ts, user_id, firm_id, kind, code, duration_ms, details)
+         VALUES ($1::timestamptz, $2, $3, 'fn.launch', $4, 480, '{"clientReported": true}'::jsonb)`,
+        [TEST_NOW_ISO, userId, firmId, code],
+      );
+    };
     await event(one.userId, 'fn.launch', 'DES');
     await event(one.userId, 'fn.launch', 'DES');
     await event(two.userId, 'fn.launch', 'DES');
     await event(two.userId, 'fn.export', 'DES');
     await event(one.userId, 'fn.launch', 'GP');
+    await clientCopy(one.userId, 'DES');
+    await clientCopy(one.userId, 'DES');
+    await clientCopy(two.userId, 'DES');
+    await clientCopy(one.userId, 'GP');
 
     const response = await app.inject({
       method: 'GET',
@@ -849,6 +867,7 @@ describe('the /usage group', () => {
         items: { code: string; launches: number; users: number; exports: number }[];
       }
     ).items;
+    // Three launches, not six: the three client copies are telemetry about the same three GOs.
     const des = items.find((i) => i.code === 'DES');
     expect(des).toEqual({ code: 'DES', launches: 3, users: 2, exports: 1 });
     expect(items.find((i) => i.code === 'GP')).toEqual({
@@ -857,6 +876,15 @@ describe('the /usage group', () => {
       users: 1,
       exports: 0,
     });
+
+    // And the flagged rows really are in the table, so the counts above are a filter working rather
+    // than an insert that silently did nothing.
+    const stored = await t.client.query<{ n: string }>(
+      `SELECT count(*)::text AS n FROM usage_events
+        WHERE firm_id = $1 AND kind = 'fn.launch' AND details->>'clientReported' = 'true'`,
+      [firmId],
+    );
+    expect(Number(stored.rows[0]!.n)).toBe(4);
   });
 });
 

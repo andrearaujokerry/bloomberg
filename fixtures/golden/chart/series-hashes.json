@@ -9,6 +9,15 @@
     "canvas": "3.2.3",
     "platform": "darwin"
   },
+  "history": [
+    {
+      "case": "profile",
+      "was": "4ba7d92747ce1f0329e21c1606feba5f837eb7b6139ff6951e86c0dcb8f428b1",
+      "now": "3e5f7b4969e32e84d93c255424d6e2073926f0528ca159e61a7fff6458447bb1",
+      "why": "packages/web/src/chart/layers.ts#xLabeller: the intraday x strip was labelled with the time part of the UTC instant, so a 09:30-16:00 New York session read 13:30-20:00 under session bands that TradingDayIndex had already shaded at the real open from the same xAxis.tz. clockTime(tz, t) replaced axisLabel('datetime', t).slice(11, 16).",
+      "scope": "profile is the only case drawn on an intraday spec (renderer.test.ts#specFor: 240 one-minute bars, xAxis.tz America/New_York); the other twelve are daily or category axes and none of their hashes moved. Reverting that one expression in xLabeller reproduces `was` exactly and moves nothing else, which is how the attribution was checked."
+    }
+  ],
   "cases": {
     "line": {
       "hash": "4a3f177875b0ff223419026f74d56d7a46155c9f10c388623da1ececb180a1dd",
@@ -51,7 +60,7 @@
       "chromaticPx": 2573
     },
     "profile": {
-      "hash": "4ba7d92747ce1f0329e21c1606feba5f837eb7b6139ff6951e86c0dcb8f428b1",
+      "hash": "3e5f7b4969e32e84d93c255424d6e2073926f0528ca159e61a7fff6458447bb1",
       "chromaticPx": 464
     },
     "heatmap": {

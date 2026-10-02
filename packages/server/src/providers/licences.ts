@@ -916,7 +916,104 @@ export interface FieldLicenceRow {
  *    source listed on the field wins. Dictionary order is primary-source order (`cboe.quotes` before
  *    `yahoo.chart`, `fred.csv` before `bls.timeseries`), which is the precedence the evaluator wants.
  */
-export function buildFieldLicenceRows(defs: readonly FieldDef[]): readonly FieldLicenceRow[] {
+/**
+ * The `(field, asset class)` pairs the product actually **asks the evaluator about**, which is what
+ * `field_licence` has to cover. It is a superset of the pairs a field's `sources` enumerate, and
+ * that gap was a bug with a measured cost.
+ *
+ * Rule 1 is a lookup, and a miss is `FIELD_UNKNOWN` (deny) by design — `fieldSource` refuses to fall
+ * back to another class's row, because that would make an asset-class-scoped grant portable to a
+ * source the contract never bought. That is right, and it means a missing row is a **refusal**, not
+ * a shrug.
+ *
+ * The pairs are a field's own `assetClasses`. That list is the dictionary *stating* which classes the
+ * field is meaningful for, and `POST /data` accepts every one of them; the `sources` list beside it
+ * is an enumeration of the provider paths that happened to be **observed**, and never was a licence
+ * statement. `BID_SIZE` declares `equity`, `etf`, `index` and `option` and lists provider paths for
+ * three of the four; `ID_CUSIP` declares `etf` and lists `equity` and `govt`; `LAST_TRADE_TIME`
+ * declares `option` and lists equity, etf and index. Measured on the shipped dictionary: `sources`
+ * alone builds 627 rows and leaves **117** declared pairs with no row at all, so the table is 744.
+ *
+ * `(BID_SIZE, index)` and `(ASK_SIZE, index)` are two of them, and they were an entitlement bypass
+ * rather than a nuisance: the evaluator answered `FIELD_UNKNOWN` to the function runner and blanked
+ * both cells on `Q`'s SPX screen, while the WebSocket gateway — same user, same subject, same two
+ * fields — sent 40 and 120 with no reason at all. A decision that depended on which door you knocked
+ * at (ENTL-05, ARCHITECTURE §10 rule 2). `test/parity/fn-parity.test.ts`'s live leg recorded that
+ * pair by name until this closed it. Both resolve to `cboe.quotes` — the same feed that already
+ * supplies an equity's sizes, at the same tier — so nothing is widened by naming it: a row is added
+ * and the six rules still decide.
+ *
+ * **What this deliberately does NOT include, and the measurement that settled it.** The runner also
+ * pre-checks `manifest.fieldIds(assetClass)` (ARCHITECTURE §10), and a manifest may name a field of
+ * one asset class on a screen launched from another — `OMON` on `AAPL US Equity` asks about
+ * `OPT_STRIKE_PX` under `equity`; `GP` annotates any chart with `HEADLINE`, which declares no asset
+ * class at all; `GIP` on a crypto asks about `VWAP`, which the dictionary declares for `equity`,
+ * `etf` and `index` only. That is **71 further pairs** across sixteen screens, and it is the whole of
+ * why `fn-parity.test.ts`'s `CSV_DENIALS` records eighteen exports refused `FIELD_UNKNOWN`.
+ *
+ * Writing those 71 rows is the obvious next step and it is WRONG, for two reasons that both have to
+ * be said. The first is the tier. A `field_licence` row does not merely admit a field: it names the
+ * **source**, and `functions/context.ts#absorb` mins each decision's `effectiveTier` into ONE
+ * screen-wide tier that `plant/policyTier.ts` then applies to EVERY quote field of that run — so one
+ * row whose source caps at `eod` blanks the screen's live cells with `TIER_EOD`. Nine of the 71 are
+ * such a row: `HEADLINE` × 6 → `bbg.rss` and `OPT_CONT_SIZE` × 3 → `cboe.symbolBook`, both
+ * `maxTier: 'eod'`. A chart's price must not be capped by the terms of the headline annotated onto it.
+ * The second reason is the one that holds for the other 62, which cost nothing in tier: a row here is
+ * a **statement about a licence**, and `(VWAP, crypto) → cboe.quotes` says that a crypto's volume
+ * weighted price comes from Cboe, which is not true and which nobody contracted for.
+ *
+ * **The same objection bites 117 of the rows this function DOES add, and that is recorded rather than
+ * hidden.** The gap fill below takes `def.sources[0]`, so it attributes a pair that was never observed
+ * to the field's primary feed. Measured on the shipped dictionary: ten of the 117 resolve to
+ * `cboe.quotes` — `(PX_BID, crypto)`, `(PX_BID, fx)`, `(PX_ASK, crypto)`, `(PX_ASK, fx)`,
+ * `(PX_LAST, future)`, `(BID_SIZE, index)`, `(ASK_SIZE, index)`, `(LAST_SIZE, index)`,
+ * `(LAST_SIZE, option)` and `(LAST_TRADE_TIME, option)` — and `PX_BID`'s observed paths are
+ * `equity`, `etf`, `index` → `cboe.quotes` and `option` → `cboe.options` and nothing else. So the
+ * registry now states that Cboe supplies a crypto and an FX bid, which is no truer than it supplying a
+ * crypto's VWAP. The tier half of the argument does not separate the two cases either: 87 of the 117
+ * name a source whose `maxTier` is below `realtime`.
+ *
+ * What separates them is **which list the pair comes from**, and it is a real difference rather than a
+ * convenience. A declared pair is one the DICTIONARY says the field is meaningful for, and both doors
+ * serve it: `POST /data` accepts the class and the WS gateway publishes the field. A missing row there
+ * is therefore a contradiction *inside this build* — one door refusing what the other serves, which is
+ * what `(BID_SIZE, index)` was — and a wrong attribution is a smaller wrong than a bypass. A manifest
+ * pair is one the dictionary never declared for the field: nothing contradicts the refusal, so
+ * `FIELD_UNKNOWN` is the correct answer and a row would only paper over the manifest's mistake.
+ *
+ * That makes the asymmetry defensible, not costless. The shape that would be honest in both cases is a
+ * row that ADMITS a pair without naming a publisher, and `field_licence.source_id` is `text NOT NULL`
+ * with `assert_source_known()` on insert (migration `0002` L72-80), so no such row can exist: closing
+ * this properly is a migration plus a rule-1 change, and it is in `BUILD_STATUS.md` rather than only
+ * here. Until then the 117 attributions are inherited from the primary feed, deliberately, and
+ * `test/unit/providers/licences.fieldMatrix.test.ts` pins the precedence so that none of them can
+ * silently become a *different* publisher's claim.
+ *
+ * So the manifest half is left out and the cause is named upstream instead, where it is: a manifest
+ * must not pre-check a field its screen does not use for the asset class it was launched from, which
+ * is `fieldIds(assetClass)` in `core/functions/manifests/**`. Until that is fixed, the eighteen rows
+ * stand in `CSV_CENSUS` with their denied fields pinned in `CSV_DENIALS`, so neither the outcome nor
+ * the cause can drift again. (`GC` and `SRCH` are the one subset no row could close whatever is
+ * decided here: they name no asset class, and `field_licence.asset_class` is `NOT NULL`.)
+ */
+export function entitlementCheckedPairs(
+  defs: readonly FieldDef[],
+): readonly (readonly [string, AssetClass])[] {
+  const pairs: (readonly [string, AssetClass])[] = [];
+  for (const def of defs) {
+    for (const assetClass of def.assetClasses) pairs.push([def.id, assetClass]);
+  }
+  return pairs;
+}
+
+export function buildFieldLicenceRows(
+  defs: readonly FieldDef[],
+  /**
+   * The pairs of {@link entitlementCheckedPairs}, injectable so that a test can build the matrix
+   * over a dictionary of its own.
+   */
+  requested: readonly (readonly [string, AssetClass])[] = entitlementCheckedPairs(defs),
+): readonly FieldLicenceRow[] {
   const rows = new Map<string, FieldLicenceRow>();
   for (const def of defs) {
     for (const source of def.sources) {
@@ -945,6 +1042,37 @@ export function buildFieldLicenceRows(defs: readonly FieldDef[]): readonly Field
         });
       }
     }
+  }
+  // The gaps. A requested pair the `sources` expansion did not produce gets the field's **first
+  // listed** source, which is the same precedence the expansion above applies ("first source listed
+  // wins", dictionary order being primary-source order): `(BID_SIZE, index)` is supplied by
+  // `cboe.quotes`, the same feed at the same tier that already answers `(BID_SIZE, equity)`, and the
+  // licence gate and the grants are then evaluated against that source exactly as they are for every
+  // other row. Nothing is widened here — a row is added, and the six rules still decide. The
+  // precedence is asserted by `test/unit/providers/licences.fieldMatrix.test.ts`: no pair the
+  // expansion decided may be restated here, because re-attributing a row would move its tier cap and
+  // its attribution line with it.
+  const byId = new Map(defs.map((def) => [def.id, def]));
+  for (const [fieldId, assetClass] of requested) {
+    const key = `${fieldId}:${assetClass}`;
+    if (rows.has(key)) continue;
+    const def = byId.get(fieldId);
+    // A field that is not in the dictionary is the startup validation's business (ARCHITECTURE
+    // §12.1 step 3), not this function's: inventing a row would hide the inconsistency.
+    if (def === undefined) continue;
+    const primary = def.sources[0];
+    // Six dictionary fields cite no source at all (`SPREAD`, `CHG_`, `CPNTO`, `ECO_`, `OPT_` and
+    // `SPREADS` — the formula-language and prefix placeholder entries). There is no source to name,
+    // and naming `internal.derived` on a guess would put a licence claim in the registry that nobody
+    // made. All six also declare no asset class, so they contribute no pair and this branch adds
+    // nothing today; it exists to say why, and to stay correct if one of them ever gains a class.
+    if (primary === undefined) continue;
+    rows.set(key, {
+      fieldId,
+      assetClass,
+      sourceId: primary.sourceId,
+      fieldClass: def.fieldClass,
+    });
   }
   return [...rows.values()].sort((a, b) =>
     a.fieldId < b.fieldId

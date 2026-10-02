@@ -25,8 +25,10 @@
 // have been the tenth: an empty database renders four panels perfectly well. So the values asserted
 // below are the SEEDED ones, and each names where it comes from:
 //
-//   * `pm@demo.terminal`'s active workspace — mode `4`, `p1=WEI p2=TOP p3=GP(SPX Index) p4=W(Core)`,
-//     `conflationMs: 250` (`fixtures/seed/workspaces.json`, seed module 13);
+//   * `pm@demo.terminal`'s active workspace — mode `4`, `p1=WEI p2=TOP p3=GP(SPX Index, 5D)
+//     p4=W(Core)`, `conflationMs: 250` (`fixtures/seed/workspaces.json`, seed module 13). The GP
+//     panel's range is `5D` and not `1Y` for a measured reason the fixture's `gpRangeNote` and the
+//     chart test below both carry: the seeded universe has SPX in `bars_intraday` and nowhere else;
 //   * `AAPL US Equity` / `Apple Inc` / `330.27` and `SPX Index` / `S&P 500` / `7,585.75` — the
 //     recorded Cboe poll and the seeded daily bars (`fixtures/providers/raw/`, modules 2-7);
 //   * grid cells that all carry `data-prov-idx` — the DOM half of DATA-10, which is what `Ctrl+I`
@@ -463,10 +465,11 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
   }) => {
     await openRestoredWorkspace(page);
 
-    // The seeded workspace's own chart panel is GP of `SPX Index`, and SPX has no daily bars — see
-    // the `test.fail` below. So the chart is proved on the one security in the universe that DOES
-    // have history: `select instrument_id, count(*) from bars_daily group by 1` returns 85 (AAPL)
-    // with a year of sessions and nine FX pairs with one row each. Nothing else.
+    // The seeded workspace's own chart panel is GP of `SPX Index`, and SPX has no DAILY bars — which
+    // is why that panel asks for `5D` and is proved intraday by the test below. This one is the DAILY
+    // path, on the one security in the universe that has daily history: `select instrument_id,
+    // count(*) from bars_daily group by 1` returns 85 (AAPL) with five years of sessions and nine FX
+    // pairs with one row each. Nothing else.
     const line = page.locator(`[data-panel="p3"] ${COMMAND_LINE}`);
     await line.click();
     await line.pressSequentially('AAPL US Equity GP', { delay: 10 });
@@ -530,49 +533,173 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
     expect(seriesCitations, 'a plotted series with no provenance').not.toContain('-1');
   });
 
-  // ── A GAP IN THE SEED, recorded where the plan expected to read the chart ───────────────────
+  // ── THE DEFAULT DESK'S OWN CHART, which was a `test.fail` until the range was measured ────
   //
-  // `test.fail()` and not `test.skip()`, for the reason the TERM-05 defect at the end of this file
-  // was one until it was fixed: it RUNS on every suite, it must fail, and the day the seed gains
-  // index history Playwright reports "expected to fail but passed".
+  // This was the `test.fail` "SEED GAP + SUBSCRIPTION GAP". Both halves were re-measured, both are
+  // closed, and it is a required assertion now.
   //
-  // The default desk's chart panel does not plot, and the obvious fix makes the terminal WORSE.
-  // Both halves are measured, because one of them cost a suite run to learn.
+  // THE SEED HALF. `bars_daily` holds AAPL and nine FX pairs and no index at all, so `GP · SPX Index`
+  // at the seeded `range: '1Y'` came back with `primary.t[]`/`primary.c[]` empty and said so honestly
+  // (`primary: NO_SOURCE — no bars in window`, `Bars 0`, `High —`, `Low —`). The capture that DOES hold
+  // SPX is `yahoo-chart-SPX-5d-5m.json`, five-minute and five sessions long, and it is seeded — 376
+  // rows in `bars_intraday`. GP reaches it at `1D` and `5D` (its own help text: "Ranges 1D and 5D use
+  // 1- and 5-minute bars"), and measured over the seeded database `POST /functions/GP/run
+  // {security:{ref:'SPX Index'},params:{range:'5D'}}` answers 200 with 376 bars and
+  // `periodicity: '5m'` where `1D`, `1M` and `1Y` each answer 200 with zero. So the fixture asks for
+  // `5D` (`fixtures/seed/workspaces.json#gpRangeNote`) and the panel keeps its instrument.
   //
-  // THE DATA. `bars_daily` holds AAPL (1,255 closes) and nine FX pairs with a single row each. SPX
-  // has none, so `GP · SPX Index` — p3 of every seeded workspace — comes back with `primary.t[]` and
-  // `primary.c[]` empty and the panel says so honestly: `primary: NO_SOURCE — no bars in window`,
-  // `Bars 0 / Adjustments 0 / Events 0`, legend `S&P 500 —`. No capture can fix it:
-  // `yahoo-chart-SPX-5d-5m.json` is five-minute intraday, and the seed may not invent history.
+  // **And `5D` does not expire, which is the thing to check before trusting an intraday fixture.** The
+  // window GP reports is a ROLLING one off the as-of clock — today it is 2026-09-24 → 2026-10-01, which
+  // contains none of the capture — but the bars do not come from it: `data/intraday.ts#recentSessions`
+  // takes the last `days` session dates THAT HAVE BARS on or before the as-of date. The panel therefore
+  // finds the capture's last five sessions however old they are, and the visible cost is that the
+  // `Window` row names the window asked for rather than the one served.
   //
-  // WHY NOT JUST POINT IT AT AAPL. Tried, measured, reverted. Retargeting p3 to `AAPL US Equity`
-  // does draw the chart — and it BLANKS a correct number two panels away. `ChartCanvas` is the only
-  // thing in the app that subscribes anything (`state/subscriptions.ts#acquire` has no product
-  // caller, so no grid subject is ever subscribed), and it subscribes `fields: ['PX_LAST']`. The
-  // server answers a `sub` by REPLACING its field mask and sending a fresh `snap`, so the moment the
-  // chart subscribes `q:85` the cache holds a view of AAPL with no `CHG_PCT_1D`, and `W · Core`'s
-  // Apple row — which had `-0.84%` from its payload — renders `—  unavailable`. Two of these tests
-  // caught it: this file's seeded-values test on `CHG_PCT_1D`, and `live-grid.spec.ts`'s TERM-08
-  // flash, whose injected snapshot stopped reaching a cell that was no longer masked for it.
+  // THE SUBSCRIPTION HALF, which is why this is not the AAPL retarget the old note proposed.
+  // Retargeting used to blank a correct number two panels away: `ChartCanvas` was the app's only
+  // subscriber, it asked for `PX_LAST` alone, and a `sub` REPLACES the server's field mask — so the
+  // moment the chart took a grid's subject the cache held a view with no `CHG_PCT_1D` and `W · Core`'s
+  // Apple row went from `-0.84%` to `— unavailable`. Tier 1 gave every panel its manifest `LiveSpec`,
+  // and the union was re-measured in this browser before the fixture was touched. Every `sub` the
+  // seeded desk sends, recorded off the socket: `W · Core` asks for `{"s":"q:37367","f":["CHG_PCT_1D",
+  // "PX_LAST"]}` on its SPX row and WEI widens the SAME subject to `["CHG_NET_1D","CHG_PCT_1D",
+  // "PX_LAST","SESSION_STATE"]`, with Apple's row still reading `▼ -0.84%` — `SubscriptionManager
+  // #desiredFields` unions across holders in the shipped app. At `5D` the hazard is structurally absent
+  // as well: GP's intraday `LiveSpec` names `b1m:37367`, a different subject from any grid's, so this
+  // chart cannot replace a quote's field mask at all. The retarget was therefore SAFE and was still not
+  // taken, because it would rename the seeded panel that `panels.spec.ts` L89/L169,
+  // `layout-geometry.spec.ts` L133 and `export.spec.ts` L55 each assert on by name, and an index is
+  // what the default desk's chart is for.
   //
-  // So the order is: wire grid subscriptions so the union of fields is what the server is told, THEN
-  // retarget this panel. Doing it the other way round trades an empty canvas for a wrong cell, and
-  // a wrong cell is worse. Both halves are in BUILD_STATUS.md.
+  // WHAT THIS TEST ASSERTS, and why not `data-chart-state`. That attribute reads `drawn` for an empty
+  // canvas — measured: with `Bars 0` on screen it was still `drawn`, because it reports that a frame was
+  // painted and not that anything was plotted. So the assertion is the INK: `canvas.chart__base`'s own
+  // pixels, counted against the background the theme painted them on. Both states were measured, by
+  // re-seeding this panel at `1Y` and reading the same rect — the empty canvas is NOT blank, it rules
+  // its gridlines (`drawn 2028 / 63048`, 3 colours, ink in 5 of 142 rows), so the ink assertion is the
+  // VERTICAL SPREAD and the colour count and not a pixel floor; see the note on it below, which is
+  // where that measurement stopped a twelfth test that could not fail. With the series drawn:
+  // `drawn 4308 / 58164`, 12 colours, ink in 131 of 131 rows.
   test('the seeded workspace’s own chart panel plots its index', async ({ page }) => {
-    test.fail(
-      true,
-      'SEED GAP + SUBSCRIPTION GAP: bars_daily has no SPX row, so GP · SPX Index draws an empty ' +
-        'canvas on every load; and retargeting the panel at a security with history blanks ' +
-        "W · Core's CHG_PCT_1D, because the chart is the app's only subscriber and it asks for " +
-        'PX_LAST alone. Wire state/subscriptions.ts#acquire first.',
+    await openRestoredWorkspace(page);
+    const panel = page.locator('[data-panel="p3"]');
+
+    // 1 — the payload reached the screen. Both clauses, because either alone is satisfiable by the
+    // quote row BESIDE the canvas: the absence of the refusal, and the bar count GP itself reports.
+    await expect(panel).not.toContainText('no bars in window', { timeout: 30_000 });
+    const summary = (await panel.textContent()) ?? '';
+    const bars = Number(/Bars\s*([\d,]+)/.exec(summary)?.[1]?.replace(/,/g, '') ?? '0');
+    // 376 is the whole capture; the floor allows GP to drop a partial session without this expiring,
+    // and it is two orders of magnitude above the `Bars 0` this test used to accept.
+    expect(bars, `GP’s own summary says ${String(bars)} bars`).toBeGreaterThan(300);
+    // The window's own high and low, which GP computes from `primary.c` — the very closes the canvas
+    // plotted, so no quote row beside it can satisfy them.
+    //
+    // The seeded level `7,585.75` is deliberately NOT asserted here, and not because it is missing: it
+    // IS served, and re-measured straight off `POST /functions/GP/run` on a settled tree the payload
+    // answers `last: { v: 7585.75, st: 'stale', provIdx: 1 }` at `5D` exactly as it does at `1Y`. (An
+    // earlier draft of this comment recorded it as withheld — `{ v: null, st: 'closed', r: 'TIER_EOD' }`
+    // — which was true only of an e2e template seeded in the middle of a licence change, and is not
+    // true of the fixture: the two measurements differ by WHEN the database was seeded, not by the
+    // range. A number read off a stale template is worth less than no number, so it is corrected here
+    // rather than carried.) It is left to the TERM-05 test at the end of this file, which asserts
+    // `7,585.75` on this same panel for a different reason — it reaches the screen through the `Last`
+    // cell, which a chart that plots nothing would print just as happily. The window extremes cannot
+    // be printed without a plotted series, which is why they are this test's number.
+    await expect(panel).toContainText('7,676.27'); // window high, off the plotted series
+    await expect(panel).toContainText('7,575.58'); // window low
+    await expect(panel).toContainText('5m'); // the periodicity GP served, not the one asked for
+
+    // 2 — the INK, and the assertion is NOT a pixel count, because a pixel count here cannot fail.
+    //
+    // Counted inside the plot rect rather than over the whole canvas, so the axis furniture and the
+    // legend cannot pay for a series that is not there: the gutters are 6 ch each (§11.2) and the
+    // strip is one line, so an inset of 15 % a side is comfortably inside the plot. That much was
+    // sound. What a first draft of this test got wrong is worth keeping, because it is the exact
+    // shape of the eleven tests this build has already caught: it asserted `drawn > 500` on the
+    // belief that an empty canvas draws nothing inside the rect. MEASURED, on the same panel with
+    // the range put back to the committed `1Y` — `{ drawn: 2028, total: 63048, colours: 3, rows: 5
+    // of 142 }`. The empty chart still rules its gridlines, so the floor would have been cleared by
+    // four times over by a chart that plots NOTHING, and the assertion would have been decoration.
+    //
+    // So the thing asserted is what the two states actually differ in: a plotted series spreads
+    // VERTICALLY and brings its own colours, where gridlines occupy a handful of rows in one colour.
+    // Measured at `5D`: `{ drawn: 4308, total: 58164, colours: 12, rows: 131 of 131 }` — every single
+    // row of the plot band carries ink, against 5 of 142 when the canvas is empty.
+    const ink = await page.locator('[data-panel="p3"] canvas.chart__base').evaluate((el) => {
+      const canvas = el as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d');
+      if (ctx === null || canvas.width === 0 || canvas.height === 0) return null;
+      const x0 = Math.floor(canvas.width * 0.15);
+      const y0 = Math.floor(canvas.height * 0.15);
+      const w = Math.max(1, Math.floor(canvas.width * 0.7));
+      const h = Math.max(1, Math.floor(canvas.height * 0.7));
+      const { data } = ctx.getImageData(x0, y0, w, h);
+      // The modal colour IS the background: the plot is mostly empty on any honest chart. Every
+      // pixel that is not it is something the renderer drew.
+      const tally = new Map<number, number>();
+      for (let i = 0; i < data.length; i += 4) {
+        const key = ((data[i] ?? 0) << 16) | ((data[i + 1] ?? 0) << 8) | (data[i + 2] ?? 0);
+        tally.set(key, (tally.get(key) ?? 0) + 1);
+      }
+      let background = 0;
+      let most = -1;
+      for (const [key, count] of tally) {
+        if (count > most) {
+          most = count;
+          background = key;
+        }
+      }
+      // Which ROWS of the band carry ink, which is what separates a series from a set of gridlines.
+      const rows = new Set<number>();
+      for (let i = 0; i < data.length; i += 4) {
+        const key = ((data[i] ?? 0) << 16) | ((data[i + 1] ?? 0) << 8) | (data[i + 2] ?? 0);
+        if (key !== background) rows.add(Math.floor(i / 4 / w));
+      }
+      const total = data.length / 4;
+      return {
+        drawn: total - (tally.get(background) ?? 0),
+        total,
+        colours: tally.size,
+        rows: rows.size,
+        h,
+      };
+    });
+    expect(ink, 'canvas.chart__base has no 2-D context or no size').not.toBeNull();
+    const rowsWithInk = ink?.rows ?? 0;
+    const band = ink?.h ?? 1;
+    // Half the band, against 131 of 131 measured and 5 of 142 on the empty canvas: wide enough that
+    // a gapped or flattened series fails it, far enough from the measurement to survive a theme that
+    // moves a gridline.
+    expect(
+      rowsWithInk,
+      `ink reaches ${String(rowsWithInk)} of ${String(band)} rows of the plot band`,
+    ).toBeGreaterThan(band / 2);
+    // And the colours, which is the same question asked of the palette rather than of the geometry:
+    // 12 with the series drawn, 3 with only gridlines.
+    expect(
+      ink?.colours ?? 0,
+      `${String(ink?.colours)} distinct colours in the plot band`,
+    ).toBeGreaterThan(5);
+    // The pixel count is kept, above the 2,028 of furniture measured on the empty canvas rather than
+    // below it, and PRINTED the way `autocomplete.spec.ts` prints its keystroke budget: the next
+    // person to change the seeded range needs the measurement, not just a pass.
+    expect(
+      ink?.drawn ?? 0,
+      `${String(ink?.drawn)} of ${String(ink?.total)} plot px are not background`,
+    ).toBeGreaterThan(3_000);
+    console.log(
+      `chart ink: ${String(ink?.drawn)} of ${String(ink?.total)} plot px are not background, ` +
+        `in ${String(ink?.colours)} distinct colours, reaching ${String(rowsWithInk)} of ` +
+        `${String(band)} rows`,
     );
 
-    await openRestoredWorkspace(page);
-    // Short: this assertion is already decided, and a 30 s wait for a known failure would be half a
-    // minute on every run of the suite.
-    await expect(page.locator('[data-panel="p3"]')).not.toContainText('no bars in window', {
-      timeout: 8_000,
-    });
+    // 3 — and the bars are SPX's five-minute bars, not a flat line at the last price: the crosshair
+    // reads the session off the canvas, and an intraday capture gives it a clock time.
+    await panel.locator('.chart').focus();
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await expect(panel.locator('.chart__readout')).toContainText(/S&P 500 [\d,]{4,}\.\d{2}/);
   });
 
   test('every value on screen can be cited — the DOM half of DATA-10', async ({ page }) => {

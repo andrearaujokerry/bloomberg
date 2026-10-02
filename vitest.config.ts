@@ -4,8 +4,12 @@
 // `test.projects` and is gone in v4/v5. The pinned runner is `vitest ^5.0.0`, where a
 // `vitest.workspace.ts` would run zero projects (WORKPLAN §1.1).
 //
-// Five projects: core, sdk, server-unit, server-int, web. `packages/e2e` is Playwright and is
-// excluded from vitest entirely — it is driven by `npm run test:e2e`.
+// Ten projects, in five scheduling groups. Group 0 is the four that share a machine — `core`,
+// `sdk`, `server-unit`, `web` — then `server-int` alone, then the three that each need a database
+// to themselves (`server-serial`, `server-seed`, `server-replay`), then `web-bench` and
+// `core-bench`, each of which has to be the only thing resident while it times a budget. Every
+// project's own comment below says which group it is in and why. `packages/e2e` is Playwright and
+// is excluded from vitest entirely — it is driven by `npm run test:e2e`.
 
 import { defineConfig } from 'vitest/config';
 
@@ -27,13 +31,41 @@ export default defineConfig({
           name: 'core',
           root: 'packages/core',
           environment: 'node',
-          // `*.bench.ts` is included because `test/command/command.bench.ts` is a real assertion
-          // suite, not a `vitest bench` benchmark: it asserts the FUNCTIONS.md §3.5 ranking budget
-          // (≤ 4 ms p95 on 45 k entries), which is a WORKPLAN L614 acceptance row and cannot be
-          // allowed to stop running. Vitest's own `bench()` blocks are unaffected by `include`.
-          include: ['test/**/*.test.ts', 'test/**/*.bench.ts'],
+          // `*.bench.ts` is NOT included here, and it is not excluded for being optional — the
+          // opposite. `test/command/command.bench.ts` is a real assertion suite rather than a
+          // `vitest bench` benchmark: it asserts the FUNCTIONS.md §3.5 ranking budget (≤ 4 ms p95
+          // on 45 k entries), a WORKPLAN L614 acceptance row that cannot be allowed to stop
+          // running. It runs under `npm test` exactly as before; what changed is only WHEN, for the
+          // same reason that moved the web benches into `web-bench`. See `core-bench` at the end of
+          // this list for the measurement, and for what leaving it here was costing its neighbours.
+          include: ['test/**/*.test.ts'],
           testTimeout: 5_000,
           // `threads` is the default pool.
+          //
+          // `maxWorkers: 2`, and the same two on `sdk`, `server-unit` and `web` below. None of the
+          // four sets `groupOrder`, so all four default to 0 and Vitest 5 runs them as ONE
+          // scheduling group — which, with `maxWorkers` left unset, means four projects each
+          // sizing its own pool at `availableParallelism() - 1` and up to 28 workers competing for
+          // 8 cores. The group then starves its own members, and what it starves first is every
+          // suite that measures a wall clock:
+          //
+          //   * `web/test/command/localIndex.test.ts` read 386–499 ms against the 300 ms worker
+          //     build CLIENT §16.1 asks for — a 246 ms build when it has a core. It failed all
+          //     three full runs it was measured over.
+          //   * `server/test/unit/providers/parse.fuzz.test.ts` (QA-05) timed out against the 10 s
+          //     default below; it is a 4.7 s test unstarved. It failed all three.
+          //   * `core/test/formula/formula.fuzz.test.ts` (QA-05, 25 000 random strings) timed out
+          //     against the 5 s default. It failed one in three.
+          //
+          // Two is not a tuned number, it is one worker per core across the group: 4 projects × 2 =
+          // 8 = `hw.ncpu`. Measured over the group's 114 files and 4 241 tests: uncapped 48 s with
+          // three failures, capped 73 s with none, and capping at 3 instead was 67 s and also green
+          // — so the margin is deliberately the safe end of a six-second spread. NOTHING IS
+          // RELAXED: no budget, no timeout and no assertion moved. What changed is that the budgets
+          // now measure the code instead of the scheduler, which is the same argument `web-bench`
+          // and `core-bench` make further down, applied to the suites that cannot be moved out of
+          // their own project because they are ordinary tests that happen to time one thing.
+          maxWorkers: 2,
         },
       },
       {
@@ -44,6 +76,9 @@ export default defineConfig({
           include: ['test/**/*.test.ts'],
           setupFiles: ['test/setup.ts'],
           testTimeout: 5_000,
+          // One worker per core across the `groupOrder: 0` group — see `core` above for why, and
+          // why all four members have to agree on the number.
+          maxWorkers: 2,
         },
       },
       {
@@ -64,6 +99,12 @@ export default defineConfig({
           setupFiles: ['test/setup.unit.ts'],
           env: { PROVIDER_MODE: 'replay' },
           testTimeout: 10_000,
+          // One worker per core across the `groupOrder: 0` group — see `core` above. This project is
+          // where the starvation was loudest: `test/unit/providers/parse.fuzz.test.ts` is a 4.7 s
+          // QA-05 totality proof that spent the 10 s above on waiting for a core, and
+          // `test/parity/fn-parity.test.ts` boots the production Fastify app inside a `beforeAll`,
+          // where Fastify's own 10 s `pluginTimeout` on `generatedRoutes` is the thing that trips.
+          maxWorkers: 2,
         },
       },
       {
@@ -116,10 +157,13 @@ export default defineConfig({
           pool: 'forks',
           fileParallelism: true,
           maxWorkers: 4,
-          // Vitest 5 runs every project sharing a `groupOrder` in one scheduling group and refuses
-          // a group whose members disagree about `maxWorkers`. `server-int` is the only project
-          // that pins a worker count (four forks against one database), so it gets its own group;
-          // the other four stay on the default group 0 and run first.
+          // Vitest 5 runs every project sharing a `groupOrder` as ONE scheduling group, so the
+          // worker counts of a group's members add up against the same cores. Four is the number
+          // one Postgres will take (TESTING §2.1) and it is not a number to share: run in group 0
+          // beside the four projects that agree on two threads each, these four forks would make
+          // the group twelve workers on eight cores — the starvation documented at `core` above,
+          // with a database on the other end of it. So `server-int` takes a group of its own, and
+          // group 0 runs to completion first.
           sequence: { groupOrder: 1 },
           testTimeout: 30_000,
           // Hooks get the same budget as tests. The default is 10 s, which was enough while the
@@ -246,6 +290,11 @@ export default defineConfig({
           include: ['test/**/*.test.{ts,tsx}'],
           setupFiles: ['test/setup.tsx'],
           testTimeout: 10_000,
+          // One worker per core across the `groupOrder: 0` group — see `core` above. The suite this
+          // keeps honest here is `test/command/localIndex.test.ts`, whose 300 ms worker-build budget
+          // (CLIENT §16.1) is an ordinary assertion in an ordinary test file and so cannot be moved
+          // into `web-bench` the way the three `*.bench.tsx` files were.
+          maxWorkers: 2,
         },
       },
       {
@@ -281,6 +330,46 @@ export default defineConfig({
           fileParallelism: false,
           maxWorkers: 1,
           sequence: { groupOrder: 3 },
+          testTimeout: 30_000,
+        },
+      },
+      {
+        test: {
+          // `core-bench`: `test/command/command.bench.ts` alone — the TERM-02 ranking budget of
+          // FUNCTIONS.md §3.5 L972 (≤ 4 ms p95 over a 45 k-entry index, WORKPLAN L614). Same shape,
+          // same reason and the same prohibition as `web-bench` above: NO BUDGET IS RELAXED BY
+          // THIS. Every threshold is the number it was in the `core` project — 4 ms for the median
+          // round's p95, and the 8 ms ceiling that every one of the five rounds must still clear.
+          //
+          // What leaving it in the `core` pool cost, measured on one machine over three full runs.
+          // The file builds a 45 000-entry index and ranks 480 queries five times over, on `core`'s
+          // default seven threads, while `sdk`, `server-unit` and `web` run in the same scheduling
+          // group: `groupOrder` defaults to 0 for all four, so up to 28 workers compete for 8
+          // cores. The budget then measures the scheduler and not the ranker — p95 median 5.987 ms
+          // contended against 0.612 ms with the machine to itself, and the index build 1 532 ms
+          // against 174 ms. It failed one full run in three, and `rank()` did not change between
+          // them.
+          //
+          // It was also its NEIGHBOURS' noise, which is the half that is easy to miss and the half
+          // that was actually turning the suite red. With this file in the group, two QA-05 totality
+          // proofs time out against the framework defaults they never meant as budgets
+          // (`core/test/formula/formula.fuzz.test.ts` at 5 s, `server/test/unit/providers/
+          // parse.fuzz.test.ts` at 10 s, the latter a 4.7 s test when it is not starved), and
+          // `web/test/command/localIndex.test.ts` reads 386–499 ms against the 300 ms worker build
+          // CLIENT §16.1 asks for — a 246 ms build when it has a core. Run those same three
+          // projects WITHOUT `core`: 70 files, 2 725 tests, green in 48 s. None of the three is
+          // slow; all three were starved by this one file.
+          //
+          // `groupOrder: 4` and not 3, deliberately: `web-bench`'s note above requires that nothing
+          // be resident while it times, and a node process burning a core on a 45 k-entry index
+          // would be exactly that. The two bench groups run one after the other, each alone.
+          name: 'core-bench',
+          root: 'packages/core',
+          environment: 'node',
+          include: ['test/**/*.bench.ts'],
+          fileParallelism: false,
+          maxWorkers: 1,
+          sequence: { groupOrder: 4 },
           testTimeout: 30_000,
         },
       },

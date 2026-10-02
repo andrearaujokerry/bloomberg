@@ -486,6 +486,17 @@ function bbAt(
 ): void {
   if (i < n - 1) return;
   const window = windowArray(close, i - n + 1, i);
+  // A gap in the window is a slot Bollinger has no answer for, and it leaves one. `stdevOf`
+  // validates its input and is right to: `ChartSeries.y` documents `NaN` as a GAP (§11.2 makes one
+  // ordinary the moment a second calendar is on the chart), and handing core a window with a hole in
+  // it threw a `RangeError` straight out of `compute`. `Renderer.computeStudies` contains that throw
+  // and records it on `skippedStudies()`, so the cost was the whole overlay rather than the whole
+  // chart — but a study that cannot answer should return a gapped column, not an exception. There is
+  // no honest value to substitute either: the population σ of nineteen closes is not the population
+  // σ of twenty, so the three lines stay `NaN` for the `n` slots whose window spans the hole and
+  // resume together at the first clean window, which is what `windowMax`/`windowMin` already do for
+  // `DONCHIAN` (CHRT-04).
+  for (const v of window) if (!Number.isFinite(v)) return;
   const m = windowSum(close, i - n + 1, i) / n;
   // Population σ (`ddof: 0`) — see the note on `BB` for why the degrees of freedom are stated here
   // rather than defaulted, and why the function comes from core at all (API-05).
@@ -673,7 +684,8 @@ const KELTNER: StudyDef = {
  * because the variants differ in ways a golden cannot tell you about:
  *
  *  1. Slot 0 has no value. The first SAR needs two bars to know which way the trend is pointing, so
- *     the line begins at slot 1 — the leading gap is one bar, not `af`-many.
+ *     the line begins at slot 1 — the leading gap is one bar, not `af`-many. A gap inside the series
+ *     costs the same one bar, because it starts a new run (see `compute`).
  *  2. The trend is initialised long when `close[1] ≥ close[0]`. The first SAR is then the lower of
  *     the first two lows (the higher of the two highs when short), and the extreme point is the
  *     higher of the two highs (the lower of the two lows when short).
@@ -704,44 +716,113 @@ const PSAR: StudyDef = {
     const { high, low, close } = require3('PSAR', input);
     const len = close.length;
     const y = gapped(len);
-    if (len < 2) return psarOutput(step, cap, y);
 
-    const h = (i: number): number => high[i] ?? Number.NaN;
-    const l = (i: number): number => low[i] ?? Number.NaN;
-
-    let long = (close[1] ?? Number.NaN) >= (close[0] ?? Number.NaN);
-    let sar = long ? Math.min(l(0), l(1)) : Math.max(h(0), h(1));
-    let ep = long ? Math.max(h(0), h(1)) : Math.min(l(0), l(1));
-    let af = step;
-    y[1] = sar;
-
-    for (let i = 2; i < len; i += 1) {
-      let next = sar + af * (ep - sar);
-      // Clamp to the two prior bars' extremes (3): a stop inside the current range would reverse on
-      // the bar that produced it, which is an artefact of the arithmetic and not a signal.
-      if (long) next = Math.min(next, l(i - 1), l(i - 2));
-      else next = Math.max(next, h(i - 1), h(i - 2));
-
-      const penetrated = long ? l(i) < next : h(i) > next;
-      if (penetrated) {
-        // Reverse (4): the stop becomes the extreme of the trend that just ended.
-        next = ep;
-        long = !long;
-        ep = long ? h(i) : l(i);
-        af = step;
-      } else if (long && h(i) > ep) {
-        ep = h(i);
-        af = Math.min(af + step, cap);
-      } else if (!long && l(i) < ep) {
-        ep = l(i);
-        af = Math.min(af + step, cap);
+    // A gap ends a run; it does not end the series — the rule `emaSeries` above and `wilderAverage`
+    // in `oscillators.ts` both state, applied to the one study in this file whose state is a trend
+    // rather than an average. `ChartSeries.y` documents `NaN` as a GAP, so a bar the instrument did
+    // not trade is a legal input (§11.2: two calendars on one chart align by the union of their
+    // timestamps). The recurrence used to run straight through it — `sar + af * (ep - sar)` with an
+    // `ep` of `NaN` is `NaN`, and `Math.min(NaN, …)` keeps it — so ONE absent bar removed the stop
+    // for the rest of the chart, which on this study is worse than a blank line: PSAR exists to say
+    // which side of the price the stop is on, and it stopped saying anything.
+    //
+    // Each maximal run of complete bars is therefore initialised and followed on its own, and the
+    // state is deliberately NOT carried across the gap. Trend direction, extreme point and
+    // acceleration factor are claims about the bars this trend has been running over; continuing
+    // them across a slot with no bar would put a stop on the pane that no data supports, and the
+    // two-prior-bar clamp (3) would be reaching for extremes that do not exist. The cost is one bar
+    // of warm-up per run — the same one slot 0 costs — and the re-initialisation states what it
+    // knows, which is the bars since the hole.
+    let start = 0;
+    while (start < len) {
+      if (!psarBar(high, low, close, start)) {
+        start += 1;
+        continue;
       }
-      y[i] = next;
-      sar = next;
+      let end = start;
+      while (end + 1 < len && psarBar(high, low, close, end + 1)) end += 1;
+      // (1) The first SAR needs two bars to know which way the trend points, so a run of one has no
+      // value at all — including a run of one at the end of the series.
+      if (end > start) psarRun(high, low, close, start, end, step, cap, y);
+      start = end + 1;
     }
     return psarOutput(step, cap, y);
   },
 };
+
+/**
+ * Is slot `i` a bar this study can read? High, low and close, all three finite.
+ *
+ * All three and not just the close: the stop is clamped to the prior bars' extremes and reverses on
+ * a penetration of the current bar's, so a slot carrying a close and no range is as unusable here as
+ * one carrying nothing.
+ */
+function psarBar(
+  high: Float64Array,
+  low: Float64Array,
+  close: Float64Array,
+  i: number,
+): boolean {
+  return (
+    Number.isFinite(high[i] ?? Number.NaN) &&
+    Number.isFinite(low[i] ?? Number.NaN) &&
+    Number.isFinite(close[i] ?? Number.NaN)
+  );
+}
+
+/**
+ * Wilder's stop-and-reverse over one unbroken run of bars, `from..to` inclusive, written into `y`.
+ *
+ * The five numbered rules are `PSAR`'s own doc comment and this is where they live; the only thing
+ * the run bounds change is where rule (1)'s "slot 0 has no value" falls — it is the first slot of
+ * each run, not only of the series. `i` starts at `from + 2`, so the two-prior-bar clamp in (3)
+ * never indexes outside the run.
+ */
+function psarRun(
+  high: Float64Array,
+  low: Float64Array,
+  close: Float64Array,
+  from: number,
+  to: number,
+  step: number,
+  cap: number,
+  y: Float64Array,
+): void {
+  const h = (i: number): number => high[i] ?? Number.NaN;
+  const l = (i: number): number => low[i] ?? Number.NaN;
+
+  // (2) Long when the second bar of the run closed at or above the first.
+  let long = (close[from + 1] ?? Number.NaN) >= (close[from] ?? Number.NaN);
+  let sar = long ? Math.min(l(from), l(from + 1)) : Math.max(h(from), h(from + 1));
+  let ep = long ? Math.max(h(from), h(from + 1)) : Math.min(l(from), l(from + 1));
+  let af = step;
+  y[from + 1] = sar;
+
+  for (let i = from + 2; i <= to; i += 1) {
+    let next = sar + af * (ep - sar);
+    // Clamp to the two prior bars' extremes (3): a stop inside the current range would reverse on
+    // the bar that produced it, which is an artefact of the arithmetic and not a signal.
+    if (long) next = Math.min(next, l(i - 1), l(i - 2));
+    else next = Math.max(next, h(i - 1), h(i - 2));
+
+    const penetrated = long ? l(i) < next : h(i) > next;
+    if (penetrated) {
+      // Reverse (4): the stop becomes the extreme of the trend that just ended.
+      next = ep;
+      long = !long;
+      ep = long ? h(i) : l(i);
+      af = step;
+    } else if (long && h(i) > ep) {
+      ep = h(i);
+      af = Math.min(af + step, cap);
+    } else if (!long && l(i) < ep) {
+      ep = l(i);
+      af = Math.min(af + step, cap);
+    }
+    y[i] = next;
+    sar = next;
+  }
+}
 
 function psarOutput(step: number, cap: number, y: Float64Array): StudyOutput {
   return {

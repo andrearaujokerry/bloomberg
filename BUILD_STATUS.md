@@ -19,13 +19,20 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-10 | Tier 2 functions, fundamentals ingest, portfolios | merged |
 | WP-11 | Tier 3 functions, curve/rate/econ ingest | merged |
 | WP-12 | Web shell, keyboard, command line, screen renderer | merged |
-| WP-13 | LiveGrid, SDK live client, subscriptions, quote cache, realtime bridge | merged, with the wiring gap below |
-| WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged, with the dead-module and gap findings below |
+| WP-13 | LiveGrid, SDK live client, subscriptions, quote cache, realtime bridge | merged; the wiring gap below closed in backlog tier 1 |
+| WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged; the dead-module and gapped-study findings below closed in backlog tier 2 |
 | WP-15 | Seed, fixtures, replay harness, parity, composition root, e2e | **merged** — part 2 added the 8 Playwright specs and regenerated `docs/TRACEABILITY.md` |
 
-5,915 tests across 254 files, plus 39 Playwright tests that `npm test` does not run. The suite is nine vitest projects; `server-seed` owns its own
-database and is the only one that seeds (see below), and `packages/e2e` is Playwright and is not
-run by `npm test` at all.
+6,098 tests across 266 files, plus 44 Playwright tests that `npm test` does not run. The suite is
+ten vitest projects; `server-seed` owns its own database and is the only one that seeds (see below),
+and `packages/e2e` is Playwright and is not run by `npm test` at all. Measured at the close of the
+backlog: two consecutive `npm test` runs green in 284.2 s and 285.5 s of reported duration against
+285 s and 286 s of wall clock — the suite terminates on its own, with under a second between the
+last assertion and the process exiting, which is what says no timer or pool is holding a handle.
+
+Ten and not nine because `core-bench` was split out of `core` during that pass, for the reason
+`web-bench` already existed: a file that asserts a wall-clock budget cannot share a scheduling
+group with 240 others and still be measuring the code. `vitest.config.ts` carries the numbers.
 
 The suite runs with no network access: the replay store is a wall, and a fixture miss throws rather
 than falling through to a provider (FEED-08, QA-02).
@@ -172,7 +179,12 @@ clean in `packages/web/src` — the browser IO boundary written as a rule people
 with a hole in it. There was no breach to find; a `no-restricted-syntax` companion now closes the
 qualified forms (proved with a throwaway probe: three violations caught).
 
-### Nothing renders `LiveGrid` yet, and no work package owns the wiring
+### Nothing rendered `LiveGrid`, and no work package owned the wiring — CLOSED in tier 1
+
+**Closed in `8934dfd`:** panels subscribe their manifest `LiveSpec`, the 1 s staleness sweep reaches
+cells, and `live-grid.spec.ts` asserts a `sub` for every row the grid drew. The chain below is the
+account of what was broken, kept because the second half of it is the reason the default desk's chart
+panel was not simply retargeted at a security with history — see that entry further down.
 
 WP-13 builds the grid, and the grid is reachable from no screen in the running app. The chain is
 `App.tsx` → `Shell` → `PanelGrid` → `Panel` → `ScreenRenderer` → `screen/widgets/Grid.tsx` →
@@ -247,23 +259,36 @@ against `schema_meta`, which is also strictly stronger — the positional `files
 Verified by booting the real process: `GET /api/v1/health` → 200, `migrationsPending: 0`, `db: true`,
 `plant: true`.
 
-### Five startup steps still say "a later work package's", so the server runs degraded
+### Five startup steps said "a later work package's" — four are wired, step 8 is deferred on purpose
 
-Booting it also showed what has not been wired. `src/index.ts` skips, by number:
+Booting it also showed what had not been wired. `src/index.ts` skipped, by number:
 
-| Step | What is skipped | Owed by |
+| Step | What was skipped | State |
 | --- | --- | --- |
-| 3 | the field dictionary and its field-id validation | WP-03/WP-11 |
-| 4 | calendars and the function-registry consistency check | WP-08 |
-| 5 | the universe search snapshot and its ETag | WP-09 |
-| 8 | the ingest leader lock and the scheduler | WP-07 |
-| 9 | the usage-event and DQ writers, and the 1 s staleness sweep | WP-08/WP-13 |
+| 3 | the field dictionary and its field-id validation | wired, `startup.ts#validateFieldLicences` — fatal on a bad row |
+| 4 | calendars and the function-registry consistency check | wired, `startup.ts#loadCalendars` / `#checkFunctionRegistry` |
+| 5 | the universe search snapshot and its ETag | wired, awaited before the listener, on `AppDeps.universe` |
+| 8 | the ingest leader lock and the scheduler | **deferred**, for three measured reasons — see below |
+| 9 | the usage-event and DQ writers, and the 1 s staleness sweep | wired: both buffered writers started after the listener, the sweep armed by `ws/gateway.ts` since WP-06 |
 
-All five packages are merged; the process that runs them still defers to them, and `/health`
-therefore reports `status: "degraded"` with `scheduler: false`. This is the server-side twin of the
-composition-root gap WP-15 part 1 closed on the client, and it is the next thing to assign: at least
-step 5 and step 9 bear directly on WP-15's own acceptance rows (the autocomplete spec's server
-fallback, and the live-grid spec's staleness badge).
+Three of the four wired steps had been skipped behind a log line **no test could see**, because
+`index.ts` executes on import and nothing in a test can call it. That is why the checks live in
+`packages/server/src/startup.ts` as functions over an injected handle, and why
+`test/integration/startup.test.ts` can run the steps the shipped process runs — including the two
+failure paths, and including a block that spawns the real entry point and reads `/health` off it.
+
+Step 8 is the one still deferred, and no longer for lack of code: the lock, the scheduler and all 26
+jobs are merged and compose. `startup.ts#DEFERRED_STARTUP_STEPS` carries the three reasons, each of
+which reaches outside that file — a replayed poll re-inserts the provenance rows the seed already
+wrote (12 per tick), the plant may not join a `JobContext` until the two writers of `quote_ticks` are
+reconciled (see below), and `JobContext` carries no `HttpClient` for a live deployment to use.
+
+So `/health` still answers `status: "degraded"` with `scheduler: false`, and that is the truth rather
+than a gap in the report — the field that says *which* truth is `scheduler`, not the verdict. Booted
+cold against a database of its own at the close of the backlog:
+`{"status":"degraded","db":true,"plant":true,"scheduler":false,"migrationsPending":0,"uptimeS":13}`,
+HTTP 200, with one warning on the whole startup log (step 8) and a clean `exit 0` two seconds after
+SIGTERM.
 
 ### The seed and the test suite wanted opposite databases
 
@@ -353,23 +378,45 @@ year of Apple drew into a canvas 1 px tall; and `Panel.tsx` handed screens `fram
 restored WEI frame — which stores only the keys the user set — blanked the page on
 `params.regions is not iterable` (regression test added in `web/test/shell/panels.test.tsx`).
 
-The nine expected failures are `test.fail()`, never `test.skip()`: each one RUNS on every suite, its
+The nine expected failures were `test.fail()`, never `test.skip()`: each one RUNS on every suite, its
 assertion is the one the product should satisfy and is not weakened by a millisecond, and the day it
 is fixed Playwright reports "expected to fail but passed" so neither the fix nor the record can rot.
 
-| Spec | What it records |
-| --- | --- |
-| `smoke.spec.ts:632` | **DEFECT** `App.tsx#onRestored` (L1135) re-runs a restored frame as `"<security> <fn>"`; the dispatcher resolves that display as a REF, so the adapter at L664 pushes a frame with `security: null` — which is then persisted. The SECOND load of the terminal restores GP with no instrument (TERM-05). |
-| `panels.spec.ts:371` | **DEFECT** the same line drops the frame's `params`, so a panel saved as `W Core` (5 rows) comes back on the manifest defaults (`W · S&P 500 Top 25`, 25 rows) (TERM-05). |
-| `help.spec.ts:345` | **DEFECT** `Shell.tsx` L113-123 restores the workspace in an effect keyed on `onRestored`, whose identity changes whenever the HELP overlay opens (`onHelp` → `dispatchDeps` → `onRestored`). Opening HELP therefore re-restores the workspace, and the ticket captures a screen the user never asked about (TERM-09, and a TERM-05 defect in its own right). |
-| `help.spec.ts:398` | **GAP** `App.tsx#PanelOverlay` closes the dialog from `onOpened`, so `TicketDialog`'s "Ticket N opened / MSG room M" confirmation never paints. The ticket IS created (`201 {ticketId, roomId}`) and the user is told nothing (TERM-09). |
-| `live-grid.spec.ts:454` | **DEFECT** `cellRegistry.ts#restyle` returns on its first line because `setStateSource()` is never called by any product file, so the client's 1 s staleness sweep never reaches a cell — the client-side twin of the server's skipped startup step 9. A dead feed leaves a `live` number on screen (TERM-12). |
-| `entitlement.spec.ts:367` | **DEFECT** a value withheld by the eod grant arrives as `st: 'closed', r: 'TIER_EOD'`, not `blank`, and `CellView` prints `.cell__reason` only for `blank` — so a withheld price and a missing price are the same em dash, which is the thing the rule exists to prevent (ENTL-05). |
-| `export.spec.ts:472` | **GAP** nothing in the UI invokes `ScreenCtx.export()` and the window keyboard dispatcher that would bind `Ctrl+P` is not attached (`App.tsx` L56-69). The export path is proven cell-for-cell by the test above it; the gesture is missing (FUNC-03). |
-| `autocomplete.spec.ts:454` | **FINDING** `timings.autocompleteP95Ms` is a hard-coded `0` (`routes/status.ts` L460) and `perf/marks.ts` does not exist, so the channel WP-15's acceptance row names carries nothing. The budget is measured by the spec instead: p95 5.3 ms keystroke → rows, 15.7 ms keystroke → painted frame, over 84 measured keystrokes. |
-| `smoke.spec.ts:508` | **SEED GAP + SUBSCRIPTION GAP** `bars_daily` has no SPX row, so `GP · SPX Index` — the first chart every seeded user sees — draws an empty canvas; and retargeting that panel at a security with history blanks a correct cell two panels away. Both halves measured below. The chart itself is proved green on AAPL (243 bars, `High 340.08`) by the test above it. |
+**That mechanism did its job: eight of the nine are now required assertions and one remains.** The
+backlog closed seven in tier 1 (`8934dfd`) and the chart panel in tier 2, each time by fixing the
+product and flipping the `test.fail` in the same change — which is why the flip is not optional
+bookkeeping: Playwright turns the suite red on a `test.fail` that passes, so a fix cannot land and
+leave the record stale. Counted at the close of the backlog, `grep -n 'test\.fail('` over
+`packages/e2e/tests/` returns exactly one line, `autocomplete.spec.ts:455`, and a full run reports
+`44 passed` with no "expected to fail but passed" anywhere. The **Status** column below is the
+record, kept rather than deleted because what each one measured is the argument for the assertion
+that replaced it.
 
-### The default desk's chart panel plots nothing, and the obvious fix makes it worse
+| Spec | Status | What it records |
+| --- | --- | --- |
+| `smoke.spec.ts:632` | fixed, tier 1 | **DEFECT** `App.tsx#onRestored` (L1135) re-runs a restored frame as `"<security> <fn>"`; the dispatcher resolves that display as a REF, so the adapter at L664 pushes a frame with `security: null` — which is then persisted. The SECOND load of the terminal restores GP with no instrument (TERM-05). |
+| `panels.spec.ts:371` | fixed, tier 1 | **DEFECT** the same line drops the frame's `params`, so a panel saved as `W Core` (5 rows) comes back on the manifest defaults (`W · S&P 500 Top 25`, 25 rows) (TERM-05). |
+| `help.spec.ts:345` | fixed, tier 1 | **DEFECT** `Shell.tsx` L113-123 restores the workspace in an effect keyed on `onRestored`, whose identity changes whenever the HELP overlay opens (`onHelp` → `dispatchDeps` → `onRestored`). Opening HELP therefore re-restores the workspace, and the ticket captures a screen the user never asked about (TERM-09, and a TERM-05 defect in its own right). |
+| `help.spec.ts:398` | fixed, tier 1 | **GAP** `App.tsx#PanelOverlay` closes the dialog from `onOpened`, so `TicketDialog`'s "Ticket N opened / MSG room M" confirmation never paints. The ticket IS created (`201 {ticketId, roomId}`) and the user is told nothing (TERM-09). |
+| `live-grid.spec.ts:454` | fixed, tier 1 | **DEFECT** `cellRegistry.ts#restyle` returns on its first line because `setStateSource()` is never called by any product file, so the client's 1 s staleness sweep never reaches a cell — the client-side twin of the server's skipped startup step 9. A dead feed leaves a `live` number on screen (TERM-12). |
+| `entitlement.spec.ts:367` | fixed, tier 1 | **DEFECT** a value withheld by the eod grant arrives as `st: 'closed', r: 'TIER_EOD'`, not `blank`, and `CellView` prints `.cell__reason` only for `blank` — so a withheld price and a missing price are the same em dash, which is the thing the rule exists to prevent (ENTL-05). |
+| `export.spec.ts:472` | fixed, tier 1 | **GAP** nothing in the UI invokes `ScreenCtx.export()` and the window keyboard dispatcher that would bind `Ctrl+P` is not attached (`App.tsx` L56-69). The export path is proven cell-for-cell by the test above it; the gesture is missing (FUNC-03). |
+| `autocomplete.spec.ts:454` | **OPEN** | **FINDING** `timings.autocompleteP95Ms` is a hard-coded `0` (`routes/status.ts` L460) and `perf/marks.ts` does not exist, so the channel WP-15's acceptance row names carries nothing. The budget is measured by the spec instead: p95 5.3 ms keystroke → rows, 15.7 ms keystroke → painted frame, over 84 measured keystrokes. |
+| `smoke.spec.ts:508` | fixed, tier 2 | **SEED GAP + SUBSCRIPTION GAP** `bars_daily` has no SPX row, so `GP · SPX Index` — the first chart every seeded user sees — draws an empty canvas; and retargeting that panel at a security with history blanks a correct cell two panels away. Both halves measured below. The chart itself is proved green on AAPL (243 bars, `High 340.08`) by the test above it. |
+
+### The default desk's chart panel plots nothing, and the obvious fix makes it worse — CLOSED
+
+**Both halves are closed and the account below is history, kept because it is the argument for how
+they were closed.** Neither was closed the way this section proposed. The subscription half went
+first, in tier 1, by giving every panel its manifest `LiveSpec` so the union of fields is what the
+server is told — after which the retarget this section called for was *safe* and was still not taken,
+because the seeded panel is named by four other specs and an index is what the default desk's chart
+is for. The seed half was closed in tier 2 by the range instead of the instrument: the capture that
+holds SPX is `yahoo-chart-SPX-5d-5m.json`, GP reaches intraday bars at `1D` and `5D`, and `5D`
+answers 200 with 376 bars where `1Y` answers 200 with zero — so `fixtures/seed/workspaces.json`
+asks for `5D` and `GP · SPX Index` keeps its instrument and draws. `smoke.spec.ts:583` is a required
+assertion over the canvas's own ink, and its header carries the measurement, including why
+`data-chart-state` reads `drawn` for an empty canvas and is therefore not what it asserts.
 
 Two halves, and the second cost a suite run to learn, so it is written down properly.
 
@@ -439,7 +486,21 @@ and the ingest job that reads it inserts its own row; and `fn-parity.test.ts` ca
 green-with-known-defect census tables naming five resolvers that answer 500 on the seeded universe
 and twenty exports refused 403 for a field with no `field_licence` row.
 
-### `chart/scales.ts` is 761 lines that nothing draws with
+### `chart/scales.ts` was 761 lines that nothing drew with — CLOSED, the other way round
+
+**Resolved in tier 2, and not by the import this section asked for.** The copy that draws won:
+`scales.ts` is now 155 lines holding the two MAPPINGS the rest of the package places things by —
+value → position and slot → position — and the duplicated tick and label maths is gone from it.
+`layers.ts` owns tick *choice* as well as tick *values*, including CLIENT §11.2's zoom-dependent
+thinning, and its header records what was deliberately **not** adopted from the module that died: a
+2.5 rung on the step ladder, and the upward half of §11.2's y-tick rule (an 800 px pane deserving
+eleven gridlines rather than five). Both would move every committed hash in
+`fixtures/golden/chart/series-hashes.json`, which is a decision to take on its own and not inside a
+deduplication. What *was* taken is `targetYTickCount`, a ceiling that only ever removes a label drawn
+on top of another one: reverting it puts five y labels into a 20 px study pane, which is now an
+assertion, because no golden or spec had ever rendered a chart with three `sub` study panes.
+
+The account below is why that direction was chosen, and is kept for it.
 
 WP-14 shipped three implementations of the same geometry and wired the wrong one. `scales.ts` —
 `yAxisScale`, `linearScale`, `logScale`, `tenorScale`, `slotScale`, `categoryScale`, `niceStep`,
@@ -466,6 +527,33 @@ two largest files in the package, at commit time, against 5,500 tests, to remove
 than to fix a defect. That is a change worth making deliberately and on its own. Until then no
 module here should be believed because its own test is green.
 
+### `GET /status` published a p95 of neither quantity — a regression tier 2 caused
+
+Worth recording because the round that caused it is the round that found it, and because it was
+invisible by construction until then.
+
+`routes/status.ts` computes `timings.fnLaunchP95Ms` as `percentile_cont(0.95)` over
+`usage_events.duration_ms` for `kind = 'fn.launch'`. FUNCTIONS.md §588 makes the server runner the
+AUTHORITATIVE writer of that event, and the web client posts a second row for the same launch
+carrying a different quantity — GO → first paint — which API.md L785 keeps rather than refuses and
+flags `details.clientReported`. So a launch from the shell produces two rows measuring two things,
+and the query pooled them.
+
+For fifteen packages that was harmless, because startup step 8/9 were deferred and the authoritative
+writer therefore wrote nothing: every `fn.launch` row in a running deployment was the client's, and
+pooling all of them happened to be right. **Wiring step 9 in tier 2 is what made it wrong**, and it
+surfaced as a figure that moved without the server changing — `W` read 215.0 ms on a quiet machine
+and 739.2 ms in a loaded run, and the e2e assertion over it was inside budget by luck rather than by
+margin. `/usage/functions` already excludes the client's rows and `routes/usage.ts` records exactly
+this reasoning; the status route did not.
+
+The query now excludes them, so the published figure is the runner's own duration — which is what
+`GET /status` is for, and what `command-line.spec.ts`'s OPS-03 case prints as "go → payload". The
+client's go-to-first-paint is the quantity REQUIREMENTS L306 budgets, and the browser asserts it
+directly over twenty warm launches rather than through a self-reported figure. The integration test
+now writes a 9,000 ms `clientReported` row beside a 42 ms server row and asserts the p95 is 42;
+removing the predicate reports **8552.1** instead, so the test cannot pass against the pooled form.
+
 ### A gap in a series kills four studies and used to kill the chart
 
 `ChartSeries.y` documents `NaN` as a gap, and §11.2 makes one ordinary as soon as a second calendar
@@ -489,9 +577,19 @@ for a missing column, through a different door. Three things changed:
   `ATR` pane re-seeded and carried on while Keltner's band silently vanished for the rest of the
   chart. The `KELTNER` golden is unchanged, because the daily capture has no gap.
 
-**Still open:** `PSAR` and `MACD` die at a gap, and `BB`/`STDDEV` still throw rather than returning
-a gapped column — now caught by the guard, so the cost is a missing pane rather than a dead chart.
-Each is the same shape of fix as `emaSeries`, in its own study.
+**Closed in tier 2**, each the same shape of fix as `emaSeries` and each in its own study, under one
+rule stated in all four: **a gap ends a run, it does not end the series.** `MACD`'s two EMAs are now
+seeded and followed per maximal run of finite values rather than once from the first finite point —
+`prev += alpha * (NaN - prev)` is `NaN`, so a hole anywhere after the seed had been emptying both
+lines and the histogram with them. `PSAR` splits the column into runs the same way and deliberately
+does **not** carry trend direction, extreme point or acceleration across a gap, because the stop it
+prints has to be a stop somebody could have placed; before the fix `Math.min(NaN, …)` kept the `NaN`
+and one absent bar removed the stop for the rest of the chart. `BB` and `STDDEV` return a gapped
+column instead of throwing: the three lines stay `NaN` for exactly the `n` slots whose window spans
+the hole, which is what "a study that cannot answer" should look like, and the guard on
+`computeStudies` is now a second line of defence rather than the only one. `windowMax`/`windowMin`
+got the same treatment, since `NaN > best` and `NaN < best` are both false and a hole was being
+skipped rather than propagated.
 
 ### The million-point cold frame is faster and still not inside §16.1
 
@@ -520,6 +618,23 @@ beside it drives frames to 84–103 ms, so the benches were each other's noise. 
 `web-bench`, one worker, after every other project, for the same reason `server-serial` and
 `server-replay` exist. **No threshold changed.** Contention only ever inflates a p95, so this makes a
 real regression visible rather than permitting a slow one.
+
+**Tier 2 found the other half of the same problem, and it was larger.** `core`, `sdk`, `server-unit`
+and `web` all default to `groupOrder` 0, so Vitest 5 runs them as ONE scheduling group — and with
+`maxWorkers` unset each sized its own pool at `availableParallelism() - 1`, i.e. up to 28 workers on
+8 cores. The group was starving its own members, and what it starved first was every suite that times
+something: `web/test/command/localIndex.test.ts` read 386–499 ms against CLIENT §16.1's 300 ms worker
+build (246 ms when it has a core), `server/test/unit/providers/parse.fuzz.test.ts` timed out against
+10 s (a 4.7 s test unstarved), and `core/test/formula/formula.fuzz.test.ts` timed out against 5 s.
+The loudest single cause was `core/test/command/command.bench.ts`, which builds a 45 000-entry index
+and ranks 480 queries five times over: it read p95 5.987 ms contended against 0.612 ms alone, and it
+was simultaneously its three neighbours' noise. It now has its own project, `core-bench`, at
+`groupOrder: 4` — after `web-bench`, because a node process burning a core on that index is exactly
+what `web-bench` requires not be resident — and the four group-0 projects pin `maxWorkers: 2`, which
+is one worker per core across the group rather than a tuned number. Measured over the group's 114
+files and 4,241 tests: uncapped 48 s with three failures, capped 73 s with none. **Again no threshold,
+timeout or assertion moved** — the budgets now measure the code instead of the scheduler, and the
+whole suite is green twice over at 266 files and 6,098 tests.
 
 ### `quote_ticks` has two writers (latent, not yet firing)
 
@@ -563,6 +678,97 @@ cell whose number cites no provenance — per cell, not per payload — or a nul
 `provenance` row that is not there. Both throw in dev and test and warn in production. A resolver
 that leaves `provIdx: -1` on a cell holding a price fails its own tests, so the resolvers WP-10 and
 WP-11 add inherit the rule rather than the exception.
+
+### The last backlog pass: eight findings, three fixed in code, six items left open
+
+The repair pass that closed the last tier of the backlog is in the commit that carries this paragraph.
+Three findings were defects and are fixed; four were comments that overstated or misdescribed what
+they left behind, and those are corrected in place; and the six open items below are here because each
+one was recorded only inside the comment of the file it was in, which is the one place a reader looking
+for open work does not look. One of the six was found by writing a test for another.
+
+**The four corrected comments**, so that a reader who remembers the old numbers knows they moved.
+`startup.ts`' `fieldsWithoutLicence` said this build has "twenty" dictionary fields with no
+`field_licence` row, "recorded in `fn-parity.test.ts`'s census": it is **32**, the census is a
+different quantity (eighteen refused exports over 71 pairs naming 38 field ids), and the figure is now
+pinned as a literal beside the derivation in `test/integration/startup.test.ts`. `routes/usage.ts`
+said the e2e spec "asserts only that the figure is above zero"; it also asserts `<= 500 ms`, which is
+the first open item below. `providers/licences.ts` argued against an attribution it then made 117
+times. `chart/layers.ts`' intraday-zone fix moved a committed pixel golden and said so nowhere — the
+golden now carries a `history` entry, verified by reverting the one expression and reproducing the old
+hash exactly.
+
+**Fixed.** `command/dispatch.ts#problemFor` no longer carries a span for a run failure: every
+problem a GO produces lands after `App.tsx#onGo` has cleared the input (unconditionally, before the
+request, CLIENT §2.5 L783), so a surviving span could only mark nothing or underline the NEXT
+command. Reproduced in Chrome on slot 6 and then withdrawn: `ZZZZ US Equity DES <GO>` with
+`AAPL US Equity` typed while it was in flight read `BAD_IDENTIFIER: nothing resolves 'ZZZZ US
+Equity' — AA` with `AA` marked, and now reads the same line with nothing marked. The code mapping is
+untouched. That file's own previous docstring illustrated the defect with `FXC <GO>` → `AAP`, which it
+could not have produced: `INTERNAL` is not a mapped code and already took the `[0, 0]` branch. The
+example is now the one that was measured. `fixtures/seed/workspaces.json`'s `p3` history entry became `SPX Index GP 5D`: `range` is
+`GP.paramGrammar`'s first POSITIONAL slot, so the `RANGE=5D` spelling the fixture held answers
+`ARG_PARSE: RANGE is not an argument of this function` (driven in Chrome; a recalled entry would have
+run the chart at GP's `1Y` default, which is the empty canvas the range change existed to fix), and
+`test/unit/seed/workspaceHistory.test.ts` now parses every seeded history entry through the shipped
+parser. And `chart/scales.ts`' suite now renders a chart with three `sub` study panes, which no
+golden or spec did: `targetYTickCount`'s ceiling was asserted only against GP's volume pane, and
+reverting it puts five y labels into a 20 px study pane.
+
+**`routes/status.ts` pools two quantities into one percentile.** `timings.fnLaunchP95Ms` is
+`percentile_cont(0.95)` over `usage_events.duration_ms` for `kind = 'fn.launch'` with no
+`clientReported` predicate, so it mixes the client's GO → first paint with the runner's own duration.
+Four runs of `command-line.spec.ts` read `W` at 207.0, 236.4, 403.0 and 739.2 ms with no change to
+the server, and the last of those FAILED the spec's `<= 500 ms` assertion. `routes/usage.ts`' header
+has the full measurement and both candidate fixes; neither is free (the client's number is untrusted
+for billing, the runner's rounds to 0 on a cached screen and breaks the same spec's `> 0` assertion),
+so the choice is a decision about that page.
+
+**The e2e gate's two timing assertions pass on a quiet machine and not otherwise.**
+`command-line.spec.ts` `:410` (WEI go → first paint p95 vs a 500 ms budget) measured 472.4 ms on slot 6
+over 20 samples — 27.6 ms of room — and has been seen at 1045.2, 897.5, 536.1, 489.4, 483.0 and
+472.8 ms across runs: between 11 and 28 ms of headroom when it passes, and over budget twice.
+The server is not the cause —
+`POST /functions/WEI/run` is a stable 335-420 ms over 25 consecutive calls — and `:475` fails
+alongside it for the pooling reason above. So `44/44 passing` is a property of a quiet machine, not
+of this tree; siblings running Playwright concurrently is a normal condition here by design.
+
+The closing run of the backlog is that quiet machine, and both read inside budget with the headroom
+this paragraph predicts: `:410` p95 **472.1 ms** of 500 over its 20 samples (411 … 480 ms, so no
+single launch was over), and `:475` `DES 103.9 · GP 152.2 · HP 79.8 · TOP 59.6 · W 199.1 · WEI 489.6`,
+where the budget binds every code but `WEI`. Note what the pooling does to that second line even when
+it passes: `W` read 199.1 ms here against 739.2 ms in the row above, with no change to the server.
+A figure that moves fourfold between runs is inside budget by luck, not by margin.
+
+**`field_licence` cannot admit a pair without naming a publisher.** `providers/licences.ts`' gap fill
+gives each of 117 declared-but-unobserved `(field, asset class)` pairs the field's `sources[0]`, which
+states things nobody contracted for: ten land on `cboe.quotes`, including `(PX_BID, crypto)` and
+`(PX_ASK, fx)`, where `PX_BID`'s observed paths are equity/etf/index → `cboe.quotes` and option →
+`cboe.options`. The alternative was leaving two doors disagreeing about the same field, which is what
+`(BID_SIZE, index)` was, so the trade is argued in that file and asserted in
+`test/unit/providers/licences.fieldMatrix.test.ts`. The honest shape is a row that admits a pair with
+no source; `field_licence.source_id` is `text NOT NULL` with `assert_source_known()` on it (migration
+`0002` L72-80), so that needs a migration and a rule-1 change.
+
+**`GP`'s `R` is declared and not wired, and the keyed `RANGE=` spelling survives in `MSG`.**
+`cycle-range` reaches `App.tsx#screenAction`, which answers `NOT_APPLICABLE: … declared by the screen
+but not wired yet` (driven in Chrome), while `GP/Screen.tsx` L196 titles every range chip `press R to
+cycle to 1M`. So the default desk's chart cannot be moved off `5D` from the keyboard at all; the only
+path is typing the positional form. Separately, `functions/MSG`'s chart click-through emits
+`AAPL US Equity GP RANGE=1Y` (pinned in `fixtures/golden/functions/MSG.default.json`), which is a
+command the parser refuses — a click-through that cannot be clicked through.
+
+**The bottom pane of a multi-pane chart pays for the x strip out of its own band.**
+`layers.ts#computeLayout` shares the full canvas height out by the `panes[].height` fractions and only
+then trims `xAxisHeightPx` off whichever pane is last. Measured on GP with the volume pane and three
+`sub` studies in a 400 px canvas: `main` 288 px, `vol` 37, `st0` 20, `st1` 20, **`st2` 3**. GP's own
+fractions sum to exactly 1.00 and reserve nothing for the strip. Pinned in
+`test/chart/scales.test.ts` so a fix is a failing assertion with the new geometry in it; not changed
+here, because who pays for the strip moves the volume pane's height and every multi-pane chart.
+
+**`CommandLine.tsx` L400-401 still says GO leaves a refused command on the line.** It does not —
+`onGo` clears unconditionally — and nothing depends on the claim any more now that `problemFor`
+carries no span, but the docstring is the last place that stale story is told.
 
 ## Notes
 

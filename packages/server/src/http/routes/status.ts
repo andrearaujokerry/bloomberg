@@ -17,7 +17,10 @@
  *    backpressure verdict lives inside `ws/session.ts`. **Not measured: 0.**
  *  - `timings.autocompleteP95Ms`, `timings.historyP95Ms` — no client or server timer writes either
  *    one anywhere. **Not measured: 0.** (`fnLaunchP95Ms` IS measured: it is `percentile_cont(0.95)`
- *    over `usage_events.duration_ms` for `kind='fn.launch'` in the last hour, per code.)
+ *    over `usage_events.duration_ms` for `kind='fn.launch'` in the last hour, per code, over the
+ *    SERVER RUNNER's rows only — the client posts a row for the same launch carrying go → first
+ *    paint instead, and the two are different quantities. See the query for why pooling them was
+ *    invisible until startup step 9 was wired.)
  *  - `providers[].p95Ms` — the wire allows `null` there, and `null` is what an unmeasured provider
  *    latency gets. Nothing is rounded up to a plausible millisecond count.
  *
@@ -302,6 +305,22 @@ async function readDb(tx: Tx, nowMs: number): Promise<DbSections> {
                            FROM ingest_runs rr
                           WHERE rr.source_id = s.source_id AND rr.status = 'failed') r ON true`);
 
+  // `details.clientReported` rows are EXCLUDED, and the predicate is the whole correctness of this
+  // figure — the same reasoning `/usage/functions` records at routes/usage.ts. FUNCTIONS.md §588
+  // names the server runner the authoritative writer of `fn.launch`; the client posts a second row
+  // for the same launch carrying a DIFFERENT quantity, GO → first paint, which API.md L785 keeps
+  // rather than refuses. Pooling the two reports a p95 of neither.
+  //
+  // This was harmless for as long as startup step 9 was deferred, because then the authoritative
+  // writer wrote nothing and every `fn.launch` row in a running deployment was the client's. Wiring
+  // step 9 is what made it wrong, and it showed up as a figure that moved without the server
+  // changing: `W` read 215.0 ms on a quiet machine and 739.2 ms in a loaded run, and the e2e
+  // assertion over it was inside budget by luck rather than by margin.
+  //
+  // What this publishes is therefore the RUNNER's own duration, which is what `GET /status` is for
+  // and what `command-line.spec.ts`'s OPS-03 case prints as "go → payload". The client's
+  // go-to-first-paint is the quantity REQUIREMENTS L306 budgets, and the browser asserts it directly
+  // (`command-line.spec.ts:410`) rather than through a self-reported figure.
   const launchResult = await tx.execute(sql`
     SELECT code,
            percentile_cont(0.95) WITHIN GROUP (ORDER BY duration_ms)::float8 AS p95
@@ -309,6 +328,7 @@ async function readDb(tx: Tx, nowMs: number): Promise<DbSections> {
      WHERE kind = 'fn.launch'
        AND code IS NOT NULL
        AND duration_ms IS NOT NULL
+       AND NOT coalesce((details ->> 'clientReported')::boolean, false)
        AND ts >= ${since}::timestamptz
      GROUP BY code
      ORDER BY code`);

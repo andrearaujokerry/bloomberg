@@ -6,6 +6,24 @@
 //   fixtures/seed/workspaces.json → workspaces 7 (WEI / TOP / GP SPX / W "Core" per user),
 //                                   watchlists 3 + watchlist_items, portfolios 1, lots 12, positions 12
 //
+// The GP panel asks for `range: '5D'`, which §18 does not fix either way and which is there for a
+// measured reason: `bars_daily` holds no index row at all, so every daily range answered 200 with zero
+// bars and the default desk's chart drew an empty canvas. The five-minute SPX capture the universe DOES
+// have is reached at `5D` — 376 bars, measured against the seeded database.
+//
+// It is NOT a rolling window that will rot: `data/intraday.ts#recentSessions` serves the last `days`
+// session dates THAT HAVE BARS on or before the as-of date, so the panel finds the capture's last five
+// sessions however old they are, while `window.start`/`end` in the payload stay the planned calendar
+// window. `gpRangeNote` in the fixture carries that measurement, the two candidates that were rejected
+// and the one wart the choice leaves on screen; it is the note to read before changing the range back.
+//
+// The panel's `history` entry is `SPX Index GP 5D` and NOT `SPX Index GP RANGE=5D`, which is the form
+// the rest of the build writes. `range` is `GP.paramGrammar`'s first POSITIONAL slot and its `keyed`
+// map has no `RANGE`, so `core/command/args.ts#parseArgs` answers `ARG_PARSE: RANGE is not an argument
+// of this function` for the keyed spelling — a history entry exists to be recalled and run, so it is
+// written in the form that runs. `gpRangeNote` has the verification and names the other places that
+// still emit the keyed spelling.
+//
 // Three things here are worth reading before changing anything.
 //
 // **1. The layout is validated by the wire schema, not trusted.** `layout` is a `jsonb` column, so

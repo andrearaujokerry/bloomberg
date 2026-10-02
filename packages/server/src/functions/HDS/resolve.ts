@@ -317,15 +317,31 @@ export async function resolveEquity(
   const px = cellFromState(ctx, state, 'PX_LAST', subject);
   const { cell: sharesOut, value: sharesOutValue } = await sharesOutstanding(ctx, cik);
   const pxValue = typeof px.v === 'number' ? px.v : null;
+  // `live` is deliberately NOT copied from `px`, and that is the whole of this cell's shape.
+  //
+  // `live: { subject, field }` is an instruction to the shell: overwrite this cell's `v` from the
+  // WebSocket quote cache for that pair, without re-running the function (`shared/cells.ts`). Market
+  // cap is `PX_LAST × shares outstanding`, so inheriting the price's `live` told the shell to
+  // replace a market capitalisation with a share price the moment the first tick landed. Measured on
+  // the seeded universe: the payload cell held 4 820 019 828 600 and the `q:85` snapshot sent 330.27
+  // for the same (subject, field) — `test/parity/fn-parity.test.ts`'s live leg found it as
+  // `HDS×equity q:85.PX_LAST: payload 4820019828600 ≠ snapshot 330.27` the moment the rule-6 repair
+  // above let this variant launch at all. The blank branch was the worse half: a market cap that had
+  // no price to compute from would have been *filled* with the bare price.
+  //
+  // There is no field the gateway could publish for this product: the wire keys an update by
+  // `(subject, field)` and the plant's field-mask alphabet is `QuoteFieldId = keyof QuoteFields`
+  // (core/types/quote.ts), which has no `CUR_MKT_CAP` in it. §HDS's own `live.fields` names it
+  // anyway, and that is a separate inaccuracy in the manifest — subscribing to it yields nothing.
+  // So claiming it here would only move the defect to "a placeholder that can never fill"
+  // (TERM-08), which this file's parity leg reports as "the snapshot carries no such field". It is therefore a derived cell in the
+  // sense `storedCell` documents: nothing on the wire updates it, a re-run is what refreshes it. It
+  // still carries the price's `st` and `provIdx`, because it is exactly as fresh as, and sourced
+  // from, the quote it was computed with (DATA-10).
   const marketCap: ValueCell =
     pxValue === null || sharesOutValue === null || px.provIdx < 0
-      ? { ...NA_CELL, ...(px.live === undefined ? {} : { live: px.live }) }
-      : {
-          v: pxValue * sharesOutValue,
-          st: px.st,
-          provIdx: px.provIdx,
-          ...(px.live === undefined ? {} : { live: px.live }),
-        };
+      ? NA_CELL
+      : { v: pxValue * sharesOutValue, st: px.st, provIdx: px.provIdx };
   if (marketCap.v === null) {
     ctx.unavailable.add({
       field: 'CUR_MKT_CAP',
@@ -412,8 +428,7 @@ export async function resolveEquity(
       continue;
     }
     const newer = row.asOfDate > held.asOfDate;
-    const sameDateBetterSource =
-      row.asOfDate === held.asOfDate && row.sourceId === 'ssga.holdings';
+    const sameDateBetterSource = row.asOfDate === held.asOfDate && row.sourceId === 'ssga.holdings';
     if (newer || sameDateBetterSource) deduped.set(key, row);
   }
 
@@ -438,6 +453,7 @@ export async function resolveEquity(
     };
   });
   holders.sort((a, b) => compareHolders(params.sort, a, b));
+  noteMissingMarketValue(ctx, 'holders.marketValue', holders);
 
   // The summary aggregates the UNPAGED set (§HDS step 4).
   const sharesHeld = sumOf(holders.map((h) => h.shares));
@@ -493,6 +509,41 @@ export async function resolveEquity(
     institutional: { holders: null, reason: HDS_NOTE_NO_13F },
     notes,
   };
+}
+
+/**
+ * FUNCTIONS.md §1.3 rule 6 for the one holdings column a source may simply not publish.
+ *
+ * `etf_holdings.market_value` is nullable because the two ingested file formats do not agree on it:
+ * SSGA's daily sheet lists shares and weight and no value at all, while SEC N-PORT carries
+ * `valUSD` on every line. Measured on the seeded universe, `ssga.holdings` supplies 505 rows with
+ * **0** market values and `sec.archives` 504 rows with **504** — so an SPY holdings page is a
+ * hundred null `marketValue` cells, and an AAPL holders row that an SSGA file won, one more.
+ *
+ * Rule 6 says a null cell must carry a reason, and it did not: both variants answered `500 INTERNAL`
+ * on the seeded universe for exactly this. The reason is written here rather than in the reader
+ * because the reader does not know which rows a screen surfaced, and it names the sources that
+ * withheld the column so the footer says *why* the column is blank and not merely that it is.
+ *
+ * Gated on actually finding a null, and over the UNPAGED set, because the subtotals are computed
+ * there: an entry added unconditionally would claim a gap on a page that has none, and
+ * `meta.unavailable` is read as a statement of fact about this run.
+ */
+function noteMissingMarketValue(
+  ctx: ResolveContext,
+  field: string,
+  rows: readonly { marketValue: number | null; sourceId: string }[],
+): void {
+  const withheld = [...new Set(rows.flatMap((r) => (r.marketValue === null ? [r.sourceId] : [])))];
+  if (withheld.length === 0) return;
+  ctx.unavailable.add({
+    field,
+    reason: 'NO_SOURCE',
+    detail:
+      'MARKET_VALUE_NOT_PUBLISHED: the holdings file does not carry a market value for every ' +
+      `line (${withheld.sort().join(', ')}); shares and weight are reported as filed and the ` +
+      'value is left blank rather than multiplied out from a price the file never quoted',
+  });
 }
 
 function sumOf(values: readonly (number | null)[]): number | null {
@@ -584,10 +635,7 @@ function compareHoldings(sort: HdsParams['sort'], a: HdsFundHolding, b: HdsFundH
  * wins and, when two sources report the same date, `ssga.holdings` does — its file is daily and
  * N-PORT is quarterly, and merging two files of the same fund would double-count every line.
  */
-function chooseFile(
-  lines: readonly EtfHolding[],
-  source: HdsParams['source'],
-): EtfHolding[] {
+function chooseFile(lines: readonly EtfHolding[], source: HdsParams['source']): EtfHolding[] {
   const eligible = source === 'any' ? lines : lines.filter((l) => l.sourceId === source);
   if (eligible.length === 0) return [];
   let best: { asOfDate: string; sourceId: string } | null = null;
@@ -605,10 +653,7 @@ function chooseFile(
   return eligible.filter((l) => l.asOfDate === chosen.asOfDate && l.sourceId === chosen.sourceId);
 }
 
-export async function resolveFund(
-  ctx: ResolveContext,
-  params: HdsParams,
-): Promise<HdsFundPayload> {
+export async function resolveFund(ctx: ResolveContext, params: HdsParams): Promise<HdsFundPayload> {
   const instrument = ctx.instrument;
   if (instrument === null) {
     throw new TypeError('HDS: the runner guarantees a security on a requiresSecurity function');
@@ -629,7 +674,10 @@ export async function resolveFund(
     fundType: terms?.fundType ?? 'etf',
     sponsor: terms?.sponsor ?? null,
     cik: terms?.cik ?? null,
-    expenseRatio: terms?.expenseRatio === undefined || terms.expenseRatio === null ? null : Number(terms.expenseRatio),
+    expenseRatio:
+      terms?.expenseRatio === undefined || terms.expenseRatio === null
+        ? null
+        : Number(terms.expenseRatio),
     trackedIndex:
       trackedId === null
         ? null
@@ -740,6 +788,7 @@ export async function resolveFund(
     };
   });
   all.sort((a, b) => compareHoldings(params.sort, a, b));
+  noteMissingMarketValue(ctx, 'holdings.marketValue', eligible);
 
   // Subtotals and the unresolved count are computed over the UNPAGED set (§HDS step 6).
   const byAssetCat = groupByAssetCat(all);

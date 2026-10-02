@@ -163,20 +163,49 @@ function simpleMovingAverage(src: Float64Array, n: number): Float64Array {
  * "First `n` available" and not "first `n`" because the signal line is an EMA of the MACD line, whose
  * leading slots are gaps; the seed starts at the first finite point and the output is gapped before
  * `start + n − 1`.
+ *
+ * **A gap ends a run; it does not end the series** — the rule `wilderAverage` states below, and the
+ * rule `emaSeries` in `trend.ts` was repaired to. Skipping the LEADING gaps was only half of it: this
+ * used to find the first finite point and then run one recurrence to the end of the column, and
+ * `prev += alpha * (NaN - prev)` is `NaN`, so a hole anywhere after the seed removed the average for
+ * every later slot. On `MACD` that was both EMAs at once, so one absent bar emptied the two lines AND
+ * the histogram for the rest of the chart — invisible, because a line that stops looks exactly like a
+ * line that has not warmed up. Each maximal run of finite values is now seeded and followed on its
+ * own (§11.2, CHRT-04).
+ *
+ * The recurrence is deliberately **not** carried across the gap. An EMA claims to be an average
+ * weighted over the observations it has seen; continuing it over a slot where there was no
+ * observation would put a number on the pane that no data supports. Re-seeding costs `n − 1` slots of
+ * warm-up per run and states what it knows.
  */
 function exponentialMovingAverage(src: Float64Array, n: number): Float64Array {
   const out = gaps(src.length);
-  let start = 0;
-  while (start < src.length && Number.isNaN(src[start]!)) start += 1;
-  if (start + n > src.length) return out;
-  let seed = 0;
-  for (let j = start; j < start + n; j += 1) seed += src[j]!;
-  let prev = seed / n;
-  out[start + n - 1] = prev;
   const alpha = 2 / (n + 1);
-  for (let i = start + n; i < src.length; i += 1) {
-    prev += alpha * (src[i]! - prev);
-    out[i] = prev;
+  let start = 0;
+  while (start + n <= src.length) {
+    // Walk the candidate seed window. A `NaN` at `start + filled` cannot be inside any window that
+    // begins at or before it, so the next candidate begins one slot past the gap rather than one slot
+    // past `start` — that is what keeps this linear over a series of alternating gaps.
+    let seed = 0;
+    let filled = 0;
+    while (filled < n && !Number.isNaN(src[start + filled]!)) {
+      seed += src[start + filled]!;
+      filled += 1;
+    }
+    if (filled < n) {
+      start += filled + 1;
+      continue;
+    }
+    let prev = seed / n;
+    out[start + n - 1] = prev;
+    let i = start + n;
+    for (; i < src.length; i += 1) {
+      const v = src[i]!;
+      if (Number.isNaN(v)) break;
+      prev += alpha * (v - prev);
+      out[i] = prev;
+    }
+    start = i + 1;
   }
   return out;
 }
@@ -261,12 +290,27 @@ export function trueRange(
   return out;
 }
 
-/** Highest `high` over `src[i-n+1..i]`; `NaN` before the window is full. */
+/**
+ * Highest `high` over `src[i-n+1..i]`; `NaN` before the window is full, and `NaN` when any bar in the
+ * window is a gap.
+ *
+ * The second condition is the one that had to be added, and it is the same rule `windowMax` and
+ * `windowMin` in `trend.ts` already apply for `DONCHIAN`. `NaN > best` and `NaN < best` are both
+ * `false`, so a hole anywhere but the window's first slot used to be silently SKIPPED: the extreme of
+ * thirteen bars was returned as the extreme of fourteen, and `STOCH` and `WILLR` drew a number for
+ * the thirteen slots whose window spanned the hole — in bounds, plausible, and not the range the
+ * parameter named. (A hole at the first slot returned `NaN` by accident, since `best` began as one,
+ * which made the behaviour inconsistent as well as wrong.) A window with no observation in one of its
+ * slots is a window this study cannot answer for, and an absent answer is what the renderer already
+ * knows how to not draw (§11.2, CHRT-04).
+ */
 function rollingExtreme(src: Float64Array, i: number, n: number, kind: 'high' | 'low'): number {
   if (i < n - 1) return Number.NaN;
   let best = src[i - n + 1]!;
+  if (Number.isNaN(best)) return Number.NaN;
   for (let j = i - n + 2; j <= i; j += 1) {
     const v = src[j]!;
+    if (Number.isNaN(v)) return Number.NaN;
     if (kind === 'high' ? v > best : v < best) best = v;
   }
   return best;
@@ -409,24 +453,53 @@ function rsiFrom(avgGain: number, avgLoss: number): number {
   return 100 - 100 / (1 + avgGain / avgLoss);
 }
 
+/**
+ * Wilder's RSI over `close`, re-seeded per run of consecutive closes.
+ *
+ * **A gap ends a run; it does not end the series** — `wilderAverage`'s rule, which RSI could not
+ * simply call because the two averages it carries are of the *changes* and neither is in the output.
+ * The single-run form was worse than the gapped studies rather than better: a change measured against
+ * an absent close is `NaN`, `NaN > 0` and `NaN < 0` are both `false`, so the recurrence recorded a
+ * ZERO — a fabricated observation of "the price did not move" — at the hole and again at the slot
+ * after it, whose change is measured against the hole. Two of the fourteen observations behind every
+ * later value were then invented, and Wilder's recurrence never forgets them: the line stayed finite,
+ * stayed inside 0..100, and was wrong for the rest of the chart. Measured on a 120-bar series with one
+ * hole at slot 60, RSI(14) read 50.44 at slot 61 and disagreed with a fresh RSI over the post-gap bars
+ * at every slot from 75 to the end.
+ *
+ * So each run is seeded on its own. `n` changes need `n + 1` closes, which is why a run shorter than
+ * that has no value at all and why the first value of a run is at `start + n` rather than
+ * `start + n - 1`.
+ */
 function relativeStrengthIndex(close: Float64Array, n: number): Float64Array {
   const out = gaps(close.length);
-  if (close.length <= n) return out;
-  let gain = 0;
-  let loss = 0;
-  for (let i = 1; i <= n; i += 1) {
-    const change = close[i]! - close[i - 1]!;
-    if (change > 0) gain += change;
-    else loss -= change;
-  }
-  let avgGain = gain / n;
-  let avgLoss = loss / n;
-  out[n] = rsiFrom(avgGain, avgLoss);
-  for (let i = n + 1; i < close.length; i += 1) {
-    const change = close[i]! - close[i - 1]!;
-    avgGain = (avgGain * (n - 1) + (change > 0 ? change : 0)) / n;
-    avgLoss = (avgLoss * (n - 1) + (change < 0 ? -change : 0)) / n;
-    out[i] = rsiFrom(avgGain, avgLoss);
+  let start = 0;
+  while (start < close.length) {
+    if (Number.isNaN(close[start]!)) {
+      start += 1;
+      continue;
+    }
+    let end = start;
+    while (end + 1 < close.length && !Number.isNaN(close[end + 1]!)) end += 1;
+    if (end - start >= n) {
+      let gain = 0;
+      let loss = 0;
+      for (let i = start + 1; i <= start + n; i += 1) {
+        const change = close[i]! - close[i - 1]!;
+        if (change > 0) gain += change;
+        else loss -= change;
+      }
+      let avgGain = gain / n;
+      let avgLoss = loss / n;
+      out[start + n] = rsiFrom(avgGain, avgLoss);
+      for (let i = start + n + 1; i <= end; i += 1) {
+        const change = close[i]! - close[i - 1]!;
+        avgGain = (avgGain * (n - 1) + (change > 0 ? change : 0)) / n;
+        avgLoss = (avgLoss * (n - 1) + (change < 0 ? -change : 0)) / n;
+        out[i] = rsiFrom(avgGain, avgLoss);
+      }
+    }
+    start = end + 1;
   }
   return out;
 }
@@ -649,6 +722,15 @@ const ADX: StudyDef = {
     for (let i = 1; i < length; i += 1) {
       const up = high[i]! - high[i - 1]!;
       const down = low[i - 1]! - low[i]!;
+      // A gap ends a run; it does not end the series. An absent bar has no directional movement to
+      // report and neither does the bar after it, whose edges are measured against the absent one —
+      // but `NaN > down` and `NaN > 0` are both `false`, so both slots used to be recorded as an
+      // inside bar: a fabricated observation of "no direction" where there was no bar. `wilderAverage`
+      // re-seeds at a gap and carries a zero, so those two fabrications stayed in ±DI and in ADX for
+      // the rest of the chart. Leaving the slots as the gaps they are makes the Wilder averages here
+      // re-seed exactly where `trueRange`'s own gap already makes `smoothedTR` re-seed, which is what
+      // keeps the three lines of this study warming up together (§11.2, CHRT-04).
+      if (Number.isNaN(up) || Number.isNaN(down)) continue;
       plusDM[i] = up > down && up > 0 ? up : 0;
       minusDM[i] = down > up && down > 0 ? down : 0;
     }
@@ -910,39 +992,77 @@ const OBV: StudyDef = {
     const volume = volumeOf('OBV', input);
     const out = gaps(input.close.length);
     if (out.length === 0) return { lines: [] };
-    // Slot 0 is the origin, 0, not the first bar's volume: OBV is a cumulative *signed* flow and the
-    // first bar has no previous close to have a sign against. The level is arbitrary anyway — only
-    // the slope and the divergences are read — but starting at 0 makes the axis mean "volume flow
-    // since the left edge of the window" rather than a number nobody can place.
-    out[0] = 0;
-    for (let i = 1; i < out.length; i += 1) {
-      const prev = input.close[i - 1]!;
-      const curr = input.close[i]!;
-      const signed = curr > prev ? volume[i]! : curr < prev ? -volume[i]! : 0;
-      out[i] = out[i - 1]! + signed;
+    // The origin is the first bar there is, and its value is 0, not its own volume: OBV is a
+    // cumulative *signed* flow and the first bar has no previous close to have a sign against. The
+    // level is arbitrary anyway — only the slope and the divergences are read — but starting at 0
+    // makes the axis mean "volume flow since the left edge of the window" rather than a number nobody
+    // can place.
+    //
+    // A slot with no bar gets no point, like every other study in this file after CHRT-04: `curr >
+    // prev` and `curr < prev` are both `false` against a `NaN` close, so this used to record a signed
+    // flow of ZERO at the hole — a point on the pane for a session the instrument did not trade — and
+    // another at the slot after it, whose close was being compared against the absent one. The second
+    // was the material one: that bar is real, its volume is real and its price did move, and the study
+    // was filing it as no flow at all, which offset the whole remainder of the line.
+    //
+    // So the running level is carried in a variable rather than read back out of the output column,
+    // and the sign is taken against the last slot that actually traded. This study BRIDGES a gap where
+    // every average above refuses to, and the difference is the arithmetic, not a looser standard: an
+    // average of `n` observations that spans a slot with no observation is a number no data supports,
+    // but a cumulative sum has no `n` — each bar contributes its own volume with its own sign, and
+    // "did this close rise since the instrument last traded?" is a question the data can answer.
+    let level = 0;
+    let traded = -1;
+    for (let i = 0; i < out.length; i += 1) {
+      if (!obvBar(input.close, volume, i)) continue;
+      if (traded >= 0) level += obvFlow(input.close[traded]!, input.close[i]!, volume[i]!);
+      out[i] = level;
+      traded = i;
     }
     return {
       lines: [{ id: 'OBV.obv', label: 'OBV', y: out, style: { color: 'auto', width: 1 } }],
     };
   },
-  // The one true recurrence whose state *is* its output: OBV at `lastIndex` is OBV at `lastIndex − 1`
-  // plus the signed volume of the last bar, and the base is read from the previous slot rather than
-  // the last one, so a forming bar that is overwritten ten times in a minute stays correct.
+  // The one true recurrence whose state *is* its output: OBV at `lastIndex` is OBV at the previous
+  // bar plus the signed volume of the last one, and the base is read from that previous slot rather
+  // than from `lastIndex`, so a forming bar that is overwritten ten times in a minute stays correct.
+  //
+  // "The previous bar" and not "`lastIndex − 1`": a gap may put it further back, and `compute` signs
+  // against the last slot that traded. The two have to agree slot for slot — the renderer patches the
+  // forming bar through here and redraws the rest from `compute`, so a disagreement would show up as
+  // the last point of the line jumping when the chart is next recomputed.
   update(prev, input, _params, lastIndex) {
     const volume = volumeOf('OBV', input);
-    if (lastIndex === 0) return patchLast(prev, lastIndex, { 'OBV.obv': 0 });
-    const base = previousValue(prev, 'OBV.obv', lastIndex - 1);
-    const previousClose = input.close[lastIndex - 1]!;
-    const currentClose = input.close[lastIndex]!;
-    const signed =
-      currentClose > previousClose
-        ? volume[lastIndex]!
-        : currentClose < previousClose
-          ? -volume[lastIndex]!
-          : 0;
+    if (!obvBar(input.close, volume, lastIndex)) {
+      return patchLast(prev, lastIndex, { 'OBV.obv': Number.NaN });
+    }
+    let traded = lastIndex - 1;
+    while (traded >= 0 && !obvBar(input.close, volume, traded)) traded -= 1;
+    if (traded < 0) return patchLast(prev, lastIndex, { 'OBV.obv': 0 });
+    const base = previousValue(prev, 'OBV.obv', traded);
+    const signed = obvFlow(input.close[traded]!, input.close[lastIndex]!, volume[lastIndex]!);
     return patchLast(prev, lastIndex, { 'OBV.obv': base + signed });
   },
 };
+
+/**
+ * Is slot `i` a bar `OBV` can count? A close to take a sign from and a volume to sign.
+ *
+ * Both columns and not only the close: a slot carrying a close and no volume has nothing for this
+ * study to accumulate, and `level += NaN` would end the line for the rest of the chart (CHRT-04).
+ */
+function obvBar(close: Float64Array, volume: Float64Array, i: number): boolean {
+  return (
+    Number.isFinite(close[i] ?? Number.NaN) && Number.isFinite(volume[i] ?? Number.NaN)
+  );
+}
+
+/** `+volume` on an up close, `−volume` on a down one, zero on an unchanged one. */
+function obvFlow(previousClose: number, currentClose: number, volume: number): number {
+  if (currentClose > previousClose) return volume;
+  if (currentClose < previousClose) return -volume;
+  return 0;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // STDDEV — rolling standard deviation (§11.6, n = 20), through core
@@ -961,7 +1081,20 @@ const OBV: StudyDef = {
 function rollingStdev(close: Float64Array, n: number, i: number): number {
   if (i < n - 1) return Number.NaN;
   const window: number[] = [];
-  for (let j = i - n + 1; j <= i; j += 1) window.push(close[j]!);
+  for (let j = i - n + 1; j <= i; j += 1) {
+    const price = close[j]!;
+    // A gap in the window is a slot this study has no answer for, and it leaves one — the screen
+    // `historicalVolatility` below already applies for the same reason. `stdevOf` validates its input
+    // and is right to: `ChartSeries.y` documents `NaN` as a GAP (§11.2 makes one ordinary the moment a
+    // second calendar is on the chart), so handing core a window with a hole in it threw a
+    // `RangeError` straight out of `compute`. `Renderer.computeStudies` contains that throw and names
+    // it on `skippedStudies()`, so the cost was this pane rather than the chart — but a study that
+    // cannot answer should return a gapped column, not an exception. Nor is there a value to
+    // substitute: the population σ of nineteen closes is not the population σ of twenty, which is the
+    // dispersion the parameter named (CHRT-04).
+    if (!Number.isFinite(price)) return Number.NaN;
+    window.push(price);
+  }
   return stdevOf(window, 0);
 }
 

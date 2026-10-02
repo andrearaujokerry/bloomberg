@@ -947,3 +947,556 @@ describe('update() agrees with compute() at the last slot', () => {
     }
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// A hole in the series, on the sub-pane studies that could not survive one
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Five sub-pane studies against a series with one hole in it (§11.2, CHRT-04).
+ *
+ * The block above proves `ATR` survives a gap because `wilderAverage` re-seeds per run. Nothing proved
+ * it of the studies that carry their own recurrence or hand a window to core, and the goldens could
+ * not: a golden is a digest of 1255 complete bars, so a capture with no hole in it is why all of this
+ * shipped. §11.2 makes a hole ordinary — two calendars on one chart align by the union of their
+ * timestamps, so the security that did not trade on a slot is `NaN` there. Measured on one 120-bar
+ * series with a single hole at slot 60, before the repair:
+ *
+ *  - **`STDDEV` threw a `RangeError`** out of `core/analytics/stats`. `stdevOf` validates its input and
+ *    is right to; `rollingStdev` handed it a window with a `NaN` in it, where `historicalVolatility`
+ *    eight lines below already screened for exactly that. `Renderer.computeStudies` contains the throw
+ *    and names it on `skippedStudies()`, so the cost was this pane rather than the chart — but a study
+ *    that cannot answer must return a gapped column, not an exception.
+ *  - **`MACD` produced not one finite value after the hole**, in either line or the histogram.
+ *    `exponentialMovingAverage` skipped the LEADING gaps and then ran one recurrence to the end, and
+ *    `prev += alpha · (NaN − prev)` is `NaN`.
+ *  - **`RSI` went on drawing, and was wrong for the rest of the chart.** That is the worst of the
+ *    four, because it is the one nobody could see: a change measured against an absent close is `NaN`,
+ *    `NaN > 0` and `NaN < 0` are both `false`, so Wilder's recurrence recorded a *zero* — the price did
+ *    not move — at the hole and again at the slot after it. Two of every fourteen observations behind
+ *    every later value were invented, the line stayed inside 0..100, and it read 50.44 at a slot where
+ *    there was no bar.
+ *  - **`ADX` and `±DI` likewise.** `plusDM`/`minusDM` recorded the same fabricated zeros for the same
+ *    reason, and `wilderAverage` carried them: `+DI` read 17.11 at slot 75 where a fresh start on the
+ *    post-gap bars reads 23.66, and the disagreement never closed.
+ *  - **`STOCH` and `WILLR` reported an extreme of thirteen bars as an extreme of fourteen.**
+ *    `NaN > best` and `NaN < best` are both `false`, so `rollingExtreme` silently skipped the hole for
+ *    the thirteen slots whose window spanned it — in bounds, plausible, and not the range the parameter
+ *    named. (A hole at the window's *first* slot returned `NaN` by accident, which made the behaviour
+ *    inconsistent as well as wrong.)
+ *
+ * The expected numbers below are closed forms and stated slot indices, not recorded output.
+ */
+describe('a hole in the series: the studies that carried a recurrence through it', () => {
+  const LEN = 120;
+  const HOLE = 60;
+  const DAY = 86_400_000;
+
+  /** The whole bar is `NaN`: a slot no bar occupies has no open, high, low or close. */
+  function punch(series: StudyInput, holeAt: number): StudyInput {
+    for (const col of [series.close, series.high, series.low, series.open, series.volume]) {
+      if (col !== undefined) col[holeAt] = Number.NaN;
+    }
+    return series;
+  }
+
+  function series(closeAt: (i: number) => number, holeAt: number | null): StudyInput {
+    const out: StudyInput = {
+      x: Float64Array.from({ length: LEN }, (_, i) => Date.UTC(2026, 0, 1) + i * DAY),
+      close: Float64Array.from({ length: LEN }, (_, i) => closeAt(i)),
+      high: Float64Array.from({ length: LEN }, (_, i) => closeAt(i) + 1.5),
+      low: Float64Array.from({ length: LEN }, (_, i) => closeAt(i) - 1.5),
+      open: Float64Array.from({ length: LEN }, (_, i) => closeAt(i) - 0.25),
+      volume: Float64Array.from({ length: LEN }, (_, i) => 1_000_000 + i * 1_000),
+    };
+    return holeAt === null ? out : punch(out, holeAt);
+  }
+
+  /** The bars from `HOLE + 1` on as a series of their own: what a study can honestly know after. */
+  function sinceTheHole(closeAt: (i: number) => number): StudyInput {
+    const full = series(closeAt, null);
+    const from = HOLE + 1;
+    return {
+      x: full.x.slice(from),
+      close: full.close.slice(from),
+      high: full.high!.slice(from),
+      low: full.low!.slice(from),
+      open: full.open!.slice(from),
+      volume: full.volume!.slice(from),
+    };
+  }
+
+  /** A rising ramp of step 0.5 — the fixture whose rolling σ is a closed form. */
+  const RAMP = (i: number): number => 100 + i * 0.5;
+
+  /**
+   * A series that actually turns: `100 + i/10 + 6·sin(i/5) + 2·cos(i/3)`.
+   *
+   * A ramp is the wrong fixture for the bounded studies and for `ADX`. A monotone series has no losses,
+   * so `RSI` pins to 100 at every slot and `0 ≤ RSI ≤ 100` is satisfied by arithmetic rather than by
+   * the study being right; `−DI` is zero throughout for the same reason. The trend term keeps a drift
+   * and the two periods (5 and 3 slots, incommensurate) put the closes through the whole of every
+   * bounded study's range, which the assertions below require of the fixture before they trust it.
+   */
+  const WAVE = (i: number): number => 100 + i / 10 + 6 * Math.sin(i / 5) + 2 * Math.cos(i / 3);
+
+  function finiteIndices(y: Float64Array): number[] {
+    const out: number[] = [];
+    for (let i = 0; i < y.length; i += 1) if (Number.isFinite(y[i]!)) out.push(i);
+    return out;
+  }
+
+  /**
+   * The post-gap tail of a gapped series' output, against the same study over the post-gap bars alone.
+   *
+   * This is the assertion that says the recurrence was **not carried across the gap**, and it is the
+   * strongest form available: after a hole a study knows nothing but the bars since it, so its tail has
+   * to be indistinguishable from a fresh start on those bars — the same values *and* the same warm-up.
+   * A study that carried its state across agrees in no slot; one that re-seeded a slot early or late
+   * agrees in the values and not in the warm-up.
+   *
+   * `minFinite` is not decoration. Two all-`NaN` columns are equal, so without a floor on how many
+   * finite pairs were really compared this would pass on a study that drew nothing after the hole —
+   * which is the defect it exists to catch.
+   */
+  function expectTailMatchesAFreshStart(
+    id: string,
+    gapped: StudyOutput,
+    fresh: StudyOutput,
+    minFinite: Readonly<Record<string, number>>,
+  ): void {
+    const gappedCols = columns(gapped);
+    const freshCols = columns(fresh);
+    for (const [key, want] of freshCols) {
+      const got = gappedCols.get(key)!;
+      expect(want.length, `${id}.${key} fresh length`).toBe(LEN - HOLE - 1);
+      let compared = 0;
+      for (let j = 0; j < want.length; j += 1) {
+        const slot = HOLE + 1 + j;
+        if (Number.isNaN(want[j]!)) {
+          expect(got[slot]!, `${id}.${key} slot ${String(slot)} should still be warming up`).toBe(
+            Number.NaN,
+          );
+          continue;
+        }
+        expect(got[slot]!, `${id}.${key} slot ${String(slot)}`).toBeCloseTo(want[j]!, 12);
+        compared += 1;
+      }
+      expect(compared, `${id}.${key}: finite slots compared`).toBeGreaterThanOrEqual(
+        minFinite[key] ?? 1,
+      );
+    }
+  }
+
+  /** Every slot before the hole is bit-for-bit what the ungapped series drew there. */
+  function expectHeadUnmoved(
+    id: string,
+    closeAt: (i: number) => number,
+    params: Record<string, number>,
+  ): void {
+    const def = study(id);
+    const gapped = columns(def.compute(series(closeAt, HOLE), params));
+    const clean = columns(def.compute(series(closeAt, null), params));
+    for (const [key, want] of clean) {
+      expect(
+        Array.from(gapped.get(key)!.subarray(0, HOLE)),
+        `${id}.${key} head`,
+      ).toEqual(Array.from(want.subarray(0, HOLE)));
+    }
+  }
+
+  it('STDDEV returns a gapped column instead of throwing out of core', () => {
+    // The throw first and on its own: `compute` must return. Before the repair this line was
+    // `RangeError: stats: series[19] must be a finite number, got NaN`.
+    const y = columns(study('STDDEV').compute(series(RAMP, HOLE), { n: 20 })).get(
+      'STDDEV.stdev',
+    )!;
+
+    // Exactly the twenty slots whose window spans the hole are gaps: a window ending at `i` covers
+    // `i−19..i`, so it contains slot 60 for `i` in 60..79. Both edges are asserted, which is what would
+    // notice a guard that gapped one slot too many or gave up on the rest of the series.
+    const defined = finiteIndices(y);
+    expect(defined[0]).toBe(19);
+    expect(defined.includes(59)).toBe(true);
+    for (let i = HOLE; i <= HOLE + 19; i += 1) {
+      expect(Number.isNaN(y[i]!), `slot ${String(i)}`).toBe(true);
+    }
+    expect(defined.includes(80)).toBe(true);
+    expect(defined[defined.length - 1]).toBe(LEN - 1);
+
+    // And it resumes with the σ of the twenty closes it can see. The population standard deviation of
+    // `n` terms of an arithmetic progression of step `d` is `d·√((n²−1)/12)`, wherever the window sits:
+    // `0.5·√(399/12) = 2.8831406…`. A σ over the NINETEEN closes left after dropping the hole would
+    // read `0.5·√(360/12) = 2.7386…`, which is why the repair gaps the slot rather than shortening the
+    // window — 20 is the dispersion the parameter named.
+    const sigma = 0.5 * Math.sqrt((20 * 20 - 1) / 12);
+    expect(y[80]!).toBeCloseTo(sigma, 12);
+  });
+
+  it('MACD draws again after the hole, and re-seeds both EMAs where it should', () => {
+    const out = study('MACD').compute(series(WAVE, HOLE), { fast: 12, slow: 26, signal: 9 });
+    const cols = columns(out);
+    const macd = cols.get('MACD.macd')!;
+    const signal = cols.get('MACD.signal')!;
+    const hist = cols.get('MACD.hist')!;
+
+    // Before the repair every one of these three counts was 0 after slot 60.
+    const after = (y: Float64Array): number[] => finiteIndices(y).filter((i) => i > HOLE);
+    expect(after(macd).length).toBeGreaterThan(0);
+    expect(after(signal).length).toBeGreaterThan(0);
+    expect(after(hist).length).toBeGreaterThan(0);
+
+    // Where they resume is the study, not an implementation detail. The run after the hole begins at
+    // slot 61, so the 26-period EMA's seed lands at `61 + 26 − 1 = 86` and the MACD line — the
+    // difference of the two EMAs — begins there; the 12-period EMA is already warm at slot 72. The
+    // signal line is a 9-period EMA of that line, whose own run begins at 86, so it lands at
+    // `86 + 9 − 1 = 94`, and the histogram is `macd − signal` and begins with it.
+    expect(after(macd)[0]).toBe(86);
+    expect(after(signal)[0]).toBe(94);
+    expect(after(hist)[0]).toBe(94);
+    expect(after(macd).length).toBe(LEN - 86);
+    expect(after(signal).length).toBe(LEN - 94);
+
+    // The histogram is the distance between the two lines wherever both are drawn — the property a
+    // re-seed that got the two runs out of step would break.
+    for (const i of after(hist)) {
+      expect(hist[i]!, `hist at ${String(i)}`).toBeCloseTo(macd[i]! - signal[i]!, 12);
+    }
+  });
+
+  it('MACD after the hole is what MACD over the bars since the hole would draw', () => {
+    const gapped = study('MACD').compute(series(WAVE, HOLE), { fast: 12, slow: 26, signal: 9 });
+    const fresh = study('MACD').compute(sinceTheHole(WAVE), { fast: 12, slow: 26, signal: 9 });
+    // 59 post-gap slots; the MACD line warms up over 25 of them and the signal over 33.
+    expectTailMatchesAFreshStart('MACD', gapped, fresh, {
+      'MACD.macd': 34,
+      'MACD.signal': 26,
+      'MACD.hist': 26,
+    });
+  });
+
+  it('RSI re-seeds after the hole instead of counting it as an unchanged price', () => {
+    const y = columns(study('RSI').compute(series(WAVE, HOLE), { n: 14 })).get('RSI.rsi')!;
+
+    // The hole and the slot after it are gaps, and so are the thirteen after that. Before the repair
+    // slot 61 carried 50.4352… — a reading assembled from a change against a close that does not
+    // exist. `n` changes need `n + 1` closes, so the run beginning at 61 first answers at `61 + 14`.
+    expect(Number.isNaN(y[HOLE]!)).toBe(true);
+    const after = finiteIndices(y).filter((i) => i > HOLE);
+    expect(after[0]).toBe(75);
+    expect(after.length).toBe(LEN - 75);
+  });
+
+  it('RSI after the hole is what RSI over the bars since the hole would draw', () => {
+    const gapped = study('RSI').compute(series(WAVE, HOLE), { n: 14 });
+    const fresh = study('RSI').compute(sinceTheHole(WAVE), { n: 14 });
+    // Before the repair the two disagreed at every slot from 75 to the end — 45 of them — because
+    // Wilder's recurrence never forgets the two fabricated zeros.
+    expectTailMatchesAFreshStart('RSI', gapped, fresh, { 'RSI.rsi': 45 });
+  });
+
+  it('ADX stops reading an absent bar as an inside bar', () => {
+    const cols = columns(study('ADX').compute(series(WAVE, HOLE), { n: 14 }));
+    const plus = finiteIndices(cols.get('ADX.plusDI')!).filter((i) => i > HOLE);
+    const minus = finiteIndices(cols.get('ADX.minusDI')!).filter((i) => i > HOLE);
+    const adx = finiteIndices(cols.get('ADX.adx')!).filter((i) => i > HOLE);
+
+    // The three lines warm up together, which is the point of leaving the directional movements gapped
+    // where `trueRange` already gaps: `trueRange` spans the previous close, so it loses slots 60 and 61
+    // and its Wilder average re-seeds at 62 — first value at `62 + 13 = 75`. ±DI follow it, and ADX is a
+    // second Wilder average of `dx`, so it lands 13 slots later at 88.
+    expect(plus[0]).toBe(75);
+    expect(minus[0]).toBe(75);
+    expect(adx[0]).toBe(88);
+    expect(plus.length).toBe(LEN - 75);
+    expect(adx.length).toBe(LEN - 88);
+  });
+
+  it('ADX after the hole is what ADX over the bars since the hole would draw', () => {
+    const gapped = study('ADX').compute(series(WAVE, HOLE), { n: 14 });
+    const fresh = study('ADX').compute(sinceTheHole(WAVE), { n: 14 });
+    // This is the assertion that failed before the repair, and it failed by a wide margin rather than
+    // in the last digits: `+DI` read 17.1114 at slot 75 against a fresh start's 23.6633 and `−DI` 4.9876
+    // against 1.6164, because two fabricated zero movements sat in every later average.
+    expectTailMatchesAFreshStart('ADX', gapped, fresh, {
+      'ADX.plusDI': 45,
+      'ADX.minusDI': 45,
+      'ADX.adx': 32,
+    });
+  });
+
+  it('STOCH and WILLR stop reading a fourteen-bar extreme off thirteen bars', () => {
+    const stoch = columns(study('STOCH').compute(series(WAVE, HOLE), { k: 14, d: 3, smooth: 3 }));
+    const willr = columns(study('WILLR').compute(series(WAVE, HOLE), { n: 14 })).get(
+      'WILLR.willr',
+    )!;
+
+    // A 14-bar extreme window ending at `i` contains slot 60 for `i` in 60..73, so Williams %R has no
+    // answer for any of them. Before the repair it answered for twelve — slot 61 read −22.1164 — because
+    // the comparisons skipped the `NaN` and the extreme came off the thirteen bars that were there.
+    for (let i = HOLE; i <= HOLE + 13; i += 1) {
+      expect(Number.isNaN(willr[i]!), `WILLR slot ${String(i)}`).toBe(true);
+    }
+    const afterWillr = finiteIndices(willr).filter((i) => i > HOLE);
+    expect(afterWillr[0]).toBe(74);
+    expect(afterWillr.length).toBe(LEN - 74);
+
+    // %K is the raw stochastic smoothed over 3 slots and %D is %K averaged over 3 more, so each lags
+    // the clean extreme window by its own smoothing: 74 + 2 = 76, then 76 + 2 = 78.
+    const afterK = finiteIndices(stoch.get('STOCH.k')!).filter((i) => i > HOLE);
+    const afterD = finiteIndices(stoch.get('STOCH.d')!).filter((i) => i > HOLE);
+    expect(afterK[0]).toBe(76);
+    expect(afterD[0]).toBe(78);
+  });
+
+  it('STOCH and WILLR after the hole are what a fresh start on those bars would draw', () => {
+    const stochGapped = study('STOCH').compute(series(WAVE, HOLE), { k: 14, d: 3, smooth: 3 });
+    const stochFresh = study('STOCH').compute(sinceTheHole(WAVE), { k: 14, d: 3, smooth: 3 });
+    expectTailMatchesAFreshStart('STOCH', stochGapped, stochFresh, {
+      'STOCH.k': 44,
+      'STOCH.d': 42,
+    });
+    const willrGapped = study('WILLR').compute(series(WAVE, HOLE), { n: 14 });
+    const willrFresh = study('WILLR').compute(sinceTheHole(WAVE), { n: 14 });
+    expectTailMatchesAFreshStart('WILLR', willrGapped, willrFresh, { 'WILLR.willr': 46 });
+  });
+
+  /**
+   * The bounded studies, across the gap.
+   *
+   * §11.6 draws RSI and the stochastic against levels at 30/70 and 20/80 and Williams %R against −20
+   * and −80, which only mean anything if the series cannot leave 0..100 and −100..0. The bounds are
+   * asserted over the whole gapped series above and below the hole — an invariant guard, and it is
+   * honest about what it is: none of the four defects broke a bound, because `rsiFrom` is bounded by
+   * arithmetic and `rollingExtreme`'s skipped hole still left the current bar inside its own window.
+   * What this would catch is the next repair that reached for a value across a gap rather than leaving
+   * one: an extreme taken over the wrong slots, a %K divided by a range that excluded the current bar,
+   * a sign lost in `williamsPercentR`.
+   *
+   * It cannot pass vacuously in either of the two ways a bounds assertion usually does. It requires a
+   * stated number of finite values on BOTH sides of the hole, so a study that drew nothing after it
+   * fails here as well; and it requires the fixture to put each study through its range rather than
+   * leaving it parked near the middle, which is what made the ramp the wrong series for this.
+   */
+  interface BoundedLine {
+    /** The bound §11.6 draws this line against: no slot may leave it. */
+    bounds: [number, number];
+    /**
+     * What the fixture must make the line do before the bound above is worth asserting, on each side
+     * of the hole. `crosses` is the study's own reference levels, so the series has to be read as
+     * oversold and overbought rather than parked near the midline; `spread` is for `ADX`, which
+     * declares no levels — its two directional lines and their average are asserted to move by at
+     * least ten points instead.
+     */
+    exercise: { crosses: [number, number] } | { spread: number };
+  }
+
+  const BOUNDED: { id: string; params: Record<string, number>; lines: Record<string, BoundedLine> }[] =
+    [
+      {
+        id: 'RSI',
+        params: { n: 14 },
+        // §11.6's levels are 30 and 70; the wave reads 19.3/83.0 before the hole and 25.9/93.6 after.
+        lines: { 'RSI.rsi': { bounds: [0, 100], exercise: { crosses: [30, 70] } } },
+      },
+      {
+        id: 'STOCH',
+        params: { k: 14, d: 3, smooth: 3 },
+        // Levels 20 and 80; %K reads 10.5/91.9 before and 9.3/91.1 after.
+        lines: {
+          'STOCH.k': { bounds: [0, 100], exercise: { crosses: [20, 80] } },
+          'STOCH.d': { bounds: [0, 100], exercise: { crosses: [20, 80] } },
+        },
+      },
+      {
+        id: 'WILLR',
+        params: { n: 14 },
+        // Levels −80 and −20; the wave reads −89.6/−8.0 before and −90.8/−8.8 after.
+        lines: { 'WILLR.willr': { bounds: [-100, 0], exercise: { crosses: [-80, -20] } } },
+      },
+      {
+        id: 'ADX',
+        params: { n: 14 },
+        lines: {
+          'ADX.adx': { bounds: [0, 100], exercise: { spread: 10 } },
+          'ADX.plusDI': { bounds: [0, 100], exercise: { spread: 10 } },
+          'ADX.minusDI': { bounds: [0, 100], exercise: { spread: 10 } },
+        },
+      },
+    ];
+
+  it.each(BOUNDED.map((b) => [b.id, b] as const))(
+    '%s stays inside its bounds on both sides of the hole',
+    (_id, spec) => {
+      const cols = columns(study(spec.id).compute(series(WAVE, HOLE), spec.params));
+      for (const [key, line] of Object.entries(spec.lines)) {
+        const y = cols.get(key)!;
+        const defined = finiteIndices(y);
+        const sides = {
+          before: defined.filter((i) => i < HOLE),
+          after: defined.filter((i) => i > HOLE),
+        };
+        for (const [label, slots] of Object.entries(sides)) {
+          // A bound asserted over an empty column is the assertion this whole block exists to refuse,
+          // so each side has to have drawn something before its values are judged.
+          expect(slots.length, `${key} finite ${label} the hole`).toBeGreaterThanOrEqual(20);
+          const values = slots.map((i) => y[i]!);
+          for (const i of slots) {
+            expect(y[i]!, `${key} at slot ${String(i)}`).toBeGreaterThanOrEqual(line.bounds[0]);
+            expect(y[i]!, `${key} at slot ${String(i)}`).toBeLessThanOrEqual(line.bounds[1]);
+          }
+          if ('crosses' in line.exercise) {
+            const [low, high] = line.exercise.crosses;
+            expect(Math.min(...values), `${key} reaches ${String(low)} ${label}`).toBeLessThan(low);
+            expect(Math.max(...values), `${key} reaches ${String(high)} ${label}`).toBeGreaterThan(
+              high,
+            );
+          } else {
+            expect(
+              Math.max(...values) - Math.min(...values),
+              `${key} moves ${label} the hole`,
+            ).toBeGreaterThanOrEqual(line.exercise.spread);
+          }
+        }
+      }
+    },
+  );
+
+  it.each([
+    ['STDDEV', RAMP, { n: 20 }] as const,
+    ['MACD', WAVE, { fast: 12, slow: 26, signal: 9 }] as const,
+    ['RSI', WAVE, { n: 14 }] as const,
+    ['ADX', WAVE, { n: 14 }] as const,
+    ['STOCH', WAVE, { k: 14, d: 3, smooth: 3 }] as const,
+    ['WILLR', WAVE, { n: 14 }] as const,
+  ])('%s leaves the slots before the hole exactly where they were', (id, closeAt, params) => {
+    // A re-seeding repair that perturbed history would move a line the trader has been looking at all
+    // session, and the goldens cannot notice because the capture has no hole. So every slot before the
+    // one the hole first reaches must equal the ungapped series' own value, bit for bit.
+    expectHeadUnmoved(id, closeAt, params);
+  });
+
+  /**
+   * `OBV` across the hole: the one study in this file that legitimately bridges one.
+   *
+   * It neither died nor threw, which is why it is not in the four the defect report named — it went on
+   * drawing, and was wrong in the quietest way of the lot. `curr > prev` and `curr < prev` are both
+   * `false` against a `NaN` close, so the study recorded a signed flow of **zero** at the hole, putting
+   * a point on the pane for a session the instrument did not trade; and then another zero at the slot
+   * after it, whose close was being compared against the absent one. The second is the material one:
+   * slot 61 is a real bar, its volume is real, and its close rose — and the study filed it as no flow
+   * at all, which offsets every later point for the rest of the chart.
+   *
+   * The repair bridges rather than re-seeds, and the asymmetry with every average above it is the
+   * arithmetic rather than a looser standard: an average of `n` observations may not span a slot with
+   * no observation, but a cumulative sum has no `n`, and "did this close rise since the instrument last
+   * traded?" is a question the data answers. Both branches of that sign are asserted, because a study
+   * tested only across a rising gap would pass with the sign inverted (CHRT-04).
+   */
+  it('OBV leaves the hole blank and signs the next bar against the last bar that traded', () => {
+    const input = series(WAVE, HOLE);
+    const y = columns(study('OBV').compute(input, {})).get('OBV.obv')!;
+
+    // No bar, no point. Before the repair this slot carried `obv[59]` — the level, unchanged, drawn
+    // against a session that did not happen.
+    expect(Number.isNaN(y[HOLE]!)).toBe(true);
+
+    // Slot 61's flow is its own volume, signed by the move from slot 59 — the last close there was.
+    // The expected numbers come from the fixture's own columns, not from the study: `close[61]` is
+    // 104.124443 against `close[59]`'s 103.107511, so the move is up, and `volume[61]` is 1,061,000.
+    const rose = input.close[HOLE + 1]! > input.close[HOLE - 1]!;
+    expect(rose, 'the fixture must rise across the hole for this to test the + branch').toBe(true);
+    const flow = y[HOLE + 1]! - y[HOLE - 1]!;
+    expect(flow).toBeCloseTo(input.volume![HOLE + 1]!, 6);
+    expect(flow).toBeCloseTo(1_061_000, 6);
+    // And it is emphatically not the zero the old code recorded, which is the whole finding.
+    expect(flow).not.toBe(0);
+
+    // The line resumes at the slot after the hole and runs to the end: a cumulative study that
+    // re-seeded at a gap instead of bridging it would restart from an origin of 0 here, losing the
+    // level the whole left-hand side of the pane established.
+    expect(Number.isFinite(y[HOLE + 1]!)).toBe(true);
+    expect(finiteIndices(y).length).toBe(LEN - 1);
+  });
+
+  it('OBV subtracts the volume of a bar that closed down across the hole', () => {
+    // A hole at slot 80, where the fixture falls: `close[81]` is below `close[79]`, so slot 81's
+    // 1,081,000 shares are outflow. This is the branch a sign error survives.
+    const down = 80;
+    const input = series(WAVE, down);
+    const y = columns(study('OBV').compute(input, {})).get('OBV.obv')!;
+    expect(input.close[down + 1]! < input.close[down - 1]!, 'the fixture must fall here').toBe(true);
+    expect(Number.isNaN(y[down]!)).toBe(true);
+    expect(y[down + 1]! - y[down - 1]!).toBeCloseTo(-input.volume![down + 1]!, 6);
+    expect(y[down + 1]! - y[down - 1]!).toBeCloseTo(-1_081_000, 6);
+  });
+
+  it('OBV leaves the slots before the hole exactly where they were', () => {
+    expectHeadUnmoved('OBV', WAVE, {});
+  });
+
+  /**
+   * §11.5's incremental path, at the two slots a capture with no hole in it can never present.
+   *
+   * `update()` exists so a tick does not re-run the whole series, and the §11.5 block above checks it
+   * against `compute()` over all 1255 bars of the fixture — where there is no gap, so neither path ever
+   * takes a gap branch. That is the hole this closes, and it is not hypothetical: the repair above
+   * changed the gap behaviour of `compute()` for `BB`, `STDDEV`, `STOCH`, `WILLR` and `OBV`, and all
+   * five declare an `update()`. Four of them stayed consistent for free because `update()` delegates to
+   * the very per-slot helper the `compute()` loop calls (`rollingStdev`, `williamsPercentR`, `bbAt`);
+   * `OBV`'s own recurrence had to be changed in both places, because its state is its output and the
+   * previous bar is no longer `lastIndex − 1`.
+   *
+   * The renderer patches the forming bar through `update()` and redraws the rest from `compute()`, so a
+   * disagreement shows up to a trader as the last point of the line jumping when the chart is next
+   * recomputed — which is why this is asserted slot for slot rather than left to the goldens.
+   */
+  describe('update() agrees with compute() across a hole', () => {
+    /** The gapped series truncated to `count` slots — the series as it was one bar ago. */
+    function truncatedGapped(full: StudyInput, count: number): StudyInput {
+      return {
+        x: full.x.slice(0, count),
+        open: full.open!.slice(0, count),
+        high: full.high!.slice(0, count),
+        low: full.low!.slice(0, count),
+        close: full.close.slice(0, count),
+        volume: full.volume!.slice(0, count),
+      };
+    }
+
+    // The hole AT the forming slot, and the hole one slot behind it. The first asks what a study draws
+    // for a bar that did not trade; the second asks what it draws for a real bar whose predecessor
+    // did not. Both reach `update()` the moment two calendars share a chart (§11.2).
+    for (const [label, holeAt] of [
+      ['the forming slot is itself the hole', LEN - 1],
+      ['the slot before the forming one is the hole', LEN - 2],
+    ] as const) {
+      it.each(INCREMENTAL)(`%s: ${label}`, (id) => {
+        const def = study(id);
+        const params = defaults(def);
+        const full = series(WAVE, holeAt);
+        const last = LEN - 1;
+        const want = columns(def.compute(full, params));
+        const patched = def.update!(
+          def.compute(truncatedGapped(full, last), params),
+          full,
+          params,
+          last,
+        );
+        const got = columns(patched);
+        for (const [key, expected] of want) {
+          const a = expected[last]!;
+          const b = got.get(key)![last]!;
+          expect(got.get(key)!.length, `${id}.${key} grew`).toBe(LEN);
+          if (Number.isNaN(a)) {
+            expect(b, `${id}.${key} at the forming slot: compute gaps it, update must too`).toBe(
+              Number.NaN,
+            );
+          } else {
+            expect(b, `${id}.${key} at the forming slot`).toBeCloseTo(a, 9);
+          }
+        }
+      });
+    }
+  });
+});

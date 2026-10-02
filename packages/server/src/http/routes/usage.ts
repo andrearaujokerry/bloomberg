@@ -22,6 +22,43 @@
  * so a client cannot rewrite its own telemetry. A client that posts a *server-originated* kind is
  * accepted and flagged `details.clientReported = true` (API.md L783-784) rather than rejected — the
  * event is real, it just may not be trusted for billing.
+ *
+ * "Not trusted for billing" is enforced, once, in `GET /usage/functions`: the roadmap counts exclude
+ * the flagged rows, because FUNCTIONS.md §588 makes the server runner the authoritative writer of
+ * `fn.launch` and the client's copy a *second* row about the same GO. See the comment on that query.
+ *
+ * **One place still pools them**, and it is recorded here rather than changed: `routes/status.ts`
+ * computes `timings.fnLaunchP95Ms` as `percentile_cont(0.95)` over `usage_events.duration_ms` for
+ * `kind = 'fn.launch'` with no such predicate, so it now mixes two quantities — the client's
+ * GO → first paint (hundreds of ms) and the runner's own duration (single-digit ms for a cached
+ * screen). The direction is unchanged, since the upper tail is still the client's numbers, but the
+ * figure is no longer a percentile of anything in particular.
+ *
+ * **What that leaves behind, stated exactly, because an earlier version of this paragraph understated
+ * it.** It said `packages/e2e`'s `command-line.spec.ts` "asserts only that the figure is above zero".
+ * That is half the spec. `command-line.spec.ts` L504-506 asserts `> 0` per launched code — which both
+ * quantities satisfy together and only one of them satisfies alone, since a sub-millisecond runner
+ * duration rounds to 0 — and then L527-530 asserts that **every non-`WEI` code's p95 is `<= 500 ms`**.
+ * That second assertion is a budget over a figure whose mix varies per run, and it is the one that
+ * goes red. Four runs of that spec on one machine, as the spec's own `console.log` prints them:
+ *
+ *     DES  90.3  GP 127.5  W 207.0     passed
+ *     DES 106.3  GP 121.6  W 236.4     passed  (slot 6, with this paragraph being written)
+ *     DES  94.3  GP 343.5  W 403.0     passed
+ *     DES 576.5  GP 593.8  W 739.2     FAILED
+ *
+ * A better-than-fivefold swing on `W` with no change to the server, because the proportion of client
+ * rows to runner rows in the window is not a property of the build. So the pooling does not merely blur
+ * a status figure; it is a live source of false failures in the e2e gate, and the gate's own headroom is
+ * thin for the same reason the last row is possible at all — `WEI` read 496.4 ms on the slot-6 run, four
+ * milliseconds inside a budget it is deliberately exempt from here.
+ *
+ * Which of the two OPS-03's status page should report is still a decision about that page, not about
+ * this route: the client's number is the quantity REQUIREMENTS L306 budgets and is not trusted for
+ * billing, the runner's is the one the plant measures and would round to 0 on a cached screen,
+ * breaking the `> 0` assertion above. Deferred deliberately, and `BUILD_STATUS.md` carries it under
+ * the status route rather than only this comment, so the open item is findable from the file that
+ * lists what is open.
  */
 
 import { sql } from 'drizzle-orm';
@@ -311,6 +348,14 @@ export const usageRoutes: FastifyPluginAsync = async (app) => {
       const since = new Date(clock.now() - query.days * 24 * 60 * 60 * 1_000).toISOString();
 
       return withTx(ctxOf(principal), async (tx) => {
+        // `details.clientReported` rows are excluded, and that predicate is the whole correctness
+        // of this query. FUNCTIONS.md §588 names the **server runner** the authoritative writer of
+        // `fn.launch` and gives the client's copy a different job — it carries `durationMs` as
+        // GO → first paint — and API.md L785 keeps that copy rather than refusing it. So a launch
+        // made from the web shell produces two rows, one per writer, and counting both would report
+        // twice the launches that happened. This was invisible for as long as startup step 9 was
+        // skipped and the authoritative writer therefore wrote nothing: every `fn.launch` row in a
+        // running deployment was the client's, and counting all of them happened to be right.
         const result = await tx.execute(sql`
           SELECT code,
                  count(*) FILTER (WHERE kind = 'fn.launch')          AS launches,
@@ -320,6 +365,7 @@ export const usageRoutes: FastifyPluginAsync = async (app) => {
            WHERE ts >= ${since}::timestamptz
              AND code IS NOT NULL
              AND kind IN ('fn.launch', 'fn.export')
+             AND details->>'clientReported' IS DISTINCT FROM 'true'
            GROUP BY code
            ORDER BY count(*) FILTER (WHERE kind = 'fn.launch') DESC, code`);
         const rows = result.rows as unknown as FunctionUsageSqlRow[];

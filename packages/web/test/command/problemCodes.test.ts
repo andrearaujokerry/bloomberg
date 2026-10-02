@@ -26,6 +26,8 @@
 // shared registry-backed fixture would add nothing an `AppError` shape does not already say.
 
 import { registry, UniverseIndex, type CommandProblem, type PanelContext } from '@terminal/core';
+import { fireEvent, render } from '@testing-library/react';
+import { createElement } from 'react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { writeOutcome } from '../../src/App.js';
@@ -38,6 +40,7 @@ import {
   type FramePatch,
   type PanelsPort,
 } from '../../src/command/dispatch.js';
+import { CommandLine } from '../../src/shell/CommandLine.js';
 import { usePanelsStore } from '../../src/state/panels.js';
 
 const index = UniverseIndex.build({
@@ -117,14 +120,17 @@ function apiError(code: string, message: string, details?: Record<string, unknow
   return Object.assign(new Error(message), details === undefined ? { code } : { code, details });
 }
 
-async function failureOf(error: Error): Promise<{
+async function failureOf(
+  error: Error,
+  text = 'GP',
+): Promise<{
   problem: CommandProblem;
   errorCode: string;
   errorMessage: string;
   outcome: Extract<DispatchOutcome, { kind: 'failed' }>;
 }> {
   const { deps, panels } = failingDeps(error);
-  const outcome = await executeText(deps, 'p1', 'GP');
+  const outcome = await executeText(deps, 'p1', text);
   expect(outcome.kind, JSON.stringify(outcome)).toBe('failed');
   if (outcome.kind !== 'failed') throw new Error('unreachable');
   // The command line's copy and the outcome's copy must be the same object's contents; a fix that
@@ -239,5 +245,155 @@ describe('a server failure is not an argument-parse problem', () => {
     // No code to prepend, so the message is the exception's own and nothing is invented.
     expect(problem.message).toBe('fetch failed');
     expect(errorCode, 'the footer still needs a word, and the failure was ours').toBe('INTERNAL');
+  });
+});
+
+/**
+ * WHAT THE LINE UNDERLINES, through the real `CommandLine`.
+ *
+ * `CommandProblem.span` is a second claim in the same sentence. The line mirrors the draft, marks
+ * `draft.slice(span[0], span[1])` under the caret and appends that token to the message
+ * (`shell/CommandLine.tsx` L466-481 and L539-547), so a span is the terminal saying "this is the part
+ * you got wrong".
+ *
+ * The draft it marks is THE CURRENT ONE, captured when the problem arrives — and `App.tsx#onGo`
+ * clears the input before the request goes out (L1105, §2.5 L783). So the text under the span when a
+ * run fails is whatever the desk has typed SINCE, which is how this was measured in Chrome on slot 7
+ * against the seeded universe:
+ *
+ *     FXC <GO>                     → 500 INTERNAL, FXC: numbers with no provenance … (DATA-10)
+ *     AAPL US Equity  (still typing when the answer came back)
+ *     → AAP underlined, and the line read `… (DATA-10). — AAP`
+ *
+ * `AAP` is three characters of the command the user is typing NOW, and the run that failed had
+ * nothing to do with it. So the test types the next command before the problem lands, which is the
+ * sequence the product produces rather than a component mounted with the text already in it.
+ */
+function lineFor(problem: CommandProblem, draft: string): { marked: string | null; message: string } {
+  // `createElement` rather than JSX: this suite is a `.ts` file, and it is the dispatcher's suite —
+  // renaming it to `.tsx` to render one component would move the file the defect is recorded in.
+  const { container, rerender, unmount } = render(
+    createElement(CommandLine, { panelId: 'p1', problem: null }),
+  );
+  const input = container.querySelector('input');
+  expect(input, 'the command line rendered no input').not.toBeNull();
+  // The next command, typed into the uncontrolled input the way the user types it. `''` is the other
+  // real case — GO has just cleared the line and nothing has been typed yet.
+  if (input !== null && draft !== '') fireEvent.input(input, { target: { value: draft } });
+  rerender(createElement(CommandLine, { panelId: 'p1', problem }));
+  const mark = container.querySelector('.cmd__span');
+  const line = {
+    marked: mark === null ? null : mark.textContent,
+    message: container.querySelector('.cmd__problem')?.textContent ?? '',
+  };
+  unmount();
+  return line;
+}
+
+describe('the underline is a claim about the typed text too', () => {
+  it('underlines nothing and names no token when the failure was the server\u2019s own', async () => {
+    // The WEI case verbatim: delete the seeded `md_lines` for the four index subjects and the DATA-10
+    // guard in `functions/runner.ts` refuses the whole run with an `INTERNAL`. The refusal is right —
+    // the screen may not print a number it cannot cite — and the three characters `WEI` are the one
+    // part of that command that was certainly correct. `FXC` answers the same way on the seeded
+    // universe today, which is how this was driven in the browser.
+    const { problem } = await failureOf(
+      apiError(
+        'INTERNAL',
+        'WEI: numbers with no provenance and no engine: historySessions (DATA-10).',
+      ),
+      'WEI',
+    );
+    const line = lineFor(problem, 'AAPL US Equity');
+
+    expect(line.marked, 'the command line underlined the command being typed now').toBe('');
+    expect(problem.span, 'a server fault has no token to point at').toEqual([0, 0]);
+    expect(line.message).toBe(
+      'NOT_APPLICABLE: INTERNAL \u00b7 WEI: numbers with no provenance and no engine: historySessions (DATA-10).',
+    );
+  });
+
+  it('withdraws it for a rejected request body and for a dead connection', async () => {
+    const body = await failureOf(
+      apiError('VALIDATION_FAILED', 'body/panelId must match ^p[1-8]$', { location: 'body' }),
+    );
+    expect(
+      lineFor(body.problem, 'AAPL US Equity').marked,
+      'this client sent the bad field, not the user',
+    ).toBe('');
+    expect(body.problem.span).toEqual([0, 0]);
+
+    const offline = await failureOf(new TypeError('fetch failed'));
+    expect(offline.problem.span).toEqual([0, 0]);
+    expect(lineFor(offline.problem, 'AAPL US Equity').message).toBe('NOT_APPLICABLE: fetch failed');
+  });
+
+  it('underlines nothing even for the codes that ARE answering about the command', async () => {
+    // THE REPAIR, and the case that used to be the exception. A rejected function argument and an
+    // inapplicable function are both statements about what was typed, so `problemFor` used to keep the
+    // caller's span for them — `[0, 2]`, the function token's own offsets in `'GP'`. The span is not a
+    // statement though, it is an INDEX INTO A STRING, and the string is gone: `App.tsx#onGo` calls
+    // `commandLines.current.get(panelId)?.clear()` unconditionally and BEFORE the request goes out
+    // (L1095-1105, CLIENT §2.5 L783), and `CommandLine.tsx` L399-403 captures the draft the input holds
+    // WHEN THE PROBLEM ARRIVES. So the text a run's span lands in is empty, or it is the next command.
+    //
+    // Driven in Chrome on slot 6 before it was written here, with the span restored and then removed,
+    // because the race needs a real network round trip to produce: `ZZZZ US Equity DES <GO>` with
+    // `AAPL US Equity` typed while it was in flight read
+    //
+    //     BAD_IDENTIFIER: nothing resolves 'ZZZZ US Equity' — AA        mark "AA"
+    //
+    // and reads `BAD_IDENTIFIER: nothing resolves 'ZZZZ US Equity'` with an empty mark now. `AA` is two
+    // characters of the command the desk is typing, on a line about a command that has already failed.
+    // (`AAPL US Equity YAS` is NOT this case and was the first thing tried: `decide()` refuses that one
+    // locally, before any request, so its span is a parse-time span and points at real text.)
+    //
+    // Both drafts are exercised here, through the real `CommandLine`, and neither may produce a mark.
+    for (const error of [
+      apiError('VALIDATION_FAILED', 'range must be one of 1D\u2026MAX', { location: 'fnParams' }),
+      apiError('FUNCTION_NOT_APPLICABLE', 'GP does not apply to a money-market instrument'),
+      apiError('NO_SECURITY_CONTEXT', 'GP needs a security'),
+      apiError('SECURITY_NOT_FOUND', "nothing resolves 'ZZZZ US Equity'"),
+    ]) {
+      const { problem } = await failureOf(error);
+      expect(problem.span, error.message).toEqual([0, 0]);
+
+      // (a) GO has just cleared the line and nothing has been typed: an empty mark, no token.
+      const quiet = lineFor(problem, '');
+      expect(quiet.marked, error.message).toBe('');
+      expect(quiet.message, error.message).toBe(`${problem.code}: ${problem.message}`);
+
+      // (b) the desk is already typing the next command when the answer lands — the false accusation
+      // this withdrew. `AAP` was underlined and appended here; now nothing is.
+      const busy = lineFor(problem, 'AAPL US Equity');
+      expect(busy.marked, error.message).toBe('');
+      expect(busy.message, error.message).toBe(`${problem.code}: ${problem.message}`);
+    }
+  });
+
+  it('still says WHICH kind of failure it was, which is the channel that can carry it', async () => {
+    // Without this the suite above would be the "identity the arithmetic forced" from this build's
+    // catalogue: once every span is `[0, 0]`, asserting `[0, 0]` proves nothing on its own. The CODE is
+    // what the repair deliberately did NOT touch, and it still separates the three cases a desk acts on
+    // differently — look at what you typed, look at the panel, or neither.
+    const argument = await failureOf(
+      apiError('VALIDATION_FAILED', 'range must be one of 1D\u2026MAX', { location: 'fnParams' }),
+    );
+    expect(argument.problem.code).toBe('ARG_PARSE');
+
+    const body = await failureOf(
+      apiError('VALIDATION_FAILED', 'body/panelId must match ^p[1-8]$', { location: 'body' }),
+    );
+    expect(body.problem.code).toBe('NOT_APPLICABLE');
+
+    const security = await failureOf(apiError('NO_SECURITY_CONTEXT', 'GP needs a security'));
+    expect(security.problem.code).toBe('NO_SECURITY_LOADED');
+
+    const unknown = await failureOf(apiError('FUNCTION_NOT_FOUND', 'no such function'));
+    expect(unknown.problem.code).toBe('UNKNOWN_FUNCTION');
+
+    // Two different API codes under one problem code are still two different messages, so the line a
+    // desk reads is not the same line.
+    expect(argument.problem.message).not.toBe(body.problem.message);
   });
 });

@@ -21,11 +21,19 @@
 // (ARCHITECTURE §15). An axis tick that read `1,234.50` while the grid cell above it read `1234.5`
 // would be two formatters, and the point of `web/src/format/index.ts` is that there is one.
 //
-// **Tick *values* here, tick *selection* in `scales.ts`.** `niceTicks` picks the 1/2/5 decade steps
-// a linear gridline set needs, and `logDecadeTicks` the decade marks of a log axis, because a
-// gridline cannot be drawn without them. The zoom-dependent label thinning that CLIENT §11.2 tests
-// at three zoom levels belongs to `scales.ts` (WP-14's other hand); when it lands, the renderer
-// passes its ticks in and these two keep serving the gridline case.
+// **Tick values AND tick selection are here, and that is now the whole of it.** `niceTicks` picks the
+// 1/2/5 decade steps a linear gridline set needs, `logDecadeTicks` the decade marks of a log axis, and
+// `xTickStride` + `xLabeller` do CLIENT §11.2's zoom-dependent thinning for the x strip. WP-14 shipped
+// a second set of all of that in `scales.ts` — `niceStep`, `timeTicks`, a tenor ladder — which no
+// source file ever imported; the header of that file records why the copy that draws is the one that
+// survived, and what was deliberately not adopted from the copy that did not (a 2.5 rung on the step
+// ladder, which would move every committed chart golden and is a decision to take on its own).
+//
+// `scales.ts` is still a module and still a small one: it owns the two MAPPINGS — value → position and
+// slot → position — that this file's furniture and `series.ts`' ink are both placed by. Ticks are
+// chosen here, placed through there.
+
+import { localClock } from '@terminal/core';
 
 import { formatValue } from '../format/index.js';
 import type { ChartFonts, ChartSpec, ChartTheme, PaneLayout, Rect, YAxisLayout } from './types.js';
@@ -262,6 +270,29 @@ export function niceTicks(lo: number, hi: number, target = 5): number[] {
   return ticks.length > 0 ? ticks : [lo];
 }
 
+/**
+ * The most y ticks a pane of this height can carry without its labels touching (§11.2).
+ *
+ * Two and a half line heights apart: closer and the labels touch at `normal` density. `drawYAxis`
+ * does NOT thin — it prints every tick it is handed that falls inside the plot band — so this is the
+ * only thing standing between a 16 px study pane and five labels drawn through one another.
+ *
+ * **It is used as a ceiling, not as the count.** `renderer.ts#yTicksOf` asks for
+ * `Math.min(Y_TICK_TARGET, targetYTickCount(...))`, so a short pane loses labels it could not fit and
+ * a tall one gains none. The upward half of §11.2's rule — an 800 px pane deserving eleven gridlines
+ * rather than five — is a real improvement and is deliberately not taken here, because it moves every
+ * y tick of every committed hash in `fixtures/golden/chart/series-hashes.json`: a decision to make on
+ * its own, with the goldens regenerated deliberately, and not inside a deduplication. This half costs
+ * nothing, because it only ever removes a label that was drawn on top of another one.
+ */
+export function targetYTickCount(plotHeightPx: number, lineHeightPx: number): number {
+  if (lineHeightPx <= 0) return 2;
+  return Math.max(2, Math.floor(plotHeightPx / (lineHeightPx * 2.5)));
+}
+
+/** How many y ticks a pane with room for them gets — `niceTicks`/`logDecadeTicks`' own default. */
+export const Y_TICK_TARGET = 5;
+
 /** Decade marks for a log axis (§11.2 `scale: 'log'`); the 1/2/5 steps of a decade are not drawn. */
 export function logDecadeTicks(lo: number, hi: number, target = 5): number[] {
   if (!(lo > 0) || !(hi > lo)) return lo > 0 ? [lo] : [];
@@ -301,13 +332,13 @@ export function axisLabel(fmt: ChartSpec['yAxes'][number]['fmt'], v: number, dec
 /**
  * A tenor expressed as traders write it: `182` days is `6M`, `1826` is `5Y` (§11.2).
  *
- * Arithmetic rather than a lookup in `scales.ts`'s `TENOR_LADDER`, and the difference is what each is
- * for. The ladder exists to CHOOSE which rungs get an axis tick, so it only has to name the rungs; a
- * readout has to name whatever node the crosshair is standing on, and the curve payloads carry nodes
- * that are not rungs (`CRVF.default.json` holds both 1095 and 1096 days). A lookup would answer
- * nothing for those, and the number of days is not what the grid beside the chart calls them. On the
- * rungs the two agree, which is the property that matters: 30→1M, 91→3M, 182→6M, 365→1Y, 1826→5Y,
- * 3652→10Y, 10957→30Y.
+ * Arithmetic rather than a lookup in a ladder of named rungs, which is what `scales.ts` used to hold
+ * and no longer does. A ladder can only CHOOSE which rungs get an axis tick, so it only has to name
+ * the rungs; a readout has to name whatever node the crosshair is standing on, and the curve payloads
+ * carry nodes that are not rungs (`CRVF.default.json` holds both 1095 and 1096 days). A lookup would
+ * answer nothing for those, and the number of days is not what the grid beside the chart calls them.
+ * On the rungs this agrees with the names the ladder used: 30→1M, 91→3M, 182→6M, 365→1Y, 1826→5Y,
+ * 3652→10Y, 10957→30Y — asserted in `test/chart/scales.test.ts` against the committed CRVF payload.
  */
 export function tenorLabel(days: number): string {
   if (!Number.isFinite(days)) return '';
@@ -324,6 +355,23 @@ export function tenorLabel(days: number): string {
 }
 
 /**
+ * `HH:MM` at an instant in a named zone — the intraday x strip's label (§11.2).
+ *
+ * `localClock` answers `undefined` for a zone outside its table, and the fallback is then the UTC
+ * clock time rather than an error: `xAxis.tz` comes from a provider payload we do not control, and a
+ * strip an hour out in an unsupported zone is worth more than a chart that refuses to label one. That
+ * is also exactly the behaviour this branch had for EVERY zone before it was fixed.
+ */
+function clockTime(tz: string | undefined, t: number): string {
+  if (!Number.isFinite(t)) return '';
+  const clock = tz === undefined ? undefined : localClock(tz, t);
+  if (clock === undefined) return axisLabel('datetime', t).slice(11, 16);
+  const hh = Math.floor(clock.minuteOfDay / 60);
+  const mm = clock.minuteOfDay % 60;
+  return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+}
+
+/**
  * How one slot of an x axis is labelled — the engine's ONE answer, for every reader (§11.2, §11.9).
  *
  * There are three readers of this and they were three implementations: the x-axis strip
@@ -336,10 +384,11 @@ export function tenorLabel(days: number): string {
  *
  * `tenor` is two axes wearing one name, because `ChartSpec.xAxis` has no fourth type: GC and CRVF put
  * DAYS on it while OMON's smile puts STRIKES and OVML's profile puts SPOT PRICES (all four declare
- * `kind: 'curve'`, so the spec kind does not separate them either). They are told apart the way
- * `scales.ts` already tells them apart — by how much of a range the axis spans, since a curve runs
- * from a week to thirty years and a strike band never spans 24× — and `6M` printed under a strike of
- * 182 would be a false label rather than merely an unhelpful one.
+ * `kind: 'curve'`, so the spec kind does not separate them either). They are told apart by how much of
+ * a range the axis spans, since a curve runs from a week to thirty years and a strike band never spans
+ * 24× — and `6M` printed under a strike of 182 would be a false label rather than merely an unhelpful
+ * one. The {@link TENOR_DOMAIN_RATIO} below is the one home of that threshold; `scales.ts` carried a
+ * second copy of the constant for a tenor axis the renderer never built.
  */
 export type XLabeller = (slot: number, t: number) => string;
 
@@ -376,12 +425,28 @@ export function xLabeller(
     return ladder ? (_slot, t) => tenorLabel(t) : (_slot, t) => axisLabel('px', t);
   }
   if (spec.kind === 'intraday') {
-    // `slice(11, 16)` is the time part of the ISO datetime the one formatter produces: §11.2 wants a
-    // time of day on an intraday strip, and `core/fields/format.ts` has no time-of-day rendering —
-    // adding one here would be a second formatter in the system that CLIENT §12 exists to prevent.
-    return compact
-      ? (_slot, t) => axisLabel('datetime', t).slice(11, 16)
-      : (_slot, t) => axisLabel('datetime', t);
+    // The strip is a time of day IN THE EXCHANGE'S ZONE (§11.2), and it was not: this branch took the
+    // time part of the UTC instant the formatter produces, so the five-minute SPX capture's strip read
+    // `13:30 … 20:00` for a 09:30 … 16:00 New York session — four hours out, under session bands that
+    // `TradingDayIndex` had shaded at the real open from the same `xAxis.tz`. An axis that disagrees
+    // with the shading beside it about when Tuesday started is a wrong number, not a cosmetic one.
+    //
+    // Built here from core's `localClock` rather than through `formatValue`, which is the exception
+    // CLIENT §12's one-formatter rule already carries: there is no field format for "the clock time in
+    // a named zone", and `localClock` is the SAME table the session logic and the server use, so this
+    // cannot drift from the shading. The non-compact form stays the full ISO instant — it carries its
+    // own `Z`, so it names the zone it is in and is not ambiguous.
+    //
+    // **THIS MOVED A COMMITTED PIXEL GOLDEN**, and said so nowhere until it was asked for: `profile` in
+    // `fixtures/golden/chart/series-hashes.json` is the only one of the thirteen series cases drawn on
+    // an intraday spec (`renderer.test.ts#specFor` — 240 one-minute bars, `tz: 'America/New_York'`), so
+    // it is the only hash this change could move, and it is the only one that did. Reverting this one
+    // expression to `axisLabel('datetime', t).slice(11, 16)` reproduces the old hash
+    // `4ba7d92747ce…428b1` exactly. The move is recorded in that file's own `history` entry, which is
+    // where a reader of the golden will look; `targetYTickCount` below declines the other half of
+    // §11.2's density rule for the same reason, so the two notes are the same rule applied twice.
+    const tz = axis.tz;
+    return compact ? (_slot, t) => clockTime(tz, t) : (_slot, t) => axisLabel('datetime', t);
   }
   return (_slot, t) => axisLabel('date', t);
 }

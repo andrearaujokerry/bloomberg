@@ -581,7 +581,7 @@ export async function execute(
       durationMs,
     };
   } catch (error) {
-    const problem = problemFor(error, decision.code, cmd.fn?.span ?? [0, cmd.raw.length]);
+    const problem = problemFor(error, decision.code);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
     return {
@@ -694,7 +694,7 @@ export async function executeFrame(
       durationMs,
     };
   } catch (error) {
-    const problem = problemFor(error, code, [0, 0]);
+    const problem = problemFor(error, code);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
     return {
@@ -791,7 +791,7 @@ export async function runParams(
       durationMs,
     };
   } catch (error) {
-    const problem = problemFor(error, frame.fn, [0, 0]);
+    const problem = problemFor(error, frame.fn);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
     return {
@@ -850,7 +850,7 @@ export async function runPage(
       durationMs,
     };
   } catch (error) {
-    const problem = problemFor(error, frame.fn, [0, 0]);
+    const problem = problemFor(error, frame.fn);
     deps.panels.setProblem(panelId, problem);
     deps.onError?.(error);
     return {
@@ -961,23 +961,84 @@ function messageOf(error: unknown, code: string): string {
     : `${code} failed`;
 }
 
-/** A failed run becomes a footer problem; the API error's own message is what the desk needs. */
-function problemFor(error: unknown, code: string, span: [number, number]): CommandProblem {
+/**
+ * THE SPAN IS THE SAME ACCUSATION, IN THE OTHER CHANNEL, AND IT IS WITHDRAWN WITH THE CODE.
+ *
+ * `CommandProblem.span` is not decoration: the command line mirrors the draft, marks
+ * `draft.slice(span[0], span[1])` under the caret, and appends that token to the problem line
+ * (`shell/CommandLine.tsx` L466-481, L539-547). A span is the terminal saying "this is the part you
+ * got wrong", so correcting a problem's CODE and keeping its span only moves a false claim one
+ * channel over.
+ *
+ * **A run failure has no text to point at, by construction.** `App.tsx#onGo` calls
+ * `commandLines.current.get(panelId)?.clear()` unconditionally and BEFORE the request goes out
+ * (L1095-1105), because CLIENT §2.5 L783 says a GO clears `commandDraft`; `CommandLine.tsx` L402-404
+ * then captures the draft the input holds WHEN THE PROBLEM ARRIVES. So by the time this function runs
+ * the command it is about is gone from the line, and the only two things a surviving span can mark are
+ * nothing at all, or whatever the desk has typed since. A span is not a statement — it is an INDEX
+ * INTO A STRING — and that string no longer exists.
+ *
+ * Driven in Chrome on slot 6, with the span restored and then removed, because the second case needs a
+ * real round trip to produce. `ZZZZ US Equity DES <GO>`, with `AAPL US Equity` typed while the request
+ * was in flight:
+ *
+ *     > AAPL US Equity                                      ← `AA` underlined
+ *     BAD_IDENTIFIER: nothing resolves 'ZZZZ US Equity' — AA
+ *
+ * `AA` is two characters of the command being typed NOW, on a line about a command that has already
+ * failed. With the span withdrawn the same sequence reads `BAD_IDENTIFIER: nothing resolves 'ZZZZ US
+ * Equity'` and marks nothing. `SECURITY_NOT_FOUND` → `BAD_IDENTIFIER` is one of the seven entries in
+ * {@link PROBLEM_FOR_API_CODE}, which is exactly the set an earlier revision of this file kept the
+ * span for, on the ground that those answers ARE statements about the command. They are; their spans
+ * were not.
+ *
+ * Two things that look like counter-examples and are not. `AAPL US Equity YAS` was the first thing
+ * tried and never reaches here: `decide()` refuses an inapplicable function locally, before any
+ * request, so its span is a PARSE-time span. And `FXC <GO>` — refused by the DATA-10 guard with an
+ * `INTERNAL` — marked nothing even before this change, because `INTERNAL` is not a mapped code and
+ * took the `[0, 0]` branch already. The spans that remain in this file are the parse-time ones (L298,
+ * L426, L465, L511), produced synchronously on the keystroke that cleared the line, and those keep
+ * pointing at real text.
+ *
+ * `[0, 0]` is this file's existing word for "no text to blame" — `executeFrame` and the `page()` path
+ * always passed it, because a restored frame and a page turn begin with no text at all — and it renders
+ * as an empty mark and a message with no token appended. It is now the only answer a run failure gives.
+ * The code mapping is untouched and is the part that still carries the distinction: `ARG_PARSE` tells
+ * the desk to look at what it typed and `NOT_APPLICABLE` tells it not to.
+ *
+ * One stale claim is left standing elsewhere and is recorded in `BUILD_STATUS.md`:
+ * `CommandLine.tsx` L400-401 says "GO does not clear the draft when the command is refused, so the
+ * input still holds exactly that text". It does not, and nothing here depends on it any more.
+ */
+const NOTHING_TYPED_IS_AT_FAULT: () => [number, number] = () => [0, 0];
+
+/**
+ * A failed run becomes a footer problem; the API error's own message is what the desk needs.
+ *
+ * No `span` parameter, deliberately — see {@link NOTHING_TYPED_IS_AT_FAULT}. A run's answer arrives
+ * after the input has been cleared, so there is no draft for a span to index and the only thing one
+ * can do is accuse whatever is being typed now. The CODE still distinguishes the cases.
+ */
+function problemFor(error: unknown, code: string): CommandProblem {
   const apiError = error as { details?: { location?: unknown } } | null;
   const message = messageOf(error, code);
   const apiCode = apiCodeOf(error);
   if (apiCode === 'VALIDATION_FAILED') {
-    return {
-      code: apiError?.details?.location === 'fnParams' ? 'ARG_PARSE' : 'NOT_APPLICABLE',
-      span,
-      message,
-    };
+    // A rejected `fnParams` is the user's argument; a rejected body or query string is this client's
+    // own request, and the user's text is not what the server was reading. The distinction is worth
+    // keeping even with no span to carry it: `ARG_PARSE` tells the desk to look at what it typed and
+    // `NOT_APPLICABLE` tells it not to.
+    return apiError?.details?.location === 'fnParams'
+      ? { code: 'ARG_PARSE', span: NOTHING_TYPED_IS_AT_FAULT(), message }
+      : { code: 'NOT_APPLICABLE', span: NOTHING_TYPED_IS_AT_FAULT(), message };
   }
   const mapped = PROBLEM_FOR_API_CODE[apiCode];
-  if (mapped !== undefined) return { code: mapped, span, message };
+  if (mapped !== undefined) {
+    return { code: mapped, span: NOTHING_TYPED_IS_AT_FAULT(), message };
+  }
   return {
     code: 'NOT_APPLICABLE',
-    span,
+    span: NOTHING_TYPED_IS_AT_FAULT(),
     message: apiCode === '' ? message : `${apiCode} · ${message}`,
   };
 }

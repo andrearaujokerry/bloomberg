@@ -443,13 +443,103 @@ async function checkEntityNames(
 const CORPORATE_SUFFIX =
   /\b(inc|incorporated|corp|corporation|co|company|ltd|limited|plc|lp|llc|llp|sa|nv|ag|holdings?|group|trust|the)\b/g;
 
-function comparableName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ')
+/**
+ * The share-class and instrument markers a *listing* file carries and a *registrant* name never
+ * does. `Sea Ltd (ADR)` and `Sea Limited` are one filer; so are `Calisa Acquisition Corp Right` and
+ * `Calisa Acquisition Corp`. These are stripped after the suffixes and, like them, from BOTH names,
+ * so a token that is a marker on one side and a real word on the other cannot make two different
+ * companies agree.
+ */
+const SHARE_CLASS_MARKER =
+  /\b(adr|adrs|ads|gdr|warrant|warrants|right|rights|unit|units|depositary|depository|class|series)\b/g;
+
+/**
+ * EDGAR's conformed-name disambiguator: the state or country of incorporation, appended to the
+ * registrant name after a slash or a backslash — `AGCO CORP /DE`, `AMARIN CORP PLC\UK`,
+ * `New Providence Acquisition Corp. III/Marshall Islands`, `/NEW` for a re-registration.
+ *
+ * The tail is matched against what EDGAR actually emits — a two-letter code, `DEL`, `NEW`, `CAN`, or
+ * a spelled-out Cayman/Delaware/Marshall Islands — and NOT against "a short word", because a slash
+ * inside a name is common here and a length bound cannot tell the two apart. Every one of the 96
+ * distinct slash tails in the frame capture and the seeded `issuers` was read before this list was
+ * written: `Data I/O Corp`, `Quad/Graphics Inc`, `Alerian MLP Index/US Dollar Realprice Index` and
+ * `Wilshire 5000/25 Strategy ETF` all keep the text after their slash, and an earlier draft of this
+ * rule that bounded the tail by length instead silently ate `/O Corp` and `/Graphics Inc`.
+ */
+const EDGAR_JURISDICTION =
+  /[/\\]\s*(?:[a-z]{2}|del|new|can|cayman|delaware|cayman islands|marshall islands|virgin islands)\s*[/\\]?$/;
+
+/**
+ * Everything from the first ` - ` on. A listing file names the *instrument* and hangs its
+ * description off the issuer name with a spaced hyphen — `- Warrant`, `- Rights`,
+ * `- 9.125% Senior Notes Due 2030`, `- Depositary Shares Each Representing a 1/1,000th Interest`.
+ * A registrant name has no spaced hyphen (`A-Mark` is not one), so cutting here removes the
+ * instrument and keeps the issuer.
+ */
+const INSTRUMENT_TAIL = / - .*$/;
+
+/**
+ * A run of two or more single-letter tokens is ONE abbreviation, however its source spaced or
+ * dotted it. This is the step that makes the suffix strip work on `L.P.`, and it is written as a
+ * run rather than as dot-deletion for a reason that cost a measured nine regressions to find:
+ * deleting the dots turns `L.B. FOSTER COMPANY` into `lb foster` while `L B Foster Co` stays
+ * `l b foster`, so a pair that agreed before stops agreeing. Collapsing the run folds both to
+ * `lb foster`, and `W. P. Carey` / `W.p. Carey`, `THE E.W. SCRIPPS COMPANY` / `E W Scripps Co` and
+ * `DATA I/O CORPORATION` / `Data I/O Corp` with them.
+ */
+const INITIAL_RUN = /\b([a-z0-9])(?: ([a-z0-9]))+\b/g;
+
+function collapseInitials(folded: string): string {
+  return folded.replace(INITIAL_RUN, (run) => run.replace(/ /g, ''));
+}
+
+/**
+ * The two names, reduced to what a human would call the same company.
+ *
+ * **The order of these steps is the whole function** (QA-02, DATA-07). Replacing punctuation with
+ * spaces BEFORE stripping suffixes — which is what this did until now — turns `L.P.` into the two
+ * tokens `l p`, and `\b(lp)\b` then no longer matches, so the suffix survives on one side only and
+ * `ALLIANCEBERNSTEIN HOLDING L.P.` disagrees with `Alliancebernstein Holding LP`. That single
+ * inversion, plus three decorations absent from the suffix list, raised **520 of the 834**
+ * `reconcile_mismatch` events this job wrote against the seeded universe on formatting alone. So:
+ *
+ *  1. case-fold, then cut the instrument tail, the parentheticals and EDGAR's jurisdiction, each of
+ *     which is a *decoration of one side's spelling convention* and not part of any name;
+ *  2. delete a possessive apostrophe only, so `Art's Way` folds onto `ARTS WAY` while `O'Reilly`
+ *     still folds onto `O Reilly` — the apostrophe before an `s` joins, every other one separates;
+ *  3. replace the remaining separators with spaces and collapse the single-letter runs, so that
+ *     `L.P.`, `L P` and `LP` are all the one token `lp`;
+ *  4. only then strip the suffixes and the share-class markers, which can now see whole tokens.
+ *
+ * Measured over all 5,287 (CIK, frame name, issuer name) triples the seeded universe resolves:
+ * **834 mismatches before, 314 after, and not one pair that agreed before stops agreeing.** The 314
+ * that survive are not formatting: 173 are a different company under the same CIK — the case §7.4
+ * exists to surface — and the other 141 are abbreviations (`FINL` for `FINANCIAL`, `Solutns` for
+ * `Solutions`) or a bond description appended with no separator at all. Closing those needs an
+ * abbreviation dictionary, and guessing at one here would bury the 173.
+ *
+ * A name that is *nothing but* suffixes and markers ("The Trust Company") falls back to its folded
+ * form rather than to the empty string: two such names would otherwise compare equal, and a silent
+ * false agreement hides a mismatch where a false mismatch merely reports one.
+ */
+export function comparableName(name: string): string {
+  const folded = collapseInitials(
+    name
+      .toLowerCase()
+      .replace(INSTRUMENT_TAIL, ' ')
+      .replace(/\([^)]*\)/g, ' ')
+      .replace(EDGAR_JURISDICTION, ' ')
+      .replace(/['\u2019](?=s\b)/g, '')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim(),
+  );
+  const stripped = folded
     .replace(CORPORATE_SUFFIX, ' ')
+    .replace(SHARE_CLASS_MARKER, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+  return stripped === '' ? folded : stripped;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────

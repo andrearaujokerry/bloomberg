@@ -72,14 +72,27 @@
  * asking for one was wrong on the mechanism. What group order would change is only running
  * `server-unit` ALONE, which seeds nothing and is not how the suite runs.
  *
- * **WHAT THIS FILE FOUND, and did not fix.** Six defects, each in a package this file may not edit,
- * each recorded by name so that it is neither hidden nor able to hide the next one: see
- * {@link CENSUS} (three resolvers that answer `500` against the seeded universe; the two that failed
- * because a seeded Treasury could not be priced are fixed and their entries say what it was),
- * {@link CSV_CENSUS} (twenty-one exports refused `403` for a field
- * with no `field_licence` row), {@link KNOWN_CELL_DEFECTS} (`FA`'s period columns typed `number`
- * and filled with text) and {@link KNOWN_LIVE_DEFECTS} (a field the payload refuses and the socket
- * serves). Each table is asserted exactly, so a fix turns the file red until the entry is deleted.
+ * **WHAT THIS FILE FOUND.** Each table is asserted exactly, so a fix turns the file red until the
+ * entry is closed — which is how the record self-closes rather than rotting. Where it stands now,
+ * after the licence-registry and `HDS` repairs:
+ *
+ *  - {@link KNOWN_LIVE_DEFECTS} is **empty**. The `Q×index` entitlement-bypass pair it was written
+ *    to catch is fixed at the cause: the `field_licence` matrix is now built over the pairs the
+ *    product asks about rather than the pairs a field's `sources` enumerate.
+ *  - {@link CSV_CENSUS}: of the twenty-one exports refused `403`, **three now export**. The other
+ *    eighteen are re-measured field by field in {@link CSV_DENIALS}, and the measurement corrected
+ *    the record: all eighteen are `FIELD_UNKNOWN` — every one of them IS "a field with no
+ *    `field_licence` row" — where six had been written down as `bbg.rss` forbidding export, a
+ *    claim nothing asserted. The missing rows are 71 `(field, asset class)` pairs that exist only
+ *    because a manifest pre-checks another asset class's field, so the repair belongs in
+ *    `fieldIds(assetClass)` and not in the registry; `CSV_DENIALS` has the whole argument and the
+ *    nine pairs whose source caps at `eod`, which is what makes writing them the wrong answer.
+ *  - {@link CENSUS}: of the five resolvers that answered `500`, **four launch**. `SRCH` and
+ *    `YAS×govt` could not price a seeded Treasury; `HDS×equity` and `HDS×etf` wrote null market
+ *    values with no reason. `FXC` remains, and its entry names the seed gap underneath it.
+ *  - {@link KNOWN_CELL_DEFECTS} (`FA`'s period columns typed `number` and filled with text) and
+ *    `CACS×index`'s export stand, both in packages this file may not edit, both with the exact
+ *    repair written down.
  */
 
 import { createHash, randomUUID } from 'node:crypto';
@@ -229,7 +242,7 @@ const CASES = buildCases();
  * silently skipped. Regenerate it by reading the failure message, never by widening it.
  */
 const CENSUS: Record<string, string> = {
-  'BTMM': 'ok',
+  BTMM: 'ok',
   'CACS×equity': 'ok',
   'CACS×etf': 'ok',
   'CACS×index': 'ok',
@@ -238,8 +251,8 @@ const CENSUS: Record<string, string> = {
   'CN×equity': 'ok',
   'CN×etf': 'ok',
   'CN×index': 'ok',
-  'CRVF': 'ok',
-  'CRYP': 'ok',
+  CRVF: 'ok',
+  CRYP: 'ok',
   'DES×crypto': 'ok',
   'DES×equity': 'ok',
   'DES×etf': 'ok',
@@ -248,14 +261,24 @@ const CENSUS: Record<string, string> = {
   'DES×index': 'ok',
   'DES×option': 'ok',
   'DES×rate': 'ok',
-  'ECO': 'ok',
+  ECO: 'ok',
   'EE×equity': 'ok',
-  'EQS': 'ok',
+  EQS: 'ok',
   'FA×equity': 'ok',
   'FA×etf': 'ok',
-  'FED': 'ok',
-  'FXC': 'INTERNAL',
-  'GC': 'ok',
+  FED: 'ok',
+  // Still `INTERNAL`, and re-measured: `FXC: numbers with no provenance and no engine: decimals
+  // (DATA-10)`. The cause is a seed gap, not FXC — nothing in the store answers `yahoo.fx
+  // 'EURUSD=X'` or `coingecko.simple 'bitcoin'` (which is also why `Q×fx` and `Q×crypto` are
+  // `PROVIDER_UNAVAILABLE` below), so every cell of the matrix is unavailable, `ctx.prov` and
+  // `ctx.engines` are both empty, and the only finite number left in the payload is `decimals` — a
+  // rendering hint that cites nothing because nothing publishes it. §FXC L15-26 says `csv.columns`
+  // was made a function of `(params, payload)` to keep `decimals`, `via` and `derivation` out of the
+  // honesty walk's cell set; that does not work, because `csvNumericColumnIds` calls the function and
+  // gets the same list back. Closing this needs either FX in the seed or a way for a manifest to
+  // declare a numeric column as metadata, and both are in packages the parity suite may not edit.
+  FXC: 'INTERNAL',
+  GC: 'ok',
   'GIP×crypto': 'ok',
   'GIP×equity': 'ok',
   'GIP×etf': 'ok',
@@ -270,9 +293,15 @@ const CENSUS: Record<string, string> = {
   'GP×index': 'ok',
   'GP×option': 'ok',
   'GP×rate': 'ok',
-  'HDS×equity': 'INTERNAL',
-  'HDS×etf': 'INTERNAL',
-  'HELP': 'ok',
+  // Both were `INTERNAL`. `etf_holdings.market_value` is null on every `ssga.holdings` row (505 rows,
+  // 0 market values) and set on every `sec.archives` one (504 of 504), because SSGA's daily sheet
+  // publishes shares and weight and no value — so an SPY holdings page was a hundred null cells and
+  // an AAPL holders row that an SSGA file won was one more, none of them carrying the reason
+  // FUNCTIONS.md §1.3 rule 6 requires. `HDS/resolve.ts#noteMissingMarketValue` states it once, for
+  // both variants, naming the sources that withheld the column.
+  'HDS×equity': 'ok',
+  'HDS×etf': 'ok',
+  HELP: 'ok',
   'HP×crypto': 'ok',
   'HP×equity': 'ok',
   'HP×etf': 'ok',
@@ -281,9 +310,9 @@ const CENSUS: Record<string, string> = {
   'HP×index': 'ok',
   'HP×rate': 'ok',
   'MEMB×index': 'ok',
-  'MSG': 'ok',
-  'N': 'ok',
-  'NI': 'ok',
+  MSG: 'ok',
+  N: 'ok',
+  NI: 'ok',
   'OMON×equity': 'ok',
   'OMON×etf': 'ok',
   'OMON×index': 'ok',
@@ -291,8 +320,8 @@ const CENSUS: Record<string, string> = {
   'OVML×etf': 'FUNCTION_NOT_APPLICABLE',
   'OVML×index': 'FUNCTION_NOT_APPLICABLE',
   'OVML×option': 'ok',
-  'PORT': 'ok',
-  'QM': 'ok',
+  PORT: 'ok',
+  QM: 'ok',
   'Q×crypto': 'PROVIDER_UNAVAILABLE',
   'Q×equity': 'ok',
   'Q×etf': 'ok',
@@ -301,20 +330,20 @@ const CENSUS: Record<string, string> = {
   'Q×option': 'ok',
   'Q×rate': 'ok',
   'RV×equity': 'ok',
-  'SECF': 'ok',
+  SECF: 'ok',
   // Was `INTERNAL`. `govt_terms.last_regular_coupon` equals `maturity_date` for every seeded note —
   // the seed's own comment says a Treasury note's final coupon IS a regular one — and the resolver
   // passed it to the engines as `BondTerms.penultimateCouponDate`, which exists only for an ODD last
   // coupon and must be strictly earlier. `RangeError: bond: penultimateCouponDate 2028-08-31 is not
   // before maturity 2028-08-31` was the whole screen's answer. `functions/shared/bondTerms.ts` now
   // states the translation once, for this resolver and `YAS`'s.
-  'SRCH': 'ok',
-  'SWPM': 'ok',
-  'TOP': 'ok',
-  'W': 'ok',
-  'WB': 'ok',
-  'WEI': 'ok',
-  'WIRP': 'ok',
+  SRCH: 'ok',
+  SWPM: 'ok',
+  TOP: 'ok',
+  W: 'ok',
+  WB: 'ok',
+  WEI: 'ok',
+  WIRP: 'ok',
   // Same cause, same fix as `SRCH` above: a seeded Treasury can be priced now.
   'YAS×govt': 'ok',
 };
@@ -328,38 +357,68 @@ const CENSUS: Record<string, string> = {
  * is refused. Recording it by name is what keeps it from being rounded off as "the export failed".
  */
 const CSV_CENSUS: Record<string, string> = {
-  'BTMM': 'ok',
+  BTMM: 'ok',
   'CACS×equity': 'ok',
   'CACS×etf': 'ok',
+  // Still `INTERNAL`, with the cause now measured rather than guessed: `CACS csv row 0 has 17 cells
+  // but 15 columns are declared`. `cacsMembersCsvColumns` declares 15, and the three summary rows
+  // `cacsCsvRows` appends are built as `[null, label, value, ...blanks(), 'summary']` where `blanks()`
+  // fills 13 — 3 + 13 + 1 = 17. It needs 11, and `payload.actions` being empty for SPX is why row 0
+  // is a summary row. The one-token repair is in `core/functions/manifests/CACS.ts`, which the parity
+  // suite may not edit.
   'CACS×index': 'INTERNAL',
   'CF×equity': 'ok',
   'CF×etf': 'ok',
   'CN×equity': 'ok',
   'CN×etf': 'ok',
   'CN×index': 'ok',
-  'CRVF': 'ok',
-  'CRYP': 'ok',
+  CRVF: 'ok',
+  CRYP: 'ok',
   'DES×crypto': 'ok',
   'DES×equity': 'ok',
   'DES×etf': 'ok',
   'DES×fx': 'ok',
   'DES×govt': 'ok',
   'DES×index': 'ok',
-  'DES×option': 'ENTITLEMENT_DENIED',
+  'DES×option': 'ok',
   'DES×rate': 'ok',
-  'ECO': 'ok',
+  ECO: 'ok',
   'EE×equity': 'ok',
-  'EQS': 'ok',
+  EQS: 'ok',
   'FA×equity': 'ok',
   'FA×etf': 'ok',
-  'FED': 'ok',
-  'GC': 'ENTITLEMENT_DENIED',
+  FED: 'ok',
+  // Still refused: re-measured as `ECO_VALUE` and `SPREAD`, both `FIELD_UNKNOWN`, and this pair is
+  // the one shape no `field_licence` row can fix. `GC` declares `assetClasses: 'none'`,
+  // so `export.ts` evaluates it with `assetClass: null` and rule 1 falls back to the field-wide view,
+  // which answers only when the field's per-class rows AGREE on a source. `ECO_VALUE` is supplied by
+  // `fred.csv` for `econ` and `nyfed.rates` for `rate`, so they disagree and the registry refuses to
+  // guess (`licenceRegistry.ts#fieldSource`) — rightly, since the two carry different terms. A
+  // genuine `asset_class IS NULL` row is the shape that would answer, and migration 0002 declares
+  // `asset_class asset_class NOT NULL`, so no such row can exist. `SPREAD` is worse: §GC's field-id
+  // list names it, and the dictionary says of it "Not a field: the formula-language function
+  // SPREAD(a, b)" with no asset class and no source at all, so there is nothing to write a row from.
+  GC: 'ENTITLEMENT_DENIED',
+  // These ten, the six `GP` rows below and `GC` and `SRCH` are all one cause: a manifest names a
+  // field of one asset class on a screen launched from another — `OMON` asks about `OPT_STRIKE_PX`
+  // under `equity`, `GIP` about `PX_OPEN` under `option` — and `field_licence` is keyed on the pair,
+  // so rule 1 answers `FIELD_UNKNOWN`. {@link CSV_DENIALS} carries the field-by-field measurement and
+  // the reason writing the 71 missing rows is not the repair: nine of them name a source that caps at
+  // `eod`, and one such row blanks every live cell on its screen.
   'GIP×crypto': 'ENTITLEMENT_DENIED',
   'GIP×equity': 'ok',
   'GIP×etf': 'ok',
   'GIP×fx': 'ENTITLEMENT_DENIED',
   'GIP×index': 'ok',
   'GIP×option': 'ENTITLEMENT_DENIED',
+  // The six `GP` rows refuse the right file for the wrong reason, and the reason is the correction:
+  // measured, they are `FIELD_UNKNOWN` on `HEADLINE` (see {@link CSV_DENIALS}), not the
+  // `LICENCE_FORBIDS_USAGE` an earlier revision of this comment claimed. `bbg.rss` DOES carry
+  // `exportAllowed: false` and an audit obligation that spells it out — "Display-only: export and
+  // API are denied by the evaluator" — so the outcome is correct and would survive giving `HEADLINE`
+  // a row; what is wrong today is that rule 1 never reaches the licence gate, because `HEADLINE`
+  // declares no asset class and the pre-check names one. `GP×govt` and `GP×rate` export because a
+  // curve chart carries no headline column.
   'GP×crypto': 'ENTITLEMENT_DENIED',
   'GP×equity': 'ENTITLEMENT_DENIED',
   'GP×etf': 'ENTITLEMENT_DENIED',
@@ -368,7 +427,10 @@ const CSV_CENSUS: Record<string, string> = {
   'GP×index': 'ENTITLEMENT_DENIED',
   'GP×option': 'ENTITLEMENT_DENIED',
   'GP×rate': 'ok',
-  'HELP': 'ok',
+  // New rows: door 2 was unreachable for both variants until the launch stopped answering 500.
+  'HDS×equity': 'ok',
+  'HDS×etf': 'ok',
+  HELP: 'ok',
   'HP×crypto': 'ENTITLEMENT_DENIED',
   'HP×equity': 'ok',
   'HP×etf': 'ok',
@@ -377,34 +439,154 @@ const CSV_CENSUS: Record<string, string> = {
   'HP×index': 'ok',
   'HP×rate': 'ok',
   'MEMB×index': 'ok',
-  'MSG': 'ok',
-  'N': 'ok',
-  'NI': 'ok',
+  MSG: 'ok',
+  N: 'ok',
+  NI: 'ok',
   'OMON×equity': 'ENTITLEMENT_DENIED',
   'OMON×etf': 'ENTITLEMENT_DENIED',
   'OMON×index': 'ENTITLEMENT_DENIED',
   'OVML×equity': 'ENTITLEMENT_DENIED',
   'OVML×option': 'ENTITLEMENT_DENIED',
-  'PORT': 'ok',
-  'QM': 'ok',
+  PORT: 'ok',
+  QM: 'ok',
   'Q×equity': 'ok',
   'Q×etf': 'ok',
-  'Q×index': 'ENTITLEMENT_DENIED',
-  'Q×option': 'ENTITLEMENT_DENIED',
+  'Q×index': 'ok',
+  'Q×option': 'ok',
   'Q×rate': 'ok',
   'RV×equity': 'ok',
-  'SECF': 'ok',
-  // New rows: both launches used to fail, so door 2 was never reached for either of them. `SRCH`
-  // joins the twenty-one exports refused for a field with no `field_licence` row; `YAS`'s file is
-  // served and compares cell for cell.
-  'SRCH': 'ENTITLEMENT_DENIED',
-  'SWPM': 'ok',
-  'TOP': 'ok',
-  'W': 'ok',
-  'WB': 'ok',
-  'WEI': 'ok',
-  'WIRP': 'ok',
+  SECF: 'ok',
+  // `YAS`'s file is served and compares cell for cell. `SRCH` is refused on `ID_CUSIP`,
+  // `FIELD_UNKNOWN`, for the same structural reason as `GC` above — a row keyed on an asset class
+  // cannot answer a check that names none. `SRCH` is `assetClasses: 'none'` so the check names no class, and `ID_CUSIP` is
+  // supplied by `openfigi.mapping` for `equity` and `treasury.bills` for `govt` — two different
+  // publishers — so the field-wide view has nothing to answer with and will not pick one.
+  SRCH: 'ENTITLEMENT_DENIED',
+  SWPM: 'ok',
+  TOP: 'ok',
+  W: 'ok',
+  WB: 'ok',
+  WEI: 'ok',
+  WIRP: 'ok',
   'YAS×govt': 'ok',
+};
+
+/**
+ * The option chain's terms and greeks, which `OMON` and `OVML` pre-check on whatever asset class the
+ * screen was launched from. `OPT_*` declares `option` and nothing else, so on an equity, an ETF or an
+ * index every one of these is a pair with no `field_licence` row.
+ */
+const OPTION_TERMS_AND_GREEKS: readonly string[] = [
+  'OPT_STRIKE_PX:FIELD_UNKNOWN',
+  'OPT_EXPIRE_DT:FIELD_UNKNOWN',
+  'OPT_PUT_CALL:FIELD_UNKNOWN',
+  'OPT_CONT_SIZE:FIELD_UNKNOWN',
+  'OPT_UNDL_TICKER:FIELD_UNKNOWN',
+  'OPT_UNDL_PX:FIELD_UNKNOWN',
+  'OPT_OI:FIELD_UNKNOWN',
+  'OPT_IV:FIELD_UNKNOWN',
+  'OPT_DELTA:FIELD_UNKNOWN',
+  'OPT_GAMMA:FIELD_UNKNOWN',
+  'OPT_VEGA:FIELD_UNKNOWN',
+  'OPT_THETA:FIELD_UNKNOWN',
+  'OPT_RHO:FIELD_UNKNOWN',
+  'OPT_THEO:FIELD_UNKNOWN',
+];
+
+/** `OVML`'s own model outputs, on top of the chain's — the same story one screen further on. */
+const OVML_MODEL_OUTPUTS: readonly string[] = [
+  'OPT_MODEL_PX:FIELD_UNKNOWN',
+  'OPT_IMPL_VOL_MID:FIELD_UNKNOWN',
+  'OPT_TIME_VALUE:FIELD_UNKNOWN',
+  'OPT_INTRINSIC:FIELD_UNKNOWN',
+  'OPT_BREAKEVEN:FIELD_UNKNOWN',
+  'OPT_VANNA:FIELD_UNKNOWN',
+  'OPT_VOLGA:FIELD_UNKNOWN',
+  'OPT_CHARM:FIELD_UNKNOWN',
+  'OPT_RATE_USED:FIELD_UNKNOWN',
+  'OPT_DVD_YIELD_USED:FIELD_UNKNOWN',
+];
+
+/**
+ * **The CAUSE of every refused export, field by field, asserted exactly.**
+ *
+ * {@link CSV_CENSUS} records that an export was refused; this records WHY, and it exists because the
+ * distinction turned out to matter. The census entries for `GP` carried a written claim that the six
+ * refusals were `bbg.rss` forbidding export — `exportAllowed: false`, which is real and is in
+ * `providers/licences.ts` — and that claim was never measured. It is wrong. Every one of the
+ * eighteen refusals, `GP` included, is `FIELD_UNKNOWN`: rule 1 found no `field_licence` row for the
+ * `(field, asset class)` pair the screen pre-checks, and never reached the licence gate at all. A
+ * record of a cause that nothing asserts decays exactly like a test that cannot fail, and this is
+ * the assertion that stops it.
+ *
+ * Read as a whole it says one thing in three dialects:
+ *
+ *  - `GC` and `SRCH` declare `assetClasses: 'none'`, so `export.ts` evaluates them with
+ *    `assetClass: null` and `fieldSource` takes the field-wide view — which answers only when a
+ *    field's per-class rows AGREE on one source. `ECO_VALUE` is `fred.csv` for `econ` and
+ *    `nyfed.rates` for `rate`; `ID_CUSIP` is `openfigi.mapping` for `equity` and `treasury.bills`
+ *    for `govt`. Two publishers, different terms, so the registry refuses to pick — rightly. The
+ *    shape that WOULD answer is an `asset_class IS NULL` row, and migration `0002` declares
+ *    `asset_class asset_class NOT NULL`, so no such row can exist. `SPREAD` has no source at all:
+ *    the dictionary says of it "Not a field: the formula-language function SPREAD(a, b)".
+ *  - The other sixteen rows are one screen asking about another asset class's field: `OMON` on
+ *    `AAPL US Equity` pre-checks `OPT_STRIKE_PX` under `equity`, `GIP` on a crypto pre-checks `VWAP`,
+ *    which the dictionary declares for `equity`, `etf` and `index` only, and `GP` pre-checks
+ *    `HEADLINE`, which declares NO asset class whatever. 71 distinct pairs across the sixteen.
+ *  - Writing those 71 rows is the obvious repair and it is not one. A row names a SOURCE, and
+ *    `functions/context.ts#absorb` mins each decision's `effectiveTier` into ONE screen-wide tier
+ *    that `plant/policyTier.ts` then applies to EVERY quote field — so a single row whose source
+ *    caps at `eod` blanks the whole screen's live cells with `TIER_EOD`. Nine of the 71 are such a
+ *    row: `HEADLINE` × 6 → `bbg.rss` and `OPT_CONT_SIZE` × 3 → `cboe.symbolBook`, both `maxTier:
+ *    'eod'`. The other 62 resolve to `delayed` or `realtime` sources and would cost nothing in tier
+ *    — but they would state, in the licence registry, that a crypto's VWAP comes from Cboe and that
+ *    an equity screen is licensed for option greeks, which is a claim nobody made. (`GP` would stay
+ *    refused either way: `bbg.rss` really does deny export, so only the reason code would move.)
+ *
+ * So the cause is upstream of the registry: a manifest must not pre-check a field its screen does
+ * not use for the asset class it was launched from. That is `fieldIds(assetClass)` in
+ * `core/functions/manifests/**`, which this file and this item may not edit, and the sixteen rows
+ * stay here — named, measured, and unable to drift again — until it is.
+ */
+const CSV_DENIALS: Record<string, readonly string[]> = {
+  GC: ['ECO_VALUE:FIELD_UNKNOWN', 'SPREAD:FIELD_UNKNOWN'],
+  'GIP×crypto': ['VWAP:FIELD_UNKNOWN'],
+  'GIP×fx': ['VWAP:FIELD_UNKNOWN'],
+  'GIP×option': [
+    'BAR_TS:FIELD_UNKNOWN',
+    'PX_OPEN:FIELD_UNKNOWN',
+    'PX_HIGH:FIELD_UNKNOWN',
+    'PX_LOW:FIELD_UNKNOWN',
+    'IS_FINAL:FIELD_UNKNOWN',
+    'PX_CLOSE_1D:FIELD_UNKNOWN',
+    'VWAP:FIELD_UNKNOWN',
+    'VOLUME_AVG_30D:FIELD_UNKNOWN',
+  ],
+  // `LAST_TRADE_TIME` declares `option` only, so it joins `HEADLINE` on the two classes whose
+  // chart carries a trade-time column.
+  'GP×crypto': ['LAST_TRADE_TIME:FIELD_UNKNOWN', 'HEADLINE:FIELD_UNKNOWN'],
+  'GP×equity': ['HEADLINE:FIELD_UNKNOWN'],
+  'GP×etf': ['HEADLINE:FIELD_UNKNOWN'],
+  'GP×fx': ['LAST_TRADE_TIME:FIELD_UNKNOWN', 'HEADLINE:FIELD_UNKNOWN'],
+  'GP×index': ['HEADLINE:FIELD_UNKNOWN'],
+  'GP×option': [
+    'PX_OPEN:FIELD_UNKNOWN',
+    'PX_HIGH:FIELD_UNKNOWN',
+    'PX_LOW:FIELD_UNKNOWN',
+    'PX_CLOSE_1D:FIELD_UNKNOWN',
+    'BAR_TS:FIELD_UNKNOWN',
+    'IS_FINAL:FIELD_UNKNOWN',
+    'TOT_RETURN_INDEX:FIELD_UNKNOWN',
+    'HEADLINE:FIELD_UNKNOWN',
+  ],
+  'HP×crypto': ['VWAP:FIELD_UNKNOWN'],
+  'HP×fx': ['VWAP:FIELD_UNKNOWN'],
+  'OMON×equity': OPTION_TERMS_AND_GREEKS,
+  'OMON×etf': OPTION_TERMS_AND_GREEKS,
+  'OMON×index': OPTION_TERMS_AND_GREEKS,
+  'OVML×equity': [...OPTION_TERMS_AND_GREEKS, ...OVML_MODEL_OUTPUTS],
+  'OVML×option': ['PX_CLOSE_1D:FIELD_UNKNOWN'],
+  SRCH: ['ID_CUSIP:FIELD_UNKNOWN'],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
@@ -502,7 +684,7 @@ async function open(): Promise<void> {
   // the seeded universe's own validity windows all open in January 2026 and the §16 partitions
   // cover 2026-09, so the same instant serves both halves.
   const clock = testClock(GOLDEN_CAPTURE_MS);
-    // `PARITY_DEBUG=1` also turns the server's own logger on at `error`, which is the only way to see
+  // `PARITY_DEBUG=1` also turns the server's own logger on at `error`, which is the only way to see
   // the *cause* of a resolver's `500 INTERNAL`: the route reports `"YAS failed."` on the wire and
   // keeps the `RangeError` behind it in the log line.
   const app = await createTestApp({
@@ -531,7 +713,8 @@ async function open(): Promise<void> {
             (clock_timestamp() + interval '1 second')                            AS known_at`,
   );
   const horizonRow = horizon.rows[0];
-  if (horizonRow === undefined) throw new Error('the seeded database reports no bitemporal horizon');
+  if (horizonRow === undefined)
+    throw new Error('the seeded database reports no bitemporal horizon');
 
   const address = await app.app.listen({ host: '127.0.0.1', port: 0 });
   const port = new URL(address).port;
@@ -640,13 +823,16 @@ interface PayloadEnvelope {
 }
 
 type LaunchOutcome =
-  | { ok: true; payload: PayloadEnvelope }
-  | { ok: false; status: number; code: string };
+  { ok: true; payload: PayloadEnvelope } | { ok: false; status: number; code: string };
+
+/** Door 2's outcome. A refusal carries its denied `(field, reason)` pairs — see {@link CSV_DENIALS}. */
+type CsvOutcome =
+  | { ok: true; text: string }
+  | { ok: false; status: number; code: string; denials: readonly string[] };
 
 /** Door 1 — the JSON payload the screen renders. */
 async function launch(c: ParityCase): Promise<LaunchOutcome> {
-  const security =
-    c.assetClass === null ? undefined : (SECURITIES.get(c.assetClass) ?? undefined);
+  const security = c.assetClass === null ? undefined : (SECURITIES.get(c.assetClass) ?? undefined);
   const res = await harness().app.app.inject({
     method: 'POST',
     url: `${API}/functions/${c.code}/run`,
@@ -662,25 +848,39 @@ async function launch(c: ParityCase): Promise<LaunchOutcome> {
   if (res.statusCode !== 200) {
     const body = res.json<{ error?: { code?: string } }>();
     if (DEBUG) console.error(`launch ${c.name} → ${String(res.statusCode)} ${res.body}`);
-    return { ok: false, status: res.statusCode, code: body.error?.code ?? `HTTP_${res.statusCode}` };
+    return {
+      ok: false,
+      status: res.statusCode,
+      code: body.error?.code ?? `HTTP_${res.statusCode}`,
+    };
   }
   return { ok: true, payload: res.json<PayloadEnvelope>() };
 }
 
 /** Door 2 — the file, for the `resultId` door 1 just produced. */
-async function exportCsv(
-  code: string,
-  resultId: string,
-): Promise<{ ok: true; text: string } | { ok: false; status: number; code: string }> {
+async function exportCsv(code: string, resultId: string): Promise<CsvOutcome> {
   const res = await harness().app.app.inject({
     method: 'GET',
     url: `${API}/functions/${code}/csv?resultId=${encodeURIComponent(resultId)}`,
     headers: headers(),
   });
   if (res.statusCode !== 200) {
-    const body = res.json<{ error?: { code?: string } }>();
-    if (DEBUG) console.error(`export ${code} → ${String(res.statusCode)} ${res.body.slice(0, 400)}`);
-    return { ok: false, status: res.statusCode, code: body.error?.code ?? `HTTP_${res.statusCode}` };
+    const body = res.json<{
+      error?: { code?: string; details?: { reasons?: { fieldId: string; reason: string }[] } };
+    }>();
+    if (DEBUG)
+      console.error(`export ${code} → ${String(res.statusCode)} ${res.body.slice(0, 400)}`);
+    return {
+      ok: false,
+      status: res.statusCode,
+      code: body.error?.code ?? `HTTP_${res.statusCode}`,
+      // `details.reasons` is the denied subset the evaluator produced (API.md §9 L1195-1199). It is
+      // kept here rather than merely logged because {@link CSV_DENIALS} asserts it: a census that
+      // records only the status code lets the *cause* drift without turning anything red, and it
+      // did — six rows were written down as refused by `bbg.rss`'s export ban when every one of
+      // the eighteen refusals is in fact `FIELD_UNKNOWN` on a pair with no `field_licence` row.
+      denials: (body.error?.details?.reasons ?? []).map((r) => `${r.fieldId}:${r.reason}`),
+    };
   }
   return { ok: true, text: res.body };
 }
@@ -908,7 +1108,11 @@ async function plantTicks(client: pg.PoolClient, plant: Plant): Promise<number> 
   );
   for (const row of members.rows) ids.push(Number(row.instrument_id));
 
-  const lines = await client.query<{ instrument_id: string; md_line_id: string; provenance_id: string }>(
+  const lines = await client.query<{
+    instrument_id: string;
+    md_line_id: string;
+    provenance_id: string;
+  }>(
     `SELECT instrument_id, md_line_id, provenance_id FROM md_lines
      WHERE tx_to = 'infinity' AND source_id = 'cboe.quotes' AND instrument_id = ANY($1::bigint[])`,
     [[...new Set(ids)]],
@@ -1065,7 +1269,7 @@ async function waitFor(
 
 interface Observed {
   outcome: LaunchOutcome;
-  csv?: { ok: true; text: string } | { ok: false; status: number; code: string };
+  csv?: CsvOutcome;
   live: LiveRef[];
   /** The `snap` of every live subject of THIS case, taken at the same clock instant as its launch. */
   snaps: Map<string, Snapshot>;
@@ -1152,7 +1356,6 @@ beforeAll(async () => {
     }
     OBSERVED.set(c.name, observed);
   }
-
 }, 600_000);
 
 afterAll(async () => {
@@ -1204,6 +1407,28 @@ describe('API-05 — the same number whichever door it comes out of', () => {
       actual[c.name] = csv === undefined ? 'not-attempted' : csv.ok ? 'ok' : csv.code;
     }
     expect(actual).toEqual(CSV_CENSUS);
+  });
+
+  it('refused each of those exports for the field and the reason the census names', () => {
+    // {@link CSV_DENIALS} and why this is a separate assertion from the one above: the status code
+    // is not the finding, the cause is. Sorted on both sides, so the table reads in the evaluator's
+    // own field order while the comparison does not depend on it — a pre-check set reordered inside
+    // a manifest is not a defect, and a field joining or leaving it is.
+    const actual: Record<string, readonly string[]> = {};
+    for (const c of CASES) {
+      const csv = OBSERVED.get(c.name)?.csv;
+      if (csv === undefined || csv.ok) continue;
+      // Entitlement refusals only. `CACS×index` fails door 2 with a `500` and carries no field
+      // decisions at all — its cause is a column count, recorded on its {@link CSV_CENSUS} entry.
+      // A row that stopped being `ENTITLEMENT_DENIED` would drop out of this map and the exact
+      // comparison below would report it, so skipping it here hides nothing.
+      if (csv.code !== 'ENTITLEMENT_DENIED') continue;
+      actual[c.name] = [...csv.denials].sort();
+    }
+    const expected = Object.fromEntries(
+      Object.entries(CSV_DENIALS).map(([name, fields]) => [name, [...fields].sort()]),
+    );
+    expect(actual).toEqual(expected);
   });
 });
 
@@ -1299,151 +1524,154 @@ function firstField(value: string | undefined): string | undefined {
   return value === undefined ? undefined : (value.split('  ')[0] ?? '').trim();
 }
 
-describe.each(CASES.map((c) => [c.name, c] as const))(
-  'API-05 %s',
-  (_name, c) => {
-    /** The case's three doors, or the census code that says why there are fewer than three. */
-    function observed(): Observed {
-      const found = OBSERVED.get(c.name);
-      if (found === undefined) throw new Error(`no observation for ${c.name}`);
-      return found;
+describe.each(CASES.map((c) => [c.name, c] as const))('API-05 %s', (_name, c) => {
+  /** The case's three doors, or the census code that says why there are fewer than three. */
+  function observed(): Observed {
+    const found = OBSERVED.get(c.name);
+    if (found === undefined) throw new Error(`no observation for ${c.name}`);
+    return found;
+  }
+
+  it('JSON payload = CSV export, value by value', () => {
+    const o = observed();
+    if (!o.outcome.ok) {
+      // The census test is what asserts *which* cases do not launch; here it only keeps this test
+      // from claiming a comparison it did not make.
+      expect(CENSUS[c.name]).toBe(o.outcome.code);
+      return;
+    }
+    const csv = o.csv;
+    expect(csv, `${c.name}: no export was fetched`).toBeDefined();
+    if (!csv?.ok) {
+      // Which exports are refused is the previous test's business; here this only keeps the case
+      // from reporting a comparison it could not make.
+      expect(CSV_CENSUS[c.name]).toBe(csv === undefined ? 'not-attempted' : csv.code);
+      return;
     }
 
-    it('JSON payload = CSV export, value by value', () => {
-      const o = observed();
-      if (!o.outcome.ok) {
-        // The census test is what asserts *which* cases do not launch; here it only keeps this test
-        // from claiming a comparison it did not make.
-        expect(CENSUS[c.name]).toBe(o.outcome.code);
-        return;
-      }
-      const csv = o.csv;
-      expect(csv, `${c.name}: no export was fetched`).toBeDefined();
-      if (!csv?.ok) {
-        // Which exports are refused is the previous test's business; here this only keeps the case
-        // from reporting a comparison it could not make.
-        expect(CSV_CENSUS[c.name]).toBe(csv === undefined ? 'not-attempted' : csv.code);
-        return;
-      }
+    const manifest = generatedRegistry.get(c.code);
+    if (manifest === undefined) throw new Error(`no manifest for ${c.code}`);
+    const payload = o.outcome.payload;
+    const parsed = parseCsv(csv.text);
 
-      const manifest = generatedRegistry.get(c.code);
-      if (manifest === undefined) throw new Error(`no manifest for ${c.code}`);
-      const payload = o.outcome.payload;
-      const parsed = parseCsv(csv.text);
+    // The column list is the manifest's own, evaluated over this payload — so the header row of
+    // the file is asserted to BE the screen's column list rather than merely to look like one.
+    const params = manifest.params.parse({}) as unknown;
+    const spec = manifest.csv.columns;
+    const columns =
+      typeof spec === 'function'
+        ? (
+            spec as (
+              p: unknown,
+              d: unknown,
+            ) => readonly { id: string; label: string; type: string }[]
+          )(params, payload.data)
+        : (spec as readonly { id: string; label: string; type: string }[]);
+    expect(
+      parsed.header,
+      `${c.name}: the export's header row is not the manifest's columns`,
+    ).toEqual(columns.map((col) => col.id));
 
-      // The column list is the manifest's own, evaluated over this payload — so the header row of
-      // the file is asserted to BE the screen's column list rather than merely to look like one.
-      const params = manifest.params.parse({}) as unknown;
-      const spec = manifest.csv.columns;
-      const columns =
-        typeof spec === 'function'
-          ? (spec as (p: unknown, d: unknown) => readonly { id: string; label: string; type: string }[])(
-              params,
-              payload.data,
-            )
-          : (spec as readonly { id: string; label: string; type: string }[]);
-      expect(parsed.header, `${c.name}: the export's header row is not the manifest's columns`).toEqual(
-        columns.map((col) => col.id),
-      );
+    // Every rendering of every value the payload, its envelope, its params and its column list
+    // hold. A cell outside this set was produced by the export path and by nothing else.
+    const allowed = new Set<string>();
+    renderings(payload.data, allowed);
+    renderings(payload.meta, allowed);
+    renderings(params, allowed);
+    for (const col of columns) {
+      allowed.add(col.id);
+      allowed.add(col.label);
+    }
 
-      // Every rendering of every value the payload, its envelope, its params and its column list
-      // hold. A cell outside this set was produced by the export path and by nothing else.
-      const allowed = new Set<string>();
-      renderings(payload.data, allowed);
-      renderings(payload.meta, allowed);
-      renderings(params, allowed);
-      for (const col of columns) {
-        allowed.add(col.id);
-        allowed.add(col.label);
-      }
+    const violations: string[] = [];
+    for (const [r, row] of parsed.rows.entries()) {
+      expect(
+        row.length,
+        `${c.name}: CSV row ${String(r)} is ${String(row.length)} cells wide`,
+      ).toBe(columns.length);
+      for (const [i, cell] of row.entries()) {
+        const col = columns[i]!;
+        const where = `row ${String(r)} col ${col.id} (${col.type})`;
+        if (cell === '') continue;
+        if (NULL_PLACEHOLDER.test(cell)) {
+          violations.push(
+            `${where}: a null rendered as ${JSON.stringify(cell)}, not as an empty field`,
+          );
+          continue;
+        }
 
-      const violations: string[] = [];
-      for (const [r, row] of parsed.rows.entries()) {
-        expect(row.length, `${c.name}: CSV row ${String(r)} is ${String(row.length)} cells wide`).toBe(
-          columns.length,
-        );
-        for (const [i, cell] of row.entries()) {
-          const col = columns[i]!;
-          const where = `row ${String(r)} col ${col.id} (${col.type})`;
-          if (cell === '') continue;
-          if (NULL_PLACEHOLDER.test(cell)) {
-            violations.push(`${where}: a null rendered as ${JSON.stringify(cell)}, not as an empty field`);
-            continue;
+        // A `string` column is prose, an enum, an identifier or a joined list, and the CSV spec is
+        // entitled to build one out of the payload's structure (`'4WK|discount_rate'`,
+        // `'Technology|Meta Platforms Inc'`, a field label, a block name). So it is held to the
+        // one rule that is about data rather than presentation: if it looks like a number, it has
+        // to be the payload's number, at full precision.
+        if (col.type === 'string') {
+          if (NUMERIC_LOOKING.test(cell) && !(PLAIN_NUMBER.test(cell) && allowed.has(cell))) {
+            violations.push(`${where}: a formatted number in an export: ${JSON.stringify(cell)}`);
           }
+          continue;
+        }
 
-          // A `string` column is prose, an enum, an identifier or a joined list, and the CSV spec is
-          // entitled to build one out of the payload's structure (`'4WK|discount_rate'`,
-          // `'Technology|Meta Platforms Inc'`, a field label, a block name). So it is held to the
-          // one rule that is about data rather than presentation: if it looks like a number, it has
-          // to be the payload's number, at full precision.
-          if (col.type === 'string') {
-            if (NUMERIC_LOOKING.test(cell) && !(PLAIN_NUMBER.test(cell) && allowed.has(cell))) {
-              violations.push(`${where}: a formatted number in an export: ${JSON.stringify(cell)}`);
-            }
-            continue;
-          }
-
-          // Everything else is a measurement or an instant, and both the shape and the value are
-          // asserted. This is where the defects live that no single-door test can see: a rounding
-          // done in the writer, a separator added for the screen, a date re-ordered, a boolean
-          // rendered as `Yes`.
-          if (col.type === 'number' && !PLAIN_NUMBER.test(cell)) {
-            violations.push(`${where}: not a full-precision decimal: ${JSON.stringify(cell)}`);
-            continue;
-          }
-          if (col.type === 'date' && !ISO_DATE.test(cell)) {
-            violations.push(`${where}: not YYYY-MM-DD: ${JSON.stringify(cell)}`);
-            continue;
-          }
-          if (col.type === 'datetime' && !ISO_DATETIME.test(cell)) {
-            violations.push(`${where}: not an ISO-UTC instant: ${JSON.stringify(cell)}`);
-            continue;
-          }
-          if (col.type === 'boolean' && cell !== 'true' && cell !== 'false') {
-            violations.push(`${where}: not a boolean: ${JSON.stringify(cell)}`);
-            continue;
-          }
-          if (!allowed.has(cell)) {
-            violations.push(`${where}: ${JSON.stringify(cell)} is in no payload value`);
-          }
+        // Everything else is a measurement or an instant, and both the shape and the value are
+        // asserted. This is where the defects live that no single-door test can see: a rounding
+        // done in the writer, a separator added for the screen, a date re-ordered, a boolean
+        // rendered as `Yes`.
+        if (col.type === 'number' && !PLAIN_NUMBER.test(cell)) {
+          violations.push(`${where}: not a full-precision decimal: ${JSON.stringify(cell)}`);
+          continue;
+        }
+        if (col.type === 'date' && !ISO_DATE.test(cell)) {
+          violations.push(`${where}: not YYYY-MM-DD: ${JSON.stringify(cell)}`);
+          continue;
+        }
+        if (col.type === 'datetime' && !ISO_DATETIME.test(cell)) {
+          violations.push(`${where}: not an ISO-UTC instant: ${JSON.stringify(cell)}`);
+          continue;
+        }
+        if (col.type === 'boolean' && cell !== 'true' && cell !== 'false') {
+          violations.push(`${where}: not a boolean: ${JSON.stringify(cell)}`);
+          continue;
+        }
+        if (!allowed.has(cell)) {
+          violations.push(`${where}: ${JSON.stringify(cell)} is in no payload value`);
         }
       }
-      if (DEBUG && violations.length > 0) console.error(`### ${c.name}\n${violations.join('\n')}`);
-      expect(
-        violations,
-        `${c.name}: the export's cells are not the payload's own values (API-05, FUNCTIONS.md §1.6)`,
-      ).toEqual(KNOWN_CELL_DEFECTS[c.name] ?? []);
-    });
+    }
+    if (DEBUG && violations.length > 0) console.error(`### ${c.name}\n${violations.join('\n')}`);
+    expect(
+      violations,
+      `${c.name}: the export's cells are not the payload's own values (API-05, FUNCTIONS.md §1.6)`,
+    ).toEqual(KNOWN_CELL_DEFECTS[c.name] ?? []);
+  });
 
-    it('the export header block repeats the payload envelope exactly', () => {
-      const o = observed();
-      if (!o.outcome.ok) return;
-      const csv = o.csv;
-      if (!csv?.ok) return;
-      const parsed = parseCsv(csv.text);
-      const meta = o.outcome.payload.meta;
+  it('the export header block repeats the payload envelope exactly', () => {
+    const o = observed();
+    if (!o.outcome.ok) return;
+    const csv = o.csv;
+    if (!csv?.ok) return;
+    const parsed = parseCsv(csv.text);
+    const meta = o.outcome.payload.meta;
 
-      // DATA-10: the provenance indices, in order. `meta.provenance[i]` is what a payload's
-      // `provIdx` points at, so a file whose list is re-ordered or de-duplicated makes every
-      // `provIdx` in the screen's own JSON name the wrong source.
-      expect(firstField(comment(parsed, 'provenance')), `${c.name}: provenance`).toBe(
-        meta.provenance.map((p) => p.provenanceId).join(','),
-      );
-      expect(comment(parsed, 'asOf')?.trim(), `${c.name}: asOf/tier/staleness`).toBe(
-        `validAt=${meta.asOf.validAt} knownAt=${meta.asOf.knownAt}  tier: ${meta.tier}  ` +
-          `staleness: ${meta.staleness}`,
-      );
-      // DATA-01: the licence footer is not optional, and it is the attribution of the sources the
-      // payload itself cites — not a constant, and not a superset.
-      // Deduplicated and in first-citation order, which is what `export.ts#attributionsOf` produces
-      // and what DATA-01 means by "the licence line": one attribution per cited source, not one per
-      // citation, and never an empty `;` separator for a source whose licence carries no line.
-      expect(comment(parsed, 'source')?.trim(), `${c.name}: attribution`).toBe(
-        [...new Set(meta.provenance.map((p) => p.attribution).filter((a) => a !== ''))].join('; '),
-      );
-    });
-  },
-);
+    // DATA-10: the provenance indices, in order. `meta.provenance[i]` is what a payload's
+    // `provIdx` points at, so a file whose list is re-ordered or de-duplicated makes every
+    // `provIdx` in the screen's own JSON name the wrong source.
+    expect(firstField(comment(parsed, 'provenance')), `${c.name}: provenance`).toBe(
+      meta.provenance.map((p) => p.provenanceId).join(','),
+    );
+    expect(comment(parsed, 'asOf')?.trim(), `${c.name}: asOf/tier/staleness`).toBe(
+      `validAt=${meta.asOf.validAt} knownAt=${meta.asOf.knownAt}  tier: ${meta.tier}  ` +
+        `staleness: ${meta.staleness}`,
+    );
+    // DATA-01: the licence footer is not optional, and it is the attribution of the sources the
+    // payload itself cites — not a constant, and not a superset.
+    // Deduplicated and in first-citation order, which is what `export.ts#attributionsOf` produces
+    // and what DATA-01 means by "the licence line": one attribution per cited source, not one per
+    // citation, and never an empty `;` separator for a source whose licence carries no line.
+    expect(comment(parsed, 'source')?.trim(), `${c.name}: attribution`).toBe(
+      [...new Set(meta.provenance.map((p) => p.attribution).filter((a) => a !== ''))].join('; '),
+    );
+  });
+});
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // Door 1 ⇄ Door 3 — the screen and the socket
@@ -1457,22 +1685,42 @@ describe.each(CASES.map((c) => [c.name, c] as const))(
  * rather than red: a resolver that stops emitting `ValueCell.live`, a plant that holds no state, a
  * `sub` the gateway rejects, a `snap` that never arrives. Each of those leaves the loop below with
  * nothing to compare and nothing to say. A number here turns all four into a failure.
+ *
+ * **270 → 323, and it is all `HDS`.** Measured case by case, with a re-seed on both sides: 1 triple
+ * from the equity variant and 52 from the fund variant, neither of which launched before (see
+ * {@link CENSUS}), so this leg had never seen a single one of their cells.
+ *
+ * Nothing else moved, and that is itself a measurement. The `field_licence` repair that closed
+ * {@link KNOWN_LIVE_DEFECTS} adds 117 rows, and an earlier draft of it — which also wrote rows for
+ * the pairs a manifest's `fieldIds(assetClass)` pre-checks — took this count the other way, to 308:
+ * `(OPT_CONT_SIZE, equity)` resolving to `cboe.symbolBook` and `(HEADLINE, equity)` to `bbg.rss`,
+ * both `maxTier: 'eod'`, capped `OMON`, `OVML` and `GP` to `eod` through the single screen-wide tier
+ * `functions/context.ts#absorb` keeps, and the plant gate then blanked every realtime quote field
+ * those screens draw. Fifteen live comparisons disappearing was how that was caught, which is exactly
+ * the job this number exists to do. `providers/licences.ts#entitlementCheckedPairs` says why the draft
+ * was cut back to the dictionary's own `assetClasses`.
  */
-const LIVE_COMPARISONS = 270;
+const LIVE_COMPARISONS = 323;
 
 /**
- * How many of those 270 carry a **value** on the payload side, and therefore actually reach the
+ * How many of those 323 carry a **value** on the payload side, and therefore actually reach the
  * value-equality assertion.
  *
  * This number is the one that keeps the leg honest, and it is here because the first mutation test
  * of this file could not kill its own value comparison: shifting `policyTier.ts#identityView` by
  * 0.01 left every assertion green, because both doors project through that same function and the
  * shift moved both. The asymmetric mutation — `functions/context.ts#plantReader`, which only the
- * function path uses — produced 182 mismatches, which is exactly this count. So a run where the
- * payload's live cells are all blank placeholders would compare 270 things and assert nothing about
- * a single number, and would look identical to a healthy one without this line.
+ * function path uses — produced 182 mismatches, which was exactly this count at the time. So a run
+ * where the payload's live cells are all blank placeholders would compare 323 things and assert
+ * nothing about a single number, and would look identical to a healthy one without this line.
+ *
+ * 182 → 237: 53 from `HDS`, all of whose new cells carry values, and **2** from `Q×index`'s
+ * `BID_SIZE` and `ASK_SIZE`, which the payload used to refuse for `FIELD_UNKNOWN` while the socket
+ * sent 40 and 120. Those two are the entitlement bypass {@link KNOWN_LIVE_DEFECTS} was written to
+ * record, and a cell moving from "blank, refused" to "compared, equal" is what closing one looks
+ * like from here.
  */
-const LIVE_VALUE_COMPARISONS = 182;
+const LIVE_VALUE_COMPARISONS = 237;
 
 /**
  * The reasons that are a statement about **the subscriber's rights** rather than about which tier
@@ -1494,25 +1742,29 @@ const LIVE_VALUE_COMPARISONS = 182;
  * Live-cell disagreements that belong to another package, recorded verbatim for the same reason
  * {@link KNOWN_CELL_DEFECTS} is, and asserted exactly so the list fails in both directions.
  *
- * `Q×index` is the finding this whole leg was written to be able to make. The seeded `field_licence`
- * table has rows for `(BID_SIZE, equity)`, `(BID_SIZE, etf)` and `(BID_SIZE, option)` and none for
- * `(BID_SIZE, index)` — so the evaluator answers `FIELD_UNKNOWN` (a *denial*) when the function
- * runner asks about SPX, and `Q`'s payload blanks both size cells. The WebSocket gateway, asked
- * about the same user, the same subject and the same two fields, sends 40 and 120 with no reason at
- * all. One door refuses the value and the other serves it: an entitlement decision that depends on
- * which door you knock at (ENTL-05, ARCHITECTURE §10 rule 2, API.md §6.6).
+ * **Empty, and it stays asserted.** `Q×index` was the finding this whole leg was written to be able
+ * to make: the seeded `field_licence` table had rows for `(BID_SIZE, equity)`, `(BID_SIZE, etf)` and
+ * `(BID_SIZE, option)` and none for `(BID_SIZE, index)`, so the evaluator answered `FIELD_UNKNOWN`
+ * (a *denial*) when the runner asked about SPX and `Q`'s payload blanked both size cells, while the
+ * WebSocket gateway — same user, same subject, same two fields — sent 40 and 120 with no reason at
+ * all. An entitlement decision that depended on which door you knocked at (ENTL-05, ARCHITECTURE
+ * §10 rule 2, API.md §6.6).
  *
- * The fix is one of two, and neither is WP-15's to make: `seed/licences.ts` gains the missing
- * `field_licence` rows for the index asset class, or `ws/session.ts` applies the evaluator's
- * per-field denials to the mask the way `functions/runner.ts` does. Until then the pair is recorded
- * here, named, so it is neither hidden nor able to hide the next one.
+ * It was the first of the two fixes this entry named that closed it. `providers/licences.ts` now
+ * builds the matrix over every pair a field's own `assetClasses` **declares** —
+ * `entitlementCheckedPairs` — rather than over the pairs its `sources` happen to enumerate, which is
+ * a record of observed provider paths and never was a licence statement. `BID_SIZE` declares
+ * `equity`, `etf`, `index` and `option` and listed provider paths for three of the four;
+ * `(BID_SIZE, index)` is one of 117 declared pairs that had no row, and it resolves to `cboe.quotes`,
+ * the same feed at the same tier that already supplies an equity's sizes.
+ *
+ * The list is kept, empty, rather than deleted with its test: a live cell and its own snapshot
+ * disagreeing again is the single worst thing this file can find, and `toEqual([])` says so in one
+ * line. It is not vacuous — it reported 1 violation, not 0, the moment the `HDS` repair let that
+ * screen launch, because its market-cap cell was claiming to be live on `PX_LAST` and so promised the
+ * shell a 4 820 019 828 600 cell it would overwrite with 330.27.
  */
-const KNOWN_LIVE_DEFECTS: readonly string[] = [
-  'Q×index q:37367.BID_SIZE: the payload refuses this for FIELD_UNKNOWN and the snapshot sends 40',
-  'Q×index q:37367.BID_SIZE: blank reason: payload "FIELD_UNKNOWN" ≠ snapshot undefined',
-  'Q×index q:37367.ASK_SIZE: the payload refuses this for FIELD_UNKNOWN and the snapshot sends 120',
-  'Q×index q:37367.ASK_SIZE: blank reason: payload "FIELD_UNKNOWN" ≠ snapshot undefined',
-];
+const KNOWN_LIVE_DEFECTS: readonly string[] = [];
 
 const DENIAL_REASONS = new Set<string>([
   'NOT_ENTITLED_TIER',
@@ -1617,5 +1869,7 @@ function expectSame(
   snapshot: unknown,
 ): void {
   if (payload === snapshot) return;
-  violations.push(`${where}: payload ${JSON.stringify(payload)} ≠ snapshot ${JSON.stringify(snapshot)}`);
+  violations.push(
+    `${where}: payload ${JSON.stringify(payload)} ≠ snapshot ${JSON.stringify(snapshot)}`,
+  );
 }

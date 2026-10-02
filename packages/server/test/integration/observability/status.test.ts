@@ -179,6 +179,18 @@ describe('GET /status (OPS-04)', () => {
       [Number(user.rows[0]!.user_id), firmId, code],
     );
 
+    // The CLIENT's row for the same launch, which carries a different quantity: API.md L785 keeps it
+    // and flags `details.clientReported`, and FUNCTIONS.md §588 makes the runner authoritative. A
+    // 9,000 ms go-to-first-paint must not move a figure that reports server resolve time — pooling
+    // the two reports a p95 of neither, and that only became reachable when startup step 9 wired the
+    // authoritative writer, because until then every `fn.launch` row in a deployment was the
+    // client's and counting all of them happened to be right.
+    await t.client.query(
+      `INSERT INTO usage_events (ts, user_id, firm_id, kind, code, duration_ms, details)
+       VALUES (now(), $1, $2, 'fn.launch', $3, 9000, '{"clientReported": true}'::jsonb)`,
+      [Number(user.rows[0]!.user_id), firmId, code],
+    );
+
     const res = await status();
     expect(res.body.timings.fnLaunchP95Ms[code]).toBe(42);
   });
