@@ -110,6 +110,17 @@ Verified both ways before being written down: against a local superuser it passe
 warning that a superuser pass predicts nothing about a managed host), and against a deliberately
 `NOCREATEROLE` role it fails exactly one probe — `permission denied to create role` — and exits 1.
 
+**If port 5432 is blocked from your machine, use `scripts/deploy-probe.sql` instead.** A corporate,
+campus or café network commonly filters database ports, and a provider's web SQL console runs over
+443, so it gets through when `psql` cannot. Paste that file into Neon's or Supabase's SQL Editor; it
+runs the same seven checks, wraps each one in its own exception handler so a refusal is recorded
+rather than aborting the script, prefixes every object it creates with `_deploy_probe`, and drops
+them at the end. Verified against a scratch database as both a superuser and a `NOCREATEROLE` role.
+
+A blocked 5432 **does not block the deployment** — the Node host connects to Postgres from the cloud,
+not from your laptop. What it blocks is local admin, which is why §7 item 7 (`deploy-migrate.ts`) is
+designed to run from CI or from the host rather than from a developer machine.
+
 If `CREATE ROLE` is refused, either the host is wrong or 0015 needs a `DEPLOY_SINGLE_ROLE` variant,
 which is a schema change to a security migration and should not be done casually.
 
