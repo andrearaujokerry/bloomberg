@@ -333,6 +333,7 @@ class ApiError extends Error {
   constructor(
     readonly status: number,
     readonly code: string,
+    readonly details?: Record<string, unknown>,
   ) {
     super(`${code} (${String(status)})`);
     this.name = 'ApiError';
@@ -361,6 +362,13 @@ interface Plant {
   saved: WorkspaceLayout[];
   /** Every `POST /help/tickets` body, and what the plant answered (TERM-09). */
   tickets: { body: unknown }[];
+  /**
+   * The one account `POST /auth/login` accepts, and whether it owes the email second factor. The
+   * code the plant "mails" is fixed, so a test types it; how many it sent is counted.
+   */
+  credential: { email: string; password: string; mfa: boolean };
+  mfaCode: string;
+  codesSent: number;
   ticketCreated: { ticketId: number; roomId: number };
 }
 
@@ -384,6 +392,9 @@ function plant(): Plant {
     // §5.12). The ids are the shape, not a guess — `packages/e2e/tests/help.spec.ts` reads the real
     // ones off the wire.
     ticketCreated: { ticketId: 12, roomId: 34 },
+    credential: { email: 'pm@demo.terminal', password: 'a-long-test-password', mfa: true },
+    mfaCode: '424242',
+    codesSent: 0,
     sdk: undefined as unknown as AppSdk,
   };
 
@@ -395,6 +406,34 @@ function plant(): Plant {
 
   const sdk: AppSdk = {
     auth: {
+      // What the plant does for the sign-in screen (`shell/SignIn.tsx`): the routes' observable
+      // contract, not their implementation — that is `server/test/integration/auth/mfaEmail.test.ts`.
+      login: ({ body }) => {
+        const c = state.credential;
+        if (body.email !== c.email || body.password !== c.password) {
+          return Promise.reject(new ApiError(401, 'AUTH_INVALID_CREDENTIALS'));
+        }
+        state.session = { ...SESSION, mfaRequired: c.mfa, mfaVerified: !c.mfa };
+        return Promise.resolve({ session: state.session, mfaRequired: c.mfa, superseded: null });
+      },
+      mfaEmailSend: () => {
+        state.codesSent += 1;
+        return Promise.resolve({
+          sentTo: 'p*@d******l.terminal',
+          expiresAt: '2026-09-15T18:51:28.000Z',
+          resendAvailableAt: '2000-01-01T00:00:00.000Z',
+          sendsRemaining: 4,
+        });
+      },
+      mfaEmailVerify: ({ body }) => {
+        if (body.code.replace(/\s/g, '') !== state.mfaCode || state.session === null) {
+          return Promise.reject(
+            new ApiError(401, 'AUTH_INVALID_CREDENTIALS', { reason: 'mismatch', attemptsRemaining: 4 }),
+          );
+        }
+        state.session = { ...state.session, mfaVerified: true };
+        return Promise.resolve({ session: state.session, mfaRequired: true, superseded: null });
+      },
       logout: () => Promise.resolve(undefined),
       session: () => {
         if (state.authError !== null) {
@@ -569,6 +608,8 @@ async function mountApp(
     session?: SessionInfo | null;
     /** What `GET /workspace` serves, for the restore path; `DEFAULT_LAYOUT` has no frames in it. */
     layout?: WorkspaceLayout;
+    /** The page reload a sign-out ends with; jsdom cannot navigate, so a test passes a spy. */
+    reloadPage?: () => void;
   } = {},
 ): Promise<Mounted> {
   const state = plant();
@@ -592,6 +633,7 @@ async function mountApp(
         sdk: state.sdk,
         universe,
         ...(options.screens === undefined ? {} : { screens: options.screens }),
+        ...(options.reloadPage === undefined ? {} : { reloadPage: options.reloadPage }),
       }}
       scheduler={recordingScheduler()}
     />,
@@ -681,9 +723,110 @@ describe('the composition root', () => {
 
     expect(screen.getByTestId('session-gate')).toHaveAttribute('data-gate', 'anonymous');
     expect(screen.queryByTestId('shell')).toBeNull();
-    expect(document.body.textContent).toContain('NO SESSION');
-    // No login form is invented: there is no such route in this build.
-    expect(screen.queryByLabelText(/password/i)).toBeNull();
+    // This asserted the opposite until there was one: "No login form is invented: there is no such
+    // route in this build." There is now — `shell/SignIn.tsx` — so the anonymous gate is the form.
+    expect(screen.getByLabelText('Email')).toHaveAttribute('autocomplete', 'username');
+    expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password');
+  });
+});
+
+/* ---------------------------------------------------------------------------------------------- */
+/* Sign-in: a password, then a code by email — `shell/SignIn.tsx`                                  */
+/* ---------------------------------------------------------------------------------------------- */
+
+describe('signing in — a password, then a code sent by email', () => {
+  /**
+   * The whole journey on the composed application, from the anonymous gate to a running terminal.
+   * For fifteen packages there was no way to make it: the gate told the visitor to call
+   * `POST /auth/login` themselves, and an account that owed a second factor could not finish at all.
+   */
+  it('takes a password, sends a code, takes the code, and opens the terminal', async () => {
+    const app = await mountApp({ session: null });
+    expect(screen.getByTestId('session-gate')).toHaveAttribute('data-gate', 'anonymous');
+
+    await userEvent.type(screen.getByLabelText('Email'), 'pm@demo.terminal');
+    await userEvent.type(screen.getByLabelText('Password'), 'a-long-test-password');
+    await userEvent.click(screen.getByTestId('login-submit'));
+    await app.settle();
+
+    // The password is right and the account owes a second factor: the gate is the code step, and
+    // the code was asked for exactly once on arrival — StrictMode notwithstanding.
+    expect(screen.getByTestId('session-gate')).toHaveAttribute('data-gate', 'mfa');
+    expect(await screen.findByTestId('code-sent')).toHaveTextContent('p*@d******l.terminal');
+    expect(app.plant.codesSent).toBe(1);
+    expect(screen.queryByTestId('shell')).toBeNull();
+
+    await userEvent.type(screen.getByLabelText('Code'), '000000');
+    await userEvent.click(screen.getByTestId('code-submit'));
+    await app.settle();
+    expect(screen.getByTestId('code-problem')).toHaveTextContent('That code is not right — 4 tries left.');
+    expect(screen.queryByTestId('shell')).toBeNull();
+
+    // A mail client's grouping is accepted as typed.
+    await userEvent.type(screen.getByLabelText('Code'), '424 242');
+    await userEvent.click(screen.getByTestId('code-submit'));
+    await app.settle();
+
+    expect(await screen.findByTestId('shell')).toBeInTheDocument();
+    expect(screen.queryByTestId('session-gate')).toBeNull();
+  });
+
+  it('says the same thing for a wrong address and a wrong password, and clears the password', async () => {
+    await mountApp({ session: null });
+    await userEvent.type(screen.getByLabelText('Email'), 'nobody@demo.terminal');
+    await userEvent.type(screen.getByLabelText('Password'), 'a-long-test-password');
+    await userEvent.click(screen.getByTestId('login-submit'));
+    const unknownAddress = await screen.findByTestId('login-problem');
+    expect(unknownAddress).toHaveTextContent('Email or password is not right.');
+    expect(screen.getByLabelText('Password')).toHaveValue('');
+
+    await userEvent.clear(screen.getByLabelText('Email'));
+    await userEvent.type(screen.getByLabelText('Email'), 'pm@demo.terminal');
+    await userEvent.type(screen.getByLabelText('Password'), 'not-the-password');
+    await userEvent.click(screen.getByTestId('login-submit'));
+    expect(await screen.findByTestId('login-problem')).toHaveTextContent('Email or password is not right.');
+  });
+
+  it('goes straight to the terminal for an account with no second factor', async () => {
+    const app = await mountApp({ session: null });
+    app.plant.credential = { ...app.plant.credential, mfa: false };
+    await userEvent.type(screen.getByLabelText('Email'), 'pm@demo.terminal');
+    await userEvent.type(screen.getByLabelText('Password'), 'a-long-test-password');
+    await userEvent.click(screen.getByTestId('login-submit'));
+    await app.settle();
+    expect(await screen.findByTestId('shell')).toBeInTheDocument();
+    expect(app.plant.codesSent).toBe(0);
+  });
+
+  /**
+   * SIGNING OUT ENDS WITH A FRESH PAGE, by both doors. Before the sign-in form a sign-out could only
+   * end at the gate; now the next person can sign in on the same page, and everything the stores
+   * still hold — the last person's panels, which the shell draws before it restores the new
+   * workspace, and a workspace autosave still waiting on its debounce — would carry over to them.
+   * A reload is the one reset nothing can be left out of.
+   */
+  it('reloads the page after "Use a different account" on the code step', async () => {
+    const reloadPage = vi.fn();
+    const app = await mountApp({ session: null, reloadPage });
+    await userEvent.type(screen.getByLabelText('Email'), 'pm@demo.terminal');
+    await userEvent.type(screen.getByLabelText('Password'), 'a-long-test-password');
+    await userEvent.click(screen.getByTestId('login-submit'));
+    await app.settle();
+    await screen.findByTestId('code-sent');
+
+    await userEvent.click(screen.getByTestId('code-signout'));
+    await app.settle();
+    expect(reloadPage).toHaveBeenCalledOnce();
+  });
+
+  it('reloads the page after /logout', async () => {
+    const reloadPage = vi.fn();
+    const app = await mountApp({ reloadPage });
+    await app.go('p1', '/logout{Enter}');
+    await app.settle();
+    expect(reloadPage).toHaveBeenCalledOnce();
+    // And the gate has the page meanwhile: the terminal is not left on screen for the reload.
+    expect(screen.queryByTestId('shell')).toBeNull();
   });
 });
 

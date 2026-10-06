@@ -20,3 +20,7 @@ fixtures/sessions/*/actual.ndjson
 
 # Deployment secrets (docs/DEPLOYMENT.md §7) — never committed.
 .env.deploy
+
+# Sign-in codes written by EMAIL_TRANSPORT=outbox (dev and e2e) — live codes, never committed.
+# No leading slash, so it matches at any depth: packages/server/.outbox/, packages/e2e/.outbox/.
+.outbox/

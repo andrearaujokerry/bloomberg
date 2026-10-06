@@ -34,7 +34,7 @@ import type { FunctionCode, PayloadOf } from '@terminal/core';
 import type { InstrumentSummary } from '@terminal/sdk';
 import { describe, expect, it } from 'vitest';
 
-import type { Badge, LiveView, Node, ScreenCtx, ScreenSpec } from '../../../src/screen/types.js';
+import type { Badge, LiveView, Node, ScreenCtx, ScreenProps, ScreenSpec } from '../../../src/screen/types.js';
 import { screenModules } from '../../../src/screens/index.js';
 
 const TEST_DIR = dirname(fileURLToPath(import.meta.url));
@@ -263,14 +263,19 @@ describe('every wired action is an action some keymap declares', () => {
       const rec: Recorded = { setParams: [], navigate: [] };
       // The skeleton branch: no payload, which every screen must answer, and which is the branch that
       // publishes `actions` before the first paint.
-      const spec = screenModules[code].Screen({
+      // Widened to one props type, as `shell/Panel.tsx#AnyScreenProps` does: calling a UNION of 38
+      // screen functions would demand an argument that satisfies every screen's props at once.
+      const Screen = screenModules[code].Screen as (
+        props: ScreenProps<Record<string, unknown>, unknown>,
+      ) => ScreenSpec;
+      const spec = Screen({
         payload: undefined,
         params,
         instrument: INSTRUMENT,
         meta: undefined,
         live: LIVE,
-        ctx: ctxOf(rec),
-      } as Parameters<typeof screenModules[typeof code]['Screen']>[0]);
+        ctx: ctxOf<Record<string, unknown>>(rec),
+      });
 
       const declared = new Set([
         ...manifest.keymap.map((b) => b.action),

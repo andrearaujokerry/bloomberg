@@ -880,7 +880,7 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
     // would have done by itself.
     test.use({ storageState: { cookies: [], origins: [] } });
 
-    test('the terminal is a gate, and there is nothing to type into', async ({ page }) => {
+    test('the terminal is a sign-in form, and there is no terminal behind it', async ({ page }) => {
       await page.goto('/');
 
       const gate = page.getByTestId('session-gate');
@@ -888,10 +888,13 @@ test.describe('WP-15 smoke — the terminal, against the seeded universe', () =>
       // `App.tsx`'s `Gate` has four states on `data-gate`; `anonymous` is "the plant answered, and
       // there is no session", as distinct from `unknown` ("it never answered").
       await expect(gate).toHaveAttribute('data-gate', 'anonymous');
-      await expect(gate).toContainText('NO SESSION');
-      await expect(gate).toContainText('This terminal has no sign-in screen');
+      // `anonymous` is the login form (`shell/SignIn.tsx`); `login.spec.ts` signs in through it.
+      await expect(gate.getByTestId('login-form')).toBeVisible();
+      await expect(gate.getByLabel('Email', { exact: true })).toBeVisible();
+      await expect(gate.getByLabel('Password', { exact: true })).toBeVisible();
 
-      // No shell, no panels, no command line — which is precisely why `fixtures/auth.ts` exists.
+      // No shell, no panels, no command line — the specs above are past the form only because
+      // `fixtures/auth.ts` signed in for them.
       await expect(page.getByTestId('shell')).toHaveCount(0);
       await expect(page.locator('[data-panel]')).toHaveCount(0);
       await expect(page.locator(COMMAND_LINE)).toHaveCount(0);

@@ -192,3 +192,39 @@ export const sessions = pgTable(
     ),
   ],
 );
+
+/**
+ * Email sign-in codes — migration **0020**, not 0011 like the rest of this file. The second factor
+ * the session model's MFA gate already had a place for (`http/auth/emailCode.ts`).
+ *
+ * Hashed (`code_hash` is HMAC-SHA256, 32 bytes), bound to one session, single-use, five attempts.
+ * The application may UPDATE only `attempts`, `consumed_at` and `superseded_at` (0020 §20.b).
+ */
+export const mfaEmailCodes = pgTable(
+  'mfa_email_codes',
+  {
+    codeId: uuid('code_id').primaryKey().defaultRandom(),
+    sessionId: uuid('session_id')
+      .notNull()
+      .references(() => sessions.sessionId, { onDelete: 'cascade' }),
+    userId: bigint('user_id', { mode: 'number' })
+      .notNull()
+      .references(() => users.userId),
+    codeHash: bytea('code_hash').notNull(),
+    sentTo: text('sent_to').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    attempts: integer('attempts').notNull().default(0),
+    consumedAt: timestamp('consumed_at', { withTimezone: true }),
+    supersededAt: timestamp('superseded_at', { withTimezone: true }),
+  },
+  (t) => [
+    index('mfa_email_codes_live_idx')
+      .on(t.sessionId, t.createdAt.desc())
+      .where(sql`${t.consumedAt} IS NULL AND ${t.supersededAt} IS NULL`),
+    check('mfa_email_codes_code_hash_check', sql`octet_length(${t.codeHash}) = 32`),
+    check('mfa_email_codes_attempts_check', sql`${t.attempts} >= 0 AND ${t.attempts} <= 5`),
+    check('mfa_email_codes_check', sql`${t.expiresAt} > ${t.createdAt}`),
+    check('mfa_email_codes_check1', sql`${t.consumedAt} IS NULL OR ${t.supersededAt} IS NULL`),
+  ],
+);

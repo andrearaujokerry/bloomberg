@@ -202,6 +202,8 @@ const CONTRACT_TABLES: readonly string[] = [
   'status_incidents',
   'config_versions',
   'schema_meta',
+  // CONTRACTS §1.2's last row: migration 0020, DATA_MODEL §22 — added after the original digest.
+  'mfa_email_codes',
 ];
 
 // ── CONTRACTS §1.3 — SQL functions (L88-L2385) ────────────────────────────────────────────────
@@ -415,10 +417,10 @@ async function names(sql: string, params: readonly unknown[] = []): Promise<stri
 }
 
 describe('migrations apply to an empty database', () => {
-  it('applies the nineteen migration files in name order', () => {
-    expect(applied).toHaveLength(19);
+  it('applies the twenty migration files in name order', () => {
+    expect(applied).toHaveLength(20);
     expect(applied[0]).toBe('0001_extensions_enums.sql');
-    expect(applied.at(-1)).toBe('0019_data_exceptions_tenant.sql');
+    expect(applied.at(-1)).toBe('0020_mfa_email_codes.sql');
     expect([...applied].sort()).toEqual(applied);
   });
 
@@ -456,14 +458,14 @@ describe('CONTRACTS §1.1 — enum types', () => {
 });
 
 describe('CONTRACTS §1.2 — tables', () => {
-  it('creates exactly the ninety-four tables', async () => {
+  it('creates exactly the ninety-five tables', async () => {
     // `relkind IN ('r','p')` counts the partitioned parents; `relispartition` drops the children,
     // which are data, not schema (0016 seeds an initial set and the maintenance job adds more).
     const found = await names(`
       SELECT c.relname AS name
         FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
        WHERE n.nspname = 'public' AND c.relkind IN ('r', 'p') AND NOT c.relispartition`);
-    expect(CONTRACT_TABLES).toHaveLength(94);
+    expect(CONTRACT_TABLES).toHaveLength(95);
     expect(found.sort()).toEqual([...CONTRACT_TABLES].sort());
   });
 

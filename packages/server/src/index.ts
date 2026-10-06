@@ -43,6 +43,7 @@ import { attachAlertEngine } from './alerts/engine.js';
 import { buildApp, type AppDeps, type ServerState } from './app.js';
 import { ConfigError, getConfig } from './config.js';
 import { closeDb, connectDb, pendingMigrations, withTx } from './db/client.js';
+import { emailSenderFromConfig, emailTransportNotice } from './email/sender.js';
 import { accessLog } from './entitlements/accessLog.js';
 import { evaluator } from './entitlements/evaluator.js';
 import { licenceRegistry } from './entitlements/licenceRegistry.js';
@@ -163,8 +164,17 @@ async function main(): Promise<void> {
     // them. Nothing else on `FunctionRouteDeps` is set here, and every other member has a working
     // default (`http/routes/functions.ts` L107-110).
     functions: { usageEvents: usage, licences: registry },
+    // The email second factor's transport, from configuration. `null` when none is set, which the
+    // code routes answer with `503` — fail closed (`email/sender.ts`). Reported below once the
+    // logger exists, at `warn` for anything but SMTP.
+    auth: { emailSender: emailSenderFromConfig(config) },
   };
   const app = buildApp(deps);
+
+  {
+    const notice = emailTransportNotice(config);
+    app.log[notice.level](notice.obj, notice.msg);
+  }
 
   app.log.info(
     { step: 3, ...registry.stats(), ...fields },

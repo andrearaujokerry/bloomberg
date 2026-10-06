@@ -103,7 +103,7 @@ function databaseOf(url: string): string {
  * One row, one column, as text — `psql -At`. `''` when the query selected nothing.
  * @throws when `psql` is not on PATH, or the query failed; the message carries psql's stderr.
  */
-async function scalar(url: string, sql: string): Promise<string> {
+export async function scalar(url: string, sql: string): Promise<string> {
   try {
     const { stdout: out } = await execFile('psql', [url, '-Atqc', sql], {
       env: { ...processEnv, PGCONNECT_TIMEOUT: '5' },

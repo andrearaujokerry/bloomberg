@@ -2,13 +2,12 @@
 //
 // ## The problem this solves
 //
-// This terminal has no sign-in screen, and that is a design decision rather than a gap: `App.tsx`'s
-// `Gate` says so in as many words ("This terminal has no sign-in screen"), and the web client only
-// ever reads `GET /auth/session` — it has no code path that posts credentials. Without a session
-// cookie the page renders `NO SESSION` and there is no command line, no panel and no grid, so every
-// spec in this suite would be asserting against a 5-line paragraph.
+// Without a session cookie the page is the sign-in form (`shell/SignIn.tsx`) and there is no command
+// line, no panel and no grid. Signing in through the form is `login.spec.ts`'s subject; every other
+// spec is about what comes after it, and typing a password at the top of each one would spend the
+// login limiter's budget (constraint 2 below) and make every spec a test of the form.
 //
-// A session therefore has to be minted against the PLANT and handed to the browser:
+// A session is therefore minted against the PLANT and handed to the browser:
 //
 //   POST /api/v1/auth/login          header `x-requested-with: terminal`   (API.md §12.1)
 //   { email, password, deviceId }

@@ -13,6 +13,7 @@ import type { Clock } from '@terminal/core';
 import type { FastifyInstance } from 'fastify';
 
 import { buildApp, type AppDeps, type ServerState } from '../app.js';
+import type { AuthRouteDeps } from '../http/routes/auth.js';
 import { getConfig, type Config } from '../config.js';
 import { getDb, type Db, type Tx } from '../db/client.js';
 import { evaluator } from '../entitlements/evaluator.js';
@@ -46,6 +47,12 @@ export interface TestAppOptions {
    * one over the same handle. Ignored when `entitlements` is supplied.
    */
   quotas?: Quotas;
+  /**
+   * `http/routes/auth.ts`'s overrides — a test of the email second factor passes
+   * `{ emailSender: memorySender() }` here and reads the message back. Omitted, the routes have no
+   * transport and refuse every send, which is the production default too.
+   */
+  auth?: AuthRouteDeps;
 }
 
 export interface TestApp {
@@ -93,7 +100,16 @@ export async function createTestApp(options: TestAppOptions = {}): Promise<TestA
 
   // The quota source is on `deps` too, so `ws/session.ts` resolves the concurrent-subscription
   // ceiling from `quota_limits` exactly as it does in production (API.md §8).
-  const deps: AppDeps = { config, clock, db, plant, state, entitlements, quotas: quotaSource };
+  const deps: AppDeps = {
+    config,
+    clock,
+    db,
+    plant,
+    state,
+    entitlements,
+    quotas: quotaSource,
+    ...(options.auth === undefined ? {} : { auth: options.auth }),
+  };
   const app = buildApp(deps, { logger: options.logger ?? false });
   await app.ready();
 

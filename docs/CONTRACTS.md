@@ -325,6 +325,8 @@ status_incidents(incident_id bigint GENERATED, opened_at timestamptz, closed_at 
 schema_meta(key text PRIMARY KEY, value text, updated_at timestamptz)
 -- L2194
 config_versions(name text PRIMARY KEY, -- 'entitlements', 'calendars', 'universe', version bigint, updated_at timestamptz)
+-- L2656 (§22, migration 0020 — added after the original digest)
+mfa_email_codes(code_id uuid PRIMARY KEY, session_id uuid →sessions ON DELETE CASCADE, user_id bigint →users, code_hash bytea CHECK (octet_length(code_hash) = 32), -- HMAC-SHA256(key, code_id ':' code); never the code, sent_to text, created_at timestamptz, expires_at timestamptz, attempts integer CHECK (attempts BETWEEN 0 AND 5), consumed_at timestamptz, superseded_at timestamptz)
 ```
 
 ### 1.3 SQL functions, views, triggers

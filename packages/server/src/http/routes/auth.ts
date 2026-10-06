@@ -1,6 +1,6 @@
 /**
  * `http/routes/auth.ts` — the twelve routes of API.md §1.3 (SEC-01, SEC-02, SEC-03, API-01,
- * ENTL-03, API-06).
+ * ENTL-03, API-06), and the email second factor's two of §15.
  *
  * Everything hard is already built and this module only composes it: `http/auth/session.ts` mints
  * and resolves sessions and owns the guard, `password.ts` verifies the dev credential inside
@@ -37,6 +37,7 @@ import { FIELD_DICTIONARY_VERSION, type Clock, type Tier } from '@terminal/core'
 import {
   ApiKeyCreate,
   LoginRequest,
+  MfaEmailVerifyRequest,
   WebAuthnLoginOptionsRequest,
   WebAuthnLoginVerifyRequest,
   WebAuthnRegisterVerifyRequest,
@@ -84,6 +85,11 @@ import {
   verifyRegistration,
 } from '../auth/webauthn.js';
 import { AppError, ForbiddenError, NotFoundError, ValidationFailedError } from '../errors.js';
+import { getConfig } from '../../config.js';
+import type { EmailSender } from '../../email/sender.js';
+import { deriveCodeKey } from '../auth/emailCode.js';
+import { emailCodeService } from '../auth/emailCodeService.js';
+import type { CodeRejection, EmailCodeService } from '../auth/emailCodeService.js';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // Wiring
@@ -103,6 +109,14 @@ export interface AuthRouteDeps {
   loginRateLimit?: { max: number; windowMs: number };
   /** `Secure` on the `tsid` cookie. Omitted only for `NODE_ENV=development` on plain HTTP. */
   cookieSecure?: boolean;
+  /**
+   * How email sign-in codes leave the server — `index.ts` builds it from configuration
+   * (`email/sender.ts#emailSenderFromConfig`). Omitted or `null`: no transport, so every send is
+   * refused with `503` — fail closed, never "log it for now".
+   */
+  emailSender?: EmailSender | null;
+  /** The whole code service, for a test that wants to replace it. Overrides `emailSender`. */
+  emailCodes?: EmailCodeService;
 }
 
 declare module '../../app.js' {
@@ -315,6 +329,18 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
   const service: SessionService =
     app.deps.auth?.sessions ?? hosted ?? sessionService({ db, clock });
   const quotaService: Quotas = app.deps.auth?.quotas ?? buildQuotas({ db, clock });
+
+  // Built lazily so a test app that never touches email codes never reads `SESSION_SECRET` for it.
+  let codesMemo: EmailCodeService | undefined;
+  const codes = (): EmailCodeService =>
+    (codesMemo ??=
+      app.deps.auth?.emailCodes ??
+      emailCodeService({
+        db,
+        clock,
+        key: deriveCodeKey(getConfig().SESSION_SECRET),
+        sender: app.deps.auth?.emailSender ?? null,
+      }));
 
   async function registry(): Promise<LicenceRegistry> {
     const injected = app.deps.auth?.licences;
@@ -606,6 +632,80 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
       superseded: minted.superseded,
     };
   });
+
+  // ── POST /auth/mfa/email/send · POST /auth/mfa/email/verify ───────────────────────────────
+  //
+  // The second way through the MFA gate (API.md §1.1 L57), beside WebAuthn; the contract is API.md
+  // §15. Both routes require a cookie session that has PROVED THE PASSWORD and still owes a second
+  // factor; neither can be reached without one, and neither ever mints a session. That last
+  // property is the difference from `/auth/webauthn/login/verify`, which has a passwordless path:
+  // an email code is a second factor only, or an inbox would become a credential on its own. See
+  // `http/auth/emailCode.ts`.
+
+  /** The session must be a web session that still owes a second factor. */
+  function owesSecondFactor(principal: Principal): void {
+    if (principal.clientKind !== 'web' || !principal.mfaRequired || principal.mfaVerified) {
+      throw new AppError('BAD_REQUEST', 'This session does not owe a second factor.');
+    }
+  }
+
+  /** What the person signing in is told for each way a code can be refused. */
+  const REJECTION_MESSAGE: Readonly<Record<CodeRejection, string>> = {
+    malformed: 'A sign-in code is six digits.',
+    no_code: 'There is no code waiting for this sign-in. Ask for a new one.',
+    expired: 'That code has expired. Ask for a new one.',
+    exhausted: 'Too many wrong codes. Ask for a new one.',
+    mismatch: 'That code is not right.',
+  };
+
+  app.post(
+    '/auth/mfa/email/send',
+    { preHandler: requireSession({ allowUnverifiedMfa: true }) },
+    async (request) => {
+      const principal = request.principal;
+      if (principal === undefined) throw new AppError('AUTH_REQUIRED', 'Sign in first.');
+      owesSecondFactor(principal);
+      return codes().send({
+        sessionId: principal.sessionId,
+        userId: principal.userId,
+        email: principal.email,
+      });
+    },
+  );
+
+  app.post(
+    '/auth/mfa/email/verify',
+    { preHandler: requireSession({ allowUnverifiedMfa: true }) },
+    async (request) => {
+      const principal = request.principal;
+      if (principal === undefined) throw new AppError('AUTH_REQUIRED', 'Sign in first.');
+      owesSecondFactor(principal);
+      const body = parseOrThrow(MfaEmailVerifyRequest, request.body, 'body');
+
+      const outcome = await codes().verify({ sessionId: principal.sessionId, code: body.code });
+      if (!outcome.ok) {
+        throw new AppError('AUTH_INVALID_CREDENTIALS', REJECTION_MESSAGE[outcome.reason], {
+          details: {
+            reason: outcome.reason,
+            ...(outcome.attemptsRemaining === null ? {} : { attemptsRemaining: outcome.attemptsRemaining }),
+          },
+        });
+      }
+
+      // Upgrade THIS session — the one that proved the password and asked for the code. Never mint.
+      await service.markMfaVerified(principal.sessionId);
+      await db
+        .update(users)
+        .set({ lastLoginAt: new Date(clock.now()) })
+        .where(eq(users.userId, principal.userId));
+
+      return {
+        session: await sessionInfo(principal.sessionId),
+        mfaRequired: true,
+        superseded: null,
+      };
+    },
+  );
 
   // ── POST /auth/logout ──────────────────────────────────────────────────────────────────────
 

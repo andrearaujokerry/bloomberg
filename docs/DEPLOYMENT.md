@@ -352,20 +352,37 @@ link that shows empty charts three weeks after it was sent is worse than no demo
 
 Five items. Sizes are my estimate of the work, not of the diff.
 
-### 4.1 A way to sign in — REQUIRED, nothing works without it — DECIDED: a login form with email codes
+### 4.1 A way to sign in — DONE (2026-10-06): a login form with email codes
 
-**Decided on 2026-10-06: a real login form, with a second factor by email code.** It plugs into the MFA
-gate the session model already has — a password-verified session that still owes a second factor may
-only reach `/auth/*` — rather than inventing one. Accounts are created by an admin (no public sign-up,
-matching SEC-01's one-row-per-natural-person design); codes are six digits from a CSPRNG, stored
-hashed, valid ten minutes, single-use, bound to the session that asked, five wrong guesses and dead.
-Mail goes out over SMTP so any free provider works, and in production **no configured transport means
-no code is sent** — never a code in a log. The options below are kept for the record.
+**Built: a real login form, with a second factor by email code.** It plugs into the MFA gate the
+session model already has — a password-verified session that still owes a second factor may only
+reach `/auth/*` — rather than inventing one. Accounts are created by whoever runs
+`scripts/create-user.ts` (no public sign-up, matching SEC-01's one-row-per-natural-person design);
+codes are six digits from a CSPRNG, stored as a keyed hash, valid ten minutes, single-use, bound to
+the session that asked, five wrong guesses and dead. Mail goes out over SMTP so any provider works, and
+**no configured transport means no code is sent** — never a code in a log. The contract is API.md
+§15; the tests are `test/integration/auth/mfaEmail*.test.ts` and `e2e/tests/login.spec.ts`.
 
+An email code is a real second factor but **not a phishing-resistant one** — a page that proxies the
+sign-in can relay the code as easily as the password. For a demo that is a sound trade; it is not
+what SEC-02 asks for, and WebAuthn (built, no UI yet) remains the answer to that.
 
-`App.tsx` L22-23 and L483: **there is no login form anywhere in this repository.** Sessions are
-minted by `POST /api/v1/auth/login` against a seeded user. A visitor to the public URL today would
-get the gate message telling them to send a request with curl.
+What the deployment needs for it:
+
+- `EMAIL_TRANSPORT=smtp`, `EMAIL_FROM`, `SMTP_HOST`, `SMTP_PORT` (587), `SMTP_SECURE` (`starttls`),
+  `SMTP_USER`, `SMTP_PASS` in the host's secret store (`.env.example` lists them). `EMAIL_FROM` must
+  be an address the provider will send as — a verified domain, or the mailbox you authenticate as.
+  The plant logs the transport at startup (never the password); with none it warns, and every
+  sign-in that needs a code stops at "could not be sent".
+- **Never `EMAIL_TRANSPORT=outbox` in production**: it writes live codes to the server's disk. The
+  plant warns about it at startup in capitals for exactly this reason.
+- The order on first deploy: migrate → seed → **disable the seven seeded accounts** (§5 item 1) →
+  `create-user` for each real person → only then share the URL.
+
+The options considered before the decision, kept for the record. When this was written, `App.tsx`
+had no login form at all: sessions were minted by `POST /api/v1/auth/login` against a seeded user,
+and a visitor to the public URL would have got a gate message telling them to send a request with
+curl.
 
 Two options, and I recommend the second for a public demo:
 
@@ -430,9 +447,17 @@ stopped doing that.
 
 ## 5. Security — what must not ship
 
-1. **The shared seeded password.** All seven accounts use `correct horse battery staple`. Either
-   take §4.1(b) and leave no password-reachable account enabled, or re-hash every seeded account with
-   a secret only you hold. Do not deploy the fixture value.
+1. **The shared seeded password.** All seven accounts use `correct horse battery staple`. With the
+   login form built (§4.1), disable them right after the seed and before the URL is shared — login
+   refuses any account whose `status` is not `active`, so one statement does it:
+
+   ```sql
+   UPDATE users SET status = 'deprovisioned', deprovisioned_at = now()
+    WHERE email LIKE '%@demo.terminal' OR email LIKE '%@newsco.terminal';
+   ```
+
+   Then `scripts/create-user.ts` for each real person. Do not deploy the fixture value as a working
+   credential.
 2. **`SESSION_SECRET`** — 32+ random bytes from the host's secret store, never in git. The config
    enforces 16 characters minimum; that is a floor, not a target.
 3. **`RP_ID` / `RP_ORIGIN`** — leave them UNSET. There is no WebAuthn UI, and unset means every
@@ -444,8 +469,8 @@ stopped doing that.
 5. **`PUBLIC_FIELDS=1`** is a reasonable choice here. The field dictionary is documentation —
    definitions, units, decimals, licence terms, no instrument and no price — and publishing it lets a
    reader see the schema. Your call.
-6. **RLS is on and the demo persona should be one firm.** It works; §4.1(b)'s review is to confirm
-   the demo account lands in the right firm with the `delayed` tier and no export scope.
+6. **RLS is on, and every account is in exactly one firm.** `create-user --firm` requires a firm that
+   already exists and puts the person in it; RLS keeps them inside it.
 
 ---
 
@@ -492,7 +517,7 @@ Two practical notes:
 | ~~0~~ | ~~The Postgres 14 → 18 move (§2.3b)~~ — **DONE**: schema identical, suite green on 18; it found and fixed a collation dependency, a microsecond-truncation bug in the bitemporal write path, a rotting e2e spec and a parser defect (`BUILD_STATUS.md`) | ~~L~~ |
 | 1 | §4.2 Fastify serves the SPA, with the SPA fallback and a no-sourcemap build | S |
 | 2 | §4.3 ~~rate limiter~~ — it exists. What remains: the client address behind the host's proxy, decided in config | S |
-| 3 | §4.1 **login form + email second factor** (decided), SMTP transport, `create-user` script, with entitlement and abuse tests | L |
+| ~~3~~ | ~~§4.1 login form + email second factor, SMTP transport, `create-user` script~~ — **DONE**: with abuse tests (guess budget, single use, expiry, session binding, concurrent sends, resend limits, fail-closed transport, grants as `terminal_app`) and a browser spec that signs in with real keystrokes. It found a keyboard bug that swallowed every keystroke on the sign-in screen, and a first-load race that answered a new account's workspace with a 500 (`BUILD_STATUS.md`) | ~~L~~ |
 | 4 | §3.1 anchor the data axis to the snapshot in replay mode (`REPLAY_AS_OF`), so relative windows do not empty out | M |
 | 5 | §4.5 the snapshot banner, read from `/health`, showing the same as-of | S |
 | 6 | A `Dockerfile` + `.dockerignore`, or the host's native build config | S |
@@ -511,6 +536,8 @@ vitest suite twice, the e2e suite, and mutation-checks on anything with a securi
 | 1 | Create the accounts (host, Postgres, and a GitHub remote if you want CI) | They need your email and card-on-file-for-identity |
 | 2 | Generate `SESSION_SECRET` and `METRICS_TOKEN` and paste them into the host's secret store | I must never hold or print a production secret |
 | 3 | Paste `DATABASE_URL` into the host's secret store | Same |
+| 3a | Choose a mail provider that speaks SMTP, verify the sender address or domain with it, and paste `EMAIL_FROM` and the `SMTP_*` values into the host's secret store (§4.1) | Your account with the provider, and its credentials |
+| 3b | Run `create-user` for each real person against the production database, and the §5 statement that disables the seeded accounts | It prompts for each person's password, which I must never see |
 | 4 | Run step 0's probes and send me the output | Needs network |
 | 5 | Press deploy the first time, and tell me the URL | Needs your credentials |
 | 6 | A custom domain and its DNS, if you want one | Registrar access |
@@ -529,8 +556,8 @@ step 0 (you) ✓ DONE  →  item 0, the version move (me)  →  1,2,4,5 (me)  �
 Step 0 passed on 2026-10-06 (§2.3b). Item 0 is new and comes from what it found.
 
 Items 1, 2, 4 and 5 are independent of which host you pick and I can start on them the moment you
-have run step 0's probes. Item 3 depends on your §4.1 decision. Item 7 needs a live
-`DATABASE_URL` to test against, so it is last.
+have run step 0's probes. Item 3 is done (§4.1). Item 7 needs a live `DATABASE_URL` to test
+against, so it is last.
 
 ---
 

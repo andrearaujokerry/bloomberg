@@ -23,7 +23,7 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged; the dead-module and gapped-study findings below closed in backlog tier 2 |
 | WP-15 | Seed, fixtures, replay harness, parity, composition root, e2e | **merged** — part 2 added the 8 Playwright specs and regenerated `docs/TRACEABILITY.md` |
 
-6,098 tests across 266 files, plus 44 Playwright tests that `npm test` does not run. The suite is
+6,321 tests across 277 files, plus 47 Playwright tests that `npm test` does not run. The suite is
 ten vitest projects; `server-seed` owns its own database and is the only one that seeds (see below),
 and `packages/e2e` is Playwright and is not run by `npm test` at all. Measured at the close of the
 backlog: two consecutive `npm test` runs green in 284.2 s and 285.5 s of reported duration against
@@ -964,6 +964,96 @@ and three of them were in this tree on 14 all along.
 **For deployment** (`docs/DEPLOYMENT.md` §3): finding 3 is not only a test problem. A replay-mode site
 serves bars frozen at the capture date while every relative window (`1M`, `1Y`, `5D`) ends on the wall
 clock, so **the deployed terminal would show fewer bars every day and empty charts within weeks.**
+
+### A sign-in form, with a second factor by email — and six defects building it found
+
+`DEPLOYMENT.md` §4.1, decided 2026-10-06. The terminal had no sign-in screen; now `Gate`'s
+`anonymous` state is a login form and its `mfa` state is a code step (`web/src/shell/SignIn.tsx`).
+Behind them: `POST /auth/mfa/email/send` and `/verify` (API.md §15); migration 0020's
+`mfa_email_codes`; `http/auth/emailCode.ts` (the arithmetic, pure) and `emailCodeService.ts` (where
+each property is enforced in SQL); `email/sender.ts` with an `smtp` transport (nodemailer), an
+`outbox` one that writes files for development and the e2e suite, and an in-memory one for tests;
+`EMAIL_*`/`SMTP_*` configuration that fails closed; and `scripts/create-user.ts`, which prompts for
+the password rather than accepting it as an argument.
+
+A code is a **second factor only** — neither route can mint a session, or an inbox would be a
+credential on its own — and it is **not phishing-resistant**: a proxying page can relay it like the
+password. So it does not answer SEC-02, which asks for exactly that; WebAuthn does, and still has no
+UI. TRACEABILITY's SEC-02 row says so.
+
+What building it found, each one now a test that was watched failing before the fix:
+
+1. **The window's key dispatcher swallowed every keystroke on the sign-in screen.** It was attached
+   whatever the session state, routed each key to type-anywhere for a command line that did not exist
+   yet, and called `preventDefault` — so the login form could not be typed into. Found by
+   `App.test.tsx`'s journey; fixed in `App.tsx` by dispatching only once the session is `ready` and
+   never a key something else already handled. `login.spec.ts` types with `pressSequentially`, never
+   `fill`: `fill` sets the value without a `keydown` and would have passed against the bug.
+2. **Two sends at once bypassed both send limits.** `send` read the session's history before its
+   transaction, so a second request read it while the first one's row was uncommitted, passed the
+   cooldown and the five-code cap, could not see the first row to supersede it, and mailed a second
+   code — as many as requests fired. Found while writing API.md's description of the limits. Fixed as
+   `session.ts#create` serialises logins: an advisory lock keyed on the session, taken first, with the
+   history read after it. `mfaEmailConcurrency.test.ts` holds the first send open inside the transport
+   on a real connection; before the fix the second message went out while the first was held.
+3. **A new account's first workspace load could answer 500.** `GET /workspace` creates the default
+   desk on first read; two first reads at once both found none, both inserted, and the loser failed on
+   `workspaces_user_id_name_key` (23505 → `500 INTERNAL`). Every seeded account already has a desk,
+   so nothing exercised the path — and every `create-user` account takes it. Found by `login.spec.ts`,
+   whose request raced the shell's own first load, in the plant's log: the spec's assertion was "not
+   401" and let the 500 through. Fixed with `ON CONFLICT DO NOTHING` and a re-read
+   (`firstLoadRace.test.ts`, which holds the other insert uncommitted on a second connection); checked
+   by hand under `terminal_app` with RLS on. The spec now asserts exactly 200.
+4. **A failed resend locked the person out of a good code.** The code step disabled its box whenever
+   a send failed, including a resend after a code had already gone out — but a failed send rolls back
+   and supersedes nothing, so that code still worked. The same at the five-code limit. Both now keep
+   the box and say why (`signIn.test.tsx`).
+5. **Signing out would have handed the last person's state to the next.** Before the form, a sign-out
+   (`/logout`) could only end at the gate. With a form on the gate, the next person signs in on the
+   same page — and the stores are module singletons: the shell draws the last person's panels before
+   it restores the new workspace, a workspace autosave still on its debounce would go out under the
+   new person's cookie, and the session store had dropped the port it refreshes quotas through. Both
+   sign-out doors (`/logout`, and "Use a different account" on the code step) now end in a page
+   reload (`App.tsx#signedOut`), the one reset nothing can be left out of. `App.test.tsx` covers both.
+6. **A test that could not fail.** The first supersession test exhausted the new code and expected the
+   old one to stay dead; with supersession switched off it still passed, because `verify` reads only
+   the newest live code. It now asserts the rows (`mfaEmail.test.ts`, the comment above it).
+
+Smaller: the first `npm install nodemailer` resolved to a major with high-severity advisories (all
+≤ 10.0.5); it is `^10.0.15`, with no `@types` package needed. `deviceLabel` reported an iPhone as macOS
+— its agent says "like Mac OS X" — until the mobile platforms were tested first. API.md said the seed
+sets `mfa_required` for `admin` and `compliance`; the seed has no admin, and sets it false on every row.
+The schema contract moved with the schema: CONTRACTS §1.2 and `db/migrate.test.ts` now name 95 tables
+and 20 migrations. The new contract text is APPENDED — API.md §15, DATA_MODEL §22 — rather than
+inserted where it belongs, because over three hundred comments cite those two files by line number
+and an insertion would have silently moved every one after it.
+
+**OPEN, recorded rather than fixed:**
+
+- **The session token is not rotated when the second factor upgrades it.** `markMfaVerified` flips
+  `mfa_verified` on the cookie the password step set, so a token captured between the two steps
+  becomes a full session once the code is entered. WebAuthn's upgrade path does the same; the fix
+  (mint a new token at the upgrade, revoke the old) belongs to both together.
+- **`create-user`'s interactive prompt is untested.** The non-TTY path (`CREATE_USER_PASSWORD`) was
+  run against a scratch database and its rows checked; the no-echo TTY prompt was not.
+- **`scripts/` is outside `npm run typecheck`** (`tsc -b` builds the packages only), and vitest
+  strips test files' types without checking them. `tsconfig.eslint.json` reports 179 errors, all in
+  test files and none from this change; 58 have one cause, `import userEvent from
+  '@testing-library/user-event'` (the default export), where the named `{ userEvent }` checks clean.
+- **A `.env` copied before this change has no `EMAIL_TRANSPORT`**, so a `create-user` account cannot
+  finish signing in locally until the two lines from `.env.example` are added. Failing closed is
+  deliberate; the README says what to add.
+- **The e2e login budget is shared.** `globalSetup` spends the five-a-minute login allowance on the
+  accounts it pre-mints, so `login.spec.ts` meets `429` on a full run and waits it out (~55 s) the way
+  a person would — the same position `entitlement.spec.ts` is in, and for the same reason the limit is
+  not widened for the harness.
+
+Gate: 277 files / 6,321 tests green on Postgres 14 once and on Postgres 18 twice (was 269 / 6,214);
+47 e2e green on each, exit 0, no error-level line in either plant's log, WEI p95 455.3 ms (14) and
+411.5 ms (18) of 500; `bloomberg_test` still unseeded at `instruments=0 / licence_registry=33` on both.
+Each of the six defects above was watched failing before its fix. The e2e template databases were
+rebuilt with migration 0020 on both servers by running the `server-seed` project — a database that
+predates a migration makes the plant refuse to start, so the same is owed after any later one.
 
 ## Notes
 

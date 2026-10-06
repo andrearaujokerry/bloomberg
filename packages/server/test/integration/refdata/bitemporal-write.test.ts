@@ -1117,7 +1117,10 @@ describe('knowledge instants keep the database’s microseconds', () => {
         validFrom: VALID_FROM,
         data: govtData(instrumentId, (4 + i / 1000).toFixed(3)),
         provenanceId: p,
-        reason: `chain ${String(i)}`,
+        // `correction`: the same valid range re-stated at a later transaction time (DATA_MODEL §1.3).
+        // This was `chain ${String(i)}`, which is not a legal reason and which no gate caught, because
+        // vitest strips types without checking them.
+        reason: i === 0 ? 'initial' : 'correction',
       });
     }
 

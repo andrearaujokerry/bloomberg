@@ -37,6 +37,16 @@ export const REPO_ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 export const WEB_DIR = fileURLToPath(new URL('../../web/', import.meta.url));
 
 /**
+ * Where this run's plant writes the sign-in codes it "sends" (`EMAIL_TRANSPORT=outbox`,
+ * `server/src/email/sender.ts`). Per slot, like the ports and the database, so two runs side by side
+ * cannot read each other's codes. `login.spec.ts` reads the newest message for its own address from
+ * here — the same delivery path as production up to the last step. Gitignored.
+ */
+export const E2E_OUTBOX_DIR = fileURLToPath(
+  new URL(`../.outbox/slot-${String(E2E_SLOT)}/`, import.meta.url),
+);
+
+/**
  * Deliberately NOT 8080/5173 — those belong to `npm run dev`. `TERMINAL_E2E_SLOT` moves the whole
  * stack (both ports and the database, see `database.ts`) so two runs on one machine cannot meet;
  * the two explicit variables still win when a shard needs an exact pair.
@@ -89,6 +99,9 @@ export function serverEnv(overrides: Readonly<Record<string, string>> = {}): Rec
     PORT: String(SERVER_PORT),
     LOG_LEVEL: processEnv.E2E_LOG_LEVEL ?? 'warn',
     SESSION_SECRET: processEnv.SESSION_SECRET ?? 'e2e-only-secret-not-for-production',
+    // The email second factor, delivered to a directory this suite reads instead of to a mailbox.
+    EMAIL_TRANSPORT: 'outbox',
+    EMAIL_OUTBOX_DIR: E2E_OUTBOX_DIR,
     ...overrides,
   };
 }

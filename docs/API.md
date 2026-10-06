@@ -25,7 +25,7 @@ parse every response with the same objects; `packages/web` never calls `fetch` o
 | Trace | request header `x-trace-id` (UUID v4, optional — minted by `http/trace.ts` when absent); always echoed as a response header and in every error and `meta` (OPS-07) |
 | Client version | request header `x-client-version: <package>/<semver>` (`web/0.1.0`, `sdk-js/0.1.0`); response header `x-server-version` (§11) |
 | Pagination | cursor based: request `cursor?`, `limit?`; response `{ items, nextCursor: string \| null }` |
-| Sections | §1 auth · §2 errors · §3 common types · §4 `DataRequest` · §5 REST routes · §6 WebSocket · §7 field dictionary · §8 quotas · §9 export · §10 SDK · §11 versioning · §12 examples · §13 decisions · §14 open questions |
+| Sections | §1 auth · §2 errors · §3 common types · §4 `DataRequest` · §5 REST routes · §6 WebSocket · §7 field dictionary · §8 quotas · §9 export · §10 SDK · §11 versioning · §12 examples · §13 decisions · §14 open questions · §15 email sign-in codes |
 
 File map (`packages/sdk/src/`):
 
@@ -53,8 +53,8 @@ index.ts              createClient(), TerminalClient, every schema and type     
 | Item | Decision |
 | --- | --- |
 | Identity | One `users` row per natural person (DATA_MODEL §11): `email` (the login name), `display_name`, `firm_id`, `role ∈ user \| admin \| compliance \| dataops \| helpdesk \| newsroom`, `status`, `mfa_required`, `person_verified_at` (SEC-01 onboarding evidence recorded by an admin; SSO/SCIM is out of scope — `scim_external_id` is reserved). |
-| Dev-mode login (shipped) | `POST /auth/login` with `email` + `password`. Password hash is `crypt(password, gen_salt('bf', 12))` in `user_credentials.secret_hash` (`kind='password'`), verified with `crypt(password, secret_hash) = secret_hash` inside `http/auth/password.ts`. Seeded users come from `fixtures/seed/users.json` (SEC-01 substitute). |
-| WebAuthn (optional, shipped) | FIDO2 registration and assertion in `http/auth/webauthn.ts` (SEC-02) using the W3C JSON shapes (`PublicKeyCredentialCreationOptionsJSON`, `RegistrationResponseJSON`, `PublicKeyCredentialRequestOptionsJSON`, `AuthenticationResponseJSON`) stored in `user_credentials` (`kind='webauthn'`, `credential_id`, `public_key`, `sign_count`, `transports`, `aaguid`). When `users.mfa_required = true` (seed: `admin`, `compliance`) a password login yields a session with `mfaVerified=false` that may only call `/auth/*`; every other route returns `401 MFA_REQUIRED` until `/auth/webauthn/login/verify` succeeds. Passwordless login (`/auth/webauthn/login/options` + `verify` without a prior password step) is also accepted. |
+| Password login (shipped) | `POST /auth/login` with `email` + `password`, from the web client's sign-in form (`shell/SignIn.tsx`). Password hash is `crypt(password, gen_salt('bf', 12))` in `user_credentials.secret_hash` (`kind='password'`), verified with `crypt(password, secret_hash) = secret_hash` inside `http/auth/password.ts`. Seeded users come from `fixtures/seed/users.json` (SEC-01 substitute) and share one password that is **development only**; a real account is made with `scripts/create-user.ts`, which prompts for the password (≥ 12 characters, never accepted as an argument). |
+| WebAuthn (optional, shipped) | FIDO2 registration and assertion in `http/auth/webauthn.ts` (SEC-02) using the W3C JSON shapes (`PublicKeyCredentialCreationOptionsJSON`, `RegistrationResponseJSON`, `PublicKeyCredentialRequestOptionsJSON`, `AuthenticationResponseJSON`) stored in `user_credentials` (`kind='webauthn'`, `credential_id`, `public_key`, `sign_count`, `transports`, `aaguid`). When `users.mfa_required = true` a password login yields a session with `mfaVerified=false` that may only call `/auth/*`; every other route returns `401 MFA_REQUIRED` until a second factor succeeds — `/auth/webauthn/login/verify` or `/auth/mfa/email/verify` (§15). Passwordless login (`/auth/webauthn/login/options` + `verify` without a prior password step) is also accepted. (The seed sets `mfa_required = false` on every row so the e2e specs can reach a screen — `fixtures/seed/users.json`; `scripts/create-user.ts` sets it `true` unless told `--no-mfa`.) |
 | Session token (web) | opaque 32 random bytes, base64url, delivered as cookie `tsid`; the server stores only `digest(token,'sha256')` in `sessions.token_hash`. Cookie attributes: `HttpOnly; SameSite=Strict; Path=/; Secure` (Secure omitted only when `NODE_ENV=development` on `http://localhost`). Sliding expiry 12 h (`last_seen_at`), absolute 7 d (`expires_at`); `revoke_reason ∈ logout \| superseded \| expired \| admin \| deprovisioned`. |
 | CSRF | `SameSite=Strict` plus: every cookie-authenticated request with a method other than GET/HEAD/OPTIONS must carry `x-requested-with: terminal`, otherwise `403 CSRF_REJECTED`. Bearer requests are exempt. |
 | API keys (API-01 desktop + server API) | `Authorization: Bearer tk_<base64url 32 bytes>`; `api_keys.key_hash = digest(key,'sha256')`, bound to a `user_id` (a natural person, ENTL-03) with `scopes` default `{data:read,fn:run,ws:subscribe}`. The first use of a key creates a `sessions` row with `client_kind='api'`, `api_key_id`, 24 h sliding expiry; API sessions never supersede web sessions and are subject to the API quotas (§8). Unattended "server" keys are the same object minted for a user with `role='user'` and `scopes` containing `server` — priced separately per API-01, enforced only by the scope flag. |
@@ -97,7 +97,7 @@ export const SessionInfo = z.object({
 
 export const LoginResponse = z.object({
   session: SessionInfo,
-  mfaRequired: z.boolean(),                     // true → only /auth/* is usable until webauthn/login/verify
+  mfaRequired: z.boolean(),                     // true → only /auth/* is usable until a second factor verifies
   superseded: z.object({ sessionId: z.uuid(), deviceId: z.string().nullable(), deviceLabel: z.string().nullable(),
                          lastSeenAt: z.iso.datetime() }).nullable(),   // the web session this login displaced (SEC-03)
 });
@@ -126,7 +126,7 @@ export const SessionSummary = z.object({ sessionId: z.uuid(), clientKind: Client
 | POST | `/auth/api-keys` | `ApiKeyCreate` | `201 ApiKeyCreated` | requires a web session with `mfaVerified` when `mfa_required`; `scopes` containing `server` requires `role='admin'` |
 | DELETE | `/auth/api-keys/:apiKeyId` | — | `204` | sets `revoked_at`; its api session is revoked (`revoke_reason='admin'`) |
 
-Required headers summary: cookie sessions — `Cookie: tsid=…` plus `x-requested-with: terminal` on mutations; bearer sessions — `Authorization: Bearer tk_…`. Both — optional `x-trace-id`, recommended `x-client-version`.
+Required headers summary: cookie sessions — `Cookie: tsid=…` plus `x-requested-with: terminal` on mutations; bearer sessions — `Authorization: Bearer tk_…`. Both — optional `x-trace-id`, recommended `x-client-version`. The email second factor's two routes, `POST /auth/mfa/email/send` and `/verify`, are §15.
 
 ---
 
@@ -1503,3 +1503,44 @@ POST /api/v1/functions/YAS/run  { "security": { "ref": "AAPL US Equity" } }
 6. **Multi-window (TERM-10).** `WorkspaceLayout.windows` is carried and persisted; whether a second OS
    window opens its own WS (counting against `maxSubscriptions`) or shares via `BroadcastChannel` is a
    web-client decision outside this contract.
+
+---
+
+## 15. Email sign-in codes — the second factor by email
+
+Added after the original contract, so it is a section of its own at the end rather than rows inserted
+into §1 that would move every line reference below them. It extends §1: `POST /auth/login` for a
+`mfa_required` account yields a session with `mfaVerified=false` that may only call `/auth/*`, and
+these two routes are the second way through that gate, beside `/auth/webauthn/login/verify`.
+
+### 15.1 What ships
+
+| Item | Decision |
+| --- | --- |
+| Who it is for | A person without a security key. **It is not phishing-resistant**: a page that proxies the sign-in can relay the code in real time, as it can a password. So it does not meet SEC-02 ("phishing-resistant multi-factor authentication") on its own — WebAuthn does — and it is offered beside WebAuthn, not instead of it. |
+| The code | Six digits from `crypto.randomInt`, stored only as `HMAC-SHA256(key, codeId ':' code)` under a key derived from `SESSION_SECRET` — never the code (`http/auth/emailCode.ts`; rows in `mfa_email_codes`, DATA_MODEL §22). Valid 10 min. |
+| Five attempts | Counted by a conditional `UPDATE … SET attempts = attempts + 1 WHERE attempts < 5` *before* the comparison, so concurrent guesses cannot exceed the budget and a request that dies mid-compare still spent its guess. |
+| Single use | Consumed by a second conditional `UPDATE … WHERE consumed_at IS NULL`: of two correct guesses racing, exactly one wins. |
+| One live code per session | Sends for one session are serialised by an advisory lock taken first in the send transaction; the history is read after it, and earlier live codes are superseded in the same transaction as the insert and the hand-off to the mail transport — so a send that fails leaves no orphan code and charges no cooldown. Resend cooldown 30 s; at most 5 codes per sign-in. |
+| A second factor ONLY | Both routes require a web session that has proved the password and still owes the factor; verify upgrades **that** session (`mfa_verified=true`, same cookie) and never mints one, or an inbox would be a credential on its own. |
+| Transport | `EMAIL_TRANSPORT=smtp\|outbox` (`email/sender.ts`). Unset, nothing is sent and send answers `503 PROVIDER_UNAVAILABLE` — fail closed; codes are never logged. `outbox` writes messages to files and is for development and the e2e suite only. |
+| Grants | `terminal_app` gets `UPDATE (attempts, consumed_at, superseded_at)` only; no `DELETE`. |
+
+### 15.2 Schemas — `wire/rest/auth.ts`
+
+```ts
+export const MfaEmailSendResponse = z.object({
+  sentTo: z.string(),                           // masked: 'j******e@e*****e.com' — never the code, never the full address
+  expiresAt: z.iso.datetime(),
+  resendAvailableAt: z.iso.datetime(),          // asking again before this → 429 RATE_LIMITED + retryAfterMs
+  sendsRemaining: z.number().int().min(0),      // codes left for this sign-in; at zero, sign in again
+});
+export const MfaEmailVerifyRequest = z.object({ code: z.string().min(1).max(32) });   // server strips spaces/hyphens, then requires ^[0-9]{6}$
+```
+
+### 15.3 Routes (`http/routes/auth.ts`)
+
+| Method | Path | Request | Response | Notes |
+| --- | --- | --- | --- | --- |
+| POST | `/auth/mfa/email/send` | — | `200 MfaEmailSendResponse` | requires a web session that owes a second factor (otherwise `400 BAD_REQUEST`); supersedes any earlier code for the session. `429 RATE_LIMITED` with `details.reason='cooldown'` and `retryAfterMs` inside 30 s of the last send, or `details.reason='send_limit'` after 5 sends (sign in again); `503 PROVIDER_UNAVAILABLE` when no transport is configured or the mail server refused — the message is generic, the cause goes to the log |
+| POST | `/auth/mfa/email/verify` | `MfaEmailVerifyRequest` | `200 LoginResponse` | same session requirement; on success the **same** session becomes `mfaVerified=true` (no new cookie) and `users.last_login_at` is set. A refusal is `401 AUTH_INVALID_CREDENTIALS` with `details.reason ∈ malformed \| no_code \| expired \| exhausted \| mismatch` and, except for `malformed` (which spends no attempt), `details.attemptsRemaining` |

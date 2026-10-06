@@ -81,6 +81,8 @@ import type { AutocompleteContext, AutocompleteEngine } from './shell/Autocomple
 import { CommandLine, applyCandidate } from './shell/CommandLine.js';
 import type { CommandLineHandle, GoSelection } from './shell/CommandLine.js';
 import { HelpOverlay, loadHelp } from './shell/HelpOverlay.js';
+import { EmailCodeStep, LoginForm } from './shell/SignIn.js';
+import type { SignInSdk } from './shell/SignIn.js';
 import { KeyBar } from './shell/KeyBar.js';
 import type { HelpSdk } from './shell/HelpOverlay.js';
 import { SCREENS } from './shell/Panel.js';
@@ -149,7 +151,7 @@ export interface AppSdk {
     session(): Promise<SessionInfo>;
     /** `/logout` (FUNCTIONS §2.6): the server drops the session, then the gate takes the page. */
     logout(): Promise<unknown>;
-  };
+  } & Omit<SignInSdk['auth'], 'logout'>;
   /** `fn.run` / `fn.page` are the dispatcher's; `fn.csv` is PRINT (FUNC-03, API.md §9). */
   fn: DispatchSdk['fn'] & {
     csv(
@@ -189,6 +191,11 @@ export function appSdk(client: TerminalClient): AppSdk {
     auth: {
       session: () => client.auth.session(),
       logout: () => client.auth.logout(),
+      // The sign-in screen's three calls — `shell/SignIn.tsx`. Generated from the route table, so
+      // these exist on the client the moment `Auth.MfaEmailSend` / `MfaEmailVerify` do.
+      login: (args) => client.auth.login(args),
+      mfaEmailSend: () => client.auth.mfaEmailSend(),
+      mfaEmailVerify: (args) => client.auth.mfaEmailVerify(args),
     },
     fn: {
       run: (args, init) =>
@@ -256,6 +263,12 @@ export interface AppRuntimeOptions {
   universe?: LocalUniverseIndex | undefined;
   /** Non-fatal failures: a broken snapshot cache, a usage batch the plant refused. */
   onError?: ((error: unknown) => void) | undefined;
+  /**
+   * How a sign-out ends: a fresh page, so nothing the last person had open survives into the next
+   * sign-in — see {@link signedOut}. `location.reload()` when absent; jsdom cannot navigate, so a
+   * test passes a spy.
+   */
+  reloadPage?: (() => void) | undefined;
 }
 
 let currentRuntime: AppRuntime | null = null;
@@ -475,15 +488,50 @@ export interface GateProps {
   error: { code: string; message: string } | null;
   supersededBy?: { deviceLabel: string; createdAt: string } | undefined;
   onRetry: () => void;
+  /**
+   * Present in the application, absent in a test that renders the gate's sentences alone. With it,
+   * `'anonymous'` is a login form and `'mfa'` is the email-code step instead of a paragraph.
+   */
+  signIn?: {
+    sdk: SignInSdk;
+    session: SessionInfo | null;
+    onSession: (info: SessionInfo) => void;
+    onSignedOut: () => void;
+  };
 }
 
 /**
  * Everything that is not a running terminal.
  *
- * Four states, four sentences, and no login form: this build has no sign-in UI, and a box that
- * collected an email and could do nothing with it would be worse than the truth.
+ * This used to be "four states, four sentences, and no login form": the build had no sign-in UI, and
+ * a box that collected an email and could do nothing with it would have been worse than the truth.
+ * There is a sign-in now (`shell/SignIn.tsx`), so `'anonymous'` is the login form and `'mfa'` is the
+ * email-code step. `'unknown'` and `'locked'` are still sentences — there is nothing to type at either.
  */
-export function Gate({ status, error, supersededBy, onRetry }: GateProps): ReactElement {
+export function Gate({ status, error, supersededBy, onRetry, signIn }: GateProps): ReactElement {
+  if (status === 'anonymous' && signIn !== undefined) {
+    return (
+      <div style={S.app} data-testid="session-gate" data-gate={status}>
+        <div style={S.gate}>
+          <LoginForm sdk={signIn.sdk} onSession={signIn.onSession} />
+        </div>
+      </div>
+    );
+  }
+  if (status === 'mfa' && signIn !== undefined && signIn.session !== null) {
+    return (
+      <div style={S.app} data-testid="session-gate" data-gate={status}>
+        <div style={S.gate}>
+          <EmailCodeStep
+            sdk={signIn.sdk}
+            session={signIn.session}
+            onSession={signIn.onSession}
+            onSignedOut={signIn.onSignedOut}
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <div style={S.app} data-testid="session-gate" data-gate={status}>
       <div style={S.gate} role="status">
@@ -502,9 +550,7 @@ export function Gate({ status, error, supersededBy, onRetry }: GateProps): React
           <>
             <p style={S.warn}>NO SESSION</p>
             <p style={S.muted}>
-              This terminal has no sign-in screen. A session is minted by the plant
-              (POST /auth/login) against a seeded user; the web client only ever reads
-              GET /auth/session. Sign in through the plant, then retry.
+              Sign in with POST /auth/login, then retry.
             </p>
           </>
         ) : null}
@@ -513,8 +559,8 @@ export function Gate({ status, error, supersededBy, onRetry }: GateProps): React
           <>
             <p style={S.warn}>SECOND FACTOR REQUIRED</p>
             <p style={S.muted}>
-              The session owes a WebAuthn verification (/auth/webauthn/login/verify). No WebAuthn UI
-              exists in this build, so the terminal cannot complete it here.
+              The session owes a second factor — a code sent by email (/auth/mfa/email/send), or a
+              WebAuthn verification (/auth/webauthn/login/verify).
             </p>
           </>
         ) : null}
@@ -557,6 +603,7 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
 
   const status = useSessionStore((s) => s.status);
   const sessionError = useSessionStore((s) => s.error);
+  const sessionInfo = useSessionStore((s) => s.info);
   const lock = useSessionStore((s) => s.lock);
 
   /** The footer problem line of each panel — `PanelsPort.setProblem`'s destination. */
@@ -591,6 +638,23 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
   const reload = useCallback(() => {
     void useSessionStore.getState().load(sdk.auth);
   }, [sdk]);
+
+  /**
+   * The end of every sign-out — `/logout`, and "Use a different account" on the code step: the gate
+   * takes the page at once, and then the page is RELOADED.
+   *
+   * Before the sign-in form a sign-out could only end at the gate. Now the next person can sign in on
+   * the same page, and the stores are module singletons that would carry the last person's state
+   * over to them: the panels the shell draws before it restores the new workspace, a workspace
+   * autosave still waiting on its debounce — which would then be sent under the NEW person's cookie
+   * — and a session store with no port left to refresh quotas through. A reload is the one reset
+   * nothing can be left out of.
+   */
+  const reloadPage = options?.reloadPage;
+  const signedOut = useCallback(() => {
+    useSessionStore.getState().reset();
+    (reloadPage ?? ((): void => globalThis.location.reload()))();
+  }, [reloadPage]);
 
   /**
    * The gate's own read, ONCE per SDK.
@@ -828,11 +892,10 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
           void sdk.auth
             .logout()
             .catch(onError)
-            .finally(() => {
-              // The gate takes the page back either way: a logout the plant refused still means this
-              // client is finished with the session.
-              useSessionStore.getState().reset();
-            });
+            // The gate takes the page back either way, and the page is then reloaded
+            // (`signedOut`): a logout the plant refused still means this client is finished with
+            // the session.
+            .finally(signedOut);
           return;
         }
         case 'trace':
@@ -844,7 +907,7 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
           return;
       }
     },
-    [runtime, sdk, onError],
+    [runtime, sdk, onError, signedOut],
   );
 
   const dispatchDeps = useMemo<DispatchDeps>(() => {
@@ -1467,6 +1530,12 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
     const onKeyDown = (e: KeyboardEvent): void => {
       // The element wins. See the note above `panelKeys`.
       if (e.defaultPrevented) return;
+      // NOTHING to dispatch to until there is a terminal. Found by the first test that typed into the
+      // sign-in form: this listener is attached while the gate is up, saw each keystroke in the email
+      // field, routed it to TERM-06's type-anywhere — for a command line that does not exist yet —
+      // and called `preventDefault`, so the character never reached the input. In a browser the login
+      // form would have swallowed every key. The gate's own inputs own their keys, as any element does.
+      if (useSessionStore.getState().status !== 'ready') return;
       dispatcher.handleKeyDown(e);
     };
     target.addEventListener('keydown', onKeyDown);
@@ -1521,6 +1590,14 @@ export function App({ runtime: options, scheduler, loadUniverse = true }: AppPro
         error={sessionError}
         {...(lock?.supersededBy === undefined ? {} : { supersededBy: lock.supersededBy })}
         onRetry={reload}
+        signIn={{
+          sdk,
+          session: sessionInfo,
+          onSession: (info) => {
+            useSessionStore.getState().setSession(info);
+          },
+          onSignedOut: signedOut,
+        }}
       />
     );
   }

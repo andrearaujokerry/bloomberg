@@ -89,6 +89,34 @@ export const ConfigSchema = z.object({
    * fields carry still go through `POST /data` and the evaluator.
    */
   PUBLIC_FIELDS: z.enum(['0', '1']).default('0'),
+  // ── Email: how sign-in codes leave the server (http/auth/emailCode.ts) ──────────────────────
+  /**
+   * The second factor's transport. **Unset means codes are not sent at all**: a `mfa_required` user
+   * cannot finish signing in, and `POST /auth/mfa/email/send` answers `503 PROVIDER_UNAVAILABLE`.
+   * That is the fail-closed answer — the alternative of writing the code somewhere "for now" is how
+   * sign-in codes end up in production logs.
+   *
+   * `smtp` — any provider that speaks SMTP (Resend, Brevo, SES, Gmail with an app password…), so the
+   * choice of provider is configuration and never code. `outbox` — writes each message to
+   * `EMAIL_OUTBOX_DIR` as a file instead of sending it, for local development and the e2e suite. It
+   * puts live codes on disk in plain text and says so, loudly, at startup.
+   */
+  EMAIL_TRANSPORT: z.enum(['smtp', 'outbox']).optional(),
+  /** `Terminal <no-reply@your-domain>` — required for `smtp`; the provider must accept it as sender. */
+  EMAIL_FROM: z.string().min(3).optional(),
+  SMTP_HOST: z.string().min(1).optional(),
+  /** 587 with STARTTLS is the submission port nearly every provider documents. */
+  SMTP_PORT: z.coerce.number().int().min(1).max(65_535).default(587),
+  /**
+   * `starttls`: connect plain on 587 and REQUIRE the upgrade — a server that will not upgrade is
+   * refused, never used in clear. `tls`: implicit TLS from the first byte, usually port 465.
+   */
+  SMTP_SECURE: z.enum(['starttls', 'tls']).default('starttls'),
+  SMTP_USER: z.string().min(1).optional(),
+  SMTP_PASS: z.string().min(1).optional(),
+  /** Required for `outbox`. Created `0700` if absent; each message is written `0600`. */
+  EMAIL_OUTBOX_DIR: z.string().min(1).optional(),
+
   OPENFIGI_API_KEY: z.string().min(1).optional(),
   FRED_API_KEY: z.string().min(1).optional(),
   BLS_API_KEY: z.string().min(1).optional(),
@@ -167,7 +195,30 @@ export function loadConfig(env?: RawEnv): Config {
     });
     throw new ConfigError(issues);
   }
+  // Rules that span keys. Checked here rather than with a zod refinement because `KNOWN_KEYS` reads
+  // `ConfigSchema.shape`, which a refinement would wrap away.
+  const crossKey = emailConfigIssues(parsed.data);
+  if (crossKey.length > 0) throw new ConfigError(crossKey);
   return parsed.data;
+}
+
+/**
+ * The email settings that only make sense together. Exported so a test can state each rule without
+ * building a whole environment.
+ */
+export function emailConfigIssues(c: Config): string[] {
+  const issues: string[] = [];
+  if (c.EMAIL_TRANSPORT === 'smtp') {
+    if (c.SMTP_HOST === undefined) issues.push('SMTP_HOST: required when EMAIL_TRANSPORT=smtp');
+    if (c.EMAIL_FROM === undefined) issues.push('EMAIL_FROM: required when EMAIL_TRANSPORT=smtp');
+    if ((c.SMTP_USER === undefined) !== (c.SMTP_PASS === undefined)) {
+      issues.push('SMTP_USER / SMTP_PASS: set both, or neither for an unauthenticated relay');
+    }
+  }
+  if (c.EMAIL_TRANSPORT === 'outbox' && c.EMAIL_OUTBOX_DIR === undefined) {
+    issues.push('EMAIL_OUTBOX_DIR: required when EMAIL_TRANSPORT=outbox');
+  }
+  return issues;
 }
 
 let cached: Config | undefined;

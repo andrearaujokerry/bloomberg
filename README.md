@@ -9,7 +9,7 @@ through a fixture store, and every value carries a provenance row saying which s
 message and which timestamp produced it. There are no vendor keys and no live feed.
 
 ```
-38 screens · 154 tables · 19 migrations · 5,915 unit/integration tests · 39 browser tests
+38 screens · 155 tables · 20 migrations · 6,321 unit/integration tests · 47 browser tests
 ```
 
 ---
@@ -23,7 +23,7 @@ tests only).
 npm install
 cp .env.example .env              # already sane for local use
 createdb bloomberg_dev
-npm run db:migrate                # 19 migrations, 154 tables
+npm run db:migrate                # 20 migrations, 155 tables
 npm run db:seed                   # ~3½ minutes, offline, idempotent (re-running writes nothing)
 npm run dev                       # plant on :8080, app on :5173
 ```
@@ -32,29 +32,10 @@ Then open <http://localhost:5173>.
 
 ### Signing in
 
-**The terminal has no sign-in screen, by design.** A session is minted by the plant and the web
-client only ever _reads_ `GET /auth/session`. With no session you get a gate that says so.
-
-The quickest way in: open <http://localhost:5173>, open your browser's devtools console, and paste
-
-```js
-await fetch('/api/v1/auth/login', {
-  method: 'POST',
-  headers: { 'content-type': 'application/json', 'x-requested-with': 'terminal' },
-  body: JSON.stringify({
-    email: 'pm@demo.terminal',
-    password: 'correct horse battery staple',
-    deviceId: 'd_mylaptop01',
-  }),
-}).then((r) => r.json());
-```
-
-then reload the page. The response sets an `HttpOnly` cookie, so this has to happen in the browser
-rather than in a terminal — the app runs through Vite's `/api` proxy, which makes the request
-same-origin and the cookie usable.
-
-All seven seeded accounts share that password (it is the one in `docs/API.md` §12.1, and it is
-**development only**):
+Open <http://localhost:5173> and sign in with an email address and a password. All seven seeded
+accounts share the password `correct horse battery staple` (it is the one in `docs/API.md` §12.1,
+and it is **development only**). They have no second factor — `mfa_required` is off on every seeded
+row so the browser tests can reach a screen:
 
 | Account                    | Role            | Why it exists                                                                                                                      |
 | -------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -65,6 +46,32 @@ All seven seeded accounts share that password (it is the one in `docs/API.md` §
 | `dataops@demo.terminal`    | Data Operations | ingest and data-quality screens                                                                                                    |
 | `eod@demo.terminal`        | Equities PM     | **entitled only to end-of-day prices, and denied export** — the account to log in as if you want to see the entitlement rules bite |
 | `reporter@newsco.terminal` | Newsroom        | a different firm: news, nothing priced                                                                                             |
+
+#### Your own account, with a code by email
+
+```bash
+npx tsx scripts/create-user.ts --email you@example.com --name "Your Name" --firm "Demo Capital"
+```
+
+asks for the password twice without echoing it (at least 12 characters; `--password` is refused so
+it never lands in your shell history), and makes an account that needs a **second factor**: after
+the password, the terminal emails a six-digit code, good for ten minutes and five tries. `--role`
+sets the role (default `user`); `--no-mfa` makes an account without the second factor.
+
+Codes leave through `EMAIL_TRANSPORT`. Locally, `.env.example` sets `outbox`, which writes each
+message as a JSON file instead of sending it — into `packages/server/.outbox/` under `npm run dev`,
+since the path is relative to the plant's working directory (the plant logs the full path at
+startup). To read the newest code:
+
+```bash
+ls -t packages/server/.outbox/*.json | head -1 | xargs cat
+```
+
+A `.env` copied before the sign-in form existed has no `EMAIL_TRANSPORT`; add the two
+`EMAIL_TRANSPORT`/`EMAIL_OUTBOX_DIR` lines from `.env.example`. With no transport the plant sends
+nothing at all, and the code step says so — sign-in codes are never written to the log. For a real
+mail server, set `EMAIL_TRANSPORT=smtp` and the `SMTP_*` keys (`.env.example` lists them;
+`docs/DEPLOYMENT.md` §4.1 says what a deployment needs).
 
 ---
 
@@ -204,8 +211,8 @@ observations, 1,264 daily and 1,033 intraday bars, 3,510 option contracts, 160 n
 ## Testing
 
 ```bash
-npm test                # 5,915 tests, 254 files, ~4 minutes
-npm run test:e2e        # 39 browser tests in Chrome, ~3.5 minutes
+npm test                # 6,321 tests, 277 files, ~4½ minutes
+npm run test:e2e        # 47 browser tests in Chrome, ~3 minutes
 npm run typecheck
 npm run lint
 ```
@@ -273,7 +280,7 @@ The design is written down, and it is the authority the code is checked against.
 | `docs/BRIEF.md`                              | the wedge, the stack, the non-goals                                                                 |
 | `docs/REQUIREMENTS.md`                       | 158 numbered requirements, the ids cited throughout the code                                        |
 | `docs/ARCHITECTURE.md`                       | processes, the quote pipeline, startup order                                                        |
-| `docs/DATA_MODEL.md`                         | all 154 tables, bitemporality, and the seed volumes                                                 |
+| `docs/DATA_MODEL.md`                         | all 155 tables, bitemporality, and the seed volumes                                                 |
 | `docs/API.md`                                | every REST route and the WebSocket protocol                                                         |
 | `docs/FUNCTIONS.md` + `FUNCTIONS_TIER1-3.md` | the 38 screens, field by field                                                                      |
 | `docs/CLIENT.md`                             | the shell, the grid, the chart engine, the keyboard map, the frame budgets                          |

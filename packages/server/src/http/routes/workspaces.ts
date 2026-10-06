@@ -224,15 +224,21 @@ async function selectOne(tx: Tx, where: SQL): Promise<WorkspaceSqlRow | undefine
 
 /** The caller's active workspace, created from the built-in default when they have none. */
 async function activeWorkspace(tx: Tx, principal: Principal): Promise<WorkspaceSqlRow> {
-  const existing = await selectOne(tx, sql`is_active AND ${ownedBy(principal)}`);
+  const active = sql`is_active AND ${ownedBy(principal)}`;
+  const existing = await selectOne(tx, active);
   if (existing !== undefined) return existing;
 
+  // A first load can arrive twice at once — two tabs, a reload mid-load — and both read "none".
+  // `ON CONFLICT DO NOTHING` makes the loser wait for the winner's row and then stand down, rather
+  // than fail on `workspaces_user_id_name_key` (23505, answered as a 500); the second read then sees
+  // the committed row. `firstLoadRace.test.ts` holds the race open to prove it.
   const created = await tx.execute(sql`
     INSERT INTO workspaces (user_id, firm_id, name, is_active, layout, version)
     VALUES (${String(principal.userId)}::bigint, ${String(principal.firmId)}::bigint,
             ${DEFAULT_WORKSPACE_NAME}, true, ${JSON.stringify(DEFAULT_WORKSPACE_LAYOUT)}::jsonb, 1)
+    ON CONFLICT DO NOTHING
     RETURNING ${WORKSPACE_COLUMNS}`);
-  const row = (created.rows as unknown as WorkspaceSqlRow[])[0];
+  const row = (created.rows as unknown as WorkspaceSqlRow[])[0] ?? (await selectOne(tx, active));
   if (row === undefined) {
     // RLS refused the insert: the only way here is a context that is not this user's.
     throw new NotFoundError('No workspace.');

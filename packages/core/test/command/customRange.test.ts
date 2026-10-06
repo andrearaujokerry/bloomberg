@@ -48,12 +48,12 @@ describe('the spelling the help text gives for a custom window parses', () => {
   }
 
   it('accepts it in any case, as every other range word is', () => {
-    expect(parse('HP custom 2026-08-25 2026-09-15', env)[0]?.params.range).toBe('CUSTOM');
+    expect(parse('HP custom 2026-08-25 2026-09-15', env)[0]?.params?.range).toBe('CUSTOM');
   });
 
   it('still accepts the fixed ranges, which the extension must not have displaced', () => {
     for (const r of ['1M', '1Y', 'MAX', 'YTD']) {
-      expect(parse(`HP ${r}`, env)[0]?.params.range, r).toBe(r);
+      expect(parse(`HP ${r}`, env)[0]?.params?.range, r).toBe(r);
     }
   });
 

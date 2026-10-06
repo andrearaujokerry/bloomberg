@@ -6,8 +6,8 @@
 //
 // ## The four things WP-15 had to add before a spec could assert anything
 //
-//  1. **A session.** The terminal has no sign-in screen (`App.tsx`'s `Gate` says so), so without a
-//     cookie the page is a paragraph reading `NO SESSION`. `globalSetup` mints one per seeded user
+//  1. **A session.** Without a cookie the page is the sign-in form, and only `login.spec.ts` is
+//     about signing in through it. `globalSetup` mints one per seeded user
 //     against `POST /api/v1/auth/login` and `use.storageState` hands the default one to every spec —
 //     see `fixtures/auth.ts`, which also documents the two constraints a spec author must respect
 //     (one active web session per person; five logins a minute per IP).

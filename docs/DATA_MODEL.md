@@ -2643,3 +2643,33 @@ lazily on first FA/EE and refreshed daily, ≈ 25 M for the S&P 500.
 2. On-the-run note/bond CUSIPs, coupons and dated dates are not in any recorded fixture (only bills are); `fixtures/seed/treasuries.json` must be curated by hand until a Treasury auction-results adapter exists.
 3. SSGA's daily holdings file carries SEDOL and weight but the N-PORT carries CUSIP/ISIN/LEI; when the two disagree on a constituent between their as-of dates, `index_members` keeps both versions and MEMB shows the later `as_of_date` — whether to prefer the regulatory (N-PORT) source when both exist for the same date is a data-ops policy.
 4. The SEC frames API gives no `filed` date, so `xbrl_frames.filed_at` is filled only when the matching `xbrl_facts` row exists; EQS backtests over frames are therefore point-in-time only for issuers whose companyfacts have been ingested.
+
+## 22. Migration 0020 — email sign-in codes (`0020_mfa_email_codes.sql`, `schema/users.ts`)
+
+Added after the original data model, so it is a section of its own at the end rather than an insertion
+into §11 that would move every line reference below it. It belongs beside `sessions` (§11): a code is
+the second factor a password-verified session still owes (API.md §15), and it is bound to that one
+session. It is not phishing-resistant, so it is not SEC-02's answer — WebAuthn (`user_credentials`,
+§11) is.
+
+```sql
+CREATE TABLE mfa_email_codes (
+  code_id        uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id     uuid NOT NULL REFERENCES sessions (session_id) ON DELETE CASCADE,  -- the pending session that asked
+  user_id        bigint NOT NULL REFERENCES users (user_id),
+  code_hash      bytea NOT NULL CHECK (octet_length(code_hash) = 32),   -- HMAC-SHA256(key, code_id ':' code); never the code
+  sent_to        text NOT NULL,                        -- the address it went to, for the audit trail
+  created_at     timestamptz NOT NULL DEFAULT now(),
+  expires_at     timestamptz NOT NULL,                 -- created_at + 10 min
+  attempts       integer NOT NULL DEFAULT 0 CHECK (attempts BETWEEN 0 AND 5),   -- counted BEFORE the comparison
+  consumed_at    timestamptz,                          -- single use: set by a conditional UPDATE
+  superseded_at  timestamptz,                          -- a later send for the same session retires this one
+  CHECK (expires_at > created_at),
+  CHECK (consumed_at IS NULL OR superseded_at IS NULL)
+);
+CREATE INDEX mfa_email_codes_live_idx ON mfa_email_codes (session_id, created_at DESC)
+  WHERE consumed_at IS NULL AND superseded_at IS NULL;
+-- SELECT and INSERT come from 0015's default privileges; UPDATE is exactly the three columns the code
+-- writes, and there is no DELETE (a code's row is the record that it was sent).
+GRANT UPDATE (attempts, consumed_at, superseded_at) ON mfa_email_codes TO terminal_app;
+```

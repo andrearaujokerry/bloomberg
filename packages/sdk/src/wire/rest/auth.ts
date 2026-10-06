@@ -1,7 +1,8 @@
 /**
- * `wire/rest/auth.ts` — `Rest.Auth.*`: the 12 authentication and session routes.
+ * `wire/rest/auth.ts` — `Rest.Auth.*`: the 14 authentication and session routes.
  *
- * Schemas transcribed from API.md §1.2 L66-110; routes from API.md §1.3 L112-127.
+ * Schemas transcribed from API.md §1.2 L66-110; routes from API.md §1.3 L112-127. The email second
+ * factor's two schemas and two routes are API.md §15, added after the original contract.
  * Owned by WP-01 now, by WP-07 (`server/src/http/routes/auth.ts`) afterwards.
  *
  * Route descriptor shape used by every `wire/rest/*` group (consumed by `client/rest.ts`):
@@ -74,7 +75,10 @@ export type SessionInfo = z.infer<typeof SessionInfo>;
 
 export const LoginResponse = z.object({
   session: SessionInfo,
-  /** true → only /auth/* is usable until webauthn/login/verify */
+  /**
+   * true → only /auth/* is usable until a second factor verifies: an email code
+   * (`/auth/mfa/email/send` + `/verify`) or WebAuthn (`/auth/webauthn/login/verify`).
+   */
   mfaRequired: z.boolean(),
   /** the web session this login displaced (SEC-03) */
   superseded: z
@@ -87,6 +91,31 @@ export const LoginResponse = z.object({
     .nullable(),
 });
 export type LoginResponse = z.infer<typeof LoginResponse>;
+
+/**
+ * `POST /auth/mfa/email/send` — where the code went and when another may be asked for. Never the
+ * code, and never the full address: `sentTo` is masked (`j******e@e*****e.com`) so a screen shows
+ * which inbox to open without printing the address for anyone behind the user to read.
+ */
+export const MfaEmailSendResponse = z.object({
+  sentTo: z.string(),
+  expiresAt: z.iso.datetime(),
+  /** Asking again before this answers `429 RATE_LIMITED` with `retryAfterMs`. */
+  resendAvailableAt: z.iso.datetime(),
+  /** Codes left for this sign-in; at zero, sign in again. */
+  sendsRemaining: z.number().int().min(0),
+});
+export type MfaEmailSendResponse = z.infer<typeof MfaEmailSendResponse>;
+
+/**
+ * `POST /auth/mfa/email/verify`. `code` is what the user typed: the server strips spaces and hyphens
+ * (`123 456`, `123-456`) and requires exactly six digits after that, so the length bound here is only
+ * a guard against an absurd body.
+ */
+export const MfaEmailVerifyRequest = z.object({
+  code: z.string().min(1).max(32),
+});
+export type MfaEmailVerifyRequest = z.infer<typeof MfaEmailVerifyRequest>;
 
 export const ApiKeyScope = z.enum(['data:read', 'fn:run', 'ws:subscribe', 'server']);
 export type ApiKeyScope = z.infer<typeof ApiKeyScope>;
@@ -234,7 +263,7 @@ export const ApiKeyListResponse = z.object({ items: z.array(ApiKeySummary) });
 
 /* ------------------------------------------------------------------- routes */
 
-/** The 12 routes of API.md §1.3 (`http/routes/auth.ts`). */
+/** The 14 routes of API.md §1.3 and §15 (`http/routes/auth.ts`). */
 export const Auth = {
   /** `401 AUTH_INVALID_CREDENTIALS`, `403 USER_SUSPENDED`, rate limit 5/min per IP. */
   Login: {
@@ -295,6 +324,29 @@ export const Auth = {
     path: '/auth/webauthn/login/options',
     body: WebAuthnLoginOptionsRequest,
     response: WebAuthnLoginOptionsResponse,
+    status: 200,
+  },
+  /**
+   * Sends a six-digit code to the session owner's address. Only a password-verified session that
+   * still owes a second factor; `429 RATE_LIMITED` within 30 s of the last send or after 5 sends;
+   * `503 PROVIDER_UNAVAILABLE` when no mail transport is configured or the provider refuses.
+   */
+  MfaEmailSend: {
+    method: 'POST',
+    path: '/auth/mfa/email/send',
+    response: MfaEmailSendResponse,
+    status: 200,
+  },
+  /**
+   * Upgrades the CURRENT session to `mfa_verified=true`. Never creates one — an email code is a
+   * second factor only. `401 AUTH_INVALID_CREDENTIALS` with `details.reason` ∈ `malformed`,
+   * `no_code`, `expired`, `exhausted`, `mismatch`, and `details.attemptsRemaining`.
+   */
+  MfaEmailVerify: {
+    method: 'POST',
+    path: '/auth/mfa/email/verify',
+    body: MfaEmailVerifyRequest,
+    response: LoginResponse,
     status: 200,
   },
   /** Upgrades the current session to `mfa_verified=true`, or creates one (passwordless). */
