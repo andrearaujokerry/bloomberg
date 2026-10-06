@@ -301,7 +301,12 @@ export const HP = defineFunction<typeof HpParams, HpPayload>({
   params: HpParams,
   paramGrammar: {
     positional: [
-      { name: 'range', type: 'range', optional: true },
+      // `values` EXTENDS the base range list (core/command/args.ts `case 'range'`), and the base list
+      // has no `CUSTOM`. Without this, the spelling this manifest's own help gives — "CUSTOM with two
+      // dates" — answered `ARG_PARSE: CUSTOM is not an argument of this function`, so a custom window
+      // could not be typed at all. Declared as the enum's own options so the parser accepts exactly
+      // what the zod schema below accepts, and stays right if the enum grows.
+      { name: 'range', type: 'range', optional: true, values: HpRange.options },
       { name: 'start', type: 'date', optional: true },
       { name: 'end', type: 'date', optional: true },
       { name: 'periodicity', type: 'enum', values: Periodicity.options, optional: true },

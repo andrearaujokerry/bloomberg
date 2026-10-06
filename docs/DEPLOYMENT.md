@@ -254,6 +254,22 @@ can be tested exactly rather than hoped at:
 nothing else should start before it. If it turns out to be a no-op — plausible, given what the probe
 found — it is a cheap no-op with a test run behind it instead of an assumption.
 
+#### And create the app database `C`-collated
+
+Running the suite on a fresh 18 cluster found that every committed golden was captured under
+`datcollate = C` and nothing said so (`BUILD_STATUS.md`, finding 1). The orderings whose stability is
+load-bearing now pin `COLLATE "C"`, and startup warns on a mismatch — but the cleanest deployment
+matches the captures exactly, and Neon's default database is very likely `en_US.UTF-8`:
+
+```sql
+CREATE DATABASE terminal LOCALE 'C' TEMPLATE template0;
+```
+
+`CREATE DATABASE` cannot run inside a transaction, so a web console that wraps statements may refuse
+it; `scripts/deploy-probe.sh` attempts it for real and `deploy-probe.sql` reports whether the role has
+`CREATEDB`. If neither works, create the database from the host's console and accept the startup
+warning — the code no longer depends on it.
+
 ### 2.4b Pooled or direct connection — it matters in exactly two places
 
 Managed hosts hand out two connection strings: a **direct** one and a **pooled** one through
@@ -312,11 +328,40 @@ within days.
 
 ---
 
+### 3.1 A frozen snapshot with a moving clock empties itself — FOUND 2026-10-06
+
+The seeded bars end on 2026-09-15. Every relative window — `HP 1M`, `GP 1Y`, `GIP 5D` — ends on the
+**wall clock**. So the overlap between "what the screen asks for" and "what the database holds" shrinks
+by a day every day: `HP 1M` showed fifteen sessions when the e2e spec was written and **six** on
+2026-10-06, which is how this was found (`BUILD_STATUS.md`). By mid-October a one-month chart on the
+deployed site is empty, and every screen with a relative window degrades the same way on its own
+schedule.
+
+The banner (§4.5) would make that honest. It would not make it useful. **The fix is to anchor the
+data axis to the snapshot**, and the model already has the axis: every function runs at
+`ctx.asOf.validAt`, and `HP/window.ts#defaultWindowEnd` already ends windows at it. In replay mode the
+runner should set `validAt` to the snapshot's capture date while the OPERATIONAL clock — sessions,
+rate-limit refills, staleness sweeps, usage timestamps — stays real. A frozen operational clock would
+stop the rate limiter's buckets refilling, so the two must not be the same clock.
+
+That is one decision in `functions/runner.ts`, a `REPLAY_AS_OF` setting read from the seed's own
+capture date, and the banner reading the same value. **Medium**, and it belongs before deploy: a demo
+link that shows empty charts three weeks after it was sent is worse than no demo.
+
 ## 4. Code that does not exist yet
 
 Five items. Sizes are my estimate of the work, not of the diff.
 
-### 4.1 A way to sign in — REQUIRED, nothing works without it
+### 4.1 A way to sign in — REQUIRED, nothing works without it — DECIDED: a login form with email codes
+
+**Decided on 2026-10-06: a real login form, with a second factor by email code.** It plugs into the MFA
+gate the session model already has — a password-verified session that still owes a second factor may
+only reach `/auth/*` — rather than inventing one. Accounts are created by an admin (no public sign-up,
+matching SEC-01's one-row-per-natural-person design); codes are six digits from a CSPRNG, stored
+hashed, valid ten minutes, single-use, bound to the session that asked, five wrong guesses and dead.
+Mail goes out over SMTP so any free provider works, and in production **no configured transport means
+no code is sent** — never a code in a log. The options below are kept for the record.
+
 
 `App.tsx` L22-23 and L483: **there is no login form anywhere in this repository.** Sessions are
 minted by `POST /api/v1/auth/login` against a seeded user. A visitor to the public URL today would
@@ -343,16 +388,27 @@ SPA fallback in the existing `setNotFoundHandler` (`http/errors.ts` L253) that r
 for a non-`/api` GET and leaves the current JSON 404 for everything else. Build without source maps
 (7.4 of the 10 MB is maps). **Small.**
 
-### 4.3 A rate limiter — REQUIRED before the URL is public
+### 4.3 Rate limiting — EXISTS; one thing to check behind a proxy
 
-There is **none**. I checked: the only rate limits in the tree are *outbound* politeness to SEC and
-Cboe. There is also no login throttling, no lockout, no failed-attempt backoff. On a public URL that
-means an unthrottled brute-force target and an unthrottled `POST /functions/:code/run`, which is the
-expensive route.
+**This section said there was no rate limiter and no login throttling. That was wrong.** The search
+that produced it was truncated by a `head -6` before it reached `http/routes/auth.ts`, and I wrote the
+conclusion without noticing the output had been cut. What is actually there, and is good:
 
-`@fastify/rate-limit`, global, with a tighter bucket on `/auth/*`. Note that `docs/API.md` §8's
-quotas are *counted, not enforced* for web sessions, so they are not a substitute. **Small**, and it
-is the difference between a demo and an open relay for your free compute.
+- `http/rateLimit.ts` — per-session token buckets from API.md §8, used by **17 route files** including
+  `functions.ts`: REST 20 req/s burst 60, `/search` 30 req/s, heavy `/data` 5 req/s, exports 2 req/s and
+  60 per hour. Keyed on the server-minted session, never on a header — its own docstring explains that
+  `X-Forwarded-For` is typed by the caller, so a limiter keyed on it has unlimited buckets.
+- `POST /auth/login` — **5 attempts per 60 s per IP AND per email**, and an unknown address costs the
+  same password work as a known one (`burnPasswordWork`), so the route cannot be used to discover
+  which accounts exist.
+
+**The one real wrinkle, and it is the host's, not the code's.** The login limiter keys its IP bucket
+on the socket peer, which the kernel decides. Behind a host's reverse proxy every login arrives from
+the PROXY's address, so the per-IP bucket is shared by every user of the site — five logins a minute
+for everyone together. The per-email bucket, which is what actually stops a brute force against one
+account, is unaffected. For a small demo that is tolerable; for anything larger, read the client
+address from the proxy's own header **only** for a proxy the host documents and pins, and decide it
+in config, never by trusting `X-Forwarded-For` from anyone. **Small**, and it waits for the host.
 
 ### 4.4 A trimmed seed — OPTIONAL, recommended
 
@@ -433,16 +489,17 @@ Two practical notes:
 
 | # | Work | Size |
 | --- | --- | --- |
-| **0** | **The Postgres 14 → 18 move (§2.3b). Blocks everything else, and would be due within the month regardless, because 14 goes EOL in November 2026.** | **L** |
+| ~~0~~ | ~~The Postgres 14 → 18 move (§2.3b)~~ — **DONE**: schema identical, suite green on 18; it found and fixed a collation dependency, a microsecond-truncation bug in the bitemporal write path, a rotting e2e spec and a parser defect (`BUILD_STATUS.md`) | ~~L~~ |
 | 1 | §4.2 Fastify serves the SPA, with the SPA fallback and a no-sourcemap build | S |
-| 2 | §4.3 rate limiter, global plus a tighter `/auth/*` bucket, with tests | S |
-| 3 | §4.1 whichever option you chose, with its entitlement tests | M |
-| 4 | §4.5 the snapshot banner, read from `/health` | S |
-| 5 | A `Dockerfile` + `.dockerignore`, or the host's native build config | S |
-| 6 | A GitHub Actions workflow: typecheck, lint, the full suite, build, publish the image | M |
-| 7 | `scripts/deploy-migrate.ts` — migrate then seed against a remote `DATABASE_URL`, idempotent, calling `deploy-probe.sh` as its first step | M |
-| 8 | §4.4 the trimmed seed, only if your tier needs it | M |
-| 9 | `docs/RUNBOOK.md` — rotate the secret, re-seed, read `/health`, what `degraded` means | S |
+| 2 | §4.3 ~~rate limiter~~ — it exists. What remains: the client address behind the host's proxy, decided in config | S |
+| 3 | §4.1 **login form + email second factor** (decided), SMTP transport, `create-user` script, with entitlement and abuse tests | L |
+| 4 | §3.1 anchor the data axis to the snapshot in replay mode (`REPLAY_AS_OF`), so relative windows do not empty out | M |
+| 5 | §4.5 the snapshot banner, read from `/health`, showing the same as-of | S |
+| 6 | A `Dockerfile` + `.dockerignore`, or the host's native build config | S |
+| 7 | A GitHub Actions workflow: typecheck, lint, the full suite, build, publish the image | M |
+| 8 | `scripts/deploy-migrate.ts` — migrate then seed against a remote `DATABASE_URL`, idempotent, calling `deploy-probe.sh` as its first step | M |
+| 9 | §4.4 the trimmed seed, only if your tier needs it | M |
+| 10 | `docs/RUNBOOK.md` — rotate the secret, re-seed, read `/health`, what `degraded` means | S |
 
 Every one of those goes through the same gate as the rest of this build: typecheck, lint, the full
 vitest suite twice, the e2e suite, and mutation-checks on anything with a security consequence.

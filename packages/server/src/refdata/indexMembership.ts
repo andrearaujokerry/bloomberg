@@ -58,7 +58,13 @@ import {
 } from '../db/bitemporal.js';
 import { indexMembers, indices } from '../db/schema/index.js';
 
-import type { AsOf, BitemporalTable, VersionWrite } from '../db/bitemporal.js';
+import type {
+  AsOf,
+  BitemporalTable,
+  ExactAsOf,
+  KnowledgeInstant,
+  VersionWrite,
+} from '../db/bitemporal.js';
 import type { Tx } from '../db/client.js';
 
 /** `index_members`, tagged with the `index_members_bt_excl` key columns. */
@@ -252,8 +258,10 @@ function toRecord(row: MemberRow): IndexMemberRecord {
  * are held to the same rule as `writeVersion`: a `txFrom` in the future is refused
  * (`BitemporalWriteError`) instead of writing a row no present-instant read can see.
  */
-const knowledgeInstant = (tx: Tx, txFrom: Date | undefined): Promise<Date> =>
-  btKnowledgeInstant(tx, 'index_members', txFrom);
+const knowledgeInstant = (
+  tx: Tx,
+  txFrom: Date | KnowledgeInstant | undefined,
+): Promise<KnowledgeInstant> => btKnowledgeInstant(tx, 'index_members', txFrom);
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // `indices`
@@ -340,7 +348,11 @@ export async function upsertIndex(
  * `membersAsOf(tx, spx, membershipAsOf('2024-03-15', new Date('2024-04-01')))` — the
  * `bt_as_of(...)` predicate of DATA_MODEL L950 verbatim, over `index_members_asof_idx`.
  */
-export async function membersAsOf(tx: Tx, indexId: number, at: AsOf): Promise<IndexMemberRecord[]> {
+export async function membersAsOf(
+  tx: Tx,
+  indexId: number,
+  at: ExactAsOf,
+): Promise<IndexMemberRecord[]> {
   const rows = await tx
     .select(MEMBER_FIELDS)
     .from(indexMembers)
@@ -449,7 +461,7 @@ export interface MemberWrite extends SnapshotMember {
   asOfDate: string;
   sourceId: string;
   provenanceId: number;
-  txFrom?: Date;
+  txFrom?: Date | KnowledgeInstant;
 }
 
 /**
@@ -509,7 +521,7 @@ export interface MemberRetire {
   instrumentId: number;
   /** `YYYY-MM-DD`: the snapshot the constituent is missing from. Becomes `valid_to`. */
   asOfDate: string;
-  txFrom?: Date;
+  txFrom?: Date | KnowledgeInstant;
 }
 
 /**

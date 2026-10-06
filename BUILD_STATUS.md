@@ -902,11 +902,68 @@ partition clones). That last one was checked functionally rather than by countin
 access_log_m2026_10 is append-only (WORM)`, naming the partition — so the clone trigger fires either
 way and the audit log is as append-only on 18 as on 14.
 
-**What is still unproven:** the suite. 6,214 tests have only run against 14. That step is smaller
-than estimated — `vitest.config.ts` L16-24 already reads `DATABASE_URL_TEST` and
-`DATABASE_URL_SEED_TEST` from the environment with 5432 defaults, so pointing the suite at 18 needs
-no code change, only those two variables. `docs/DEPLOYMENT.md` §2.3b has the detail and the `pg_ctl`
-line to restart 18, which was started by hand and will not survive a reboot.
+**The suite on 18, and the four things running it found.** None of the four is Postgres 18's fault,
+and three of them were in this tree on 14 all along.
+
+1. **The suite depended on a `C`-collated cluster, and nothing said so.** The 14 cluster was
+   `initdb`'d with `datcollate = C`; brew's 18 cluster with `en_US.UTF-8`. One assertion of 6,214
+   failed — `worldMacro.test.ts`'s IMF series list — because a locale-aware collation weights the
+   underscore differently (`NGDP_RPCH` after `NGDPDPC` under `C`, before `NGDPD` under
+   `en_US.UTF-8`). Proven to be the collation and not the version by running it on a `C`-collated 18
+   database: green. **One failure was luck** — real field ids reorder completely between the two
+   (`CHGPCT CHG_PCT_1D PXL PXV PX_ASK …` against `CHG_PCT_1D CHGPCT PX_ASK PX_BID …`), and no committed
+   golden happens to order rows by such a column. Fixed at the root: the two orderings whose
+   docstrings promise a "stable walk" (`ingest/jobs/worldMacro.ts#seededTargets`,
+   `ingest/jobs/blsSeries.ts`) now pin `COLLATE "C"`, the third (`seed/rates.ts`) is left bare with a
+   note saying why — it feeds a `Map`, so its order is unobservable — and startup step 3 now reads the
+   collation (`startup.ts#checkCollation`) and **warns** with the exact remedy. A warning and not a
+   refusal, on the `loadCalendars` principle: a collation is a property of the host, and a managed
+   Postgres usually defaults to `en_US.UTF-8`.
+
+2. **Every knowledge instant was floored to the millisecond, on 14 and 18 alike.** `knowledgeInstant`
+   read `clock_timestamp()` (microseconds) and returned a JavaScript `Date` (milliseconds). Measured:
+   every stored `tx_from` ended in `000`. Two writes of one key inside one millisecond got the same
+   instant, the close set `tx_to = tx_from`, and `bt_guard_update` refused a legitimate write. It showed
+   on 18 as a flake because a `writeVersion` takes ~1.5 ms there against ~3 ms on 14 — measured on the
+   real write path. (A bare-round-trip probe made it look like speed was irrelevant: same-millisecond
+   pairs ~80% on both. That was the wrong proxy, and it briefly led to the wrong conclusion.) Faster
+   hardware would have found it on 14. A 200-version chain test reproduced it **5 of 5 on 18** and is
+   now green 5 of 5 on both; stored instants carry real microseconds (`.810348`, `.081814`).
+   The fix is `KnowledgeInstant { iso, at }`: `iso` is formatted in the database to the microsecond and
+   is the only form ever bound; `at` is a `Date` for the minute-scale future check. `ExactAsOf` is
+   wider than `AsOf` rather than a change to it, so **none of the 208 sites reading `AsOf.knownAt`
+   changed**, and a caller's plain `Date` still binds byte-identically. One trap found on the way:
+   drizzle's `sql` template accepts any value, so the compiler would NOT have caught an instant object
+   bound raw into SQL — two such sites in `retireVersion` were found by a fixed-string search after a
+   regex search falsely reported none. Mutation: reintroducing only the floor → red 3 of 3.
+
+3. **An e2e spec had a three-week shelf life, and the fix uncovered a parser defect.**
+   `export.spec.ts` ran `AAPL US Equity HP 1M` — a window ending TODAY — over bars frozen at
+   2026-09-15. It held 15 sessions when written and 6 on 2026-10-06, when it failed its floor of ten on
+   14 and 18 alike. Moved to a fixed window, `CUSTOM 2026-08-25 2026-09-15`: exactly 15 sessions, which
+   is also the size the virtualised grid is known to show whole, now asserted exactly rather than as a
+   floor. **That spelling did not parse.** HP's help says "1M … MAX, or CUSTOM with two dates" and both
+   `HpRange` and `GpRange` include it, but the parser's base list has no `CUSTOM` and neither range slot
+   declared `values` to extend it. Fixed by the mechanism the grammar already provides
+   (`values: HpRange.options` / `GpRange.options`), with `core/test/command/customRange.test.ts`.
+
+   **OPEN, and recorded rather than fixed:** typing the dates WITHOUT `CUSTOM` —
+   `HP 2026-08-25 2026-09-15` — parses to `{ start, end }` with `range` at its `1Y` default, and
+   `server/src/functions/HP/window.ts#resolveWindow` reads `start` only in the `CUSTOM` branch. So the
+   screen shows a year ending 15 September and **silently drops the start date**. GP's `planWindow`
+   has the same shape. A silent wrong answer, not an error — but it changes resolver behaviour for two
+   functions, so it gets its own pass. `customRange.test.ts` pins the current behaviour so the fix
+   arrives as a failing assertion.
+
+4. **Four timeouts on 14, not reproduced.** In one full run, three DB-heavy files took ~32 s on 14
+   against ~1.5 s on 18 with identical code — all three together, which looks like a lock wait. In
+   isolation all 35 tests pass in ~2-3 s each, and two full 14 runs earlier the same day were clean.
+   Classified as contention in that run (it followed two back-to-back 18 suites on one machine); the
+   re-run gate is the evidence either way.
+
+**For deployment** (`docs/DEPLOYMENT.md` §3): finding 3 is not only a test problem. A replay-mode site
+serves bars frozen at the capture date while every relative window (`1M`, `1Y`, `5D`) ends on the wall
+clock, so **the deployed terminal would show fewer bars every day and empty charts within weeks.**
 
 ## Notes
 

@@ -56,8 +56,24 @@ const SEEDED_PANELS = [
   { panel: 'p4', title: 'W · Core' },
 ] as const;
 
-/** What is typed into `p1`. `1M` keeps the whole table on screen — see {@link readScreenRows}. */
-const HP_COMMAND = 'AAPL US Equity HP 1M';
+/**
+ * What is typed into `p1`: a FIXED window inside the seeded bars, not a window ending today.
+ *
+ * This was `AAPL US Equity HP 1M`, and `1M` is a window ending NOW while the seeded bars end on
+ * 2026-09-15 and never move. So the window held a little less of the fixture every day: fifteen
+ * sessions when this file was written, six on 2026-10-06 — when it failed the ten-session floor
+ * below on Postgres 14 and 18 alike, with no change to anything but the calendar — and none at all by
+ * mid-October. A test whose input is the wall clock against a frozen fixture has a shelf life, and
+ * this one had about three weeks.
+ *
+ * `CUSTOM 2026-08-25 2026-09-15` is the same fifteen sessions the original measured, pinned. Fifteen
+ * matters as well as being stable: the HP grid virtualises, and fifteen is the size
+ * {@link readScreenRows} knows fits on screen whole.
+ */
+const HP_START = '2026-08-25';
+const HP_END = '2026-09-15';
+const HP_SESSIONS = 15;
+const HP_COMMAND = `AAPL US Equity HP CUSTOM ${HP_START} ${HP_END}`;
 
 /**
  * HP's default `fields` (`core/functions/manifests/HP.ts#HP_DEFAULT_FIELDS`) plus the two columns
@@ -81,7 +97,8 @@ type HpColumn = (typeof HP_COLUMNS)[number];
 /**
  * How each column renders on screen: decimal places, and the suffix the formatter appends.
  *
- * Transcribed from what the terminal actually draws (measured, `AAPL US Equity HP 1M`), and it is
+ * Transcribed from what the terminal actually draws (measured on `HP 1M`; the columns do not depend
+ * on the window, which is why moving it to {@link HP_COMMAND} did not move them), and it is
  * the dictionary's: `px` at the instrument's `price_decimals` (2 for AAPL), `shares` at 0, `pct` at
  * 2 with a `%`, and HP's own `adjFactor` column at the 6 its screen declares. Pinned here rather
  * than read off the first row so that a column which quietly lost its decimals fails this file.
@@ -122,7 +139,7 @@ async function openRestoredWorkspace(page: Page): Promise<void> {
 }
 
 /**
- * Run `AAPL US Equity HP 1M` in `p1` and return the `resultId` of the run THE SCREEN IS SHOWING.
+ * Run {@link HP_COMMAND} in `p1` and return the `resultId` of the run THE SCREEN IS SHOWING.
  *
  * The id is read off the run's own response rather than invented, because that is the whole point:
  * the export asked for below is an export of this exact result, which is what
@@ -159,8 +176,8 @@ async function runHpInPanel1(page: Page): Promise<{ resultId: string; traceId: s
  * Every row the HP grid has drawn, as `date -> column -> text`.
  *
  * `LiveGrid` virtualises (`grid/virtualiser.ts`), so this reads what is IN THE DOM and the test
- * compares that set against the CSV rather than assuming the table is whole. `1M` over the seeded
- * bars is fifteen sessions, which fits, and the assertions below check the two sets are equal —
+ * compares that set against the CSV rather than assuming the table is whole. {@link HP_COMMAND} is
+ * fifteen sessions, which fits, and the assertions below check the two sets are equal —
  * so a window that grew past the viewport would fail this file loudly instead of quietly comparing
  * a subset.
  */
@@ -350,13 +367,15 @@ test.describe('WP-15 export — PRINT on HP (FUNC-03)', () => {
     ]);
     const screen = await readScreenRows(page);
     const screenDates = Object.keys(screen);
-    // A seeded floor, not an exact count: `1M` is a window ending NOW, so the number of sessions in
-    // it moves with the calendar. Ten is far more than a virtualised viewport would hold back and
-    // far more than an empty database would produce.
+    // AN EXACT COUNT now, where it used to be a floor of ten. The floor existed because `1M` was a
+    // window ending today and so had no fixed size — and it is what failed, on 2026-10-06, at six.
+    // A fixed window over a fixed fixture has exactly one right answer, and an exact assertion is the
+    // one that would notice a session going missing, which a floor of ten never could.
     expect(
       screenDates.length,
-      'HP drew fewer than ten sessions — is the e2e database seeded?',
-    ).toBeGreaterThanOrEqual(10);
+      `HP drew ${String(screenDates.length)} sessions for ${HP_START} → ${HP_END}; the seed has ${String(HP_SESSIONS)}`,
+    ).toBe(HP_SESSIONS);
+    expect(screenDates.every((d) => d >= HP_START && d <= HP_END), 'a session outside the window').toBe(true);
 
     // ── the file ──────────────────────────────────────────────────────────────────────────────
     const download = await printPanelResult(page, resultId);
@@ -390,7 +409,8 @@ test.describe('WP-15 export — PRINT on HP (FUNC-03)', () => {
     // and the params the panel is actually showing, plus the as-of the numbers were resolved at.
     expect(csv.comments[0]).toBe('terminal-export v1');
     expect(csv.comments.join('\n')).toContain('function: HP  security: AAPL US Equity');
-    expect(csv.comments.join('\n')).toContain('"range":"1M"');
+    expect(csv.comments.join('\n')).toContain('"range":"CUSTOM"');
+    expect(csv.comments.join('\n')).toContain(`"start":"${HP_START}"`);
     // A trace the file can be audited by. NOT the run's own id, and the difference is the missing
     // gesture again: OPS-07's "the export shares the run's id" is `App.tsx#exportResult` passing
     // `traceId: frame.traceId` to the SDK, which sends it as `x-trace-id` — a header an `<a

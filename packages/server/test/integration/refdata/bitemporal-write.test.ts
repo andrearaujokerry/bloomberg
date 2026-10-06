@@ -1086,3 +1086,61 @@ describe('bt.correction (TESTING §7.10, DATA_MODEL §1.4)', () => {
     expect(at.knownAt.getTime()).toBe(at.validAt.getTime());
   });
 });
+
+/**
+ * THE SAME-MILLISECOND TRAP — found by running this suite against Postgres 18, not caused by it.
+ *
+ * `knowledgeInstant` reads `clock_timestamp()` once per write precisely so that two versions of one
+ * key written in one transaction get two different instants (the test above guards the `now()` form of
+ * the trap). But it handed that reading back to JavaScript as a `Date`, and **a `Date` holds
+ * milliseconds; Postgres holds microseconds**. Two writes inside the same millisecond therefore read
+ * `…21.123100` and `…21.123900`, both became `…21.123`, the close set `tx_to = tx_from`, and
+ * `bt_guard_update` rightly refused a version that would have been current for no time at all.
+ *
+ * It shows as a flake — one failure in three full runs on 18, none on 14 — because whether two writes
+ * share a millisecond depends on how fast the database answers. That is exactly why it needs a test
+ * that does not depend on luck: two hundred successive versions of one key in one transaction makes
+ * a same-millisecond pair a near-certainty on any machine fast enough to have the bug, and the chain
+ * they leave behind is checked link by link.
+ */
+describe('knowledge instants keep the database’s microseconds', () => {
+  const t = withTxDb();
+
+  it('chains two hundred versions of one key in one transaction, gapless and never zero-length', async () => {
+    const { instrumentId, provenance } = await fixture(t);
+    const p = await provenance('wv-chain', KNOWN_INITIAL);
+    const N = 200;
+
+    for (let i = 0; i < N; i += 1) {
+      await writeVersion(t.db, btGovtTerms, {
+        entityKey: { instrumentId },
+        validFrom: VALID_FROM,
+        data: govtData(instrumentId, (4 + i / 1000).toFixed(3)),
+        provenanceId: p,
+        reason: `chain ${String(i)}`,
+      });
+    }
+
+    // Read the chain back AS THE DATABASE HOLDS IT — text, microseconds included — because comparing
+    // two JavaScript Dates here would truncate both sides and could not see the defect at all.
+    const chain = await t.client.query<{ tx_from: string; tx_to: string; open: boolean }>(
+      `SELECT to_char(tx_from AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US') AS tx_from,
+              to_char(tx_to   AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US') AS tx_to,
+              tx_to = 'infinity' AS open
+         FROM govt_terms WHERE instrument_id = $1 ORDER BY tx_from`,
+      [instrumentId],
+    );
+
+    expect(chain.rows).toHaveLength(N);
+    expect(chain.rows.filter((r) => r.open)).toHaveLength(1);
+    for (let i = 0; i < N - 1; i += 1) {
+      const row = chain.rows[i];
+      const next = chain.rows[i + 1];
+      if (row === undefined || next === undefined) throw new Error('chain shorter than N');
+      // Never zero-length: the version was current for SOME time.
+      expect(row.tx_to > row.tx_from, `version ${String(i)}: ${row.tx_from} → ${row.tx_to}`).toBe(true);
+      // Gapless: the close and its successor share one instant, to the microsecond.
+      expect(next.tx_from, `link ${String(i)} → ${String(i + 1)}`).toBe(row.tx_to);
+    }
+  });
+});

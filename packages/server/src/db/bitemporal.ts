@@ -102,6 +102,65 @@ export interface AsOf {
   knownAt: Date;
 }
 
+/**
+ * A knowledge instant at the database's own precision — microseconds — with a `Date` view of it.
+ *
+ * ## Why this is not a `Date`
+ *
+ * Postgres holds `timestamptz` to the microsecond; a JavaScript `Date` holds milliseconds. This module
+ * used to read `clock_timestamp()` and hand it back as a `Date`, so every knowledge instant it ever
+ * wrote was floored to a whole millisecond — measured: every stored `tx_from`, on Postgres 14 and 18
+ * alike, ended in `000` microseconds. Two writes of one key inside one millisecond then got the SAME
+ * instant, the close set `tx_to = tx_from`, and `bt_guard_update` refused a version that would have
+ * been current for no time at all. `knowledgeInstant` reads the clock once per write precisely so that
+ * two writes get two instants (`writeVersion`'s docstring, and the `now()` regression test); the
+ * `Date` round trip undid that one millisecond at a time.
+ *
+ * It surfaced as a flake when the suite first ran on Postgres 18 — not because 18 is different, but
+ * because a `writeVersion` there took ~1.5 ms against ~3 ms on 14, so consecutive writes landed in
+ * one millisecond far more often. Faster hardware would have found it on 14.
+ *
+ * `iso` is what every statement binds (`instantSql`), and reads back exactly. `at` exists for the one
+ * thing a `Date` is right for here — the minute-scale future-tolerance check — and for messages.
+ */
+export interface KnowledgeInstant {
+  /** `2026-10-06T15:43:07.738123Z` — exact. The only form that is ever bound. */
+  readonly iso: string;
+  /** The same instant floored to the millisecond. For comparison and messages, NEVER for binding. */
+  readonly at: Date;
+}
+
+/** `true` for an exact {@link KnowledgeInstant}, `false` for a caller's plain `Date`. */
+export function isKnowledgeInstant(x: Date | KnowledgeInstant): x is KnowledgeInstant {
+  return typeof x === 'object' && x !== null && 'iso' in x && typeof x.iso === 'string';
+}
+
+/**
+ * An instant as the SQL that binds it, exactly.
+ *
+ * A plain `Date` binds **exactly as it always did** — `${date}::timestamptz` — so the SQL of every
+ * existing reader and every caller-supplied `txFrom` is byte-identical to before this type existed.
+ * Only an exact instant binds its microsecond text.
+ */
+export function instantSql(x: Date | KnowledgeInstant): SQL {
+  return isKnowledgeInstant(x) ? sql`${x.iso}::timestamptz` : sql`${x}::timestamptz`;
+}
+
+/**
+ * {@link AsOf} whose `knownAt` may be an exact {@link KnowledgeInstant}.
+ *
+ * Wider than `AsOf` on purpose rather than a change TO `AsOf`: 208 sites outside this module read
+ * `AsOf.knownAt` as a `Date`, and every `AsOf` is assignable to this, so none of them changes. The
+ * one reader that holds an exact instant — `refdata/indexMembership.ts#recordSnapshot`, reading what
+ * was current at the instant it is about to write — needs it, because a millisecond floor there would
+ * hide a member written by an earlier snapshot in the same millisecond, and that member would then
+ * never be retired.
+ */
+export interface ExactAsOf {
+  validAt: Date;
+  knownAt: Date | KnowledgeInstant;
+}
+
 /** "Now on both axes" — the default an interactive read uses (DATA_MODEL §1.3). */
 export const nowAsOf = (clock: { now(): number }): AsOf => {
   const d = new Date(clock.now());
@@ -130,8 +189,11 @@ export interface VersionWrite<Row> {
    * `clock_timestamp()`, never `now()`. **Required** whenever the knowledge instant is historical
    * (SEC `acceptanceDateTime`, a Yahoo event date, seeded history). Must be strictly greater than
    * the `tx_from` of the version being closed and not in the future.
+   *
+   * A {@link KnowledgeInstant} is accepted as well as a `Date`, so a caller that resolved ONE instant
+   * for many writes (`refdata/indexMembership.ts#recordSnapshot`) can hand it down without flooring it.
    */
-  txFrom?: Date;
+  txFrom?: Date | KnowledgeInstant;
 }
 
 /**
@@ -169,8 +231,8 @@ const TX_FROM_FUTURE_TOLERANCE_MS = 60_000;
  * as-of read predicate `refdata/*` offers, so that every reader goes through the same
  * half-open `[from, to)` semantics on both axes.
  */
-export function asOf(t: BitemporalColumns, at: AsOf): SQL {
-  return sql`bt_as_of(${t.validFrom}, ${t.validTo}, ${t.txFrom}, ${t.txTo}, ${at.validAt}::timestamptz, ${at.knownAt}::timestamptz)`;
+export function asOf(t: BitemporalColumns, at: ExactAsOf): SQL {
+  return sql`bt_as_of(${t.validFrom}, ${t.validTo}, ${t.txFrom}, ${t.txTo}, ${at.validAt}::timestamptz, ${instantSql(at.knownAt)})`;
 }
 
 /** Current, currently-believed rows; hits the `<table>_current_idx` partial index. */
@@ -286,7 +348,7 @@ function validToSql<Row>(w: VersionWrite<Row>): SQL {
 function newRowColumns<Row>(
   table: BitemporalTable<Row>,
   w: VersionWrite<Row>,
-  txFrom: Date,
+  txFrom: KnowledgeInstant,
 ): { names: SQL[]; values: SQL[] } {
   const columns = columnsOf(table);
   const managed = new Set([
@@ -323,7 +385,7 @@ function newRowColumns<Row>(
   // every managed column name, so `push` is never a no-op here.
   push(table.validFrom, sql`${w.validFrom}::timestamptz`);
   push(table.validTo, validToSql(w));
-  push(table.txFrom, sql`${txFrom}::timestamptz`);
+  push(table.txFrom, instantSql(txFrom));
   push(table.provenanceId, sql`${w.provenanceId}::bigint`);
 
   return { names, values };
@@ -368,10 +430,10 @@ async function insertRemainder<Row>(
   w: VersionWrite<Row>,
   versionId: string,
   side: 'head' | 'tail',
-  txFrom: Date,
+  txFrom: KnowledgeInstant,
 ): Promise<void> {
   const overrides = new Map<string, SQL>([
-    [table.txFrom.name, sql`${txFrom}::timestamptz`],
+    [table.txFrom.name, instantSql(txFrom)],
     [table.txTo.name, sql`'infinity'::timestamptz`],
   ]);
   if (side === 'head') {
@@ -406,24 +468,33 @@ async function insertRemainder<Row>(
 export async function knowledgeInstant(
   tx: Tx,
   table: string,
-  txFrom: Date | undefined,
-): Promise<Date> {
-  // `now` is typed loosely on purpose: node-postgres hands back a `Date` for OID 1184, but a
-  // driver-level type parser (or a pooled client configured elsewhere) can hand back the text,
-  // and this function is on the write path of every bitemporal table.
-  const res = await tx.execute<{ now: Date | string }>(sql`SELECT clock_timestamp() AS now`);
-  const row = res.rows[0];
-  if (row === undefined) throw new Error('clock_timestamp() returned no row');
-  const dbNow = row.now instanceof Date ? row.now : new Date(row.now);
+  txFrom: Date | KnowledgeInstant | undefined,
+): Promise<KnowledgeInstant> {
+  // Formatted IN THE DATABASE, to the microsecond, and returned as text — never as a timestamptz
+  // the driver would turn into a millisecond `Date` (see `KnowledgeInstant`). `to_char` returns
+  // `text` whatever type parsers a pooled client has installed, which the previous `now`-typed-loosely
+  // read had to defend against and this read does not. UTC and an explicit `Z`, so the string means
+  // one instant to Postgres and to `new Date` alike, whatever the session's `TimeZone`.
+  const res = await tx.execute<{ iso: string }>(
+    sql`SELECT to_char(clock_timestamp() AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS iso`,
+  );
+  const iso = res.rows[0]?.iso;
+  if (iso === undefined) throw new Error('clock_timestamp() returned no row');
+  const dbNow: KnowledgeInstant = { iso, at: new Date(iso) };
   if (txFrom === undefined) return dbNow;
-  if (txFrom.getTime() > dbNow.getTime() + TX_FROM_FUTURE_TOLERANCE_MS) {
+
+  // A caller's `Date` is exact at its own (millisecond) precision, so `toISOString` loses nothing.
+  const supplied: KnowledgeInstant = isKnowledgeInstant(txFrom)
+    ? txFrom
+    : { iso: txFrom.toISOString(), at: txFrom };
+  if (supplied.at.getTime() > dbNow.at.getTime() + TX_FROM_FUTURE_TOLERANCE_MS) {
     throw new BitemporalWriteError(
       table,
-      `txFrom ${txFrom.toISOString()} is in the future (database clock ${dbNow.toISOString()}); ` +
+      `txFrom ${supplied.iso} is in the future (database clock ${dbNow.iso}); ` +
         'a knowledge instant must be an instant we already reached',
     );
   }
-  return txFrom;
+  return supplied;
 }
 
 /**
@@ -517,10 +588,10 @@ export async function writeVersion<Row>(
                                               ${keyValue}::bigint,
                                               ${w.validFrom}::timestamptz,
                                               ${vt},
-                                              ${txFrom}::timestamptz)`);
+                                              ${instantSql(txFrom)})`);
     } else {
       await tx.execute(sql`
-        UPDATE ${tableRef(table)} cur SET ${sql.identifier(table.txTo.name)} = ${txFrom}::timestamptz
+        UPDATE ${tableRef(table)} cur SET ${sql.identifier(table.txTo.name)} = ${instantSql(txFrom)}
          WHERE ${keyMatch}
            AND ${qualified('cur', table.txTo)} = 'infinity'
            AND tstzrange(${qualified('cur', table.validFrom)}, ${qualified('cur', table.validTo)}, '[)')
@@ -637,8 +708,8 @@ export interface VersionRetire<Row> {
   entityKey: Partial<Row>;
   /** Becomes `valid_to`: true up to here, not true from here on. */
   validTo: Date;
-  /** knownAt, under the same rule as {@link VersionWrite.txFrom}. */
-  txFrom?: Date;
+  /** knownAt, under the same rule as {@link VersionWrite.txFrom} — a `Date` or an exact instant. */
+  txFrom?: Date | KnowledgeInstant;
 }
 
 /**
@@ -681,7 +752,7 @@ export async function retireVersion<Row>(
   if (open.rows.length === 0) return 0;
 
   await tx.execute(sql`
-    UPDATE ${tableRef(table)} cur SET ${sql.identifier(table.txTo.name)} = ${txFrom}::timestamptz
+    UPDATE ${tableRef(table)} cur SET ${sql.identifier(table.txTo.name)} = ${instantSql(txFrom)}
      WHERE ${keyMatch}
        AND ${qualified('cur', table.txTo)} = 'infinity'
        AND ${qualified('cur', table.validTo)} > ${r.validTo}::timestamptz`);
@@ -694,7 +765,7 @@ export async function retireVersion<Row>(
       row.version_id,
       new Map<string, SQL>([
         [table.validTo.name, sql`${r.validTo}::timestamptz`],
-        [table.txFrom.name, sql`${txFrom}::timestamptz`],
+        [table.txFrom.name, instantSql(txFrom)],
         [table.txTo.name, sql`'infinity'::timestamptz`],
       ]),
     );
