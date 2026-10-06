@@ -17,3 +17,6 @@ test-results/
 # is what keeps an ordinary developer run from dirtying a committed session directory — and keeps a
 # mistyped `--accept` from being the thing that promotes it.
 fixtures/sessions/*/actual.ndjson
+
+# Deployment secrets (docs/DEPLOYMENT.md §7) — never committed.
+.env.deploy

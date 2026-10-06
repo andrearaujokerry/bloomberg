@@ -41,6 +41,11 @@ if ! command -v psql >/dev/null 2>&1; then
   exit 2
 fi
 
+# Fail fast on an unreachable host. Without this, psql waits on the OS TCP timeout — a typo in the
+# hostname hung this probe for over two minutes before the limit was added, which is long enough that
+# the first thing you learn about your connection string is that the tool appears broken.
+export PGCONNECT_TIMEOUT="${PGCONNECT_TIMEOUT:-10}"
+
 # One connection per probe, so a server that drops the session on a refused statement still lets the
 # rest run and the report is complete rather than truncated at the first failure.
 q() { psql "$URL" -X -q -t -A -v ON_ERROR_STOP=1 -c "$1" 2>&1; }
