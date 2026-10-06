@@ -867,6 +867,29 @@ source files. Every fix was mutation-checked — eleven mutations, each reverted
 including the original spelling (`KEY=` for a positional) which reddens the round trip for every grammar
 that has one.
 
+### This is a Postgres 14 build and Postgres 14 goes EOL in November 2026
+
+Found by running the deployment preflight against a free Neon project on 2026-10-06, which answered
+**PostgreSQL 18.6**. `docs/DATA_MODEL.md` L1 says "final Postgres 14 data model" and L20 records that
+every migration was verified against a scratch 14.17 database; `ARCHITECTURE.md` names Postgres 14 at
+L45 and L1226; the development machine is 14.17; and all 6,214 tests have only ever run against 14.
+
+Pinning a deployment to 14 to match would put it on a major version that stops receiving security
+fixes within the month, so the move is not optional. The deployment did not create this; it surfaced
+it, about four weeks before it would have become urgent on its own.
+
+**What the preflight already proves about 18.6**, which is the surface most likely to break: all four
+extensions (`uuid-ossp`, `btree_gist`, `pg_trgm`, `pgcrypto`) install, `CREATE ROLE` works for a
+non-superuser owner holding `CREATEROLE`, RLS with a `SECURITY DEFINER` function bypassing a
+non-`FORCE`d policy works, and declarative range partitioning with attached children works. One known
+hazard is handled in our own SQL rather than by luck: Postgres 15 removed `PUBLIC`'s implicit `CREATE`
+on schema `public`, and `0015_roles_rls_worm.sql` L10/L67 grant schema privileges explicitly.
+
+**What it does not prove:** that the 19 migrations apply in order, or that the suite passes. Neither
+has been run on anything but 14. `brew search postgresql@` offers 12 through 18, so 18 can be
+installed beside 14 on a different port and the move can be measured rather than assumed —
+`docs/DEPLOYMENT.md` §2.3b has the sequence. Not started.
+
 ## Notes
 
 - `packages/server/src/test/fixtures.ts` resolves `REPLAY_DIR` against `packages/server` while the

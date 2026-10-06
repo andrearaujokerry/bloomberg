@@ -142,6 +142,64 @@ Measured on `bloomberg_seed_test` (41,455 instruments):
 It fits a 500 MB tier with little headroom, and the top four rows — **85 MB of the 141** — are the
 full Cboe symbol book, which a demo does not need. §4.4 is the optional trim.
 
+### 2.3b STEP 0 RESULT, and the thing it found — THE DATABASE VERSION
+
+Run against a free Neon project on 2026-10-06, through the web console (`scripts/deploy-probe.sql`,
+because 5432 is blocked from the development machine — §2.3):
+
+| # | Check | Verdict |
+| --- | --- | --- |
+| 1 | server version ≥ 14 | PASS — **PostgreSQL 18.6** |
+| 2 | connecting role | `neondb_owner` — **superuser=f, createrole=t** |
+| 3 | `CREATE ROLE` (migration 0015) | PASS |
+| 11-14 | `uuid-ossp`, `btree_gist`, `pg_trgm`, `pgcrypto` | PASS |
+| 20 | RLS + `SECURITY DEFINER` | PASS |
+| 21 | declarative partitioning | PASS |
+
+**All ten passed, and the passes are meaningful** — row 2 is the reason. `neondb_owner` is *not* a
+superuser and *does* hold `CREATEROLE`, which is exactly the combination §2.3 was worried about. The
+host can run the migrations.
+
+**But Neon is Postgres 18.6, and this build is a Postgres 14 build.** `docs/DATA_MODEL.md` opens with
+"final Postgres 14 data model" and records that every migration was "verified in order against a
+scratch Postgres 14.17 database"; `docs/ARCHITECTURE.md` says Postgres 14 twice; the development
+machine runs 14.17; and all 6,214 tests have only ever run against 14. Deploying to 18 would put the
+schema on a version it has never touched, four majors ahead.
+
+#### The obvious fix is the wrong one
+
+Pinning the Neon project to Postgres 14 would match what is tested — and **Postgres 14 reaches end of
+life in November 2026, which is about four weeks from this line.** Deploying onto a major version that
+stops receiving security fixes within the month is not a deployment, it is a migration deferred at
+interest. So the version move is not optional and the deployment did not create it; it surfaced it.
+
+#### What the probe already tells us, and what it does not
+
+It is genuine evidence, and it covers the surface most likely to break: all four extensions exist on
+18.6, `CREATE ROLE` works, RLS with a `SECURITY DEFINER` function that bypasses a non-`FORCE`d policy
+works, and declarative range partitioning with attached children works. One known hazard is already
+handled in our own SQL rather than by luck — Postgres 15 removed `PUBLIC`'s implicit `CREATE` on
+schema `public`, and `0015_roles_rls_worm.sql` L10 and L67 grant schema privileges explicitly
+(`USAGE` to `terminal_app`, `USAGE, CREATE` to `terminal_maint`).
+
+It does **not** tell us that the 19 migrations apply cleanly in order, or that 6,214 tests pass. Those
+are the only two things that would, and neither has been run on 18.
+
+#### The sequence this implies
+
+`postgresql@18` is installable locally (`brew search postgresql@` offers 12 through 18), so the move
+can be tested exactly rather than hoped at:
+
+1. Install Postgres 18 beside 14 — different port, both running, nothing destroyed.
+2. Apply all 19 migrations to an empty 18 database and read the failures.
+3. Point the vitest projects at 18 and run the full suite twice, plus the e2e suite.
+4. Fix what breaks; amend `DATA_MODEL.md` §20 and `ARCHITECTURE.md` where they name the version.
+5. Only then deploy.
+
+**That is its own work package, not a step in this plan**, and it is listed in §7 as item 0 because
+nothing else should start before it. If it turns out to be a no-op — plausible, given what the probe
+found — it is a cheap no-op with a test run behind it instead of an assumption.
+
 ### 2.4b Pooled or direct connection — it matters in exactly two places
 
 Managed hosts hand out two connection strings: a **direct** one and a **pooled** one through
@@ -321,6 +379,7 @@ Two practical notes:
 
 | # | Work | Size |
 | --- | --- | --- |
+| **0** | **The Postgres 14 → 18 move (§2.3b). Blocks everything else, and would be due within the month regardless, because 14 goes EOL in November 2026.** | **L** |
 | 1 | §4.2 Fastify serves the SPA, with the SPA fallback and a no-sourcemap build | S |
 | 2 | §4.3 rate limiter, global plus a tighter `/auth/*` bucket, with tests | S |
 | 3 | §4.1 whichever option you chose, with its entitlement tests | M |
@@ -352,8 +411,11 @@ making this repo public is what GitHub Actions being free depends on.
 ### Sequence
 
 ```
-step 0 (you, 10 min)  →  1,2,4,5 (me)  →  3 (me)  →  6,7 (me)  →  deploy (you)  →  8,9 (me, if needed)
+step 0 (you) ✓ DONE  →  item 0, the version move (me)  →  1,2,4,5 (me)  →  3 (me)
+                     →  6,7 (me)  →  deploy (you)  →  8,9 (me, if needed)
 ```
+
+Step 0 passed on 2026-10-06 (§2.3b). Item 0 is new and comes from what it found.
 
 Items 1, 2, 4 and 5 are independent of which host you pick and I can start on them the moment you
 have run step 0's probes. Item 3 depends on your §4.1 decision. Item 7 needs a live
