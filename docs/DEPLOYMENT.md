@@ -122,6 +122,29 @@ Measured on `bloomberg_seed_test` (41,455 instruments):
 It fits a 500 MB tier with little headroom, and the top four rows — **85 MB of the 141** — are the
 full Cboe symbol book, which a demo does not need. §4.4 is the optional trim.
 
+### 2.4b Pooled or direct connection — it matters in exactly two places
+
+Managed hosts hand out two connection strings: a **direct** one and a **pooled** one through
+PgBouncer in transaction mode. Transaction-mode pooling returns the connection to the pool at every
+`COMMIT`, which breaks anything session-scoped. Checked against this tree:
+
+| Feature | Used here? | Pooling-safe? |
+| --- | --- | --- |
+| `LISTEN` / `NOTIFY` | no | — |
+| Prepared statements, cursors | no | — |
+| `set_config('app.user_id', …, true)` — the RLS tenant | **yes**, everywhere | **Yes.** The third argument is `true`, which is transaction-scoped by design, so it lives exactly as long as the transaction that needs it. |
+| `pg_try_advisory_lock` — the ingest leader | yes, in `ingest/lock.ts` | **No**, and that file says why: it takes the session-scoped lock deliberately, because leadership has to outlive thousands of transactions. |
+
+So:
+
+- **Migrations and the seed: the DIRECT string.** DDL, `CREATE ROLE`, `CREATE EXTENSION`.
+- **The app at runtime: pooled is fine**, because the RLS mechanism is transaction-scoped. Use it —
+  a free tier's connection ceiling is low.
+- **The probe: the DIRECT string**, since it tests DDL.
+- **If startup step 8 is ever armed** (§3 says not to), its connection must be unpooled or the leader
+  lock is meaningless. Deferred today, so it does not bite — but it is the kind of thing that bites
+  silently a year later, which is why it is written down here.
+
 ### 2.5 The database is written at runtime
 
 Sessions, `access_log` and `usage_events` are all written while serving. A read-only replica or a
