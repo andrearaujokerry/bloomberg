@@ -185,6 +185,60 @@ schema `public`, and `0015_roles_rls_worm.sql` L10 and L67 grant schema privileg
 It does **not** tell us that the 19 migrations apply cleanly in order, or that 6,214 tests pass. Those
 are the only two things that would, and neither has been run on 18.
 
+#### STEP 1 AND 2 RESULT: all 19 migrations apply on 18.6, and the schema is identical
+
+Run on 2026-10-06. `postgresql@18` installed beside 14 as a keg-only formula — 14's binaries stay
+first on `PATH`, so nothing about the existing setup changed — and started on **port 5433**, manually
+rather than through `brew services`, which would have fought for 5432:
+
+```bash
+brew install postgresql@18
+LC_ALL="en_US.UTF-8" /opt/homebrew/opt/postgresql@18/bin/pg_ctl \
+  -D /opt/homebrew/var/postgresql@18 -o "-p 5433" -l /tmp/pg18.log start
+```
+
+`LC_ALL` is required and is not optional: without it 18 dies at startup with
+`FATAL: postmaster became multithreaded during startup`. It is a macOS-local quirk, not a finding
+about this schema, and brew's own caveats mention it.
+
+**All 19 migrations applied, exit 0, 19 applied / 0 already applied.** Then the schemas were compared
+against a migrations-only Postgres 14 database (`bloomberg_pg14_cmp`, created for this rather than
+using `bloomberg_test`, which must stay pristine):
+
+| | PG 14.17 | PG 18.6 |
+| --- | --- | --- |
+| tables / partitioned / indexes / views | 148 / 6 / 383 / 6 | **same** |
+| check / FK / PK / unique / exclusion constraints | 154 / 140 / 154 / 20 / 21 | **same** |
+| our functions (not extension-owned) | 23 | **same** |
+| RLS policies / enums | 20 / 11 | **same** |
+
+Three raw counts did differ, and all three are the catalogue changing rather than the schema:
+
+- **`pg_constraint` 489 → 1666.** Every type matches exactly; the whole difference is 1,177 rows of
+  `contype='n'`, because **Postgres 17+ catalogues NOT NULL constraints** and 14 did not.
+- **Functions 279 → 313.** Extension-owned only (256 → 290); ours is 23 in both.
+- **Visible triggers 45 → 53.** The same five `access_log_worm` / `usage_events_worm` triggers exist
+  in both — a parent plus four partition clones. **Postgres 15 flipped `tgisinternal` for clones**
+  from `t` to `f`, so they stop being hidden. Verified functionally rather than by counting: an
+  `UPDATE` and a `DELETE` on `access_log` are refused on BOTH versions with the identical message,
+  `table access_log_m2026_10 is append-only (WORM)` — naming the partition, which is the clone
+  trigger firing.
+
+A full `pg_dump --schema-only` of both, taken with the **same** 18.6 binary so the tool cannot
+introduce differences, left 252 diff lines after normalising the NOT NULL spelling. Every one is
+cosmetic: `pg_dump`'s own `\restrict` nonce, one comment block about not creating schema `public`,
+and the six bitemporal views, where a 14 server deparses `identifiers.version_id` and an 18 server
+deparses `version_id`. Those six were then compared by what they return instead of how they are
+spelled — **100 columns, identical names, order and types.**
+
+**Conclusion: this schema is Postgres 18 clean.** Step 3 is what remains, and it is smaller than
+estimated: `vitest.config.ts` L16-24 already reads `DATABASE_URL_TEST` and `DATABASE_URL_SEED_TEST`
+from the environment with 5432 defaults, so pointing the whole suite at 18 needs **no code change** —
+only those two variables set to 5433.
+
+Note for whoever picks this up: PG 18 was started by hand and will not survive a reboot. Restart it
+with the `pg_ctl` line above; stop it with the same command and `stop`.
+
 #### The sequence this implies
 
 `postgresql@18` is installable locally (`brew search postgresql@` offers 12 through 18), so the move

@@ -885,10 +885,28 @@ non-`FORCE`d policy works, and declarative range partitioning with attached chil
 hazard is handled in our own SQL rather than by luck: Postgres 15 removed `PUBLIC`'s implicit `CREATE`
 on schema `public`, and `0015_roles_rls_worm.sql` L10/L67 grant schema privileges explicitly.
 
-**What it does not prove:** that the 19 migrations apply in order, or that the suite passes. Neither
-has been run on anything but 14. `brew search postgresql@` offers 12 through 18, so 18 can be
-installed beside 14 on a different port and the move can be measured rather than assumed —
-`docs/DEPLOYMENT.md` §2.3b has the sequence. Not started.
+**MEASURED, 2026-10-06: the schema is Postgres 18 clean.** 18.6 installed beside 14 (keg-only, so
+14's binaries stay first on `PATH`) and started on port 5433. All **19 migrations applied, exit 0**.
+Against a migrations-only 14 database the counts match exactly — 148 tables, 6 partitioned, 383
+indexes, 6 views, 154 checks, 140 FKs, 154 PKs, 20 uniques, 21 exclusion constraints, 23 of our own
+functions, 20 policies, 11 enums. A `pg_dump --schema-only` of both through the **same** 18.6 binary
+left only cosmetic differences: `pg_dump`'s own nonce, one comment, and the six bitemporal views,
+which an 18 server deparses without the table qualifier and which return identical columns (100,
+same names, order and types).
+
+Three raw counts moved and all three are the catalogue, not the schema: `pg_constraint` 489 → 1666
+(PG 17+ catalogues NOT NULL — 1,177 rows of `contype='n'`, every other type identical), functions
+279 → 313 (extension-owned only), and visible triggers 45 → 53 (**PG 15 flipped `tgisinternal`** for
+partition clones). That last one was checked functionally rather than by counting: `UPDATE` and
+`DELETE` on `access_log` are refused on **both** versions with the identical message, `table
+access_log_m2026_10 is append-only (WORM)`, naming the partition — so the clone trigger fires either
+way and the audit log is as append-only on 18 as on 14.
+
+**What is still unproven:** the suite. 6,214 tests have only run against 14. That step is smaller
+than estimated — `vitest.config.ts` L16-24 already reads `DATABASE_URL_TEST` and
+`DATABASE_URL_SEED_TEST` from the environment with 5432 defaults, so pointing the suite at 18 needs
+no code change, only those two variables. `docs/DEPLOYMENT.md` §2.3b has the detail and the `pg_ctl`
+line to restart 18, which was started by hand and will not survive a reboot.
 
 ## Notes
 
