@@ -82,11 +82,20 @@ row-level security plus `SECURITY DEFINER` helpers that deliberately bypass non-
 (0015 L160-165, 0017, 0018) — those are owned by whoever runs the migration, so they need that role
 to own the tables too, which it will.
 
-**The ten-minute test, before any other work** (§7, step 0) is `scripts/deploy-probe.sh`:
+**The ten-minute test, before any other work** (§7, step 0) is `scripts/deploy-probe.sh`. Put the
+URL in `.env.deploy` and run it with no arguments:
 
 ```bash
-./scripts/deploy-probe.sh 'postgresql://user:pass@host/db?sslmode=require'
+echo 'DEPLOY_DATABASE_URL=postgresql://user:pass@host/db?sslmode=require' > .env.deploy
+./scripts/deploy-probe.sh
 ```
+
+**Use the file, not an argument.** A connection string ends in `?sslmode=require`, and in zsh `?` is
+a glob: an unquoted URL makes the SHELL fail with `no matches found` before the script is executed at
+all, so its own "quote this" warning never prints. An unquoted `&` between query parameters is worse
+— zsh backgrounds the command and silently truncates the URL, which could probe a different database
+than the one you meant. The file also keeps the password out of your shell history. `.env.deploy` is
+gitignored. An argument still works if single-quoted, and the script prints which source it used.
 
 It checks the version, the four extensions, `CREATE ROLE`, RLS plus a `SECURITY DEFINER` function,
 and declarative partitioning; it prints the role's `superuser`/`createrole` flags; and it exits

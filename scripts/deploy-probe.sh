@@ -9,29 +9,63 @@
 #
 # Shell and not tsx on purpose: it needs nothing but `psql`, and it runs before `npm install`.
 #
-#   ./scripts/deploy-probe.sh 'postgresql://user:pass@host/db?sslmode=require'
+# Two ways in. The second is better, and is the one docs/DEPLOYMENT.md §7 recommends:
 #
-# The URL is a POSITIONAL ARGUMENT and is checked, deliberately. An earlier version of this probe
-# lived in the documentation as a snippet reading `$CANDIDATE_URL`, and an unset variable makes psql
-# fall back to its own defaults — local socket, database named after the user — so it reported
+#   ./scripts/deploy-probe.sh 'postgresql://user:pass@host/db?sslmode=require'   # MUST be quoted
+#
+#   echo 'DEPLOY_DATABASE_URL=postgresql://…' > .env.deploy && ./scripts/deploy-probe.sh
+#
+# WHY THE FILE IS BETTER, and it is not only about secrets. A connection string ends in
+# `?sslmode=require`, and in zsh `?` is a glob: an unquoted URL makes the SHELL fail with
+# `no matches found` before this script is executed at all, so the usage text below — which says to
+# quote it — never gets the chance to print. An `&` between query parameters is worse: zsh takes it
+# as "run in background" and silently truncates the URL. The file path has no quoting to get wrong,
+# and keeps the password out of shell history.
+#
+# A URL is still REQUIRED one way or the other, deliberately. An earlier version of this probe lived
+# in the documentation as a snippet reading `$CANDIDATE_URL`, and an unset variable makes psql fall
+# back to its own defaults — local socket, database named after the user — so it reported
 # `FATAL: database "<you>" does not exist` and tested nothing at all. A probe that silently probes
-# the wrong server is worse than no probe.
+# the wrong server is worse than no probe, which is why nothing here defaults to anything.
 
 set -uo pipefail
 
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
+ENV_FILE="$HERE/.env.deploy"
+
 URL="${1:-}"
+SOURCE="argument"
+
+# No argument: read DEPLOY_DATABASE_URL from .env.deploy (gitignored). Parsed rather than sourced —
+# `source` would execute whatever is in that file, and a connection string is data.
+if [ -z "$URL" ] && [ -f "$ENV_FILE" ]; then
+  URL=$(sed -n 's/^[[:space:]]*DEPLOY_DATABASE_URL[[:space:]]*=[[:space:]]*//p' "$ENV_FILE" | head -1)
+  URL="${URL%\"}"; URL="${URL#\"}"   # tolerate "quoted values"
+  URL="${URL%\'}"; URL="${URL#\'}"
+  SOURCE=".env.deploy"
+fi
+
 if [ -z "$URL" ]; then
-  cat >&2 <<'USAGE'
-usage: ./scripts/deploy-probe.sh <DATABASE_URL>
+  cat >&2 <<USAGE
+usage: ./scripts/deploy-probe.sh '<DATABASE_URL>'
+   or: put it in .env.deploy and run with no arguments
 
-  Quote the URL — it contains characters your shell will otherwise eat:
+  RECOMMENDED — no shell quoting to get wrong, and it stays out of your history:
 
-    ./scripts/deploy-probe.sh 'postgresql://user:pass@host/dbname?sslmode=require'
+    echo 'DEPLOY_DATABASE_URL=postgresql://user:pass@host/db?sslmode=require' > .env.deploy
+    ./scripts/deploy-probe.sh
 
-  To probe your LOCAL postgres instead (note: a local superuser passes everything,
-  so a local pass does NOT predict a managed host):
+  As an argument, SINGLE-QUOTE it. A connection string ends in '?sslmode=require',
+  and in zsh an unquoted '?' is a glob — the shell fails with "no matches found"
+  before this script runs, so you never see this message. An unquoted '&' is worse:
+  zsh backgrounds the command and truncates the URL.
 
-    ./scripts/deploy-probe.sh "postgresql:///postgres?host=/tmp&user=$USER"
+    ./scripts/deploy-probe.sh 'postgresql://user:pass@host/db?sslmode=require'
+
+  To probe your LOCAL postgres (a local superuser passes everything, so a local
+  pass does NOT predict a managed host):
+
+    ./scripts/deploy-probe.sh "postgresql:///postgres?host=/tmp&user=\$USER"
 USAGE
   exit 2
 fi
@@ -57,7 +91,7 @@ fail() { printf '  \033[31mFAIL\033[0m  %s\n' "$1"; fails=$((fails + 1)); }
 warn() { printf '  \033[33mWARN\033[0m  %s\n' "$1"; warns=$((warns + 1)); }
 
 echo
-echo "Probing $(printf '%s' "$URL" | sed -E 's#(//[^:]*):[^@]*@#\1:****@#')"
+echo "Probing $(printf '%s' "$URL" | sed -E 's#(//[^:]*):[^@]*@#\1:****@#')  [from $SOURCE]"
 echo
 
 # ── 0. reachable at all ────────────────────────────────────────────────────────────────────────
