@@ -107,6 +107,27 @@ BEGIN
     INSERT INTO _deploy_probe_results VALUES (21, 'declarative partitioning', 'FAIL', SQLERRM);
   END;
 
+  -- ── collation, and whether a C database can be made (startup.ts#checkCollation) ────────────
+  -- Every committed golden was captured under `datcollate = C`. A locale-aware collation reorders
+  -- text around punctuation — real field ids reorder completely — so the deployed database should be
+  -- created `LOCALE 'C' TEMPLATE template0`. That needs CREATEDB, which this probe cannot TRY:
+  -- `CREATE DATABASE` refuses to run inside a transaction block, and a DO block is one. So it reads
+  -- the privilege instead; `scripts/deploy-probe.sh` actually attempts it.
+  INSERT INTO _deploy_probe_results VALUES (25, 'collation of this database',
+    CASE WHEN (SELECT datcollate FROM pg_database WHERE datname = current_database()) = 'C'
+         THEN 'PASS' ELSE 'WARN' END,
+    (SELECT datcollate FROM pg_database WHERE datname = current_database())
+    || CASE WHEN (SELECT datcollate FROM pg_database WHERE datname = current_database()) = 'C'
+            THEN ' — matches the captures'
+            ELSE ' — the captures are C; create the app database with LOCALE ''C'' TEMPLATE template0'
+       END);
+  INSERT INTO _deploy_probe_results VALUES (26, 'CREATEDB (to make a C database)',
+    CASE WHEN (SELECT rolcreatedb FROM pg_roles WHERE rolname = current_user) THEN 'PASS' ELSE 'WARN' END,
+    CASE WHEN (SELECT rolcreatedb FROM pg_roles WHERE rolname = current_user)
+         THEN 'this role may create databases (read from pg_roles; deploy-probe.sh attempts one)'
+         ELSE 'this role may NOT create databases — make the C database from the host''s console'
+    END);
+
   -- ── room ────────────────────────────────────────────────────────────────────────────────────
   INSERT INTO _deploy_probe_results VALUES (30, 'current database size', 'INFO',
     pg_size_pretty(pg_database_size(current_database()))

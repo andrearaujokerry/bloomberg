@@ -1134,7 +1134,14 @@ async function citeRecordedCapture(
   return insertProvenance(tx, raw, { adapterVersion, sourceTs: null });
 }
 
-/** `econ_series.series_id` by `provider_code` for one source. */
+/**
+ * `econ_series.series_id` by `provider_code` for one source.
+ *
+ * The `ORDER BY` is cosmetic here and deliberately carries no `COLLATE`: the rows go straight into a
+ * `Map` keyed by `provider_code`, so nothing downstream can observe their order. Its two siblings
+ * (`worldMacro.ts#seededTargets`, `blsSeries.ts#econSeriesByProviderCode`) look identical and are
+ * NOT cosmetic — both feed an ordered walk — which is why they say `COLLATE "C"` and this does not.
+ */
 async function seriesIdsByCode(tx: Tx, sourceId: string): Promise<Map<string, number>> {
   const res = await tx.execute<{ provider_code: string; series_id: string }>(sql`
     SELECT provider_code, series_id::text AS series_id FROM econ_series

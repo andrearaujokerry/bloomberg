@@ -55,6 +55,8 @@ import { materialiseCalendar } from '../../src/refdata/calendars.js';
 import { seedLicences } from '../../src/seed/licences.js';
 import {
   buildStartupUniverseSnapshot,
+  CAPTURED_COLLATION,
+  checkCollation,
   checkFunctionRegistry,
   DEFERRED_STARTUP_STEPS,
   FieldLicenceUnknownFieldError,
@@ -98,6 +100,47 @@ afterEach(async () => {
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 // Step 3 — the field dictionary and its field-id validation
 // ─────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * The collation check, which exists because the suite had an undocumented dependency on one.
+ *
+ * Developed entirely against a cluster whose `initdb` chose `datcollate = C`. Run against an
+ * `en_US.UTF-8` cluster, exactly one assertion of 6,214 failed — a locale-aware collation weights the
+ * underscore differently, so `NGDP_RPCH` sorts after `NGDPDPC` under `C` and before `NGDPD` under
+ * `en_US.UTF-8`. One failure was luck: real field ids are underscore-heavy and reorder completely
+ * between the two.
+ *
+ * This asserts the REPORT rather than a particular verdict, because the verdict depends on the
+ * cluster the suite is running against and both answers are legitimate. What must hold either way is
+ * that the collation is read from the database and that a mismatch carries the remedy.
+ */
+describe('startup step 3 — the cluster collation', () => {
+  it('reads the collation off the connected database and says whether it matches the captures', async () => {
+    const report = await checkCollation(t.db);
+
+    // Read a second way, through the raw client, so the report is not merely self-consistent — the
+    // same rule this file applies to step 3's field-licence count below.
+    const actual = await t.client.query<{ datcollate: string }>(
+      `SELECT datcollate FROM pg_database WHERE datname = current_database()`,
+    );
+    expect(report.collate).toBe(actual.rows[0]?.datcollate);
+    expect(report.matchesCapture).toBe(report.collate === CAPTURED_COLLATION);
+  });
+
+  it('carries the remedy on a mismatch, and nothing on a match', async () => {
+    const report = await checkCollation(t.db);
+    if (report.matchesCapture) {
+      expect(report.warning).toBeUndefined();
+      return;
+    }
+    // The warning has to be actionable: it names what was found, what was expected, and the one
+    // statement that fixes it. A warning that only says "collation differs" would send a reader to
+    // the source to find out what to do.
+    expect(report.warning).toContain(report.collate);
+    expect(report.warning).toContain(CAPTURED_COLLATION);
+    expect(report.warning).toContain("LOCALE 'C' TEMPLATE template0");
+  });
+});
 
 describe('startup step 3 — the field dictionary and its field-id validation', () => {
   it('accepts the database this build ships with, and counts what it read', async () => {

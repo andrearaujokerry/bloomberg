@@ -192,6 +192,27 @@ else
 fi
 q 'DROP TABLE IF EXISTS deploy_probe_p' >/dev/null 2>&1
 
+# ── 6b. collation, and can a C database be made ────────────────────────────────────────────────
+# Every committed golden was captured under `datcollate = C`, and a locale-aware collation reorders
+# text around punctuation — real field ids reorder completely (startup.ts#checkCollation). The
+# deployed database should be created `LOCALE 'C' TEMPLATE template0`, which needs CREATEDB. psql -c
+# runs one statement in autocommit, so unlike the SQL version this can actually TRY it.
+echo
+echo "collation — every committed golden was captured under C (startup.ts#checkCollation)"
+coll=$(q "SELECT datcollate FROM pg_database WHERE datname = current_database()")
+if [ "$coll" = "C" ]; then
+  pass "this database is C"
+else
+  warn "this database is '$coll'; the app database should be created LOCALE 'C'"
+fi
+if out=$(q "CREATE DATABASE _deploy_probe_c LOCALE 'C' TEMPLATE template0"); then
+  pass "can create a C database (CREATE DATABASE … LOCALE 'C' TEMPLATE template0)"
+  q 'DROP DATABASE _deploy_probe_c' >/dev/null 2>&1 || warn "created _deploy_probe_c but could not drop it — remove it by hand"
+else
+  warn "cannot create a database here: $(printf '%s' "$out" | head -1)"
+  echo "        Make the C database from the host's console instead, or accept the startup warning."
+fi
+
 # ── 7. room ────────────────────────────────────────────────────────────────────────────────────
 echo
 echo "storage headroom (the seeded universe is ~141 MB; ~45 MB if the seed is trimmed)"

@@ -115,7 +115,13 @@ export function noObservationCounts(): ObservationCounts {
 // The series universe and the daily budget
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 
-/** `econ_series.provider_code` → `series_id` for one source, ordered so the body is stable. */
+/**
+ * `econ_series.provider_code` → `series_id` for one source, ordered so the body is stable.
+ *
+ * `COLLATE "C"` for the reason `worldMacro.ts#seededTargets` gives: the request body this orders is
+ * part of what a replay fixture matches on, and a bare text ordering is stable only within one
+ * cluster's locale.
+ */
 export async function econSeriesByProviderCode(
   tx: Tx,
   sourceId: string,
@@ -123,7 +129,7 @@ export async function econSeriesByProviderCode(
   const res = await tx.execute<{ provider_code: string; series_id: string }>(sql`
     SELECT provider_code, series_id FROM econ_series
      WHERE source_id = ${sourceId}
-     ORDER BY provider_code`);
+     ORDER BY provider_code COLLATE "C"`);
   const map = new Map<string, number>();
   for (const row of res.rows) map.set(row.provider_code, Number(row.series_id));
   return map;

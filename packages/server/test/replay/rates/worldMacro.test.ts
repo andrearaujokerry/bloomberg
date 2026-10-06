@@ -401,7 +401,19 @@ describe('worldMacro — the IMF half (§10.8, §16.9)', () => {
       SELECT s.provider_code, s.name, s.units, s.frequency, s.country, r.name AS release
         FROM econ_series s JOIN econ_releases r ON r.release_id = s.release_id
        WHERE s.source_id = ${IMF_SOURCE_ID}
-       ORDER BY s.provider_code`);
+       ORDER BY s.provider_code COLLATE "C"`);
+    /**
+     * `COLLATE "C"`, and the reason is worth the lines: this assertion was the ONLY one of 6,214 to
+     * fail when the suite was first run against a cluster whose locale is `en_US.UTF-8` rather than
+     * `C`. Nothing about the schema or the Postgres version was wrong — a locale-aware collation
+     * weights the underscore differently, so `NGDP_RPCH` sorts BEFORE `NGDPD` there and AFTER
+     * `NGDPDPC` under `C`, and `IMF_WEO_HEADLINE_INDICATORS` is declared in `C` order.
+     *
+     * Asserting the ordering the PRODUCT now guarantees (`worldMacro.ts#seededTargets` carries the
+     * same `COLLATE "C"`, because its "stable walk" has to be stable across hosts) rather than
+     * whatever the cluster happens to have been `initdb`'d with. Comparing as a set would also have
+     * gone green and would have asserted less: the order is what the constant pins.
+     */
     expect(series.rows.map((r) => r.provider_code)).toEqual([...IMF_WEO_HEADLINE_INDICATORS]);
     expect(series.rows.every((r) => r.release === IMF_WEO_RELEASE_NAME)).toBe(true);
     expect(series.rows.every((r) => r.frequency === 'A')).toBe(true);

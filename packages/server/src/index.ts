@@ -51,6 +51,7 @@ import { usageEvents } from './observability/usageEvents.js';
 import { buildPlant } from './plant/tickerPlant.js';
 import {
   buildStartupUniverseSnapshot,
+  checkCollation,
   checkFunctionRegistry,
   DEFERRED_STARTUP_STEPS,
   loadCalendars,
@@ -102,6 +103,12 @@ async function main(): Promise<void> {
   // deliberately). It is *started* at step 9, below the listener; building it now is what lets it
   // go onto `AppDeps` at step 6.
   const usage = usageEvents({ db, clock });
+
+  // Before step 3 reads a row: what does ORDER BY mean on this host? Every committed golden and
+  // fixture was captured under `datcollate = C`, which was nowhere written down until an
+  // `en_US.UTF-8` cluster failed one assertion of 6,214. A mismatch is a WARNING and not an exit —
+  // see `startup.ts#checkCollation` for why, and for the measurement.
+  const collation = await checkCollation(db);
 
   // The other half of step 3: every `field_licence.field_id` must be a field the dictionary has.
   // `validateFieldLicences` throws on the first bad row set and the `catch` at the foot of this
@@ -163,6 +170,14 @@ async function main(): Promise<void> {
     { step: 3, ...registry.stats(), ...fields },
     'licence registry and field dictionary loaded; every field_licence.field_id resolves',
   );
+  // The collation, reported here rather than where it is checked, because `app` does not exist that
+  // early and this is where every other step says what it found.
+  if (collation.matchesCapture) {
+    app.log.info({ step: 3, collate: collation.collate }, 'database collation matches the captures');
+  } else {
+    app.log.warn({ step: 3, collate: collation.collate }, collation.warning);
+  }
+
   app.log.info(
     {
       step: 4,

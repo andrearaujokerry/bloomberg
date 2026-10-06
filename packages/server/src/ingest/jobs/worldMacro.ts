@@ -143,7 +143,16 @@ export interface ImfTarget {
   country: string;
 }
 
-/** `(provider_code, country)` of every seeded series of a source, ordered for a stable walk. */
+/**
+ * `(provider_code, country)` of every seeded series of a source, ordered for a stable walk.
+ *
+ * `COLLATE "C"` and not a bare `ORDER BY`, because "stable" has to mean stable ACROSS HOSTS and a
+ * bare text ordering is only stable within one cluster's locale. Measured: `NGDP_RPCH` sorts after
+ * `NGDPDPC` under `C` and before `NGDPD` under `en_US.UTF-8`, because a locale-aware collation
+ * weights the underscore differently. This walk decides the order of outbound requests and therefore
+ * of the `provenance` rows behind them, so a host whose `initdb` chose a different locale would
+ * produce a different — and equally correct-looking — capture order.
+ */
 export async function seededTargets(
   tx: Tx,
   sourceId: string,
@@ -151,7 +160,7 @@ export async function seededTargets(
   const res = await tx.execute<{ provider_code: string; country: string }>(sql`
     SELECT provider_code, country FROM econ_series
      WHERE source_id = ${sourceId}
-     ORDER BY provider_code`);
+     ORDER BY provider_code COLLATE "C"`);
   return res.rows.map((row) => ({ indicator: row.provider_code, country: row.country }));
 }
 

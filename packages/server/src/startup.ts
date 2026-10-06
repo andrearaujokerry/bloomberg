@@ -476,7 +476,71 @@ export const DEFERRED_STARTUP_STEPS: readonly DeferredStartupStep[] = Object.fre
 ]);
 
 /** Everything steps 3, 4 and 5 produced, for the log line and for the acceptance test. */
+/* ---------------------------------------------------------------------------------------------- */
+/* The cluster's collation                                                                          */
+/* ---------------------------------------------------------------------------------------------- */
+
+/** The collation every committed golden and fixture was captured under. */
+export const CAPTURED_COLLATION = 'C';
+
+export interface CollationReport {
+  /** `pg_database.datcollate` of the connected database. */
+  readonly collate: string;
+  /** `true` when it is the collation the goldens were captured under. */
+  readonly matchesCapture: boolean;
+  /** Present only on a mismatch: what to do about it. */
+  readonly warning?: string;
+}
+
+/**
+ * Report the database's collation, because the goldens were captured under one and nothing said so.
+ *
+ * ## Why this exists
+ *
+ * The whole suite was developed against a cluster whose `initdb` chose `datcollate = C`, and that was
+ * nowhere written down. Running it against an `en_US.UTF-8` cluster failed exactly one assertion of
+ * 6,214 — `worldMacro.test.ts`'s IMF series list — because a locale-aware collation weights the
+ * underscore differently: `NGDP_RPCH` sorts after `NGDPDPC` under `C` and before `NGDPD` under
+ * `en_US.UTF-8`.
+ *
+ * **One failure was luck, not safety.** The two collations disagree wherever punctuation meets
+ * letters, and this build's field ids are full of underscores. Measured on eight real ones:
+ *
+ * ```
+ * C:            CHGPCT CHG_PCT_1D PXL PXV PX_ASK PX_BID PX_LAST PX_VOLUME
+ * en_US.UTF-8:  CHG_PCT_1D CHGPCT PX_ASK PX_BID PX_LAST PX_VOLUME PXL PXV
+ * ```
+ *
+ * Nothing in the committed goldens happens to order rows by a text column across values that differ
+ * that way — which is why 6,213 passed — and that is a property of the fixtures, not of the code.
+ *
+ * ## Why it WARNS and does not refuse
+ *
+ * The same distinction `loadCalendars` draws. A `field_licence.field_id` the dictionary does not know
+ * is two build artefacts disagreeing and nothing a running process can repair, so step 3 throws. A
+ * collation is a property of the HOST, a managed Postgres commonly defaults to `en_US.UTF-8`, and the
+ * orderings whose stability is load-bearing now pin `COLLATE "C"` at the query
+ * (`ingest/jobs/worldMacro.ts#seededTargets`, `ingest/jobs/blsSeries.ts`). Refusing to serve a
+ * terminal over a locale would be the wrong trade; saying so once, loudly, at boot is the right one.
+ */
+export async function checkCollation(db: Db | Tx): Promise<CollationReport> {
+  const res = await db.execute<{ datcollate: string }>(
+    sql`SELECT datcollate FROM pg_database WHERE datname = current_database()`,
+  );
+  const collate = res.rows[0]?.datcollate ?? 'unknown';
+  if (collate === CAPTURED_COLLATION) return { collate, matchesCapture: true };
+  return {
+    collate,
+    matchesCapture: false,
+    warning:
+      `database collation is '${collate}', and every committed golden and fixture was captured ` +
+      `under '${CAPTURED_COLLATION}'. Text ORDER BY results can differ — see startup.ts#checkCollation. ` +
+      `To match, create the database with: CREATE DATABASE <name> LOCALE 'C' TEMPLATE template0`,
+  };
+}
+
 export interface StartupReport {
+  readonly collation: CollationReport;
   readonly fields: FieldDictionaryReport;
   readonly calendars: CalendarReport;
   readonly functions: FunctionRegistryReport;
@@ -504,6 +568,10 @@ export interface RunStartupStepsDeps {
 export async function runStartupSteps(deps: RunStartupStepsDeps): Promise<StartupReport> {
   void RULE_CALENDARS;
 
+  // Before anything reads a row: the collation decides what an ORDER BY means, and the goldens were
+  // captured under one particular answer.
+  const collation = await checkCollation(deps.db);
+
   const fields = await validateFieldLicences(deps.db);
   const calendars = await loadCalendars(
     deps.db,
@@ -520,5 +588,5 @@ export async function runStartupSteps(deps: RunStartupStepsDeps): Promise<Startu
     ...(deps.registry === undefined ? {} : { registry: deps.registry }),
   });
 
-  return { fields, calendars, functions, universe, deferred: DEFERRED_STARTUP_STEPS };
+  return { collation, fields, calendars, functions, universe, deferred: DEFERRED_STARTUP_STEPS };
 }
