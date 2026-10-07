@@ -288,4 +288,5 @@ The design is written down, and it is the authority the code is checked against.
 | `docs/TESTING.md`                            | the test strategy and the database harness contract                                                 |
 | `docs/TRACEABILITY.md`                       | all 158 requirements mapped to implemented / partial / out of scope, with the test that proves each |
 | `docs/WORKPLAN.md`                           | the fifteen work packages this was built in                                                         |
+| `docs/DEPLOYMENT.md` + `render.yaml`         | putting it on a public URL: Render and Neon, step by step (§7.1), and what is still to do           |
 | `BUILD_STATUS.md`                            | what is done, what is open, and what was found the hard way                                         |

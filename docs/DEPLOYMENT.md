@@ -1,6 +1,7 @@
 # DEPLOYMENT — putting this terminal on a public URL for nothing
 
-A plan, the measurements it rests on, and a division of labour. Nothing here has been done yet.
+A plan, the measurements it rests on, and a division of labour. Parts of it are done; §7 says which,
+and §7.1 is the step-by-step setup on the hosts chosen — Render and Neon.
 
 Read §2 first. Four of the six constraints in it are already satisfied by the build; two of them
 decide the whole architecture, and one of them (`CREATE ROLE`, §2.3) can refuse the deployment
@@ -118,8 +119,8 @@ rather than aborting the script, prefixes every object it creates with `_deploy_
 them at the end. Verified against a scratch database as both a superuser and a `NOCREATEROLE` role.
 
 A blocked 5432 **does not block the deployment** — the Node host connects to Postgres from the cloud,
-not from your laptop. What it blocks is local admin, which is why §7 item 7 (`deploy-migrate.ts`) is
-designed to run from CI or from the host rather than from a developer machine.
+not from your laptop. What it blocks is local admin: migrating, seeding and `create-user`. §7.1 says
+how to run those from another network, and §7 item 8 is a GitHub job that runs them from GitHub.
 
 If `CREATE ROLE` is refused, either the host is wrong or 0015 needs a `DEPLOY_SINGLE_ROLE` variant,
 which is a schema change to a security migration and should not be done casually.
@@ -369,6 +370,10 @@ what SEC-02 asks for, and WebAuthn (built, no UI yet) remains the answer to that
 
 What the deployment needs for it:
 
+- **On Render's free plan, port 2525.** Render blocks outbound 25, 465 and 587 on free web services
+  (since September 2025); Brevo's relay also listens on 2525, and `render.yaml` uses it. If 2525 is
+  ever blocked too, the fallback is a sender that uses Brevo's HTTPS API, which no host blocks — a
+  small addition to `email/sender.ts`, not written yet.
 - `EMAIL_TRANSPORT=smtp`, `EMAIL_FROM`, `SMTP_HOST`, `SMTP_PORT` (587), `SMTP_SECURE` (`starttls`),
   `SMTP_USER`, `SMTP_PASS` in the host's secret store (`.env.example` lists them). `EMAIL_FROM` must
   be an address the provider will send as — a verified domain, or the mailbox you authenticate as.
@@ -469,17 +474,25 @@ stopped doing that.
 5. **`PUBLIC_FIELDS=1`** is a reasonable choice here. The field dictionary is documentation —
    definitions, units, decimals, licence terms, no instrument and no price — and publishing it lets a
    reader see the schema. Your call.
-6. **RLS is on, and every account is in exactly one firm.** `create-user --firm` requires a firm that
+6. **The app connects as `terminal_app`, never as the database owner.** Row-level security is what
+   keeps one firm's rows from another. Six tables `FORCE` it, so it binds even their owner — the four
+   portfolio tables, `messages` and `data_exceptions` — but the other fourteen do not, and the owner
+   that ran the migrations bypasses them: workspaces, watchlists, alerts, chat rooms and their
+   members, message reads and reviews, annotations, saved searches, help tickets, legal holds and
+   surveillance hits. So `DATABASE_URL` must name `terminal_app`, and `DATABASE_URL_MAINT`
+   `terminal_maint`. Migration 0015 creates both roles WITHOUT passwords, so they cannot log in until
+   §7.1 step 4 gives them one. Nothing has yet run the whole application as `terminal_app` — every
+   local run and every browser test connects as a superuser — so the first deploy is also the first
+   time a missing grant could show (§7, item 12).
+7. **RLS is on, and every account is in exactly one firm.** `create-user --firm` requires a firm that
    already exists and puts the person in it; RLS keeps them inside it.
 
 ---
 
 ## 6. Hosts
 
-**I cannot verify current free-tier terms.** I have no network access in this session and these
-change constantly — Render's free Postgres, Fly's free allowance and Railway's free plan have all
-changed at least once. Treat the table as the *shape* of the choice and confirm the terms yourself
-before building anything (§7 step 0).
+**Chosen (2026-10-07): Render for the server, Neon for Postgres.** The table below is how the choice
+was framed; the facts after it were checked against Render's own documentation on the day.
 
 | Role | Candidates | What to check |
 | --- | --- | --- |
@@ -487,44 +500,58 @@ before building anything (§7 step 0).
 | Node + WS | **Render** free web service, Koyeb, Fly.io | WebSocket upgrades proxied · persistent process · RAM at build time (see below) · cold-start behaviour |
 | Both, raw | **Oracle Cloud Always Free** | 4 ARM cores / 24 GB, genuinely always-free and no size limits — but you own Postgres, nginx, TLS renewal and systemd |
 
+**Render's free plan, as it bears on this build:**
+
+| Fact | Consequence here |
+| --- | --- |
+| 512 MB RAM, 0.1 CPU at runtime | Fits: the built server measured 170-190 MB resident under load |
+| Builds run on a separate 2 CPU / 8 GB machine; 500 build minutes a month | Building on Render is fine — the build measured ~25 s with a 1.4 GB peak. "Build off-host" (below) is not needed |
+| Spins down after 15 idle minutes; the next request or WebSocket wakes it in about a minute | The cold start below. It also restarts the process often, which §7 item 11 uses |
+| Outbound SMTP on ports 25, 465 and 587 is blocked (since September 2025) | Sign-in codes go through Brevo on port 2525 (§4.1, `render.yaml`) |
+| No shell, no one-off jobs, and no pre-deploy command (that is paid-only) | Migrations and the seed cannot run on Render; they run before the first deploy (§7.1) |
+| Ephemeral filesystem | Never `EMAIL_TRANSPORT=outbox` there; nothing else writes files |
+| 750 free instance hours per workspace per month | One service running all month is 744 |
+
 Two practical notes:
 
-- **Build off-host.** A 512 MB instance will likely OOM running `tsc -b` across five packages plus
-  `vite build`. Build in CI (GitHub Actions is free for public repos) and deploy the artifacts, or
-  build a container image locally and push it.
+- **Build off-host — not needed on Render.** This note predates the measurement above: a 512 MB
+  instance would likely OOM running `tsc -b` plus `vite build`, but Render does not build on the
+  instance. On a host that does, build in CI and deploy the artifacts.
 - **Cold starts are the free tier's real cost.** A service that spins down after 15 minutes idle
-  takes ~30-60 s to answer the first request, and this app loads a workspace and four functions on
-  first paint. A demo link someone clicks cold will look broken for a minute. Oracle's always-free
+  takes about a minute to answer the first request, and this app loads a workspace and four functions
+  on first paint. A demo link someone clicks cold will look broken for a minute. Oracle's always-free
   VM is the only option in the table without this problem.
 
 ---
 
 ## 7. Division of labour
 
-### Step 0 — yours, ten minutes, before I write anything
+### Step 0 — DONE
 
-1. Create a free Postgres, copy its connection string, and run
-   `./scripts/deploy-probe.sh '<that URL>'`. **Send me the output.** If `CREATE ROLE` fails, the plan
-   changes shape and I would rather know now. A local run is not a substitute: your local role is a
-   superuser and passes everything.
-2. Confirm the Node host proxies WebSockets and says so in its own documentation.
-3. Decide §4.1: a login form, or the demo-session route.
+1. ~~Create a free Postgres and run the probe~~ — Neon passed on 2026-10-06 (§2.3b).
+2. ~~Confirm the Node host proxies WebSockets~~ — a free Render service "spins back up whenever it
+   next receives an HTTP request or new WebSocket connection", in Render's own words.
+3. ~~Decide §4.1~~ — a login form with email codes, built.
 
 ### Mine
 
 | # | Work | Size |
 | --- | --- | --- |
 | ~~0~~ | ~~The Postgres 14 → 18 move (§2.3b)~~ — **DONE**: schema identical, suite green on 18; it found and fixed a collation dependency, a microsecond-truncation bug in the bitemporal write path, a rotting e2e spec and a parser defect (`BUILD_STATUS.md`) | ~~L~~ |
-| 1 | §4.2 Fastify serves the SPA, with the SPA fallback and a no-sourcemap build | S |
-| 2 | §4.3 ~~rate limiter~~ — it exists. What remains: the client address behind the host's proxy, decided in config | S |
+| 1 | §4.2 Fastify serves the SPA, with the SPA fallback and a no-sourcemap build. **Until this lands the site's root URL is a JSON 404** — the API is up, the web app is not served | S |
+| 2 | §4.3 ~~rate limiter~~ — it exists. What remains: the client address behind Render's proxy, decided in config | S |
 | ~~3~~ | ~~§4.1 login form + email second factor, SMTP transport, `create-user` script~~ — **DONE**: with abuse tests (guess budget, single use, expiry, session binding, concurrent sends, resend limits, fail-closed transport, grants as `terminal_app`) and a browser spec that signs in with real keystrokes. It found a keyboard bug that swallowed every keystroke on the sign-in screen, and a first-load race that answered a new account's workspace with a 500 (`BUILD_STATUS.md`) | ~~L~~ |
 | 4 | §3.1 anchor the data axis to the snapshot in replay mode (`REPLAY_AS_OF`), so relative windows do not empty out | M |
 | 5 | §4.5 the snapshot banner, read from `/health`, showing the same as-of | S |
-| 6 | A `Dockerfile` + `.dockerignore`, or the host's native build config | S |
-| 7 | A GitHub Actions workflow: typecheck, lint, the full suite, build, publish the image | M |
-| 8 | `scripts/deploy-migrate.ts` — migrate then seed against a remote `DATABASE_URL`, idempotent, calling `deploy-probe.sh` as its first step | M |
+| ~~6~~ | ~~The host's build config~~ — **DONE**: `render.yaml`, a Render Blueprint. Its build and start commands were run on a fresh clone; its settings were passed through the server's own configuration check; and the server it starts was driven as `terminal_app` against a Neon-like database (§7.1) | ~~S~~ |
+| 7 | A GitHub Actions workflow: typecheck, lint, the full suite (with `autoDeployTrigger: checksPass`, Render then deploys only green commits) | M |
+| 8 | A GitHub Actions "prepare database" job — the §7.1 steps 2-3 from a GitHub runner, which can reach Neon when your network cannot | M |
 | 9 | §4.4 the trimmed seed, only if your tier needs it | M |
 | 10 | `docs/RUNBOOK.md` — rotate the secret, re-seed, read `/health`, what `degraded` means | S |
+| 11 | **Partition horizon — before 1 December 2026.** `access_log` and `usage_events`, written on every request, have monthly partitions only through November; the job that adds more belongs to the scheduler that is off. Extend them at every start, on `DATABASE_URL_MAINT` (`BUILD_STATUS.md`) | S |
+| 12 | The browser suite with the server connected as `terminal_app`, so a missing grant shows in a test rather than on the site | S |
+| 13 | Migration 0015 fails for an owner that is not a superuser (`must be able to SET ROLE "terminal_maint"`). §7.1 step 2 works around it; the fix is a self-grant inside the migration | S |
+| 14 | Optional: a sender for Brevo's HTTPS API, if port 2525 is ever blocked too | S |
 
 Every one of those goes through the same gate as the rest of this build: typecheck, lint, the full
 vitest suite twice, the e2e suite, and mutation-checks on anything with a security consequence.
@@ -533,31 +560,113 @@ vitest suite twice, the e2e suite, and mutation-checks on anything with a securi
 
 | # | Work | Why it cannot be mine |
 | --- | --- | --- |
-| 1 | Create the accounts (host, Postgres, and a GitHub remote if you want CI) | They need your email and card-on-file-for-identity |
-| 2 | Generate `SESSION_SECRET` and `METRICS_TOKEN` and paste them into the host's secret store | I must never hold or print a production secret |
-| 3 | Paste `DATABASE_URL` into the host's secret store | Same |
-| 3a | Choose a mail provider that speaks SMTP, verify the sender address or domain with it, and paste `EMAIL_FROM` and the `SMTP_*` values into the host's secret store (§4.1) | Your account with the provider, and its credentials |
-| 3b | Run `create-user` for each real person against the production database, and the §5 statement that disables the seeded accounts | It prompts for each person's password, which I must never see |
-| 4 | Run step 0's probes and send me the output | Needs network |
-| 5 | Press deploy the first time, and tell me the URL | Needs your credentials |
-| 6 | A custom domain and its DNS, if you want one | Registrar access |
-| 7 | Confirm you accept the free tier's terms for this use | Your decision, not mine |
+| ~~1~~ | ~~Create the accounts~~ — Render, Neon and Brevo exist; the repository is on GitHub | — |
+| 2 | §7.1 — the database, the two role passwords, the Brevo sender and SMTP key, the Blueprint | Every one is a credential I must never see |
+| 3 | `create-user` for each real person against the production database (§7.1 step 6) | It prompts for each person's password |
+| 4 | Tell me the URL once it is up | — |
+| 5 | A custom domain and its DNS, if you want one | Registrar access |
+| 6 | Confirm you accept the free tier's terms for this use | Your decision, not mine |
 
-`git push` to a public repository is yours too, as it always is in this project — and note that
-making this repo public is what GitHub Actions being free depends on.
+`git push` is yours, as it always is in this project. The repository is public, so GitHub Actions
+minutes are free.
+
+### 7.1 Setting it up on Render and Neon, step by step
+
+Verified on 2026-10-07 against a stand-in for Neon: a fresh Postgres 18.6 cluster whose owner, like
+`neondb_owner`, is not a superuser but holds `CREATEROLE` and `CREATEDB`. On it, the steps below
+applied all 20 migrations, seeded the universe in about a minute, and ran the built server as
+`terminal_app` through sign-in, a workspace save, six function runs, a new watchlist, a chat
+message, usage events, a second login that superseded the first, and logout — with no permission
+error, and the audit rows written. **Step 2 is not optional:** without it, migration 0015 stops
+with `must be able to SET ROLE "terminal_maint"`.
+
+Steps 3 and 6 need a connection to Neon on port 5432, which the development machine's network
+blocks (§2.3). Run them from a network that does not (a phone hotspot usually works) — or wait for
+item 8, which runs them from GitHub instead.
+
+1. **Neon — the database.** In the SQL Editor, on the default database:
+
+   ```sql
+   CREATE DATABASE terminal LOCALE 'C' TEMPLATE template0;
+   ```
+
+   If Neon refuses the `LOCALE` or `TEMPLATE` part, run `CREATE DATABASE terminal;` instead; the
+   server then logs a collation warning at startup and works the same (§2.3b). Every connection
+   string from here on names the `terminal` database — Neon's Connect dialog lets you choose it.
+
+2. **Neon — the two application roles, BEFORE migrating.** Still in the SQL Editor:
+
+   ```sql
+   CREATE ROLE terminal_app LOGIN;
+   CREATE ROLE terminal_maint LOGIN;
+   GRANT terminal_maint TO neondb_owner;   -- lets the migration hand it the partitioned tables
+   ```
+
+   (If your owner role is not called `neondb_owner`, use its name.) Migration 0015 finds the roles
+   already there and skips creating them.
+
+3. **Migrate and seed**, from the repository root, with Neon's **direct** (not pooled) connection
+   string for `terminal` as the owner:
+
+   ```bash
+   read -rs NEON_URL        # paste the string and press Enter; nothing is echoed or kept in history
+   npx tsx scripts/migrate.ts --url "$NEON_URL"
+   npm run db:seed -- --url "$NEON_URL"
+   ```
+
+   `read -rs` also keeps zsh from tripping over the `?` in the URL (§2.3). The seed uploads about
+   150 MB, so over a phone connection expect minutes rather than seconds.
+
+4. **Neon — passwords, and the demo accounts off.** In the SQL Editor, on `terminal`:
+
+   ```sql
+   ALTER ROLE terminal_app WITH PASSWORD '<password A>';
+   ALTER ROLE terminal_maint WITH PASSWORD '<password B>';
+   UPDATE users SET status = 'deprovisioned', deprovisioned_at = now()
+    WHERE email LIKE '%@demo.terminal' OR email LIKE '%@newsco.terminal';
+   ```
+
+   Make each password with `openssl rand -hex 24`: hex needs no escaping inside a connection string,
+   and 192 bits is well over Neon's 60-bit minimum.
+
+5. **Brevo.** Add and verify the sender address the codes will come from. Then, in the SMTP & API
+   settings, on the SMTP tab, copy the SMTP login and generate an **SMTP key** (not an API key).
+
+6. **Your account**, from the same reachable network as step 3:
+
+   ```bash
+   npx tsx scripts/create-user.ts --email <your address> --name "<your name>" --firm "Demo Capital" --url "$NEON_URL"
+   ```
+
+   It asks for your password twice, and the account signs in with an emailed code.
+
+7. **Render — the Blueprint.** New → Blueprint → the `bloomberg` repository. Render reads
+   `render.yaml`, generates `SESSION_SECRET` and `METRICS_TOKEN`, and asks — this once only — for:
+
+   | Variable | Value |
+   | --- | --- |
+   | `DATABASE_URL` | Neon's **pooled** string for `terminal`, with `neondb_owner:<its password>` replaced by `terminal_app:<password A>` |
+   | `DATABASE_URL_MAINT` | Neon's **direct** string for `terminal`, with the owner replaced by `terminal_maint:<password B>` |
+   | `SMTP_USER` / `SMTP_PASS` | the SMTP login and SMTP key from step 5 |
+   | `EMAIL_FROM` | `Terminal <the verified sender>` |
+
+   A value skipped here has to be added later by hand, under the service's Environment tab.
+
+8. **Check it.** `https://<the service>.onrender.com/api/v1/health` answers 200 with
+   `"status":"degraded"` — degraded is normal here (§3). Until item 1 lands, the root URL is a JSON
+   404: the API is live, the web app is not served yet.
 
 ### Sequence
 
 ```
-step 0 (you) ✓ DONE  →  item 0, the version move (me)  →  1,2,4,5 (me)  →  3 (me)
-                     →  6,7 (me)  →  deploy (you)  →  8,9 (me, if needed)
+step 0 ✓  →  item 0 ✓  →  item 3 ✓  →  item 6 ✓ (render.yaml)
+          →  1, 11 (me: needed before the site is usable and before 1 December)
+          →  4, 5, 12, 13 (me)  →  §7.1 (you)  →  7, 8, 2, 10 (me)  →  9 if needed
 ```
 
-Step 0 passed on 2026-10-06 (§2.3b). Item 0 is new and comes from what it found.
-
-Items 1, 2, 4 and 5 are independent of which host you pick and I can start on them the moment you
-have run step 0's probes. Item 3 is done (§4.1). Item 7 needs a live `DATABASE_URL` to test
-against, so it is last.
+Item 1 is what makes the URL show the terminal at all, and item 11 has a date on it. §7.1 can start
+any time — the database steps do not depend on any of my items — but a deploy before item 1 shows
+only the API.
 
 ---
 
@@ -569,7 +678,7 @@ Not to talk you out of it — to make sure the first surprise is in this documen
   Most free tiers include enough; some meter it.
 - **Database storage.** Nothing grows except `access_log`, `usage_events` and `sessions`, and those
   are the three the scheduler being off does not stop. Over months on a 500 MB tier that matters, so
-  §7 item 9's runbook includes a retention trim.
+  §7 item 10's runbook includes a retention trim.
 - **Hitting the ceiling.** The failure mode of a free tier is usually a suspended service rather than
   a charge. Decide now whether you want a card on the account at all; without one you cannot be
   charged, and the site stops instead.

@@ -1055,6 +1055,47 @@ Each of the six defects above was watched failing before its fix. The e2e templa
 rebuilt with migration 0020 on both servers by running the `server-seed` project — a database that
 predates a migration makes the plant refuse to start, so the same is owed after any later one.
 
+### Deploying on Render: `render.yaml`, and what a Neon-like database found
+
+`render.yaml` is a Render Blueprint for the free plan (`docs/DEPLOYMENT.md` §6, §7.1). Before it was
+committed, each of its claims was run rather than assumed: its build command on a fresh clone of the
+committed tree (`npm ci --include=dev` in 7 s; `npm run build` in 26 s with a 1.36 GB peak, inside
+the 8 GB Render's builders have); its start command from the repository root (healthy in about 3 s;
+189 MB resident idle and 171 MB after a signed-in pass, against the free plan's 512 MB); and its
+settings through `loadConfig` and `emailSenderFromConfig` (SMTP to Brevo on 2525 — Render's free
+plan blocks outbound 25, 465 and 587).
+
+Then Neon itself was stood in for: a fresh Postgres 18.6 cluster whose owner, like `neondb_owner`,
+is not a superuser but has `CREATEROLE` and `CREATEDB`. Every database in this project had only ever
+been migrated by a superuser, and that hid two things:
+
+1. **Migration 0015 fails for an owner that is not a superuser** — `must be able to SET ROLE
+   "terminal_maint"`. On Postgres 16+, a `CREATEROLE` user that creates a role gets `ADMIN OPTION` on
+   it but not `SET` (`createrole_self_grant` is empty by default), and `ALTER TABLE … OWNER TO
+   terminal_maint` needs `SET`. The deployment probe tested `CREATE ROLE`, not handing a table to the
+   role it created. Workaround, verified: create both roles first and `GRANT terminal_maint TO
+   <owner>` (DEPLOYMENT §7.1 step 2); then all 20 migrations apply. The fix — a self-grant inside 0015
+   — is DEPLOYMENT §7 item 13, OPEN.
+2. **The seed and the application had never run without superuser bypass, and both work.** The seed
+   wrote `messages`, `portfolios`, `positions` and `lots` under `FORCE ROW LEVEL SECURITY` through
+   `seed/users.ts#withTenant`, which was written for exactly this and never exercised. The built
+   server, connected as `terminal_app`, served sign-in, a workspace save, six functions, a new
+   watchlist, a chat message, usage events, a superseding login and logout with no permission error,
+   and its 58 audit rows reached `access_log`. The whole browser suite as `terminal_app` is still
+   DEPLOYMENT §7 item 12.
+
+**OPEN, with a date: the partitions run out on 1 December 2026.** `access_log` and `usage_events` are
+written on every request, and migration 0016 gave them monthly partitions only through November.
+`db/partitions.ts#ensurePartitions` has one caller, `ingest/jobs/partitionMaintenance.ts`, which runs
+under the scheduler that startup step 8 deliberately defers — so nothing adds December. From that
+date the access-log writer's flush fails and puts its batch back, so the buffer grows without bound;
+a login that supersedes another session fails, because `session.ts` writes `access_log` inside the
+login's transaction; and every write to `usage_events` fails. This is true of local databases too.
+(`quote_ticks` and `option_quotes` ran out on 2026-09-22 and `bars_intraday` runs out on 1 December,
+but nothing writes those at runtime while the scheduler is off.) The fix is DEPLOYMENT §7 item 11:
+extend the horizon at every start, on `DATABASE_URL_MAINT` — on Render's free plan the process
+restarts after every idle spin-down.
+
 ## Notes
 
 - `packages/server/src/test/fixtures.ts` resolves `REPLAY_DIR` against `packages/server` while the

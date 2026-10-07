@@ -1,0 +1,97 @@
+# render.yaml — the Render Blueprint for this terminal (docs/DEPLOYMENT.md §7.1).
+#
+# Used once: Render dashboard → New → Blueprint → this repository. Render reads this file, creates
+# the web service below, generates the two secrets marked `generateValue`, and asks for every value
+# marked `sync: false`. It asks for those ONLY at that first creation: a value skipped then has to be
+# added later by hand, under the service's Environment tab. After creation, every push to `main`
+# redeploys.
+#
+# The database must be ready BEFORE the first deploy — migrated, seeded, and with passwords set on
+# the two application roles (docs/DEPLOYMENT.md §7.1). The server refuses to start while a migration
+# is pending, and Render's free plan has no pre-deploy step and no shell to prepare it from.
+
+services:
+  - type: web
+    name: terminal
+    runtime: node
+    plan: free
+    # Beside the Neon database, which is in AWS us-east-2 (Ohio). A service's region cannot be
+    # changed after it is created.
+    region: ohio
+    branch: main
+    autoDeployTrigger: commit
+
+    # Measured on a fresh clone: about 25 s, with a peak of 1.4 GB in one process — inside the 8 GB a
+    # free workspace's builds get. `--include=dev` because TypeScript and Vite are devDependencies,
+    # and `npm ci` drops those whenever NODE_ENV=production is set.
+    buildCommand: npm ci --include=dev && npm run build
+    # Run from the repository root: the server finds its migrations and the replay fixtures relative
+    # to its own files. Measured at 170-190 MB resident under load, against the free plan's 512 MB.
+    startCommand: node packages/server/dist/index.js
+    # 503 while starting, then 200. `degraded` is a 200 and is this deployment's normal state: the
+    # ingest scheduler is deliberately off (docs/DEPLOYMENT.md §3).
+    healthCheckPath: /api/v1/health
+
+    # A commit that touches only documentation does not rebuild.
+    buildFilter:
+      ignoredPaths:
+        - 'docs/**'
+        - '**/*.md'
+
+    envVars:
+      # The version every test in this repository has run on. `engines` alone says ">=22.19", and an
+      # unbounded range makes Render install the newest Node there is.
+      - key: NODE_VERSION
+        value: '22.19.0'
+
+      # ── The database (Neon) ───────────────────────────────────────────────────────────────────
+      # As the `terminal_app` role, through Neon's POOLED connection string, database `terminal`.
+      # Never the owner role: the owner bypasses row-level security, which is what keeps each firm's
+      # rows to itself.
+      - key: DATABASE_URL
+        sync: false
+      # As the `terminal_maint` role, through the DIRECT (unpooled) connection string. Partition
+      # maintenance is the only thing that uses it; nothing connects until that runs.
+      - key: DATABASE_URL_MAINT
+        sync: false
+
+      # ── Secrets Render generates (a random 256-bit value each) ────────────────────────────────
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: METRICS_TOKEN
+        generateValue: true
+
+      # ── Behaviour ──────────────────────────────────────────────────────────────────────────────
+      # A frozen snapshot from the committed fixtures: no outbound calls to any data provider.
+      - key: PROVIDER_MODE
+        value: replay
+      # Required by the configuration. Replay mode sends no request to the SEC; if this ever runs
+      # with PROVIDER_MODE=live, replace it with a real contact ("Name contact@your-domain").
+      - key: SEC_USER_AGENT
+        value: 'Terminal demo (replay mode, sends no SEC requests)'
+      - key: LOG_LEVEL
+        value: info
+
+      # ── Sign-in codes, through Brevo's SMTP relay ─────────────────────────────────────────────
+      # Port 2525: Render's free plan blocks outbound 25, 465 and 587. STARTTLS is REQUIRED, so a
+      # server that will not encrypt is refused rather than sent the code in clear.
+      - key: EMAIL_TRANSPORT
+        value: smtp
+      - key: SMTP_HOST
+        value: smtp-relay.brevo.com
+      - key: SMTP_PORT
+        value: '2525'
+      - key: SMTP_SECURE
+        value: starttls
+      # The SMTP login and an SMTP key from Brevo's "SMTP & API" settings — an SMTP key, not an API key.
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      # `Terminal <you@your-domain>` — the address must be a sender Brevo has verified.
+      - key: EMAIL_FROM
+        sync: false
+
+      # Deliberately absent: RP_ID and RP_ORIGIN (no WebAuthn screen exists, and unset they fail
+      # closed), PUBLIC_FIELDS (defaults to off), PORT (Render sets it and the server reads it), and
+      # NODE_ENV (nothing in the server reads it).
