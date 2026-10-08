@@ -28,7 +28,8 @@ concurrency:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The first run spent 218 s on one seed module alone, over the network to Neon.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
 

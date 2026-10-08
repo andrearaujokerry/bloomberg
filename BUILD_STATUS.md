@@ -1095,6 +1095,24 @@ password is published; the job switches them off after every seed, and DEPLOYMEN
 re-seed only through it. The script takes its target only from `--url` or `PREPARE_DATABASE_URL`,
 never `DATABASE_URL`, so on a development machine it cannot reach the local database by default.
 
+**Its first real run failed, and the reason was the local verification's blind spot.** On GitHub it
+created the roles, set the passwords, applied all 20 migrations and seeded two modules, then stopped:
+`Cannot find module …/@terminal/sdk/dist/wire/ws.js`. The seed runs the server's source through
+`tsx`, and that source imports `@terminal/core` AND `@terminal/sdk` as built output — but
+`predb:seed` built only core. Every run on the development machine passed because both `dist`
+directories already existed there: the e2e harness's own comment (`fixtures/database.ts#repoScript`)
+describes exactly this luck for core, and sdk had the same exposure. Reproduced on a fresh clone with
+no `dist` against the stand-in, then fixed: `build:deps` (`tsc -b packages/core packages/sdk`) is now
+the `predb:seed` and `predb:reset` hook, and a re-run on that clone — `dist` wiped again — resumed the
+half-seeded database and finished, demo accounts off. The lesson is the WP-15 one in a new place:
+verify on the machine the thing will run on, which for a CI job means a fresh checkout.
+
+Two smaller changes came with it. GitHub Actions logs are public for a public repository, and the
+seed prints its target (credentials masked, host named), so the job now hides anything shaped like a
+connection string in what it relays. And it asks for `sslmode=verify-full` where the URL says
+`require`: the same connection with the pinned `pg`, without the multi-line SECURITY WARNING on every
+connection, and without the weakening the next `pg` major would apply to `require`.
+
 The first Render deploy failed with `20 pending migration(s)` — the server's answer to a database
 not yet prepared, and the reason §7.1 now puts the job before the first deploy. It also showed that
 the Blueprint had the OWNER's connection string (the only role that existed then), which §5 item 6

@@ -334,11 +334,12 @@ export async function provisionE2eDatabase(
  * Runs one of the repo's own db npm scripts against the e2e database.
  *
  * Through `npm run`, NOT `npx tsx scripts/seed.ts` directly, and the difference is a CI failure:
- * the root `package.json` declares `predb:seed` → `build:core`, and `scripts/seed.ts` imports the
- * seed runner, which imports `@terminal/core`'s BUILT output. On a developer's machine
- * `packages/core/dist` is already there and calling the script directly works by luck; on a fresh
- * CI checkout — which is the only place the cold path ever runs — it would fail on the first
- * unresolved import. The npm indirection is what makes the pre-hook fire.
+ * the root `package.json` declares `predb:seed` → `build:deps`, and `scripts/seed.ts` imports the
+ * seed runner, which imports `@terminal/core`'s and `@terminal/sdk`'s BUILT output. On a developer's
+ * machine both `dist` directories are already there and calling the script directly works by luck;
+ * on a fresh CI checkout — which is the only place the cold path ever runs — it would fail on the
+ * first unresolved import. The npm indirection is what makes the pre-hook fire. (`build:deps` was
+ * `build:core` until the first seed on a fresh GitHub runner failed on `@terminal/sdk`.)
  */
 async function repoScript(script: string, log: (line: string) => void): Promise<void> {
   log(`  npm run ${script} -- --url ${redact(E2E_DATABASE_URL)}`);

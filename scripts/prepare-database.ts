@@ -79,7 +79,27 @@ export function targetUrl(argv: readonly string[], env: NodeJS.ProcessEnv): stri
         '(DATABASE_URL is deliberately not read — it names the local database on a development machine)',
     );
   }
-  return url;
+  return strictSsl(url);
+}
+
+/**
+ * `sslmode=require` → `sslmode=verify-full`. The same connection either way with the `pg` this repo
+ * pins — it treats `require` as an alias for `verify-full` today, and prints a multi-line SECURITY
+ * WARNING saying so on every connection — and the next major version would WEAKEN `require` to
+ * libpq's meaning (encrypt, but trust any certificate). Neon's certificates are publicly trusted,
+ * so full verification is what to ask for explicitly.
+ */
+export function strictSsl(url: string): string {
+  return url.replace(/([?&])sslmode=require(?=&|$)/, '$1sslmode=verify-full');
+}
+
+/**
+ * Anything that looks like a connection string, out of a line about to be logged. GitHub Actions
+ * logs are public for a public repository; the seed prints its target (credentials already masked,
+ * but the host and database still named), and nothing here needs to say where the database lives.
+ */
+export function hideUrls(line: string): string {
+  return line.replace(/postgres(?:ql)?:\/\/[^\s'"]+/gi, '<database url hidden>');
 }
 
 function checkPassword(name: string, value: string | undefined): string | undefined {
@@ -94,9 +114,9 @@ function checkPassword(name: string, value: string | undefined): string | undefi
 
 function runSeed(databaseUrl: string, log: (line: string) => void): Promise<void> {
   return new Promise((resolvePromise, reject) => {
-    // `npm run db:seed` and not the module: its `predb:seed` hook builds @terminal/core first, which
-    // the seed imports as built output (packages/e2e/fixtures/database.ts explains the CI failure
-    // calling the script directly would be).
+    // `npm run db:seed` and not the module: its `predb:seed` hook builds @terminal/core and
+    // @terminal/sdk first, which the seed imports as built output. On a fresh checkout — the GitHub
+    // runner — nothing else builds them; the first run of this job failed on exactly that.
     const child = spawn('npm', ['run', 'db:seed'], {
       cwd: ROOT,
       env: { ...process.env, DATABASE_URL: databaseUrl },
@@ -104,7 +124,7 @@ function runSeed(databaseUrl: string, log: (line: string) => void): Promise<void
     });
     const relay = (chunk: Buffer): void => {
       for (const line of chunk.toString('utf8').split('\n'))
-        if (line.trim() !== '') log(`    ${line}`);
+        if (line.trim() !== '') log(`    ${hideUrls(line)}`);
     };
     child.stdout.on('data', relay);
     child.stderr.on('data', relay);
