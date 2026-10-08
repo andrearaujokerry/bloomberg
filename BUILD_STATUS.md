@@ -1084,6 +1084,22 @@ been migrated by a superuser, and that hid two things:
    and its 58 audit rows reached `access_log`. The whole browser suite as `terminal_app` is still
    DEPLOYMENT §7 item 12.
 
+**The "Prepare database" job** (`.github/workflows/prepare-database.yml` → `scripts/prepare-database.ts`)
+is how the production database gets ready while the development machine cannot reach it: the two
+roles with the self-grant 0015 needs, their passwords from repository secrets, every migration, the
+seed, and the demo accounts off — idempotent, and verified twice against the Neon stand-in. The
+second run found something worth knowing: **the seed switches the demo accounts back on**, because
+its upsert writes `status` (`seed/users.ts`, `ON CONFLICT (lower(email)) DO UPDATE … status =
+EXCLUDED.status`). So a bare `npm run db:seed` against production re-opens seven accounts whose
+password is published; the job switches them off after every seed, and DEPLOYMENT §7.1 says to
+re-seed only through it. The script takes its target only from `--url` or `PREPARE_DATABASE_URL`,
+never `DATABASE_URL`, so on a development machine it cannot reach the local database by default.
+
+The first Render deploy failed with `20 pending migration(s)` — the server's answer to a database
+not yet prepared, and the reason §7.1 now puts the job before the first deploy. It also showed that
+the Blueprint had the OWNER's connection string (the only role that existed then), which §5 item 6
+rules out for the running server; DEPLOYMENT §7.1 step 4 says how to change it.
+
 **OPEN, with a date: the partitions run out on 1 December 2026.** `access_log` and `usage_events` are
 written on every request, and migration 0016 gave them monthly partitions only through November.
 `db/partitions.ts#ensurePartitions` has one caller, `ingest/jobs/partitionMaintenance.ts`, which runs

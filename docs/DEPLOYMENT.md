@@ -120,7 +120,8 @@ them at the end. Verified against a scratch database as both a superuser and a `
 
 A blocked 5432 **does not block the deployment** — the Node host connects to Postgres from the cloud,
 not from your laptop. What it blocks is local admin: migrating, seeding and `create-user`. §7.1 says
-how to run those from another network, and §7 item 8 is a GitHub job that runs them from GitHub.
+how to run those from another network, and the "Prepare database" GitHub job (§7.1 step 2) runs
+them from GitHub.
 
 If `CREATE ROLE` is refused, either the host is wrong or 0015 needs a `DEPLOY_SINGLE_ROLE` variant,
 which is a schema change to a security migration and should not be done casually.
@@ -545,12 +546,12 @@ Two practical notes:
 | 5 | §4.5 the snapshot banner, read from `/health`, showing the same as-of | S |
 | ~~6~~ | ~~The host's build config~~ — **DONE**: `render.yaml`, a Render Blueprint. Its build and start commands were run on a fresh clone; its settings were passed through the server's own configuration check; and the server it starts was driven as `terminal_app` against a Neon-like database (§7.1) | ~~S~~ |
 | 7 | A GitHub Actions workflow: typecheck, lint, the full suite (with `autoDeployTrigger: checksPass`, Render then deploys only green commits) | M |
-| 8 | A GitHub Actions "prepare database" job — the §7.1 steps 2-3 from a GitHub runner, which can reach Neon when your network cannot | M |
+| ~~8~~ | ~~A GitHub Actions "prepare database" job~~ — **DONE**: `.github/workflows/prepare-database.yml` running `scripts/prepare-database.ts` (roles, passwords, migrations, seed, demo accounts off; idempotent), verified twice against a Neon stand-in (§7.1 step 2) | ~~M~~ |
 | 9 | §4.4 the trimmed seed, only if your tier needs it | M |
 | 10 | `docs/RUNBOOK.md` — rotate the secret, re-seed, read `/health`, what `degraded` means | S |
 | 11 | **Partition horizon — before 1 December 2026.** `access_log` and `usage_events`, written on every request, have monthly partitions only through November; the job that adds more belongs to the scheduler that is off. Extend them at every start, on `DATABASE_URL_MAINT` (`BUILD_STATUS.md`) | S |
 | 12 | The browser suite with the server connected as `terminal_app`, so a missing grant shows in a test rather than on the site | S |
-| 13 | Migration 0015 fails for an owner that is not a superuser (`must be able to SET ROLE "terminal_maint"`). §7.1 step 2 works around it; the fix is a self-grant inside the migration | S |
+| 13 | Migration 0015 fails for an owner that is not a superuser (`must be able to SET ROLE "terminal_maint"`). `prepare-database.ts` does the self-grant first, so the job works; a self-grant inside 0015 would make a bare `db:migrate` work too | S |
 | 14 | Optional: a sender for Brevo's HTTPS API, if port 2525 is ever blocked too | S |
 
 Every one of those goes through the same gate as the rest of this build: typecheck, lint, the full
@@ -572,17 +573,22 @@ minutes are free.
 
 ### 7.1 Setting it up on Render and Neon, step by step
 
-Verified on 2026-10-07 against a stand-in for Neon: a fresh Postgres 18.6 cluster whose owner, like
-`neondb_owner`, is not a superuser but holds `CREATEROLE` and `CREATEDB`. On it, the steps below
-applied all 20 migrations, seeded the universe in about a minute, and ran the built server as
-`terminal_app` through sign-in, a workspace save, six function runs, a new watchlist, a chat
-message, usage events, a second login that superseded the first, and logout — with no permission
-error, and the audit rows written. **Step 2 is not optional:** without it, migration 0015 stops
-with `must be able to SET ROLE "terminal_maint"`.
+Verified on 2026-10-07 and 2026-10-08 against a stand-in for Neon: a fresh Postgres 18.6 cluster
+whose owner, like `neondb_owner`, is not a superuser but holds `CREATEROLE` and `CREATEDB`. On it,
+`scripts/prepare-database.ts` created the roles, set their passwords, applied all 20 migrations,
+seeded the universe and switched off the seven demo accounts, and a second run changed nothing but
+those accounts (the seed had switched them back on). The built server, connected as `terminal_app`
+with those passwords, then refused a demo account (`403 USER_SUSPENDED`), signed in an account made
+with `create-user`, and earlier served sign-in, a workspace save, six function runs, a new
+watchlist, a chat message, usage events, a superseding login and logout with no permission error.
 
-Steps 3 and 6 need a connection to Neon on port 5432, which the development machine's network
-blocks (§2.3). Run them from a network that does not (a phone hotspot usually works) — or wait for
-item 8, which runs them from GitHub instead.
+**The order matters: prepare the database (step 2) before the first deploy.** A deploy against an
+unprepared database fails exactly like this, and nothing else is wrong:
+
+```
+20 pending migration(s); run `npm run db:migrate`:
+==> Exited with status 1
+```
 
 1. **Neon — the database.** In the SQL Editor, on the default database:
 
@@ -594,79 +600,85 @@ item 8, which runs them from GitHub instead.
    server then logs a collation warning at startup and works the same (§2.3b). Every connection
    string from here on names the `terminal` database — Neon's Connect dialog lets you choose it.
 
-2. **Neon — the two application roles, BEFORE migrating.** Still in the SQL Editor:
+2. **Prepare the database — the GitHub job.** It runs `scripts/prepare-database.ts` from GitHub's
+   network, which reaches Neon on the port the development machine's network blocks: the two
+   application roles (with the self-grant that migration 0015 needs), their passwords, every
+   migration, the seed, and the seven demo accounts switched off.
 
-   ```sql
-   CREATE ROLE terminal_app LOGIN;
-   CREATE ROLE terminal_maint LOGIN;
-   GRANT terminal_maint TO neondb_owner;   -- lets the migration hand it the partitioned tables
-   ```
+   a. Make two passwords, one per role: run `openssl rand -hex 24` twice. Hex needs no escaping
+      inside a connection string, and 192 bits is well over Neon's 60-bit minimum.
+   b. On GitHub: the repository → Settings → Secrets and variables → Actions → New repository
+      secret, three times:
 
-   (If your owner role is not called `neondb_owner`, use its name.) Migration 0015 finds the roles
-   already there and skips creating them.
+      | Secret | Value |
+      | --- | --- |
+      | `NEON_OWNER_URL` | Neon's **direct** connection string (Connection pooling OFF) for `terminal`, as `neondb_owner` |
+      | `TERMINAL_APP_PASSWORD` | the first password |
+      | `TERMINAL_MAINT_PASSWORD` | the second password |
 
-3. **Migrate and seed**, from the repository root, with Neon's **direct** (not pooled) connection
-   string for `terminal` as the owner:
+      Direct, not pooled: the migrator holds a session-level advisory lock, which a transaction
+      pooler would hand to someone else's connection.
+   c. Actions → "Prepare database" → Run workflow. A first run takes a few minutes; the log ends
+      with `switched off 7: …` and `ready: "terminal".`
 
-   ```bash
-   read -rs NEON_URL        # paste the string and press Enter; nothing is echoed or kept in history
-   npx tsx scripts/migrate.ts --url "$NEON_URL"
-   npm run db:seed -- --url "$NEON_URL"
-   ```
+   It is safe to run again, and it is **the only safe way to re-seed**: the seed's upsert writes
+   `status` back, so `npm run db:seed` on its own switches the seven demo accounts back on. The job
+   switches them off after every seed.
 
-   `read -rs` also keeps zsh from tripping over the `?` in the URL (§2.3). The seed uploads about
-   150 MB, so over a phone connection expect minutes rather than seconds.
-
-4. **Neon — passwords, and the demo accounts off.** In the SQL Editor, on `terminal`:
-
-   ```sql
-   ALTER ROLE terminal_app WITH PASSWORD '<password A>';
-   ALTER ROLE terminal_maint WITH PASSWORD '<password B>';
-   UPDATE users SET status = 'deprovisioned', deprovisioned_at = now()
-    WHERE email LIKE '%@demo.terminal' OR email LIKE '%@newsco.terminal';
-   ```
-
-   Make each password with `openssl rand -hex 24`: hex needs no escaping inside a connection string,
-   and 192 bits is well over Neon's 60-bit minimum.
-
-5. **Brevo.** Add and verify the sender address the codes will come from. Then, in the SMTP & API
-   settings, on the SMTP tab, copy the SMTP login and generate an **SMTP key** (not an API key).
-
-6. **Your account**, from the same reachable network as step 3:
+   *By hand instead*, from a network that reaches Neon on 5432 (a phone hotspot usually works):
 
    ```bash
-   npx tsx scripts/create-user.ts --email <your address> --name "<your name>" --firm "Demo Capital" --url "$NEON_URL"
+   read -rs OWNER_URL       # the same direct string; nothing is echoed or kept in history
+   read -rs TERMINAL_APP_PASSWORD && export TERMINAL_APP_PASSWORD
+   read -rs TERMINAL_MAINT_PASSWORD && export TERMINAL_MAINT_PASSWORD
+   npx tsx scripts/prepare-database.ts --url "$OWNER_URL"
    ```
 
-   It asks for your password twice, and the account signs in with an emailed code.
+   `read -rs` also keeps zsh from tripping over the `?` in the URL (§2.3). The script never reads
+   `DATABASE_URL` or `.env` for its target, so it cannot switch off the accounts your local database
+   signs in with.
 
-7. **Render — the Blueprint.** New → Blueprint → the `bloomberg` repository. Render reads
+3. **Brevo.** Add and verify the sender address the codes will come from. Then, in the SMTP & API
+   settings, on the SMTP tab, copy the **Login** and generate an **SMTP key** (not an API key).
+
+4. **Render — the Blueprint.** New → Blueprint → the `bloomberg` repository. Render reads
    `render.yaml`, generates `SESSION_SECRET` and `METRICS_TOKEN`, and asks — this once only — for:
 
    | Variable | Value |
    | --- | --- |
-   | `DATABASE_URL` | Neon's **pooled** string for `terminal`, with `neondb_owner:<its password>` replaced by `terminal_app:<password A>` |
-   | `DATABASE_URL_MAINT` | Neon's **direct** string for `terminal`, with the owner replaced by `terminal_maint:<password B>` |
-   | `SMTP_USER` / `SMTP_PASS` | the SMTP login and SMTP key from step 5 |
+   | `DATABASE_URL` | Neon's **pooled** string for `terminal`, with `neondb_owner:<its password>` replaced by `terminal_app:<the first password>` |
+   | `DATABASE_URL_MAINT` | Neon's **direct** string for `terminal`, with the owner replaced by `terminal_maint:<the second password>` |
+   | `SMTP_USER` / `SMTP_PASS` | the Login and the SMTP key from step 3 |
    | `EMAIL_FROM` | `Terminal <the verified sender>` |
 
-   A value skipped here has to be added later by hand, under the service's Environment tab.
+   A value skipped here — or a Blueprint created before step 2, as the first one was — is changed by
+   hand: the service → Environment → edit, save, then Manual Deploy → Deploy latest commit.
+   `DATABASE_URL` must never stay the owner's: §5 item 6.
 
-8. **Check it.** `https://<the service>.onrender.com/api/v1/health` answers 200 with
+5. **Check it.** `https://<the service>.onrender.com/api/v1/health` answers 200 with
    `"status":"degraded"` — degraded is normal here (§3). Until item 1 lands, the root URL is a JSON
    404: the API is live, the web app is not served yet.
+
+6. **Your account** — from a network that reaches Neon (or a GitHub job, not written yet):
+
+   ```bash
+   npx tsx scripts/create-user.ts --email <your address> --name "<your name>" --firm "Demo Capital" --url "$OWNER_URL"
+   ```
+
+   It asks for your password twice, and the account signs in with an emailed code.
 
 ### Sequence
 
 ```
-step 0 ✓  →  item 0 ✓  →  item 3 ✓  →  item 6 ✓ (render.yaml)
-          →  1, 11 (me: needed before the site is usable and before 1 December)
-          →  4, 5, 12, 13 (me)  →  §7.1 (you)  →  7, 8, 2, 10 (me)  →  9 if needed
+step 0 ✓  →  item 0 ✓  →  item 3 ✓  →  item 6 ✓ (render.yaml)  →  item 8 ✓ (prepare-database)
+          →  §7.1 (you: the job, then Render's two database URLs, then a deploy)
+          →  1, 11 (me: the web app served, and the partitions before 1 December)
+          →  4, 5, 12, 13 (me)  →  7, 2, 10 (me)  →  9 if needed
 ```
 
-Item 1 is what makes the URL show the terminal at all, and item 11 has a date on it. §7.1 can start
-any time — the database steps do not depend on any of my items — but a deploy before item 1 shows
-only the API.
+§7.1 no longer waits on anything of mine: with step 2 done and the two URLs pointed at the
+application roles, the deploy starts and `/api/v1/health` answers. Item 1 is what makes the root URL
+show the terminal, and item 11 has a date on it.
 
 ---
 

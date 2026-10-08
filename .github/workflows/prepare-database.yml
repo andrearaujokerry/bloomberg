@@ -1,0 +1,53 @@
+# Prepare the production database — docs/DEPLOYMENT.md §7.1.
+#
+# Manual only: GitHub → Actions → "Prepare database" → Run workflow. It runs
+# scripts/prepare-database.ts from GitHub's network, which reaches Neon on the port the development
+# machine's network blocks: the two application roles, every migration, the seed, and the seven
+# demo accounts switched off. Every step is idempotent, so running it again is safe — and it is the
+# only safe way to re-seed, because the seed on its own switches the demo accounts back on.
+#
+# Repository secrets (Settings → Secrets and variables → Actions):
+#   NEON_OWNER_URL           required — the OWNER's DIRECT (unpooled) connection string for the
+#                            `terminal` database
+#   TERMINAL_APP_PASSWORD    optional — sets terminal_app's password (the one in Render's DATABASE_URL)
+#   TERMINAL_MAINT_PASSWORD  optional — sets terminal_maint's (the one in DATABASE_URL_MAINT)
+# GitHub masks secret values in the log, and the script never prints them.
+
+name: Prepare database
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prepare-database
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.19.0'
+          cache: npm
+
+      - name: Install
+        run: npm ci --include=dev
+
+      - name: Prepare the database
+        run: npx tsx scripts/prepare-database.ts
+        env:
+          PREPARE_DATABASE_URL: ${{ secrets.NEON_OWNER_URL }}
+          TERMINAL_APP_PASSWORD: ${{ secrets.TERMINAL_APP_PASSWORD }}
+          TERMINAL_MAINT_PASSWORD: ${{ secrets.TERMINAL_MAINT_PASSWORD }}
+          # The seed loads the server's configuration, which requires these two. Neither is used to
+          # seed: the session secret signs cookies, and replay mode sends no request to the SEC.
+          SESSION_SECRET: prepare-database-placeholder-not-a-session-secret
+          SEC_USER_AGENT: Terminal demo (replay mode, sends no SEC requests)
+          PROVIDER_MODE: replay
