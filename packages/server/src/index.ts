@@ -55,7 +55,9 @@ import {
   checkCollation,
   checkFunctionRegistry,
   DEFERRED_STARTUP_STEPS,
+  extendPartitionHorizon,
   loadCalendars,
+  PARTITION_HORIZON_INTERVAL_MS,
   validateFieldLicences,
 } from './startup.js';
 
@@ -290,6 +292,39 @@ async function main(): Promise<void> {
     'access-log and usage-event writers started; staleness sweep armed by the ws gateway',
   );
 
+  // ── The partition horizon (DATA_MODEL §16; `startup.ts#extendPartitionHorizon`). Once now, then
+  //    daily: Render's free plan restarts the process after every idle spin-down, but a busy one need
+  //    not restart, and a month boundary will not wait for it. A failure is logged at `error` and the
+  //    server keeps serving — the default partitions take the rows meanwhile, and a crash loop over
+  //    maintenance would take the site down for nothing.
+  const runHorizon = async (): Promise<void> => {
+    try {
+      const horizon = await extendPartitionHorizon({
+        maintConfigured: config.DATABASE_URL_MAINT !== undefined,
+      });
+      if (!horizon.ran) {
+        app.log.warn({ step: 'partitions' }, horizon.skipped ?? 'partition horizon skipped');
+      } else if (horizon.blocked.length > 0) {
+        app.log.error(
+          { step: 'partitions', created: horizon.created, blocked: horizon.blocked },
+          'partition horizon extended, but some ranges are stuck behind rows in a default partition',
+        );
+      } else {
+        app.log.info(
+          { step: 'partitions', created: horizon.created },
+          horizon.created.length === 0
+            ? 'partition horizon already ahead'
+            : 'partition horizon extended',
+        );
+      }
+    } catch (err) {
+      app.log.error({ err, step: 'partitions' }, 'partition horizon could not be extended');
+    }
+  };
+  await runHorizon();
+  const horizonTimer = setInterval(() => void runHorizon(), PARTITION_HORIZON_INTERVAL_MS);
+  horizonTimer.unref();
+
   // ── 8. Scheduler. Deferred, so nothing sets `state.scheduler` and `/health` answers `degraded`
   //      — which is the truth, and the field that says which truth is `scheduler`, not the verdict.
   state.phase = state.scheduler ? 'ok' : 'degraded';
@@ -307,6 +342,7 @@ async function main(): Promise<void> {
     void (async (): Promise<void> => {
       try {
         // Scheduler stop and leader-lock release go here (WP-07), before sockets close.
+        clearInterval(horizonTimer);
         await alerts.stop();
         await app.wsGateway.close();
         await plant.stop();

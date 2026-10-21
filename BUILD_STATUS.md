@@ -23,7 +23,7 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged; the dead-module and gapped-study findings below closed in backlog tier 2 |
 | WP-15 | Seed, fixtures, replay harness, parity, composition root, e2e | **merged** — part 2 added the 8 Playwright specs and regenerated `docs/TRACEABILITY.md` |
 
-6,321 tests across 277 files, plus 47 Playwright tests that `npm test` does not run. The suite is
+6,343 tests across 279 files, plus 47 Playwright tests that `npm test` does not run. The suite is
 ten vitest projects; `server-seed` owns its own database and is the only one that seeds (see below),
 and `packages/e2e` is Playwright and is not run by `npm test` at all. Measured at the close of the
 backlog: two consecutive `npm test` runs green in 284.2 s and 285.5 s of reported duration against
@@ -1118,17 +1118,91 @@ not yet prepared, and the reason §7.1 now puts the job before the first deploy.
 the Blueprint had the OWNER's connection string (the only role that existed then), which §5 item 6
 rules out for the running server; DEPLOYMENT §7.1 step 4 says how to change it.
 
-**OPEN, with a date: the partitions run out on 1 December 2026.** `access_log` and `usage_events` are
-written on every request, and migration 0016 gave them monthly partitions only through November.
-`db/partitions.ts#ensurePartitions` has one caller, `ingest/jobs/partitionMaintenance.ts`, which runs
-under the scheduler that startup step 8 deliberately defers — so nothing adds December. From that
-date the access-log writer's flush fails and puts its batch back, so the buffer grows without bound;
-a login that supersedes another session fails, because `session.ts` writes `access_log` inside the
-login's transaction; and every write to `usage_events` fails. This is true of local databases too.
-(`quote_ticks` and `option_quotes` ran out on 2026-09-22 and `bars_intraday` runs out on 1 December,
-but nothing writes those at runtime while the scheduler is off.) The fix is DEPLOYMENT §7 item 11:
-extend the horizon at every start, on `DATABASE_URL_MAINT` — on Render's free plan the process
-restarts after every idle spin-down.
+**CLOSED 2026-10-21 — the partition horizon, and a correction to what this paragraph said.**
+`access_log` and `usage_events` are written on every request, and migration 0016 gave them monthly
+partitions only through November 2026. `db/partitions.ts#ensurePartitions` had one caller,
+`ingest/jobs/partitionMaintenance.ts`, which runs under the scheduler that startup step 8 defers — so
+nothing would have added December, although DATA_MODEL §16 had always said startup does.
+
+The first version of this paragraph said that from 1 December logins and log writes would FAIL.
+That was wrong, and it was written without looking: every partitioned table has a `<table>_default`
+partition (DATA_MODEL §7, rule 4), so nothing would have failed. What would have happened is quieter
+and worse. December's rows would land in `access_log_default` and `usage_events_default`; both tables
+are append-only (the 15.d WORM trigger refuses `UPDATE` and `DELETE` for every role, the owner
+included), so `ensurePartitions` cannot move them out — and so December could never get a partition
+of its own (`EnsurePartitionsResult.blocked`, `reason: 'worm_default_rows'`), nor any later month
+whose rows had already landed there. A permanent wedge, not an outage.
+
+Fixed by doing what §16 says: `startup.ts#extendPartitionHorizon` runs `ensureAllPartitions` on the
+`terminal_maint` connection at every boot and again daily (`index.ts`), logs what it created (and at
+`error` anything blocked), and keeps serving if it fails — the default partitions take the rows
+meanwhile. Without `DATABASE_URL_MAINT` it says it is skipping and never falls back to the
+application pool. Verified on a copy of the seeded database by booting the built server twice: the
+first boot created 19 partitions, `access_log_m2026_12` and `usage_events_m2026_12` among them; the
+second answered "already ahead". `startup.test.ts` asserts the step runs on every boot, unit tests pin
+its report, and the e2e plant now gets a `DATABASE_URL_MAINT`, so every browser run exercises the
+real DDL path. A local database is extended the same way whenever `npm run dev` starts with
+`DATABASE_URL_MAINT` set, as `.env.example` sets it.
+
+### The site serves the terminal itself, and accounts are made from GitHub
+
+**The plant serves the web client** (DEPLOYMENT §4.2; `http/webApp.ts`, switched on by
+`WEB_DIST_DIR`, which `render.yaml` sets). Every file of the build is a route, any other GET that
+looks like a page gets `index.html`, and — the two things a catch-all gets wrong — a missing asset
+and an unknown `/api/…` path still get the JSON 404. Fingerprinted assets are cached immutably for a
+year, `index.html` is `no-cache`, and the page refuses to be framed (it carries a sign-in form). The
+build no longer emits source maps: they were 7.4 MB of 10, and the directory is now public; it is
+1.9 MB. `test/integration/http/webApp.test.ts` (18 tests) was watched failing under two mutations —
+the catch-all answering everything, and the framing and caching headers removed — and restored
+byte-identical.
+
+Then the production build was driven in Chrome through the built server: the sign-in form, a
+password sign-in, the four-panel terminal, the status bar at `● LIVE` (the WebSocket on the page's
+own origin) and a reload that kept the session. That run found two defects nothing else could:
+
+1. **`index.html` preloaded a font that was never added to the repository.** Its comment said the
+   files would "land in `public/fonts/` with the asset work package"; no package added them. Under
+   Vite the request was answered invisibly; from the plant it is a 404 on every load. The preload is
+   gone, with a comment saying to restore it with the files; the CSS stack already fell through to
+   SF Mono / Menlo / Consolas.
+2. **There was no favicon,** so every page load asked for `/favicon.ico` and got a 404. An inline SVG
+   icon now answers it without a request.
+
+After both, a signed-in load makes no failed request; the one console line left is the expected 401
+of `GET /auth/session` before anyone has signed in.
+
+**"Create user"** (`.github/workflows/create-user.yml`) runs `scripts/create-user.ts` from GitHub's
+network, as "Prepare database" does. The repository is public and so are its runs, so the email and
+the password come from repository secrets (`CREATE_USER_EMAIL`, `CREATE_USER_PASSWORD`, masked in the
+log, to be deleted after the run); the inputs are only the display name, firm, role and whether to
+require the emailed code, and they reach the script through the environment rather than
+interpolated into the shell line. Its script was run on a fresh clone with nothing built: with and
+without a second factor, with a display name made of shell syntax (stored literally, nothing ran),
+without the secrets (refused with a message), and for an address that already has an account
+(refused, not overwritten).
+
+**Two more browser specs had rotted on the calendar** — found by this package's gate, identical on
+Postgres 14 and 18, and in nothing this package changed. Both drove HP with a window ending NOW over
+bars that end on 2026-09-15, the export spec's failure of 2026-10-06 again:
+
+- `help.spec.ts` typed `AAPL US Equity HP 1M`; on 2026-10-21 that window held no session, so the
+  panel drew twelve cited values where the spec needs more than twenty. It now uses the export
+  spec's fixed `CUSTOM 2026-08-25 2026-09-15`, and the ticket's `range` is asserted as `CUSTOM`.
+- `command-line.spec.ts` tests HP with its DEFAULTS, so its window cannot be pinned without changing
+  what it tests. It asserted "more than 235 bars" — about a year of trading days — and read 227.
+  It now asserts what holds every day, and more strictly: `From` is a year back from today, give or
+  take a weekend, and `Bars` equals EXACTLY the sessions the seed holds between the screen's own
+  `From` and `To` (counted in the e2e database). Watched failing under an off-by-one mutation of
+  that count (226 against 227), restored byte-identical.
+
+Both are DEPLOYMENT §3.1's frozen-snapshot problem reaching the tests. Item 4 of DEPLOYMENT §7
+(`REPLAY_AS_OF`) would end it at the root, for the site and for any spec still keyed to today.
+
+Gate: 279 files / 6,343 tests green on Postgres 14 once and on Postgres 18 twice (was 277 / 6,321);
+47 e2e green on each after the two spec fixes, no error-level line in either plant's log, WEI p95
+446.4 ms (14) and 412.0 ms (18) of 500; `bloomberg_test` unseeded at `instruments=0 /
+licence_registry=33` on both; the e2e databases on both versions carry the December partitions the
+plant's own startup step created.
 
 ## Notes
 

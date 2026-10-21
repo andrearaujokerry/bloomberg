@@ -404,12 +404,15 @@ Two options, and I recommend the second for a public demo:
 because it needs its own tests and an entitlement review — a demo route that accidentally grants the
 `admin` persona is the worst possible bug here.
 
-### 4.2 Fastify serves the SPA — REQUIRED
+### 4.2 Fastify serves the SPA — DONE (2026-10-21)
 
-`@fastify/static` on `packages/web/dist`, registered **after** the API routes, with an
-SPA fallback in the existing `setNotFoundHandler` (`http/errors.ts` L253) that returns `index.html`
-for a non-`/api` GET and leaves the current JSON 404 for everything else. Build without source maps
-(7.4 of the 10 MB is maps). **Small.**
+`http/webApp.ts`, switched on by `WEB_DIST_DIR` (set in `render.yaml`): `@fastify/static` on
+`packages/web/dist`, registered **after** the API routes, every file a route of its own, and a GET
+catch-all that answers `index.html` for anything shaped like a page while a missing asset and an
+unknown `/api/…` path keep the JSON 404. Assets are cached immutably, `index.html` is `no-cache` and
+refuses to be framed. Built without source maps (they were 7.4 of the 10 MB; the build is now 1.9 MB).
+Planned as a fallback inside `http/errors.ts`'s not-found handler; built as its own module with its
+own catch-all instead, so the not-found handler stays the single JSON 404 (BUILD_STATUS.md).
 
 ### 4.3 Rate limiting — EXISTS; one thing to check behind a proxy
 
@@ -539,7 +542,7 @@ Two practical notes:
 | # | Work | Size |
 | --- | --- | --- |
 | ~~0~~ | ~~The Postgres 14 → 18 move (§2.3b)~~ — **DONE**: schema identical, suite green on 18; it found and fixed a collation dependency, a microsecond-truncation bug in the bitemporal write path, a rotting e2e spec and a parser defect (`BUILD_STATUS.md`) | ~~L~~ |
-| 1 | §4.2 Fastify serves the SPA, with the SPA fallback and a no-sourcemap build. **Until this lands the site's root URL is a JSON 404** — the API is up, the web app is not served | S |
+| ~~1~~ | ~~§4.2 Fastify serves the SPA~~ — **DONE**: `http/webApp.ts` + `WEB_DIST_DIR`; driven in Chrome through the built server, which also found a font preload that was never shipped and a missing favicon | ~~S~~ |
 | 2 | §4.3 ~~rate limiter~~ — it exists. What remains: the client address behind Render's proxy, decided in config | S |
 | ~~3~~ | ~~§4.1 login form + email second factor, SMTP transport, `create-user` script~~ — **DONE**: with abuse tests (guess budget, single use, expiry, session binding, concurrent sends, resend limits, fail-closed transport, grants as `terminal_app`) and a browser spec that signs in with real keystrokes. It found a keyboard bug that swallowed every keystroke on the sign-in screen, and a first-load race that answered a new account's workspace with a 500 (`BUILD_STATUS.md`) | ~~L~~ |
 | 4 | §3.1 anchor the data axis to the snapshot in replay mode (`REPLAY_AS_OF`), so relative windows do not empty out | M |
@@ -549,10 +552,11 @@ Two practical notes:
 | ~~8~~ | ~~A GitHub Actions "prepare database" job~~ — **DONE**: `.github/workflows/prepare-database.yml` running `scripts/prepare-database.ts` (roles, passwords, migrations, seed, demo accounts off; idempotent), verified twice against a Neon stand-in (§7.1 step 2) | ~~M~~ |
 | 9 | §4.4 the trimmed seed, only if your tier needs it | M |
 | 10 | `docs/RUNBOOK.md` — rotate the secret, re-seed, read `/health`, what `degraded` means | S |
-| 11 | **Partition horizon — before 1 December 2026.** `access_log` and `usage_events`, written on every request, have monthly partitions only through November; the job that adds more belongs to the scheduler that is off. Extend them at every start, on `DATABASE_URL_MAINT` (`BUILD_STATUS.md`) | S |
+| ~~11~~ | ~~Partition horizon — before 1 December 2026~~ — **DONE**: `startup.ts#extendPartitionHorizon` at every boot and daily, on `DATABASE_URL_MAINT`. Without it December's rows would have gone to the append-only default partitions and wedged there (`BUILD_STATUS.md`) | ~~S~~ |
 | 12 | The browser suite with the server connected as `terminal_app`, so a missing grant shows in a test rather than on the site | S |
 | 13 | Migration 0015 fails for an owner that is not a superuser (`must be able to SET ROLE "terminal_maint"`). `prepare-database.ts` does the self-grant first, so the job works; a self-grant inside 0015 would make a bare `db:migrate` work too | S |
 | 14 | Optional: a sender for Brevo's HTTPS API, if port 2525 is ever blocked too | S |
+| ~~15~~ | ~~A "Create user" GitHub job~~ — **DONE**: `.github/workflows/create-user.yml` (§7.1 step 6) | ~~S~~ |
 
 Every one of those goes through the same gate as the rest of this build: typecheck, lint, the full
 vitest suite twice, the e2e suite, and mutation-checks on anything with a security consequence.
@@ -656,29 +660,38 @@ unprepared database fails exactly like this, and nothing else is wrong:
    `DATABASE_URL` must never stay the owner's: §5 item 6.
 
 5. **Check it.** `https://<the service>.onrender.com/api/v1/health` answers 200 with
-   `"status":"degraded"` — degraded is normal here (§3). Until item 1 lands, the root URL is a JSON
-   404: the API is live, the web app is not served yet.
+   `"status":"degraded"` — degraded is normal here (§3) — and the root URL shows the sign-in form.
+   `WEB_DIST_DIR` arrives with `render.yaml`; if the Environment tab does not show it after the
+   deploy, add it by hand: `WEB_DIST_DIR` = `packages/web/dist`.
 
-6. **Your account** — from a network that reaches Neon (or a GitHub job, not written yet):
+6. **Your account — the "Create user" GitHub job.**
+
+   a. Add two repository secrets (as in step 2b): `CREATE_USER_EMAIL`, the address you will sign in
+      with and where the codes go, and `CREATE_USER_PASSWORD`, 12 characters or more. They are
+      secrets rather than run inputs because this repository's runs are public.
+   b. Actions → "Create user" → Run workflow: a display name, the firm (`Demo Capital`), the role
+      (`user`), and whether to require the emailed code (yes). The log ends with `created user …`.
+   c. **Delete both secrets.** The last step of the run reminds you.
+
+   Then sign in. With the code switched on, the first sign-in is also the test of Brevo's delivery:
+   if no code arrives, check the spam folder, then Brevo's transactional logs (§4.1 has the Gmail
+   caveat). *By hand instead*, from a network that reaches Neon:
 
    ```bash
    npx tsx scripts/create-user.ts --email <your address> --name "<your name>" --firm "Demo Capital" --url "$OWNER_URL"
    ```
 
-   It asks for your password twice, and the account signs in with an emailed code.
-
 ### Sequence
 
 ```
-step 0 ✓  →  item 0 ✓  →  item 3 ✓  →  item 6 ✓ (render.yaml)  →  item 8 ✓ (prepare-database)
-          →  §7.1 (you: the job, then Render's two database URLs, then a deploy)
-          →  1, 11 (me: the web app served, and the partitions before 1 December)
+step 0 ✓  →  item 0 ✓  →  item 3 ✓  →  item 6 ✓  →  item 8 ✓  →  §7.1 steps 1-5 ✓ (you)
+          →  items 1 ✓, 11 ✓, 15 ✓  →  §7.1 step 6 (you: your account)
           →  4, 5, 12, 13 (me)  →  7, 2, 10 (me)  →  9 if needed
 ```
 
-§7.1 no longer waits on anything of mine: with step 2 done and the two URLs pointed at the
-application roles, the deploy starts and `/api/v1/health` answers. Item 1 is what makes the root URL
-show the terminal, and item 11 has a date on it.
+After step 6 the site is usable: the terminal at the root URL, and an account to sign in with. What
+remains makes it better rather than possible — item 4 above all, because until the data axis is
+pinned to the snapshot the charts empty a little more every day.
 
 ---
 

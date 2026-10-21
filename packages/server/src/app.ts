@@ -12,7 +12,11 @@
  *  3. `@fastify/cookie` — session cookies (`tsid`), signed with `SESSION_SECRET`;
  *  4. `/health` at the root, as a liveness alias for probes that cannot know the API prefix;
  *  5. the generated route barrel under `/api/v1` (which contains its own `/api/v1/health`);
- *  6. the WS gateway.
+ *  6. the WS gateway;
+ *  7. the built web client, only when `WEB_DIST_DIR` is set (`http/webApp.ts`). This step is the
+ *     design change docs/DEPLOYMENT.md §4.2 records: a deployment has no Vite to serve the page, and
+ *     the page must share the API's origin (§2.1). Registered last, so every API route outranks its
+ *     catch-all.
  *
  * Steps 1 and 2 are plain function calls on the root instance rather than `app.register(...)`:
  * Fastify encapsulates plugins, and a hook registered inside a plugin would not apply to sibling
@@ -32,6 +36,7 @@ import type { Db } from './db/client.js';
 import { registerErrorHandling } from './http/errors.js';
 import { registerTrace } from './http/trace.js';
 import { healthRoutes } from './http/routes/health.js';
+import { resolveWebDist, webApp } from './http/webApp.js';
 import { metricsPlugin } from './observability/metrics.js';
 import type { Plant } from './plant/tickerPlant.js';
 import { registerWsGateway, type WsGateway } from './ws/gateway.js';
@@ -199,6 +204,11 @@ export function buildApp(deps: AppDeps, options: BuildAppOptions = {}): FastifyI
     plant: deps.plant,
   });
   app.decorate('wsGateway', gateway);
+
+  // Resolved now, so a missing build stops startup with a message instead of serving 404s.
+  if (deps.config.WEB_DIST_DIR !== undefined) {
+    void app.register(webApp, { root: resolveWebDist(deps.config.WEB_DIST_DIR) });
+  }
 
   return app;
 }

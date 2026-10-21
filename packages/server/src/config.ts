@@ -89,6 +89,13 @@ export const ConfigSchema = z.object({
    * fields carry still go through `POST /data` and the evaluator.
    */
   PUBLIC_FIELDS: z.enum(['0', '1']).default('0'),
+  /**
+   * The built web client to serve from this process (`http/webApp.ts`, docs/DEPLOYMENT.md §4.2) —
+   * `packages/web/dist` in a deployment, where there is no Vite and the page and the API must share
+   * one origin. Unset (development, every test): the plant serves the API only, as it always has. A
+   * directory without `index.html` stops startup rather than serving a site of 404s.
+   */
+  WEB_DIST_DIR: z.string().min(1).optional(),
   // ── Email: how sign-in codes leave the server (http/auth/emailCode.ts) ──────────────────────
   /**
    * The second factor's transport. **Unset means codes are not sent at all**: a `mfa_required` user

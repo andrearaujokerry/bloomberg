@@ -47,7 +47,7 @@ import type { Locator, Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
 import { E2E_USERS } from '../fixtures/auth.js';
-import { resetWorkspace } from '../fixtures/database.js';
+import { E2E_DATABASE_URL, resetWorkspace, scalar } from '../fixtures/database.js';
 
 /** `data-testid="command-line"` is on the `<input>` of `shell/CommandLine.tsx` — one PER PANEL. */
 const commandLine = (page: Page, panelId: string): Locator =>
@@ -207,21 +207,47 @@ test.describe('WP-15 — the command line (TERM-01, TERM-03)', () => {
     await expect(grid.nth(0)).toHaveText('2026-09-15');
     await expect(grid.nth(1)).toHaveText('330.18');
     await expect(grid.nth(5)).toHaveText('17,504,609');
-    // `Bars` and `From` are NOT asserted as literals, and that is a correction rather than a
-    // weakening. `HP`'s default range is `1Y` measured from NOW, so the window slides every day the
-    // suite is not run: these read 244 bars from 2025-09-25 when this file was written and 242 from
-    // 2025-09-29 four days later, which is the test rotting on the calendar rather than the product
-    // changing. What is FIXTURE-FIXED is the far end (the capture's last bar) and the extremes inside
-    // the window, so those stay exact, and the count is asserted as the property that actually
-    // matters: about one year of US trading days, which still fails for a window of 60 or of 1,255.
+    // `Bars` and `From` are NOT literals: `HP`'s default range is `1Y` measured from NOW, while the
+    // seeded bars stop on 2026-09-15, so the window slides every day the suite is not run. This used
+    // to assert "about one year of US trading days" (more than 235 bars) — true when it was written
+    // (244, then 242 four days later) and false from 2026-10-21 (227), because a year back from today
+    // now reaches past the fixture's end. A floor on a frozen fixture under a moving clock only says
+    // when the test will rot (docs/DEPLOYMENT.md §3.1).
+    //
+    // What is true every day is asserted instead, and it is stricter: `From` is a year back from
+    // today — the manifest's default, give or take the weekend it lands on — and `Bars` is EXACTLY the
+    // number of sessions the seed holds between the screen's own `From` and `To`. An HP that dropped
+    // or double-counted a day fails that; the old range would have let either through.
+    const fromText =
+      (await kvRow(page, 'p1', 'From').getByRole('cell').textContent())?.match(
+        /\d{4}-\d{2}-\d{2}/,
+      )?.[0] ?? '';
+    expect(fromText, '`From` shows a date').toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    const yearAgo = new Date();
+    yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+    const offsetDays = (Date.parse(`${fromText}T00:00:00Z`) - yearAgo.getTime()) / 86_400_000;
+    expect(offsetDays, `From ${fromText} is not about a year back from today`).toBeGreaterThan(-3);
+    expect(offsetDays, `From ${fromText} is not about a year back from today`).toBeLessThan(7);
+
     const bars = Number(
       ((await kvRow(page, 'p1', 'Bars').getByRole('cell').textContent()) ?? '').replace(
         /[^\d]/g,
         '',
       ),
     );
-    expect(bars).toBeGreaterThan(235);
-    expect(bars).toBeLessThan(260);
+    // AAPL's sessions in the seed, counted once each (every session is on three market lines).
+    const seeded = Number(
+      await scalar(
+        E2E_DATABASE_URL,
+        `SELECT count(DISTINCT session_date) FROM bars_daily
+          WHERE instrument_id = (SELECT entity_id FROM identifiers
+                                  WHERE entity_kind = 'instrument' AND scheme = 'TICKER_EXCH'
+                                    AND value = 'AAPL' AND tx_to = 'infinity' LIMIT 1)
+            AND session_date BETWEEN '${fromText}' AND '2026-09-15'`,
+      ),
+    );
+    expect(seeded, 'the seed holds no AAPL sessions in that window').toBeGreaterThan(0);
+    expect(bars, `Bars for ${fromText} → 2026-09-15`).toBe(seeded);
     await expect(kvRow(page, 'p1', 'High').getByRole('cell')).toContainText('344.57');
     await expect(kvRow(page, 'p1', 'To').getByRole('cell')).toContainText('2026-09-15');
 

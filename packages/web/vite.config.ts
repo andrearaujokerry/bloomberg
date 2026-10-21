@@ -43,7 +43,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: true,
+    // No source maps: the plant serves this directory to the public (docs/DEPLOYMENT.md §4.2), and
+    // the maps were 7.4 MB of the 10.
+    sourcemap: false,
     target: 'es2022',
     chunkSizeWarningLimit: 900,
     rollupOptions: {

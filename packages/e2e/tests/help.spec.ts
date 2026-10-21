@@ -32,7 +32,7 @@
 //
 // Driven against the seeded database as `pm@demo.terminal`:
 //
-//   * `AAPL US Equity HP 1M` then `HELP` → `GET /api/v1/help/HP` 200, and `role="dialog"`
+//   * `AAPL US Equity HP CUSTOM 2026-08-25 2026-09-15` then `HELP` → `GET /api/v1/help/HP` 200, and `role="dialog"`
 //     `aria-label="Help · HP"` carrying HP's own summary and parameter list.
 //   * `HELP` again → `aria-label="Open a helpdesk ticket"`, pre-filled with the panel, the
 //     function, the params and "N values with provenance".
@@ -57,8 +57,14 @@ const PANELS = ['p1', 'p2', 'p3', 'p4'] as const;
  * toolbar, a summary and a paged grid, so `collectScreenState` has dozens of cited values to
  * attach. Asking HELP about an empty panel would make the ticket's screen state trivially empty and
  * the assertions below vacuous.
+ *
+ * A FIXED window inside the seeded bars, as in `export.spec.ts` and for the same reason. This was
+ * `AAPL US Equity HP 1M`, a window ending NOW over bars that end on 2026-09-15 — so it emptied as
+ * the calendar moved, and on 2026-10-21 it held no session at all: the panel drew twelve cited
+ * values where this file needs more than twenty, and both tickets here failed on "is the database
+ * seeded?". `CUSTOM 2026-08-25 2026-09-15` is fifteen sessions, every day.
  */
-const HP_COMMAND = 'AAPL US Equity HP 1M';
+const HP_COMMAND = 'AAPL US Equity HP CUSTOM 2026-08-25 2026-09-15';
 
 /** `shell/HelpOverlay.tsx` — `role="dialog"`, `className="help"`. */
 const HELP_OVERLAY = '.help[role="dialog"]';
@@ -371,7 +377,7 @@ test.describe('WP-15 help — once explains, twice opens a ticket (TERM-09)', ()
 
     const body = posted[0]?.postDataJSON() as TicketBody;
     expect(body.functionCode, 'the ticket names the wrong function').toBe('HP');
-    expect(body.params?.range, 'the ticket carries the wrong params').toBe('1M');
+    expect(body.params?.range, 'the ticket carries the wrong params').toBe('CUSTOM');
     expect(body.security?.id, 'the ticket names no security').toBeGreaterThan(0);
   });
 

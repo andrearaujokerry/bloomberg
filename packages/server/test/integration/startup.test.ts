@@ -600,6 +600,11 @@ describe('the shipped entry point, booted', () => {
       );
     }
     expect(output).toContain('startup step 8 deferred');
+    // The partition horizon (DATA_MODEL §16) runs on every boot. Which line it writes depends on the
+    // maintenance connection this child happens to have — extended, already ahead, skipped for want
+    // of DATABASE_URL_MAINT, or refused because it names another database — so the assertion is that
+    // the step ran at all: removing it from `index.ts` turns this red.
+    expect(output).toContain('"step":"partitions"');
 
     const code = await stopChild(child);
     child = undefined;

@@ -1,0 +1,84 @@
+# Create an account in the production database — docs/DEPLOYMENT.md §7.1 step 6.
+#
+# Manual only: GitHub → Actions → "Create user" → Run workflow. It runs scripts/create-user.ts from
+# GitHub's network, which reaches Neon on the port the development machine's network blocks.
+#
+# This repository is public, and so are its workflow runs. So the two things that identify or
+# unlock a person are NOT run inputs — they come from repository secrets, which GitHub masks in the
+# log, and which you add just before a run and delete straight after
+# (Settings → Secrets and variables → Actions):
+#
+#   CREATE_USER_EMAIL     the account's email: its sign-in name, and where its codes are sent
+#   CREATE_USER_PASSWORD  its password, 12 characters or more
+#   NEON_OWNER_URL        already there from "Prepare database"
+#
+# The inputs below are the non-identifying rest. One account per run; an address that already has
+# an account is refused, not overwritten.
+
+name: Create user
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Display name (shown in the terminal; visible to anyone who can see this run)'
+        required: true
+        type: string
+      firm:
+        description: 'Firm — must already exist'
+        required: true
+        default: 'Demo Capital'
+        type: string
+      role:
+        description: 'Role'
+        required: true
+        default: 'user'
+        type: choice
+        options: [user, admin, compliance, dataops, helpdesk, newsroom]
+      second_factor:
+        description: 'Require an emailed code at every sign-in'
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.19.0'
+          cache: npm
+
+      - name: Install
+        run: npm ci --include=dev
+
+      # Every value reaches the script through the environment, never through `${{ }}` inside the
+      # script itself: an input interpolated into a shell line is an input that can run commands.
+      - name: Create the account
+        env:
+          DATABASE_URL: ${{ secrets.NEON_OWNER_URL }}
+          CREATE_USER_EMAIL: ${{ secrets.CREATE_USER_EMAIL }}
+          CREATE_USER_PASSWORD: ${{ secrets.CREATE_USER_PASSWORD }}
+          DISPLAY_NAME: ${{ inputs.name }}
+          FIRM: ${{ inputs.firm }}
+          ROLE: ${{ inputs.role }}
+          SECOND_FACTOR: ${{ inputs.second_factor }}
+        run: |
+          if [ -z "$CREATE_USER_EMAIL" ] || [ -z "$CREATE_USER_PASSWORD" ]; then
+            echo "Add the CREATE_USER_EMAIL and CREATE_USER_PASSWORD repository secrets first." >&2
+            exit 1
+          fi
+          set -- --email "$CREATE_USER_EMAIL" --name "$DISPLAY_NAME" --firm "$FIRM" --role "$ROLE"
+          if [ "$SECOND_FACTOR" != "true" ]; then set -- "$@" --no-mfa; fi
+          npx tsx scripts/create-user.ts "$@" < /dev/null
+
+      - name: Reminder
+        if: always()
+        run: echo "Now delete the CREATE_USER_EMAIL and CREATE_USER_PASSWORD repository secrets."

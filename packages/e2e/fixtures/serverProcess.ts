@@ -89,6 +89,14 @@ export const WEB_COMMAND = 'npx vite --host localhost';
  * The environment every e2e plant runs with: replayed provider payloads (no network, QA-02) and
  * this suite's own seeded database, never `bloomberg_dev` and never the `server-seed` template.
  */
+/** `url` with its user replaced by `role` and no password — local clusters trust local roles. */
+function asRole(url: string, role: string): string {
+  const parsed = new URL(url);
+  parsed.username = role;
+  parsed.password = '';
+  return parsed.toString();
+}
+
 export function serverEnv(overrides: Readonly<Record<string, string>> = {}): Record<string, string> {
   return {
     NODE_ENV: 'test',
@@ -99,6 +107,10 @@ export function serverEnv(overrides: Readonly<Record<string, string>> = {}): Rec
     PORT: String(SERVER_PORT),
     LOG_LEVEL: processEnv.E2E_LOG_LEVEL ?? 'warn',
     SESSION_SECRET: processEnv.SESSION_SECRET ?? 'e2e-only-secret-not-for-production',
+    // The partition horizon runs on every boot (DATA_MODEL §16, `startup.ts#extendPartitionHorizon`),
+    // and only on the `terminal_maint` connection, so the plant gets one: the same database as
+    // that role, which every migrated cluster has. It makes each e2e run exercise the real DDL path.
+    DATABASE_URL_MAINT: asRole(E2E_DATABASE, 'terminal_maint'),
     // The email second factor, delivered to a directory this suite reads instead of to a mailbox.
     EMAIL_TRANSPORT: 'outbox',
     EMAIL_OUTBOX_DIR: E2E_OUTBOX_DIR,

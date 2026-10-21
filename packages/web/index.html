@@ -13,18 +13,20 @@
     <meta name="description" content="Terminal — market data workstation" />
     <meta name="referrer" content="same-origin" />
     <title>TERMINAL</title>
-    <!--
-      The mono face the whole UI is set in (CLIENT.md §12.3). The files land in
-      `public/fonts/` with the asset work package; until then the preload simply misses and the
-      stack falls through to SF Mono / Menlo / Consolas.
-    -->
+    <!-- Inline, so the browser's automatic `/favicon.ico` request — a 404 from the plant, which
+         serves only what the build contains — never happens. -->
     <link
-      rel="preload"
-      href="/fonts/IBMPlexMono-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%23111'/%3E%3Cpath d='M3 4l4 4-4 4' stroke='%23f5a623' stroke-width='2' fill='none'/%3E%3Cpath d='M8 12h5' stroke='%23f5a623' stroke-width='2'/%3E%3C/svg%3E"
     />
+    <!--
+      The mono face the UI names first (CLIENT.md §12.3) is IBM Plex Mono, but its files have never
+      been added to this repository, so there is nothing to preload: the stack in
+      `theme/tokens.css` falls through to SF Mono / Menlo / Consolas. A `<link rel="preload">` for
+      `/fonts/IBMPlexMono-Regular.woff2` used to stand here and missed on every load — invisibly
+      under Vite, and as a 404 once the plant served the build (`http/webApp.ts`). Add it back
+      with the files, in `public/fonts/`.
+    -->
   </head>
   <body>
     <div id="root"></div>

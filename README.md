@@ -9,7 +9,7 @@ through a fixture store, and every value carries a provenance row saying which s
 message and which timestamp produced it. There are no vendor keys and no live feed.
 
 ```
-38 screens · 155 tables · 20 migrations · 6,321 unit/integration tests · 47 browser tests
+38 screens · 155 tables · 20 migrations · 6,343 unit/integration tests · 47 browser tests
 ```
 
 ---
@@ -211,7 +211,7 @@ observations, 1,264 daily and 1,033 intraday bars, 3,510 option contracts, 160 n
 ## Testing
 
 ```bash
-npm test                # 6,321 tests, 277 files, ~4½ minutes
+npm test                # 6,343 tests, 279 files, ~4½ minutes
 npm run test:e2e        # 47 browser tests in Chrome, ~3 minutes
 npm run typecheck
 npm run lint

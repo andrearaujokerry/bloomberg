@@ -58,6 +58,7 @@ import { TARGET2, XLON } from '@terminal/core/calendars/target2';
 import { USGOVT } from '@terminal/core/calendars/usgovt';
 import { WEEKEND } from '@terminal/core/calendars/weekend';
 
+import { ensureAllPartitions, type EnsurePartitionsResult } from './db/partitions.js';
 import { functionModules } from './functions/index.js';
 import { CalendarRepository, diffCalendars } from './refdata/calendars.js';
 import { universeSnapshot, type UniverseSnapshotCache } from './search/snapshot.js';
@@ -536,6 +537,70 @@ export async function checkCollation(db: Db | Tx): Promise<CollationReport> {
       `database collation is '${collate}', and every committed golden and fixture was captured ` +
       `under '${CAPTURED_COLLATION}'. Text ORDER BY results can differ — see startup.ts#checkCollation. ` +
       `To match, create the database with: CREATE DATABASE <name> LOCALE 'C' TEMPLATE template0`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// The partition horizon — DATA_MODEL §16: "`partitionMaintenance.ts` and startup (`ensurePartitions`
+// for every plan) keep the horizon ahead"
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+
+/** How often a running process extends the horizon again (`index.ts` arms the timer). */
+export const PARTITION_HORIZON_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
+/** What one pass of {@link extendPartitionHorizon} did. */
+export interface PartitionHorizonReport {
+  /** False when there is no maintenance connection to run it on; `skipped` says so. */
+  readonly ran: boolean;
+  readonly skipped: string | null;
+  /** `table.partition` for every partition this pass created. */
+  readonly created: readonly string[];
+  /**
+   * Ranges that could not be created because rows already sit in the table's default partition
+   * and the table is append-only (`access_log`, `usage_events`): those rows can never be moved, so
+   * the month never gets its own partition. Non-empty means the horizon fell behind once already.
+   */
+  readonly blocked: readonly string[];
+}
+
+/**
+ * Extend every partitioned table's horizon (`db/partitions.ts#ensureAllPartitions`), at startup
+ * and then daily.
+ *
+ * The design always had startup do this; it was never wired, and the nightly job that also does it
+ * belongs to the scheduler step 8 defers. So nothing extended anything: the monthly partitions of
+ * `access_log` and `usage_events` — written on every request — ended with November 2026. Past that,
+ * rows land in each table's default partition rather than failing, and that is the trap: both
+ * tables are append-only, so rows in a default partition can never be moved, and that month can
+ * never get its own partition (`blocked` above). Running ahead of the calendar is the only fix
+ * that works.
+ *
+ * It needs `DATABASE_URL_MAINT` — the `terminal_maint` role owns the partitioned parents, and
+ * `terminal_app` may not create or attach a partition. Without it the pass is skipped and says so;
+ * it never falls back to the application pool (`db/client.ts#withMaintTx`).
+ */
+export async function extendPartitionHorizon(deps: {
+  readonly maintConfigured: boolean;
+  /** Test seam; production uses `ensureAllPartitions`. */
+  readonly ensureAll?: () => Promise<readonly EnsurePartitionsResult[]>;
+}): Promise<PartitionHorizonReport> {
+  if (!deps.maintConfigured) {
+    return {
+      ran: false,
+      skipped:
+        'DATABASE_URL_MAINT is not set, so nothing extends the partition horizon — rows past the ' +
+        'last monthly partition of access_log / usage_events go to the default partition, where they ' +
+        'can never be moved',
+      created: [],
+      blocked: [],
+    };
+  }
+  const results = await (deps.ensureAll ?? (() => ensureAllPartitions()))();
+  return {
+    ran: true,
+    skipped: null,
+    created: results.flatMap((r) => r.created.map((name) => `${r.table}.${name}`)),
+    blocked: results.flatMap((r) => r.blocked.map((b) => `${r.table}.${b.partition}`)),
   };
 }
 

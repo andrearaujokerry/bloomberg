@@ -74,6 +74,10 @@ services:
         value: 'Terminal demo (replay mode, sends no SEC requests)'
       - key: LOG_LEVEL
         value: info
+      # The built web client, served by the server itself, so the page and the API share one origin
+      # (docs/DEPLOYMENT.md §4.2). The build command above produces it; a missing build stops startup.
+      - key: WEB_DIST_DIR
+        value: packages/web/dist
 
       # ── Sign-in codes, through Brevo's SMTP relay ─────────────────────────────────────────────
       # Port 2525: Render's free plan blocks outbound 25, 465 and 587. STARTTLS is REQUIRED, so a
