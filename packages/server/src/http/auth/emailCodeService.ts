@@ -157,7 +157,12 @@ export function emailCodeService(deps: EmailCodeServiceDeps): EmailCodeService {
             createdAt,
             expiresAt,
           });
-          await sender.send({ to: email, subject: message.subject, text: message.text });
+          await sender.send({
+            to: email,
+            subject: message.subject,
+            text: message.text,
+            html: message.html,
+          });
 
           return {
             sentTo: maskEmail(email),

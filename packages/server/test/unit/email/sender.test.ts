@@ -96,6 +96,21 @@ describe('outboxSender — a live code on disk, so readable by its owner only', 
       text: 'Your sign-in code is 123456',
     });
   });
+
+  it('writes the HTML part beside it as a file a browser can open, also 0600', async () => {
+    dir = await mkdtemp(join(tmpdir(), 'outbox-test-'));
+    const box = join(dir, 'outbox');
+    await outboxSender(box).send({ to: 'a@b.test', subject: 's', text: 't', html: '<p>h</p>' });
+
+    const files = (await readdir(box)).sort();
+    expect(files).toHaveLength(2);
+    const [html, json] = files as [string, string];
+    expect(html).toMatch(/\.html$/);
+    expect(json).toMatch(/\.json$/);
+    expect(html.replace(/\.html$/, '')).toBe(json.replace(/\.json$/, ''));
+    expect(await readFile(join(box, html), 'utf8')).toBe('<p>h</p>');
+    expect((await stat(join(box, html))).mode & 0o777).toBe(0o600);
+  });
 });
 
 describe('the email settings — refused at startup when incomplete', () => {

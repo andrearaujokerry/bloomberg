@@ -32,14 +32,15 @@ services:
     # ingest scheduler is deliberately off (docs/DEPLOYMENT.md §3).
     healthCheckPath: /api/v1/health
 
-    # A commit that touches only documentation, operator scripts or GitHub workflows does not
-    # rebuild: the server imports none of them.
+    # A commit that touches only documentation, operator scripts, GitHub workflows or the logo
+    # files does not rebuild: the server imports none of them.
     buildFilter:
       ignoredPaths:
         - 'docs/**'
         - '**/*.md'
         - 'scripts/**'
         - '.github/**'
+        - 'brand/**'
 
     envVars:
       # The version every test in this repository has run on. `engines` alone says ">=22.19", and an

@@ -156,6 +156,7 @@ describe('renderCodeEmail', () => {
   it('puts the code in the body and NOT in the subject a locked phone shows', () => {
     const email = renderCodeEmail({ code: '482915', ttlMinutes: 10 });
     expect(email.text).toContain('482915');
+    expect(email.html).toContain('482915');
     expect(email.subject).not.toContain('482915');
     expect(email.subject).not.toMatch(/\d/);
   });

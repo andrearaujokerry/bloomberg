@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64" role="img" aria-label="Terminal">
+  <rect width="256" height="64" fill="#000000"/>
+  <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
+  <path d="M18 21 30 32 18 43" fill="none" stroke="#ffb000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M35 43h11" fill="none" stroke="#ffb000" stroke-width="6" stroke-linecap="round"/>
+  <text x="80" y="42.5" fill="#f2f2f2" font-family="'IBM Plex Mono','JetBrains Mono','SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="30" font-weight="600" letter-spacing="1.5">terminal</text>
+</svg>

@@ -27,11 +27,16 @@ import nodemailer from 'nodemailer';
 
 import type { Config } from '../config.js';
 
-/** One message. Plain text only — a sign-in code needs no markup, and markup is attack surface. */
+/**
+ * One message: a plain-text part, always, and optionally an HTML part sent beside it as
+ * multipart/alternative. The HTML comes only from this server's own templates
+ * (`email/signInCodeEmail.ts`) — never from anything a user typed.
+ */
 export interface OutgoingEmail {
   readonly to: string;
   readonly subject: string;
   readonly text: string;
+  readonly html?: string;
 }
 
 export interface EmailSender {
@@ -78,17 +83,26 @@ export function smtpTransportOptions(o: SmtpOptions): Record<string, unknown> {
   };
 }
 
+/**
+ * What `smtpSender` hands nodemailer for one message — exported so a test can build the exact MIME
+ * a provider receives (multipart/alternative when there is an HTML part) without a network.
+ */
+export function mailOptions(from: string, message: OutgoingEmail): Record<string, string> {
+  return {
+    from,
+    to: message.to,
+    subject: message.subject,
+    text: message.text,
+    ...(message.html === undefined ? {} : { html: message.html }),
+  };
+}
+
 export function smtpSender(o: SmtpOptions): EmailSender {
   const transport = nodemailer.createTransport(smtpTransportOptions(o));
   return {
     kind: 'smtp',
     async send(message) {
-      await transport.sendMail({
-        from: o.from,
-        to: message.to,
-        subject: message.subject,
-        text: message.text,
-      });
+      await transport.sendMail(mailOptions(o.from, message));
     },
   };
 }
@@ -98,7 +112,8 @@ export function smtpSender(o: SmtpOptions): EmailSender {
 /* ---------------------------------------------------------------------------------------------- */
 
 /**
- * Write each message to `dir` as `<iso-time>-<uuid>.json` instead of sending it.
+ * Write each message to `dir` as `<iso-time>-<uuid>.json` instead of sending it — and its HTML part,
+ * when it has one, beside it as `<same name>.html`, so the email can be looked at in a browser.
  *
  * For `npm run dev` and the e2e suite: a developer signs in by opening the newest file, and the
  * Playwright spec reads it the same way, so the code path from "a code was made" to "a code was
@@ -114,8 +129,11 @@ export function outboxSender(dir: string): EmailSender {
       ready ??= mkdir(root, { recursive: true, mode: 0o700 }).then(() => chmod(root, 0o700));
       await ready;
       const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const file = join(root, `${stamp}-${randomUUID()}.json`);
-      await writeFile(file, `${JSON.stringify(message, null, 2)}\n`, { mode: 0o600 });
+      const base = join(root, `${stamp}-${randomUUID()}`);
+      await writeFile(`${base}.json`, `${JSON.stringify(message, null, 2)}\n`, { mode: 0o600 });
+      if (message.html !== undefined) {
+        await writeFile(`${base}.html`, message.html, { mode: 0o600 });
+      }
     },
   };
 }

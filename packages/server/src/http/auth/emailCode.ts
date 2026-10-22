@@ -24,6 +24,8 @@
 
 import { createHmac, randomInt, timingSafeEqual } from 'node:crypto';
 
+import { renderSignInCodeEmail } from '../../email/signInCodeEmail.js';
+
 /** Digits in a code. */
 export const CODE_LENGTH = 6;
 
@@ -123,31 +125,24 @@ export function maskEmail(email: string): string {
   return `${mask(local)}@${mask(host)}${tld}`;
 }
 
-/** The message itself. Plain text: there is nothing here that markup would improve. */
+/** The message itself: a plain-text part, and an HTML part in the terminal's look. */
 export interface CodeEmail {
   readonly subject: string;
   readonly text: string;
+  readonly html: string;
 }
 
 /**
- * The email a code arrives in.
+ * The email a code arrives in — `email/signInCodeEmail.ts` draws it.
  *
  * **The code is not in the subject**, although many services put it there: a subject is what a
  * locked phone shows on its notification screen, and a second factor readable without unlocking the
- * device is a weaker second factor. It says what the code is for and that the user did not ask for
- * it if they did not — so a code that arrives unbidden reads as the warning it is (someone has the
- * password) rather than as noise.
+ * device is a weaker second factor. Nor is it in the preview line, which a locked phone shows too —
+ * the template opens with a preheader that says what the email is without the code. It says what
+ * the code is for and that the user did not ask for it if they did not — so a code that arrives
+ * unbidden reads as the warning it is (someone has the password) rather than as noise.
  */
 export function renderCodeEmail(input: { code: string; ttlMinutes: number }): CodeEmail {
-  return {
-    subject: 'Your Terminal sign-in code',
-    text: [
-      `Your sign-in code is ${input.code}`,
-      '',
-      `It expires in ${String(input.ttlMinutes)} minutes and can be used once.`,
-      '',
-      'If you did not just try to sign in, someone has your password. Change it, and do not',
-      'share this code with anyone — no one from the Terminal will ever ask you for it.',
-    ].join('\n'),
-  };
+  const { subject, text, html } = renderSignInCodeEmail(input);
+  return { subject, text, html };
 }

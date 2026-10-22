@@ -248,6 +248,8 @@ describe('the message, and what the response says about it', () => {
     // A subject is what a locked phone shows; the second factor must not be readable from it.
     expect(message.subject).not.toContain(code);
     expect(message.subject).not.toMatch(/\d{6}/);
+    // …and the HTML part travels with it, carrying the same code.
+    expect(message.html, 'the service hands the transport the HTML part').toContain(code);
   });
 
   it('answers with a MASKED address, the expiry and the resend time — never the code', async () => {

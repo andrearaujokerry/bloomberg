@@ -23,7 +23,7 @@ commit message names what landed. `git log --oneline` is the source of truth for
 | WP-14 | Chart engine, 12 series types, 22 studies, streaming, annotations | merged; the dead-module and gapped-study findings below closed in backlog tier 2 |
 | WP-15 | Seed, fixtures, replay harness, parity, composition root, e2e | **merged** — part 2 added the 8 Playwright specs and regenerated `docs/TRACEABILITY.md` |
 
-6,343 tests across 279 files, plus 47 Playwright tests that `npm test` does not run. The suite is
+6,351 tests across 280 files, plus 47 Playwright tests that `npm test` does not run. The suite is
 ten vitest projects; `server-seed` owns its own database and is the only one that seeds (see below),
 and `packages/e2e` is Playwright and is not run by `npm test` at all. Measured at the close of the
 backlog: two consecutive `npm test` runs green in 284.2 s and 285.5 s of reported duration against
@@ -1203,6 +1203,37 @@ Gate: 279 files / 6,343 tests green on Postgres 14 once and on Postgres 18 twice
 446.4 ms (14) and 412.0 ms (18) of 500; `bloomberg_test` unseeded at `instruments=0 /
 licence_registry=33` on both; the e2e databases on both versions carry the December partitions the
 plant's own startup step created.
+
+### The sign-in email in the terminal's look, and a mark
+
+**The code email has an HTML part** (`email/signInCodeEmail.ts`), sent beside the plain text as
+multipart/alternative: the app's dark theme (`theme/tokens.css`) — a panel header with the mark,
+`> SIGN-IN CODE <GO>`, the code in an amber field, a status line, the key bar. It fetches nothing (no
+image, link, stylesheet or web font — remote images are blocked by default and Gmail strips `data:`
+URIs, so the mark is drawn in text), lays out in tables for Outlook, declares itself dark so clients
+that re-colour light mail leave it alone, and escapes what it interpolates. Rendered in Chrome at
+700 and 360 px, no horizontal overflow at either.
+
+Building it found a leak the earlier design had missed: the code was kept out of the subject because
+a locked phone shows the subject — but a locked phone also shows the preview line, and the body's
+first line was "Your sign-in code is 123456". The HTML part now opens with a hidden preheader that
+names the email without the code, padded so the client does not run on into the body, and the text
+part says what it is before it says the code. Tested: the preheader holds no code and precedes it,
+the text's first line holds no code, the HTML fetches nothing, a hostile "code" comes out escaped,
+and the MIME `smtpSender` hands the provider is multipart/alternative (built by nodemailer's stream
+transport, no socket). The preview test and the service's HTML wiring were each watched failing under
+a mutation. In development the outbox now writes each HTML part beside its JSON, so the email can
+be opened in a browser.
+
+**`brand/`** — the mark (`>_` in amber `#ffb000` on near-black `#0a0a0a`, a rounded square), the
+prompt alone in amber and in ink, two wordmark lockups, and PNG exports from 16 to 1024 px rendered
+from the SVGs in Chrome, checked at 16 and 32 px on dark and light tab bars. The app's favicon is
+now the same mark. `render.yaml` does not rebuild for `brand/` alone.
+
+Gate: 280 files / 6,351 tests green on Postgres 14 once and on Postgres 18 twice; 47 e2e green on
+each — `login.spec.ts` among them, reading the code out of the new email — with no error-level
+line in either plant's log; WEI p95 455.5 ms (14) and 411.0 ms (18) of 500. The e2e plant's own
+outbox held the HTML part, code in its field, and a text part whose first line names no code.
 
 ## Notes
 
